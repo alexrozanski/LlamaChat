@@ -10,10 +10,14 @@ import SwiftUI
 @main
 struct CamelApp: App {
   @StateObject var chatModel = ChatModel()
+  @StateObject var chatSources = ChatSources()
 
   var body: some Scene {
-    WindowGroup {
-      ContentView(chatModel: chatModel)
+//    WindowGroup {
+//      ChatWindowContentView(chatModel: chatModel)
+//    }
+    Window("Setup", id: "setup") {
+      SetupWindowContentView(chatSources: chatSources)
     }
   }
 }

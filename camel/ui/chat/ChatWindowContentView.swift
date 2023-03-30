@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ChatWindowContentView: View {
   var chatModel: ChatModel
   @StateObject var viewModel: ChatViewModel
 
