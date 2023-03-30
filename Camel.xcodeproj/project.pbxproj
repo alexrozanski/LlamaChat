@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8255EA4529D589C9000B9F83 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8255EA4429D589C9000B9F83 /* llama */; };
 		82718CDE29D3686200545C32 /* CamelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CDD29D3686200545C32 /* CamelApp.swift */; };
 		82718CE229D3686300545C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE129D3686300545C32 /* Assets.xcassets */; };
 		82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE429D3686300545C32 /* Preview Assets.xcassets */; };
@@ -47,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8255EA4529D589C9000B9F83 /* llama in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +141,9 @@
 			dependencies = (
 			);
 			name = Camel;
+			packageProductDependencies = (
+				8255EA4429D589C9000B9F83 /* llama */,
+			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* Camel.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +172,9 @@
 				Base,
 			);
 			mainGroup = 82718CD129D3686200545C32;
+			packageReferences = (
+				8255EA4329D589C9000B9F83 /* XCRemoteSwiftPackageReference "llama" */,
+			);
 			productRefGroup = 82718CDB29D3686200545C32 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -400,6 +408,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8255EA4329D589C9000B9F83 /* XCRemoteSwiftPackageReference "llama" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alexrozanski/llama.swift/";
+			requirement = {
+				branch = v2;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8255EA4429D589C9000B9F83 /* llama */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8255EA4329D589C9000B9F83 /* XCRemoteSwiftPackageReference "llama" */;
+			productName = llama;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 82718CD229D3686200545C32 /* Project object */;
 }
