@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SourceTypeSelectionRow: View {
-  let source: SourceTypeSelectionViewModel.Source
+  let source: SelectSourceTypeViewModel.Source
+  let clickHandler: () -> Void
 
   @State var isHovered = false
 
@@ -24,18 +25,23 @@ struct SourceTypeSelectionRow: View {
       Image(systemName: "chevron.right")
         .padding(.trailing)
     }
-    .background(isHovered ? Color("SourceTypeSelectionRowHover") : .clear)
+    .background(isHovered ? Color("GroupedSelectionRowHover") : .clear)
     .onHover { isHovered = $0 }
+    .onTapGesture {
+      clickHandler()
+    }
   }
 }
 
 struct SourceTypeSelectionView: View {
-  var viewModel: SourceTypeSelectionViewModel
+  var viewModel: SelectSourceTypeViewModel
 
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       ForEach(viewModel.sources, id: \.id) { source in
-        SourceTypeSelectionRow(source: source)
+        SourceTypeSelectionRow(source: source, clickHandler: {
+          viewModel.select(sourceType: source.type)
+        })
         if source.id != viewModel.sources.last?.id {
           Divider()
         }

@@ -14,8 +14,12 @@
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
 		8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5529D58C58000B9F83 /* ChatSourceType.swift */; };
 		8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */; };
-		8255EA5A29D58CF1000B9F83 /* SourceTypeSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5929D58CF1000B9F83 /* SourceTypeSelectionViewModel.swift */; };
-		82718CDE29D3686200545C32 /* CamelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CDD29D3686200545C32 /* CamelApp.swift */; };
+		8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */; };
+		8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */; };
+		8255EA5E29D59892000B9F83 /* ConfigureSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */; };
+		8255EA6129D599AB000B9F83 /* ConfigureLlamaSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA6029D599AB000B9F83 /* ConfigureLlamaSourceViewModel.swift */; };
+		8255EA6329D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */; };
+		82718CDE29D3686200545C32 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CDD29D3686200545C32 /* AppDelegate.swift */; };
 		82718CE229D3686300545C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE129D3686300545C32 /* Assets.xcassets */; };
 		82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE429D3686300545C32 /* Preview Assets.xcassets */; };
 		82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CEC29D3689B00545C32 /* ChatModel.swift */; };
@@ -29,6 +33,11 @@
 		82718D0729D368EA00545C32 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0229D368EA00545C32 /* ComposeView.swift */; };
 		82718D0829D368EA00545C32 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0329D368EA00545C32 /* MessageView.swift */; };
 		82718D0A29D3699F00545C32 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0929D3699F00545C32 /* ChatListView.swift */; };
+		828164CA29D59A20007AE984 /* ConfigureLlamaSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828164C929D59A20007AE984 /* ConfigureLlamaSourceView.swift */; };
+		828164CC29D59A39007AE984 /* ConfigureAlpacaSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828164CB29D59A39007AE984 /* ConfigureAlpacaSourceView.swift */; };
+		828164CE29D5D3A3007AE984 /* AddSourceSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828164CD29D5D3A3007AE984 /* AddSourceSuccessView.swift */; };
+		82914CA329D5DB4900858B2C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82914CA229D5DB4900858B2C /* MainMenu.xib */; };
+		82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CBF29D5EB7A00858B2C /* FileUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,9 +47,13 @@
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
 		8255EA5529D58C58000B9F83 /* ChatSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSourceType.swift; sourceTree = "<group>"; };
 		8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceTypeSelectionView.swift; sourceTree = "<group>"; };
-		8255EA5929D58CF1000B9F83 /* SourceTypeSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceTypeSelectionViewModel.swift; sourceTree = "<group>"; };
+		8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeViewModel.swift; sourceTree = "<group>"; };
+		8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeView.swift; sourceTree = "<group>"; };
+		8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
+		8255EA6029D599AB000B9F83 /* ConfigureLlamaSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLlamaSourceViewModel.swift; sourceTree = "<group>"; };
+		8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureAlpacaSourceViewModel.swift; sourceTree = "<group>"; };
 		82718CDA29D3686200545C32 /* Camel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Camel.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		82718CDD29D3686200545C32 /* CamelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamelApp.swift; sourceTree = "<group>"; };
+		82718CDD29D3686200545C32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82718CE129D3686300545C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82718CE429D3686300545C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		82718CE629D3686300545C32 /* Camel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Camel.entitlements; sourceTree = "<group>"; };
@@ -55,6 +68,11 @@
 		82718D0229D368EA00545C32 /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		82718D0329D368EA00545C32 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		82718D0929D3699F00545C32 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
+		828164C929D59A20007AE984 /* ConfigureLlamaSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLlamaSourceView.swift; sourceTree = "<group>"; };
+		828164CB29D59A39007AE984 /* ConfigureAlpacaSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureAlpacaSourceView.swift; sourceTree = "<group>"; };
+		828164CD29D5D3A3007AE984 /* AddSourceSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceSuccessView.swift; sourceTree = "<group>"; };
+		82914CA229D5DB4900858B2C /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		82914CBF29D5EB7A00858B2C /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */,
-				8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */,
+				828164C829D59A0D007AE984 /* sources */,
 			);
 			path = setup;
 			sourceTree = "<group>";
@@ -124,9 +142,20 @@
 			isa = PBXGroup;
 			children = (
 				8255EA5329D58B89000B9F83 /* SetupViewModel.swift */,
-				8255EA5929D58CF1000B9F83 /* SourceTypeSelectionViewModel.swift */,
+				8255EA5F29D5998B000B9F83 /* sources */,
 			);
 			path = setup;
+			sourceTree = "<group>";
+		};
+		8255EA5F29D5998B000B9F83 /* sources */ = {
+			isa = PBXGroup;
+			children = (
+				8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */,
+				8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */,
+				8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */,
+				8255EA6029D599AB000B9F83 /* ConfigureLlamaSourceViewModel.swift */,
+			);
+			path = sources;
 			sourceTree = "<group>";
 		};
 		82718CD129D3686200545C32 = {
@@ -148,12 +177,14 @@
 		82718CDC29D3686200545C32 /* Camel */ = {
 			isa = PBXGroup;
 			children = (
-				82718CDD29D3686200545C32 /* CamelApp.swift */,
+				82718CDD29D3686200545C32 /* AppDelegate.swift */,
 				82718CF029D368A000545C32 /* model */,
 				82718CF129D368C200545C32 /* ui */,
+				82914CBE29D5EB7100858B2C /* util */,
 				82718CF229D368C800545C32 /* viewmodel */,
 				82718CE129D3686300545C32 /* Assets.xcassets */,
 				82718CE629D3686300545C32 /* Camel.entitlements */,
+				82914CA229D5DB4900858B2C /* MainMenu.xib */,
 				82718CE329D3686300545C32 /* Preview Content */,
 			);
 			path = Camel;
@@ -192,6 +223,26 @@
 				8255EA5229D58B78000B9F83 /* setup */,
 			);
 			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		828164C829D59A0D007AE984 /* sources */ = {
+			isa = PBXGroup;
+			children = (
+				8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */,
+				8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */,
+				828164CB29D59A39007AE984 /* ConfigureAlpacaSourceView.swift */,
+				828164C929D59A20007AE984 /* ConfigureLlamaSourceView.swift */,
+				828164CD29D5D3A3007AE984 /* AddSourceSuccessView.swift */,
+			);
+			path = sources;
+			sourceTree = "<group>";
+		};
+		82914CBE29D5EB7100858B2C /* util */ = {
+			isa = PBXGroup;
+			children = (
+				82914CBF29D5EB7A00858B2C /* FileUtils.swift */,
+			);
+			path = util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +311,7 @@
 			files = (
 				82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */,
 				82718CE229D3686300545C32 /* Assets.xcassets in Resources */,
+				82914CA329D5DB4900858B2C /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,25 +322,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8255EA6129D599AB000B9F83 /* ConfigureLlamaSourceViewModel.swift in Sources */,
 				82718D0829D368EA00545C32 /* MessageView.swift in Sources */,
 				82718D0429D368EA00545C32 /* MessagesView.swift in Sources */,
 				82718D0629D368EA00545C32 /* ChatView.swift in Sources */,
 				82718D0729D368EA00545C32 /* ComposeView.swift in Sources */,
+				8255EA6329D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift in Sources */,
 				82718D0A29D3699F00545C32 /* ChatListView.swift in Sources */,
 				82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */,
-				8255EA5A29D58CF1000B9F83 /* SourceTypeSelectionViewModel.swift in Sources */,
+				8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */,
+				82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */,
 				82718CEF29D3689B00545C32 /* Message.swift in Sources */,
 				82718CFC29D368E500545C32 /* MessagesViewModel.swift in Sources */,
 				8255EA4C29D58AF4000B9F83 /* ChatSource.swift in Sources */,
 				8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */,
 				8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */,
+				828164CA29D59A20007AE984 /* ConfigureLlamaSourceView.swift in Sources */,
 				8255EA4A29D58A40000B9F83 /* SetupWindowContentView.swift in Sources */,
 				82718D0529D368EA00545C32 /* ChatWindowContentView.swift in Sources */,
+				8255EA5E29D59892000B9F83 /* ConfigureSourceViewModel.swift in Sources */,
 				8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */,
+				828164CE29D5D3A3007AE984 /* AddSourceSuccessView.swift in Sources */,
+				8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */,
 				8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */,
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
-				82718CDE29D3686200545C32 /* CamelApp.swift in Sources */,
+				82718CDE29D3686200545C32 /* AppDelegate.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
+				828164CC29D59A39007AE984 /* ConfigureAlpacaSourceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +482,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Camel/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -449,7 +511,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Camel/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

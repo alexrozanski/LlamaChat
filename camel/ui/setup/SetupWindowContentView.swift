@@ -8,27 +8,29 @@
 import SwiftUI
 
 struct SetupWindowContentView: View {
-  let chatSources: ChatSources
+  @ObservedObject var viewModel: SetupViewModel
 
-  @StateObject var viewModel: SourceTypeSelectionViewModel
-
-  init(chatSources: ChatSources) {
-    self.chatSources = chatSources
-
-    _viewModel = StateObject(wrappedValue: SourceTypeSelectionViewModel(chatSources: chatSources))
+  @ViewBuilder var content: some View {
+    switch viewModel.state {
+    case .none:
+      EmptyView()
+    case .selectingSource(viewModel: let viewModel):
+      SelectSourceTypeView(viewModel: viewModel)
+    case .configuringSource(viewModel: let viewModel):
+      if let viewModel = viewModel as? ConfigureLlamaSourceViewModel {
+        ConfigureLlamaSourceView(viewModel: viewModel)
+      } else if let viewModel = viewModel as? ConfigureAlpacaSourceViewModel {
+        ConfigureAlpacaSourceView(viewModel: viewModel)
+      } else {
+        EmptyView()
+      }
+    case .success:
+      AddSourceSuccessView()
+    }
   }
 
   var body: some View {
-    VStack(alignment: .leading) {
-      VStack(alignment: .leading, spacing: 4) {
-        Text("Add Chat Source")
-          .font(.headline)
-        Text("To start interacting with one of the models, choose a chat source based on your available model data.")
-      }
-      .padding()
-      SourceTypeSelectionView(viewModel: viewModel)
-      Spacer()
-    }
+    content
     .padding(32)
   }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ChatSourceType: String, CaseIterable {
+enum ChatSourceType: String, CaseIterable, Codable {
   case llama = "llama"
   case alpaca = "alpaca"
 }

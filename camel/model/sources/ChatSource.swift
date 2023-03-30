@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ChatSource {
+class ChatSource: Codable {
   let name: String
   let type: ChatSourceType
   let modelURL: URL
