@@ -11,7 +11,6 @@ import Combine
 class StaticMessage: Message {
   let id = UUID()
   let content: String
-  let contentDidChange = PassthroughSubject<Void, Never>()
   let sender: Sender
 
   init(content: String, sender: Sender) {

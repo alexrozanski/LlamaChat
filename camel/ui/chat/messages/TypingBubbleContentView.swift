@@ -25,7 +25,7 @@ struct CircleView: View {
   }
 }
 
-struct TypingBubbleView: View {
+struct TypingBubbleContentView: View {
   @State var scale = Double(1.0)
 
   var body: some View {
@@ -36,13 +36,13 @@ struct TypingBubbleView: View {
     }
     .padding(.vertical, 12)
     .padding(.horizontal, 12)
-    .background(.gray.opacity(0.2))
+//    .background(.gray.opacity(0.2))
     .cornerRadius(20)
-    .scaleEffect(scale)
-    .onAppear {
-      withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
-        scale = 0.96
-      }
-    }
+//    .scaleEffect(scale)
+//    .onAppear {
+//      withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
+//        scale = 0.96
+//      }
+//    }
   }
 }

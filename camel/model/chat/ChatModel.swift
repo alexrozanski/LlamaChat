@@ -27,27 +27,49 @@ class ChatModel: ObservableObject {
   @Published var messages = [Message]()
   @Published var replyState: ReplyState = .none
 
+  private var currentPredictionCancellable: PredictionCancellable?
+
   init(source: ChatSource) {
     self.source = source
   }
 
-  func append(message: StaticMessage) {
+  func send(message: StaticMessage) {
     messages.append(message)
 
-    if (message.isMe) {
-      let newMessage = StreamedMessage(sender: .other)
-      messages.append(newMessage)
-      predictResponse(to: message.content, with: newMessage)
+    if (message.sender.isMe) {
+      predictResponse(to: message.content)
     }
   }
 
-  private func predictResponse(to content: String, with message: StreamedMessage) {
-    do {
-      replyState = .waitingToRespond
-      _ = session.predict(with: content, receiveToken: { token in
+  private func predictResponse(to content: String) {
+    replyState = .waitingToRespond
+
+    let message = GeneratedMessage(sender: .other)
+    messages.append(message)
+
+    let cancellable = session.predict(
+      with: content,
+      tokenHandler: { token in
         self.replyState = .responding
         message.append(contents: token)
-      }, on: .main)
-    }
+      },
+      stateChangeHandler: { newState in
+        switch newState {
+        case .notStarted:
+          message.updateState(.waiting)
+        case .predicting:
+          message.updateState(.generating)
+        case .cancelled:
+          message.updateState(.cancelled)
+        case .finished:
+          message.updateState(.finished)
+        case .error(let error):
+          message.updateState(.error(error))
+        }
+      },
+      handlerQueue: .main
+    )
+
+    message.cancellationHandler = { cancellable.cancel() }
   }
 }

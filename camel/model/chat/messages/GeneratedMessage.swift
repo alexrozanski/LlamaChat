@@ -1,5 +1,5 @@
 //
-//  StreamedMessage.swift
+//  GeneratedMessage.swift
 //  Camel
 //
 //  Created by Alex Rozanski on 31/03/2023.
@@ -8,7 +8,9 @@
 import Foundation
 import Combine
 
-class StreamedMessage: Message {
+class GeneratedMessage: ObservableObject, Message {
+  typealias CancellationHandler = () -> Void
+
   let id = UUID()
   private(set) var content: String = "" {
     didSet {
@@ -17,6 +19,10 @@ class StreamedMessage: Message {
   }
   let contentDidChange = PassthroughSubject<Void, Never>()
   let sender: Sender
+
+  @Published private(set) var state: MessageGenerationState = .none
+
+  var cancellationHandler: CancellationHandler?
 
   init(sender: Sender) {
     self.sender = sender
@@ -28,6 +34,14 @@ class StreamedMessage: Message {
     } else {
       self.content += contents
     }
+  }
+
+  func updateState(_ state: MessageGenerationState) {
+    self.state = state
+  }
+
+  func cancelGeneration() {
+    cancellationHandler?()
   }
 }
 

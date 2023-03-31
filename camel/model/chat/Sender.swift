@@ -10,4 +10,11 @@ import Foundation
 enum Sender {
   case me
   case other
+
+  var isMe: Bool {
+    switch self {
+    case .me: return true
+    case .other: return false
+    }
+  }
 }
