@@ -38,6 +38,7 @@
 		82914CA329D5DB4900858B2C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82914CA229D5DB4900858B2C /* MainMenu.xib */; };
 		82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CBF29D5EB7A00858B2C /* FileUtils.swift */; };
 		82914CC229D5ED9200858B2C /* ChatSourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC129D5ED9200858B2C /* ChatSourcesViewModel.swift */; };
+		82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC429D6E69C00858B2C /* BorderlessTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		82914CA229D5DB4900858B2C /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		82914CBF29D5EB7A00858B2C /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
 		82914CC129D5ED9200858B2C /* ChatSourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSourcesViewModel.swift; sourceTree = "<group>"; };
+		82914CC429D6E69C00858B2C /* BorderlessTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 		82718CF129D368C200545C32 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				82914CC329D6E68900858B2C /* components */,
 				8255EA4729D58A0C000B9F83 /* chat */,
 				8255EA4829D58A1D000B9F83 /* setup */,
 			);
@@ -243,6 +246,14 @@
 				82914CBF29D5EB7A00858B2C /* FileUtils.swift */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		82914CC329D6E68900858B2C /* components */ = {
+			isa = PBXGroup;
+			children = (
+				82914CC429D6E69C00858B2C /* BorderlessTextField.swift */,
+			);
+			path = components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,6 +336,7 @@
 				8255EA6129D599AB000B9F83 /* ConfigureLlamaSourceViewModel.swift in Sources */,
 				82718D0829D368EA00545C32 /* MessageView.swift in Sources */,
 				82718D0429D368EA00545C32 /* MessagesView.swift in Sources */,
+				82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */,
 				82718D0629D368EA00545C32 /* ChatView.swift in Sources */,
 				82718D0729D368EA00545C32 /* ComposeView.swift in Sources */,
 				8255EA6329D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift in Sources */,

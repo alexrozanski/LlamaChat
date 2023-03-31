@@ -7,22 +7,6 @@
 
 import SwiftUI
 
-struct RoundedTextFieldStyle: TextFieldStyle {
-  func _body(configuration: TextField<Self._Label>) -> some View {
-    configuration
-      .padding(.horizontal, 12)
-      .padding(.vertical, 4)
-      .background(
-        RoundedRectangle(cornerRadius: 15)
-          .fill(.white)
-          .overlay {
-            RoundedRectangle(cornerRadius: 15)
-              .stroke(.gray)
-          }
-      )
-  }
-}
-
 struct ComposeView: View {
   @ObservedObject var viewModel: ComposeViewModel
 
@@ -30,9 +14,18 @@ struct ComposeView: View {
 
   var body: some View {
     HStack {
-      TextField("Chat here...", text: $viewModel.text, axis: .vertical)
-        .textFieldStyle(RoundedTextFieldStyle())
+      BorderlessTextField("Chat here...", text: $viewModel.text)
         .focused($isFocused)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 4)
+        .background(
+          RoundedRectangle(cornerRadius: 15)
+            .fill(.white)
+            .overlay {
+              RoundedRectangle(cornerRadius: 15)
+                .stroke(Color(NSColor.separatorColor.cgColor))
+            }
+        )
       Button(action: {
         viewModel.send(message: viewModel.text)
       }, label: {
