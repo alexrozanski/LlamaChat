@@ -11,7 +11,7 @@ import Combine
 class MessageViewModel: ObservableObject {
   var id: UUID { message.id }
 
-  private let message: Message
+  private let message: any Message
 
   @Published var content: String = ""
 
@@ -26,11 +26,11 @@ class MessageViewModel: ObservableObject {
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(message: Message) {
+  init(message: any Message) {
     self.message = message
-    content = message.content.value
-    message.content.sink(receiveCompletion: { _ in }, receiveValue: { content in
-      self.content = content
+    content = message.content
+    message.contentDidChange.sink(receiveValue: {
+      self.content = message.content
     }).store(in: &subscriptions)
   }
 }

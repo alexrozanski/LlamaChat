@@ -19,6 +19,5 @@ class ComposeViewModel: ObservableObject {
   func send(message: String) {
     chatModel.append(message: StaticMessage(content: message, sender: .me))
     text = ""
-    chatModel.append(message: StaticMessage(content: "This is a reply", sender: .other))
   }
 }

@@ -8,13 +8,14 @@
 import Foundation
 import Combine
 
-struct StaticMessage: Message {
+class StaticMessage: Message {
   let id = UUID()
-  let content: CurrentValueSubject<String, Error>
+  let content: String
+  let contentDidChange = PassthroughSubject<Void, Never>()
   let sender: Sender
 
   init(content: String, sender: Sender) {
-    self.content = CurrentValueSubject(content)
+    self.content = content
     self.sender = sender
   }
 }

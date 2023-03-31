@@ -43,6 +43,7 @@
 		82914CCA29D76A2F00858B2C /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC929D76A2F00858B2C /* Sender.swift */; };
 		82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CCB29D76ABE00858B2C /* StaticMessage.swift */; };
 		82914CCE29D76C0600858B2C /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CCD29D76C0600858B2C /* MessageViewModel.swift */; };
+		82914CD029D76F6300858B2C /* StreamedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CCF29D76F6300858B2C /* StreamedMessage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +84,7 @@
 		82914CC929D76A2F00858B2C /* Sender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sender.swift; sourceTree = "<group>"; };
 		82914CCB29D76ABE00858B2C /* StaticMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticMessage.swift; sourceTree = "<group>"; };
 		82914CCD29D76C0600858B2C /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
+		82914CCF29D76F6300858B2C /* StreamedMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamedMessage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,6 +274,7 @@
 			children = (
 				82718CED29D3689B00545C32 /* Message.swift */,
 				82914CCB29D76ABE00858B2C /* StaticMessage.swift */,
+				82914CCF29D76F6300858B2C /* StreamedMessage.swift */,
 			);
 			path = messages;
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */,
 				828164CE29D5D3A3007AE984 /* AddSourceSuccessView.swift in Sources */,
 				8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */,
+				82914CD029D76F6300858B2C /* StreamedMessage.swift in Sources */,
 				8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */,
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
 				82718CDE29D3686200545C32 /* AppDelegate.swift in Sources */,
@@ -515,7 +519,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Camel/Preview Content\"";
 				DEVELOPMENT_TEAM = 44847G58BM;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -543,7 +547,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Camel/Preview Content\"";
 				DEVELOPMENT_TEAM = 44847G58BM;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";

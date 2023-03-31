@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MessageBubbleView: View {
-  var viewModel: MessageViewModel
+  @ObservedObject var viewModel: MessageViewModel
 
   var body: some View {
     Text(viewModel.content)

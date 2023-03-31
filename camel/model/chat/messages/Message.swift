@@ -11,5 +11,6 @@ import Combine
 protocol Message {
   var id: UUID { get }
   var sender: Sender { get }
-  var content: CurrentValueSubject<String, Error> { get }
+  var content: String { get }
+  var contentDidChange: PassthroughSubject<Void, Never> { get }
 }
