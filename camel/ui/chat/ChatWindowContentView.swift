@@ -8,17 +8,15 @@
 import SwiftUI
 
 struct ChatWindowContentView: View {
-  var chatModel: ChatModel
   @StateObject var viewModel: ChatViewModel
 
-  init(chatModel: ChatModel) {
-    self.chatModel = chatModel
-    _viewModel = StateObject(wrappedValue: ChatViewModel(chatModel: chatModel))
+  init(chatModel: ChatModel, chatSources: ChatSources) {
+    _viewModel = StateObject(wrappedValue: ChatViewModel(chatModel: chatModel, chatSources: chatSources))
   }
 
   var body: some View {
     NavigationView {
-      ChatListView()
+      ChatListView(viewModel: viewModel.chatSourcesViewModel)
       ChatView(viewModel: viewModel)
     }
   }

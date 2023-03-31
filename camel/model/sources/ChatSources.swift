@@ -19,8 +19,6 @@ class ChatSources: ObservableObject {
       let jsonEncoder = JSONEncoder()
       let json = try? jsonEncoder.encode(Payload(sources: sources))
       try? json?.write(to: persistedURL)
-
-      print(persistedURL)
     }
   }
 

@@ -8,7 +8,17 @@
 import SwiftUI
 
 struct ChatListView: View {
+  @ObservedObject var viewModel: ChatSourcesViewModel
+
   var body: some View {
-    VStack {}
+    ScrollView {
+      VStack {
+        ForEach(viewModel.sources, id: \.title) { source in
+          Text(source.title)
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+      }
+    }
   }
 }

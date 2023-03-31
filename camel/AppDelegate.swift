@@ -21,16 +21,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.styleMask = [.titled, .closable, .miniaturizable]
     window.setContentSize(NSSize(width: 600, height: 400))
     let windowController = NSWindowController(window: window)
+    windowController.windowFrameAutosaveName = "setup"
     return windowController
   }()
 
   private lazy var chatWindowController: NSWindowController = {
-    let hostingController = NSHostingController(rootView: ChatWindowContentView(chatModel: chatModel))
+    let hostingController = NSHostingController(rootView: ChatWindowContentView(chatModel: chatModel, chatSources: chatSources))
     let window = NSWindow(contentViewController: hostingController)
     window.title = "Chat"
     window.styleMask = [.titled, .closable, .resizable, .miniaturizable, .fullSizeContentView]
     window.setContentSize(NSSize(width: 600, height: 400))
     let windowController = NSWindowController(window: window)
+    windowController.windowFrameAutosaveName = "chat"
     return windowController
   }()
 
