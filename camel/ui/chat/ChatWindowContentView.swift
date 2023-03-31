@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct ChatWindowContentView: View {
-  @StateObject var viewModel: ChatViewModel
+  @StateObject var viewModel: ChatSourcesViewModel
 
-  init(chatModel: ChatModel, chatSources: ChatSources) {
-    _viewModel = StateObject(wrappedValue: ChatViewModel(chatModel: chatModel, chatSources: chatSources))
-  }
+  @State var selection: String?
 
   var body: some View {
     NavigationView {
-      ChatListView(viewModel: viewModel.chatSourcesViewModel)
-      ChatView(viewModel: viewModel)
+      List(viewModel.sources, id: \.id) { source in
+        NavigationLink(destination: ChatView(viewModel: source.makeChatViewModel()), tag: source.id, selection: $selection) {
+          Text(source.title)
+        }
+      }
+      .listStyle(SidebarListStyle())
+      .onAppear {
+        selection = viewModel.sources.first?.id
+      }
     }
   }
 }

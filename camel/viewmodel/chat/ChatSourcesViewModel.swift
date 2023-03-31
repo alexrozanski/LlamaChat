@@ -9,10 +9,17 @@ import Foundation
 import Combine
 
 class ChatSourceViewModel: ObservableObject {
-  let title: String
+  private let chatSource: ChatSource
 
-  fileprivate init(title: String) {
-    self.title = title
+  var id: String { chatSource.id }
+  var title: String { chatSource.name }
+
+  fileprivate init(chatSource: ChatSource) {
+    self.chatSource = chatSource
+  }
+
+  func makeChatViewModel() -> ChatViewModel {
+    return ChatViewModel(chatSource: chatSource)
   }
 }
 
@@ -24,9 +31,9 @@ class ChatSourcesViewModel: ObservableObject {
 
   init(chatSources: ChatSources) {
     self.chatSources = chatSources
-    self.sources = chatSources.sources.map { ChatSourceViewModel(title: $0.name) }
+    self.sources = chatSources.sources.map { ChatSourceViewModel(chatSource: $0) }
     chatSources.$sources.sink(receiveValue: { newSources in
-      self.sources = newSources.map { ChatSourceViewModel(title: $0.name) }
+      self.sources = newSources.map { ChatSourceViewModel(chatSource: $0) }
     }).store(in: &subscriptions)
   }
 }

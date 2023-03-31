@@ -10,7 +10,6 @@ import SwiftUI
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-  private lazy var chatModel = ChatModel()
   private lazy var chatSources = ChatSources()
   private lazy var setupViewModel = SetupViewModel(chatSources: chatSources)
 
@@ -26,7 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }()
 
   private lazy var chatWindowController: NSWindowController = {
-    let hostingController = NSHostingController(rootView: ChatWindowContentView(chatModel: chatModel, chatSources: chatSources))
+    let hostingController = NSHostingController(rootView: ChatWindowContentView(viewModel: ChatSourcesViewModel(chatSources: self.chatSources)))
     let window = NSWindow(contentViewController: hostingController)
     window.title = "Chat"
     window.styleMask = [.titled, .closable, .resizable, .miniaturizable, .fullSizeContentView]
