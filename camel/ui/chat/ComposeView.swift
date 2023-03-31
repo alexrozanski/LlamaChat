@@ -13,12 +13,13 @@ struct ComposeView: View {
   @FocusState private var isFocused: Bool
 
   var body: some View {
-    let canSendMessage = !viewModel.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    let messageEmpty = viewModel.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     HStack(spacing: 4) {
       BorderlessTextField("Chat here...", text: $viewModel.text)
         .focused($isFocused)
+        .disabled(!viewModel.allowedToCompose)
         .padding(.vertical, 4)
-      if canSendMessage {
+      if !messageEmpty {
         Button(action: {
           viewModel.send(message: viewModel.text)
         }, label: {
@@ -46,6 +47,11 @@ struct ComposeView: View {
     .padding()
     .onAppear {
       isFocused = true
+    }
+    .onChange(of: viewModel.allowedToCompose) { newValue in
+      if newValue {
+        isFocused = true
+      }
     }
   }
 }

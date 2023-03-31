@@ -46,5 +46,6 @@ struct BorderlessTextField: NSViewRepresentable {
 
   func updateNSView(_ nsView: NSTextField, context: Context) {
     nsView.stringValue = text
+    nsView.placeholderString = placeholder
   }
 }

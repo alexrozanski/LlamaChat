@@ -18,7 +18,14 @@ class ChatModel: ObservableObject {
     })
   }()
 
+  enum ReplyState {
+    case none
+    case waitingToRespond
+    case responding
+  }
+
   @Published var messages = [Message]()
+  @Published var replyState: ReplyState = .none
 
   init(source: ChatSource) {
     self.source = source
@@ -38,7 +45,10 @@ class ChatModel: ObservableObject {
 
   @MainActor private func predictResponse(to content: String, with message: StreamedMessage) async {
     do {
+      replyState = .waitingToRespond
+      defer { replyState = .none }
       for try await token in session.predict(with: content) {
+        replyState = .responding
         message.append(contents: token)
       }
     } catch {
