@@ -14,8 +14,8 @@ struct MessagesView: View {
     GeometryReader { geometry in
       ScrollView(.vertical) {
         VStack {
-          ForEach(viewModel.messages, id: \.id) { message in
-            MessageView(message: message)
+          ForEach(viewModel.messages, id: \.id) { messageViewModel in
+            MessageBubbleView(viewModel: messageViewModel)
           }
         }
         .frame(maxWidth: .infinity)

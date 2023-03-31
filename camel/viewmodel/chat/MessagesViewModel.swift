@@ -11,8 +11,8 @@ import Combine
 class MessagesViewModel: ObservableObject {
   private let chatModel: ChatModel
 
-  var messages: [Message] {
-    return chatModel.messages
+  var messages: [MessageViewModel] {
+    return chatModel.messages.map { MessageViewModel(message: $0) }
   }
 
   private var subscriptions = Set<AnyCancellable>()
