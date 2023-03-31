@@ -22,7 +22,17 @@ class StreamedMessage: Message {
     self.sender = sender
   }
 
-  func append(content: String) {
-    self.content += content
+  func append(contents: String) {
+    if self.content.isEmpty {
+      self.content = contents.trimmingCharactersInCharacterSetFromPrefix(.whitespacesAndNewlines)
+    } else {
+      self.content += contents
+    }
+  }
+}
+
+private extension String {
+  func trimmingCharactersInCharacterSetFromPrefix(_ characterSet: CharacterSet) -> String {
+    return String(trimmingPrefix(while: { character in character.unicodeScalars.allSatisfy { scalar in characterSet.contains(scalar) } }))
   }
 }

@@ -39,7 +39,7 @@ class ChatModel: ObservableObject {
   @MainActor private func predictResponse(to content: String, with message: StreamedMessage) async {
     do {
       for try await token in session.predict(with: content) {
-        message.append(content: token)
+        message.append(contents: token)
       }
     } catch {
       print(error)

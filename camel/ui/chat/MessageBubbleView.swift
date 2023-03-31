@@ -10,13 +10,27 @@ import SwiftUI
 struct MessageBubbleView: View {
   @ObservedObject var viewModel: MessageViewModel
 
-  var body: some View {
+  let maxWidth: Double?
+
+  @ViewBuilder var bubble: some View {
     Text(viewModel.content)
       .padding(8)
       .background(viewModel.isMe ? .blue : .gray.opacity(0.2))
       .foregroundColor(viewModel.isMe ? .white : .black)
       .cornerRadius(8)
-      .frame(maxWidth: .infinity, alignment: viewModel.isMe ? .trailing : .leading)
+  }
+
+  var body: some View {
+    HStack(spacing: 0) {
+      if viewModel.isMe {
+        Spacer()
+      }
+      bubble
+        .frame(maxWidth: maxWidth ?? .infinity, alignment: viewModel.isMe ? .trailing : .leading)
+      if !viewModel.isMe {
+        Spacer()
+      }
+    }
   }
 }
 

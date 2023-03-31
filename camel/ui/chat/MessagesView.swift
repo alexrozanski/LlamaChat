@@ -15,7 +15,7 @@ struct MessagesView: View {
       ScrollView(.vertical) {
         VStack {
           ForEach(viewModel.messages, id: \.id) { messageViewModel in
-            MessageBubbleView(viewModel: messageViewModel)
+            MessageBubbleView(viewModel: messageViewModel, maxWidth: geometry.size.width * 0.8)
           }
         }
         .frame(maxWidth: .infinity)
