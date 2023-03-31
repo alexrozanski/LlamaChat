@@ -37,22 +37,17 @@ class ChatModel: ObservableObject {
     if (message.isMe) {
       let newMessage = StreamedMessage(sender: .other)
       messages.append(newMessage)
-      Task {
-        await predictResponse(to: message.content, with: newMessage)
-      }
+      predictResponse(to: message.content, with: newMessage)
     }
   }
 
-  @MainActor private func predictResponse(to content: String, with message: StreamedMessage) async {
+  private func predictResponse(to content: String, with message: StreamedMessage) {
     do {
       replyState = .waitingToRespond
-      defer { replyState = .none }
-      for try await token in session.predict(with: content) {
-        replyState = .responding
+      _ = session.predict(with: content, receiveToken: { token in
+        self.replyState = .responding
         message.append(contents: token)
-      }
-    } catch {
-      print(error)
+      }, on: .main)
     }
   }
 }
