@@ -50,9 +50,16 @@ class ChatModel: ObservableObject {
     let message = GeneratedMessage(sender: .other)
     messages.append(message)
 
+    var hasReceivedTokens = false
     let cancellable = session.predict(
       with: content,
       tokenHandler: { token in
+        if !hasReceivedTokens {
+          message.updateState(.generating)
+          self.replyState = .responding
+          hasReceivedTokens = true
+        }
+
         message.append(contents: token)
       },
       stateChangeHandler: { newState in
@@ -60,8 +67,9 @@ class ChatModel: ObservableObject {
         case .notStarted:
           message.updateState(.waiting)
         case .predicting:
-          message.updateState(.generating)
-          self.replyState = .responding
+          // Handle this in the tokenHandler so that we are marked as waiting until
+          // we start actually receving tokens.
+          break
         case .cancelled:
           message.updateState(.cancelled)
           self.replyState = .none
