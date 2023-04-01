@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ChatSource: Codable {
+class ChatSource: Codable, Equatable {
   let id: String
   let name: String
   let type: ChatSourceType
@@ -18,5 +18,9 @@ class ChatSource: Codable {
     self.name = name
     self.type = type
     self.modelURL = modelURL
+  }
+
+  static func == (lhs: ChatSource, rhs: ChatSource) -> Bool {
+    return lhs.id == rhs.id
   }
 }
