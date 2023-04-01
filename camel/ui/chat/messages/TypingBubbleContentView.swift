@@ -15,7 +15,7 @@ struct CircleView: View {
   var body: some View {
     Circle()
       .fill(.black)
-      .frame(width: 10, height: 10)
+      .frame(width: 8, height: 8)
       .opacity(opacity)
       .onAppear {
         withAnimation(.easeInOut(duration: 0.55).repeatForever(autoreverses: true).delay(startDelay)) {
@@ -26,23 +26,13 @@ struct CircleView: View {
 }
 
 struct TypingBubbleContentView: View {
-  @State var scale = Double(1.0)
-
   var body: some View {
     HStack(spacing: 2) {
       CircleView(startDelay: 0)
       CircleView(startDelay: 0.33)
       CircleView(startDelay: 0.66)
     }
-    .padding(.vertical, 12)
-    .padding(.horizontal, 12)
-//    .background(.gray.opacity(0.2))
-    .cornerRadius(20)
-//    .scaleEffect(scale)
-//    .onAppear {
-//      withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
-//        scale = 0.96
-//      }
-//    }
+    .padding(.vertical, 10)
+    .padding(.horizontal, 10)
   }
 }

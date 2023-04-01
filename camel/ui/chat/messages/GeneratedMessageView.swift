@@ -22,7 +22,7 @@ struct GeneratedMessageView: View {
         }
         .buttonStyle(BorderlessButtonStyle())
       }
-      MessageBubbleView(sender: viewModel.sender) {
+      MessageBubbleView(sender: viewModel.sender, style: viewModel.state.isWaiting ? .typing: .regular) {
         switch viewModel.state {
         case .none:
           EmptyView()

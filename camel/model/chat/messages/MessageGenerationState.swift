@@ -14,4 +14,13 @@ enum MessageGenerationState {
   case cancelled
   case finished
   case error(Error)
+
+  var isWaiting: Bool {
+    switch self {
+    case .none, .generating, .finished, .cancelled, .error:
+      return false
+    case .waiting:
+      return true
+    }
+  }
 }
