@@ -19,7 +19,7 @@ struct SourcesSettingsView: View {
   }
 
   var body: some View {
-    HStack(spacing: 12) {
+    HStack(spacing: 0) {
       SourcesSettingsListView(viewModel: viewModel)
         .overlay {
           SheetPresentingView(viewModel: viewModel.activeSheetViewModel) { viewModel in
@@ -30,10 +30,10 @@ struct SourcesSettingsView: View {
             }
           }
         }
+        .padding([.top, .leading, .bottom])
         .frame(width: 200)
       detailView
         .frame(maxWidth: .infinity)
     }
-    .padding()
   }
 }

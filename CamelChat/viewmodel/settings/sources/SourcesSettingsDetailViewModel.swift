@@ -5,7 +5,7 @@
 //  Created by Alex Rozanski on 01/04/2023.
 //
 
-import Foundation
+import AppKit
 import Combine
 
 class SourcesSettingsDetailViewModel: ObservableObject {
@@ -13,6 +13,14 @@ class SourcesSettingsDetailViewModel: ObservableObject {
 
   var modelPath: String
 
+  var type: String {
+    switch source.type {
+    case .llama:
+      return "LLaMa model"
+    case .alpaca:
+      return "Alpaca model"
+    }
+  }
   @Published private(set) var name: String
 
   private var subscriptions = Set<AnyCancellable>()
@@ -28,5 +36,9 @@ class SourcesSettingsDetailViewModel: ObservableObject {
 
   func updateName(_ newName: String) {
     source.name = newName
+  }
+
+  func showModelInFinder() {
+    NSWorkspace.shared.activateFileViewerSelecting([source.modelURL])
   }
 }

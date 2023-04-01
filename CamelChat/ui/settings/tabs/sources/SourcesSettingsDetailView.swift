@@ -31,15 +31,27 @@ struct SourcesSettingsDetailView: View {
   var viewModel: SourcesSettingsDetailViewModel
 
   var body: some View {
-    let modelPathBinding = Binding(
-      get: { viewModel.modelPath },
-      set: { _ in }
-    )
     Form {
       NameRowView(viewModel: viewModel)
-      TextField("Model path", text: modelPathBinding)
-        .textFieldStyle(SquareBorderTextFieldStyle())
-        .disabled(true)
+      LabeledContent("Model type", value: viewModel.type)
+      LabeledContent("Model path") {
+        HStack {
+          Text(viewModel.modelPath)
+            .font(.system(size: 11))
+            .lineLimit(1)
+            .help(viewModel.modelPath)
+          Menu(content: {
+            Button("Show in Finder...") {
+              viewModel.showModelInFinder()
+            }
+          }, label: {
+            Image(systemName: "ellipsis.circle")
+          })
+          .buttonStyle(.borderless)
+          .menuIndicator(.hidden)
+          Spacer()
+        }
+      }
     }
     .formStyle(GroupedFormStyle())
   }
