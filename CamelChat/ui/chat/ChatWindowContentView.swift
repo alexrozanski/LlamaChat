@@ -7,8 +7,16 @@
 
 import SwiftUI
 
+struct ChatWindowSourceItemView: View {
+  @ObservedObject var viewModel: ChatSourceViewModel
+
+  var body: some View {
+    Text(viewModel.title)
+  }
+}
+
 struct ChatWindowContentView: View {
-  @StateObject var viewModel: ChatSourcesViewModel
+  @ObservedObject var viewModel: ChatSourcesViewModel
 
   @State var selection: String?
 
@@ -16,7 +24,7 @@ struct ChatWindowContentView: View {
     NavigationView {
       List(viewModel.sources, id: \.id) { source in
         NavigationLink(destination: ChatView(viewModel: source.makeChatViewModel()), tag: source.id, selection: $selection) {
-          Text(source.title)
+          ChatWindowSourceItemView(viewModel: source)
         }
       }
       .listStyle(SidebarListStyle())

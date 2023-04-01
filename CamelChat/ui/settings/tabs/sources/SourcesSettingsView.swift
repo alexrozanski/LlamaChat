@@ -11,8 +11,8 @@ struct SourcesSettingsView: View {
   @ObservedObject var viewModel: SourcesSettingsViewModel
 
   @ViewBuilder var detailView: some View {
-    if let selectedSource = viewModel.selectedSource {
-      SourcesSettingsDetailView(source: selectedSource)
+    if let detailViewModel = viewModel.makeSelectedSourceDetailViewModel() {
+      SourcesSettingsDetailView(viewModel: detailViewModel)
     } else {
       Text("Select a source to configure its settings")
     }

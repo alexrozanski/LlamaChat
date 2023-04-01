@@ -12,10 +12,16 @@ class ChatSourceViewModel: ObservableObject {
   private let chatSource: ChatSource
 
   var id: String { chatSource.id }
-  var title: String { chatSource.name }
+  @Published var title: String
+
+  private var subscriptions = Set<AnyCancellable>()
 
   fileprivate init(chatSource: ChatSource) {
     self.chatSource = chatSource
+    self.title = chatSource.name
+    chatSource.$name.sink(receiveValue: { [weak self] newName in
+      self?.title = newName
+    }).store(in: &subscriptions)
   }
 
   func makeChatViewModel() -> ChatViewModel {

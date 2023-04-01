@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+struct SourcesSettingsSourceItemView: View {
+  @ObservedObject var viewModel: SourcesSettingsSourceItemViewModel
+
+  var body: some View {
+    Text(viewModel.title)
+  }
+}
+
 struct SourcesSettingsListView: View {
   @ObservedObject var viewModel: SourcesSettingsViewModel
 
@@ -53,7 +61,7 @@ struct SourcesSettingsListView: View {
     VStack(spacing: 0) {
       heading
       List(viewModel.sources, id: \.id, selection: selectionBinding) { source in
-        Text(source.name)
+        SourcesSettingsSourceItemView(viewModel: source)
       }
       .listStyle(PlainListStyle())
       // the selection background extends outside of the bounds of the List (presumably to cover its border)

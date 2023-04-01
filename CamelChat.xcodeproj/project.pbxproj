@@ -12,9 +12,10 @@
 		8227DA6E29D858B7000E554D /* AddSourceSheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */; };
 		8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7029D86256000E554D /* SourcesSettingsListView.swift */; };
 		8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7229D8626F000E554D /* SourcesSettingsDetailView.swift */; };
+		8227DA7829D86633000E554D /* SourcesSettingsDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7729D86633000E554D /* SourcesSettingsDetailViewModel.swift */; };
+		8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */; };
 		8255EA4529D589C9000B9F83 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8255EA4429D589C9000B9F83 /* llama */; };
 		8255EA4A29D58A40000B9F83 /* SetupWindowContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */; };
-		8255EA4C29D58AF4000B9F83 /* ChatSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4B29D58AF4000B9F83 /* ChatSource.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
 		8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5529D58C58000B9F83 /* ChatSourceType.swift */; };
@@ -68,8 +69,9 @@
 		8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceSheetContentView.swift; sourceTree = "<group>"; };
 		8227DA7029D86256000E554D /* SourcesSettingsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsListView.swift; sourceTree = "<group>"; };
 		8227DA7229D8626F000E554D /* SourcesSettingsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsDetailView.swift; sourceTree = "<group>"; };
+		8227DA7729D86633000E554D /* SourcesSettingsDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsDetailViewModel.swift; sourceTree = "<group>"; };
+		8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidEndEditingTextField.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWindowContentView.swift; sourceTree = "<group>"; };
-		8255EA4B29D58AF4000B9F83 /* ChatSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSource.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
 		8255EA5529D58C58000B9F83 /* ChatSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSourceType.swift; sourceTree = "<group>"; };
@@ -163,6 +165,15 @@
 			path = sources;
 			sourceTree = "<group>";
 		};
+		8227DA7929D86638000E554D /* sources */ = {
+			isa = PBXGroup;
+			children = (
+				82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */,
+				8227DA7729D86633000E554D /* SourcesSettingsDetailViewModel.swift */,
+			);
+			path = sources;
+			sourceTree = "<group>";
+		};
 		8255EA4729D58A0C000B9F83 /* chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,7 +196,6 @@
 		8255EA4D29D58B1C000B9F83 /* sources */ = {
 			isa = PBXGroup;
 			children = (
-				8255EA4B29D58AF4000B9F83 /* ChatSource.swift */,
 				8255EA4F29D58B2B000B9F83 /* ChatSources.swift */,
 				8255EA5529D58C58000B9F83 /* ChatSourceType.swift */,
 			);
@@ -317,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				82914CC429D6E69C00858B2C /* BorderlessTextField.swift */,
+				8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */,
 				8227DA6729D85827000E554D /* sheets */,
 			);
 			path = components;
@@ -394,7 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				82AE199729D83205008189DF /* SettingsWindowViewModel.swift */,
-				82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */,
+				8227DA7929D86638000E554D /* sources */,
 			);
 			path = settings;
 			sourceTree = "<group>";
@@ -499,12 +510,12 @@
 				82914CE429D7A13C00858B2C /* MessageViewModel.swift in Sources */,
 				82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */,
 				82718CFC29D368E500545C32 /* MessagesViewModel.swift in Sources */,
-				8255EA4C29D58AF4000B9F83 /* ChatSource.swift in Sources */,
 				82AE199029D7B07E008189DF /* SettingsWindowContentView.swift in Sources */,
 				8227DA6E29D858B7000E554D /* AddSourceSheetContentView.swift in Sources */,
 				82914CC229D5ED9200858B2C /* ChatSourcesViewModel.swift in Sources */,
 				8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */,
 				8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */,
+				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,
 				828164CA29D59A20007AE984 /* ConfigureLlamaSourceView.swift in Sources */,
 				82AE199229D7B216008189DF /* SettingsToolbar.swift in Sources */,
@@ -516,6 +527,7 @@
 				8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */,
 				82914CDA29D79DFD00858B2C /* StaticMessageViewModel.swift in Sources */,
 				8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */,
+				8227DA7829D86633000E554D /* SourcesSettingsDetailViewModel.swift in Sources */,
 				8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,
 				82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */,
