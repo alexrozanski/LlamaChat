@@ -35,10 +35,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSToolbarDelegate {
     return windowController
   }()
 
-  private lazy var settingsToolbarDelegate = SettingsToolbarDelegate()
+  private lazy var settingsToolbarModel = SettingsToolbarModel(toolbar: .settings)
+  private lazy var settingsWindowViewModel = SettingsWindowViewModel(model: settingsToolbarModel, chatSources: chatSources)
+  private lazy var settingsToolbarDelegate = SettingsToolbarDelegate(model: settingsToolbarModel)
 
   private lazy var settingsWindowController: NSWindowController = {
-    let hostingController = NSHostingController(rootView: SettingsWindowContentView())
+    let hostingController = NSHostingController(rootView: SettingsWindowContentView(viewModel: settingsWindowViewModel))
 
     // See https://github.com/billibala/SUIToolbarPlay/blob/master/SUIToolbarPlay/AppDelegate.swift#L21
     NSToolbar.settings.delegate = settingsToolbarDelegate

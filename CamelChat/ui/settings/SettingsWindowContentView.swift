@@ -8,8 +8,28 @@
 import SwiftUI
 
 struct SettingsWindowContentView: View {
+  @ObservedObject var viewModel: SettingsWindowViewModel
+
+  init(viewModel: SettingsWindowViewModel) {
+    self.viewModel = viewModel
+  }
+
+  @ViewBuilder var content: some View {
+    if let selectedTab = viewModel.selectedTab {
+      switch selectedTab {
+      case .sources:
+        SourcesSettingsView(viewModel: viewModel.sourcesSettingsViewModel)
+      }
+    } else {
+      EmptyView()
+    }
+  }
+
   var body: some View {
-      Text("Settings View")
-        .frame(width: 400, height: 200)
+      content
+        .frame(minWidth: 400, minHeight: 200)
+        .onAppear {
+          viewModel.select(tab: .sources)
+        }
   }
 }
