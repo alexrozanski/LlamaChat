@@ -8,6 +8,9 @@
 import Foundation
 
 class ConfigureLlamaSourceViewModel: ObservableObject, ConfigureSourceViewModel {
+  typealias AddSourceHandler = (ChatSource) -> Void
+  typealias GoBackHandler = () -> Void
+
   @Published var modelPath = "" {
     didSet {
       modelPathState = FileManager().fileExists(atPath: modelPath) ? .valid : .invalid
@@ -31,10 +34,12 @@ class ConfigureLlamaSourceViewModel: ObservableObject, ConfigureSourceViewModel 
 
   @Published private(set) var modelPathState: ModelPathState = .none
 
-  weak var setupViewModel: SetupViewModel?
+  private let addSourceHandler: AddSourceHandler
+  private let goBackHandler: GoBackHandler
 
-  init(setupViewModel: SetupViewModel) {
-    self.setupViewModel = setupViewModel
+  init(addSourceHandler: @escaping AddSourceHandler, goBackHandler: @escaping GoBackHandler) {
+    self.addSourceHandler = addSourceHandler
+    self.goBackHandler = goBackHandler
   }
 
   func validate() -> Bool {
@@ -42,12 +47,11 @@ class ConfigureLlamaSourceViewModel: ObservableObject, ConfigureSourceViewModel 
   }
 
   func goBack() {
-    setupViewModel?.goBack()
+    goBackHandler()
   }
 
   func addSource() {
     guard modelPathState.isValid else { return }
-
-    setupViewModel?.add(source: ChatSource(name: "LLaMa", type: .llama, modelURL: URL(fileURLWithPath: modelPath)))
+    addSourceHandler(ChatSource(name: "LLaMa", type: .llama, modelURL: URL(fileURLWithPath: modelPath)))
   }
 }

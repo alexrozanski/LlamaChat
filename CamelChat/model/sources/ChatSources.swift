@@ -34,6 +34,10 @@ class ChatSources: ObservableObject {
     sources.append(source)
   }
 
+  func remove(source: ChatSource) {
+    _ = sources.firstIndex(of: source).map { sources.remove(at: $0) }
+  }
+
   private func loadSources() {
     guard
       let persistedURL,

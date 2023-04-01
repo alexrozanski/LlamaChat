@@ -14,6 +14,8 @@ class SourcesSettingsViewModel: ObservableObject {
   @Published var sources: [ChatSource]
   @Published var selectedSource: ChatSource?
 
+  @Published var activeSheetViewModel: SheetViewModel?
+
   private var subscriptions = Set<AnyCancellable>()
 
   init(chatSources: ChatSources) {
@@ -22,5 +24,25 @@ class SourcesSettingsViewModel: ObservableObject {
     chatSources.$sources.sink(receiveValue: { sources in
       self.sources = sources
     }).store(in: &subscriptions)
+  }
+
+  func remove(_ source: ChatSource) {
+    chatSources.remove(source: source)
+  }
+
+  func showAddSourceSheet() {
+    activeSheetViewModel = AddSourceSheetViewModel(chatSources: chatSources, closeHandler: { [weak self] in
+      self?.activeSheetViewModel = nil
+    })
+  }
+
+  func showConfirmDeleteSourceSheet(for source: ChatSource) {
+    activeSheetViewModel = ConfirmDeleteSourceSheetViewModel(
+      chatSource: source,
+      chatSources: chatSources,
+      closeHandler: { [weak self] in
+        self?.activeSheetViewModel = nil
+      }
+    )
   }
 }

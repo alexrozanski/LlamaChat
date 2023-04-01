@@ -8,6 +8,8 @@
 import Foundation
 
 class SelectSourceTypeViewModel: ObservableObject {
+  typealias SelectSourceHandler = (ChatSourceType) -> Void
+
   struct Source {
     let id: String
     let type: ChatSourceType
@@ -17,12 +19,12 @@ class SelectSourceTypeViewModel: ObservableObject {
 
   @Published var sources: [Source]
 
-  weak var setupViewModel: SetupViewModel?
-
   private let chatSources: ChatSources
-  init(chatSources: ChatSources, setupViewModel: SetupViewModel) {
+  private let selectSourceHandler: SelectSourceHandler
+
+  init(chatSources: ChatSources, selectSourceHandler: @escaping SelectSourceHandler) {
     self.chatSources = chatSources
-    self.setupViewModel = setupViewModel
+    self.selectSourceHandler = selectSourceHandler
 
     sources = ChatSourceType.allCases.map { type in
       switch type {
@@ -45,6 +47,6 @@ class SelectSourceTypeViewModel: ObservableObject {
   }
 
   func select(sourceType: ChatSourceType) {
-    setupViewModel?.configureSource(with: sourceType)
+    selectSourceHandler(sourceType)
   }
 }

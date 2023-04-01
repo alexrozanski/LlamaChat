@@ -17,13 +17,7 @@ struct SetupWindowContentView: View {
     case .selectingSource(viewModel: let viewModel):
       SelectSourceTypeView(viewModel: viewModel)
     case .configuringSource(viewModel: let viewModel):
-      if let viewModel = viewModel as? ConfigureLlamaSourceViewModel {
-        ConfigureLlamaSourceView(viewModel: viewModel)
-      } else if let viewModel = viewModel as? ConfigureAlpacaSourceViewModel {
-        ConfigureAlpacaSourceView(viewModel: viewModel)
-      } else {
-        EmptyView()
-      }
+      makeConfigureSourceView(for: viewModel)
     case .success:
       AddSourceSuccessView()
     }

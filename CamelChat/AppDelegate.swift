@@ -48,7 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSToolbarDelegate {
     let window = NSWindow(contentViewController: hostingController)
     window.title = "Settings"
     window.styleMask = [.titled, .closable, .resizable, .miniaturizable]
-    window.setContentSize(NSSize(width: 600, height: 400))
+    window.setContentSize(NSSize(width: 750, height: 500))
     window.toolbarStyle = .preference
     window.toolbar = .settings
 

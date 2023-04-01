@@ -30,19 +30,24 @@ struct ConfigureLlamaSourceView: View {
   @ObservedObject var viewModel: ConfigureLlamaSourceViewModel
 
   @ViewBuilder var pathSelector: some View {
-    HStack(alignment: .top) {
-      Text("Model Path")
-      ModelPathTextField(viewModel: viewModel)
-      Button(action: {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-        if panel.runModal() == .OK {
-          viewModel.modelPath = panel.url?.path ?? ""
-        }
-      }, label: {
-        Image(systemName: "ellipsis")
-      })
+    VStack(alignment: .leading) {
+      HStack(alignment: .top) {
+        Text("Model Path")
+        ModelPathTextField(viewModel: viewModel)
+        Button(action: {
+          let panel = NSOpenPanel()
+          panel.allowsMultipleSelection = false
+          panel.canChooseDirectories = false
+          if panel.runModal() == .OK {
+            viewModel.modelPath = panel.url?.path ?? ""
+          }
+        }, label: {
+          Image(systemName: "ellipsis")
+        })
+      }
+      Text("Select the quantized LLaMa model path. This should be called something like 'ggml-model-q4_0.bin'")
+        .font(.footnote)
+        .padding(.top, 8)
     }
     .padding(12)
     .mask(RoundedRectangle(cornerRadius: 6))
@@ -72,7 +77,6 @@ struct ConfigureLlamaSourceView: View {
       VStack(alignment: .leading, spacing: 12) {
         Text("Set up LLaMa")
           .font(.headline)
-        Text("Select the quantized LLaMa model path. This should be called something like 'ggml-model-q4_0.bin'")
       }
       .padding(.horizontal, 12)
       pathSelector

@@ -25,7 +25,7 @@ class SetupViewModel: ObservableObject {
   }
 
   func start() {
-    state = .selectingSource(viewModel: SelectSourceTypeViewModel(chatSources: chatSources, setupViewModel: self))
+    selectSource()
   }
 
   func goBack() {
@@ -33,15 +33,27 @@ class SetupViewModel: ObservableObject {
     case .none, .selectingSource(viewModel: _), .success:
       break
     case .configuringSource(viewModel: _):
-      state = .selectingSource(viewModel: SelectSourceTypeViewModel(chatSources: chatSources, setupViewModel: self))
+      selectSource()
     }
   }
 
-  func configureSource(with type: ChatSourceType) {
+  private func selectSource() {
+    state = .selectingSource(
+      viewModel: SelectSourceTypeViewModel(chatSources: chatSources, selectSourceHandler: { [weak self] sourceType in
+        self?.configureSource(with: sourceType)
+      })
+    )
+  }
+
+  private func configureSource(with type: ChatSourceType) {
     let viewModel: ConfigureSourceViewModel
     switch type {
     case .llama:
-      viewModel = ConfigureLlamaSourceViewModel(setupViewModel: self)
+      viewModel = ConfigureLlamaSourceViewModel(addSourceHandler: { [weak self] source in
+        self?.add(source: source)
+      }, goBackHandler: { [weak self] in
+        self?.goBack()
+      })
     case .alpaca:
       viewModel = ConfigureAlpacaSourceViewModel()
     }
