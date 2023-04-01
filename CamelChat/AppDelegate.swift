@@ -11,6 +11,9 @@ import SwiftUI
 @main
 class AppDelegate: NSObject, NSApplicationDelegate, NSToolbarDelegate {
   private lazy var chatSources = ChatSources()
+  private lazy var stateRestoration = StateRestoration()
+
+  private lazy var chatWindowContentViewModel = ChatWindowContentViewModel(chatSources: chatSources, stateRestoration: stateRestoration)
   private lazy var setupViewModel = SetupViewModel(chatSources: chatSources)
 
   private lazy var setupWindowController: NSWindowController = {
@@ -25,7 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSToolbarDelegate {
   }()
 
   private lazy var chatWindowController: NSWindowController = {
-    let hostingController = NSHostingController(rootView: ChatWindowContentView(viewModel: ChatSourcesViewModel(chatSources: self.chatSources)))
+    let hostingController = NSHostingController(rootView: ChatWindowContentView(viewModel: chatWindowContentViewModel))
     let window = NSWindow(contentViewController: hostingController)
     window.title = "Chat"
     window.styleMask = [.titled, .closable, .resizable, .miniaturizable, .fullSizeContentView]

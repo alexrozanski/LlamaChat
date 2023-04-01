@@ -17,6 +17,8 @@
 		8227DA7F29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7E29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift */; };
 		8227DA8129D88228000E554D /* ConfigureLocalModelSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA8029D88228000E554D /* ConfigureLocalModelSourceView.swift */; };
 		8227DA8B29D8C88D000E554D /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DA8A29D8C88D000E554D /* llama */; };
+		8227DA8D29D8D7E9000E554D /* ChatWindowContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA8C29D8D7E9000E554D /* ChatWindowContentViewModel.swift */; };
+		8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA8F29D8D8D9000E554D /* StateRestoration.swift */; };
 		8255EA4A29D58A40000B9F83 /* SetupWindowContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
@@ -73,6 +75,8 @@
 		8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidEndEditingTextField.swift; sourceTree = "<group>"; };
 		8227DA7E29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSourceViewModel.swift; sourceTree = "<group>"; };
 		8227DA8029D88228000E554D /* ConfigureLocalModelSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSourceView.swift; sourceTree = "<group>"; };
+		8227DA8C29D8D7E9000E554D /* ChatWindowContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatWindowContentViewModel.swift; sourceTree = "<group>"; };
+		8227DA8F29D8D8D9000E554D /* StateRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateRestoration.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWindowContentView.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
@@ -174,6 +178,14 @@
 			path = sources;
 			sourceTree = "<group>";
 		};
+		8227DA8E29D8D8CF000E554D /* restoration */ = {
+			isa = PBXGroup;
+			children = (
+				8227DA8F29D8D8D9000E554D /* StateRestoration.swift */,
+			);
+			path = restoration;
+			sourceTree = "<group>";
+		};
 		8255EA4729D58A0C000B9F83 /* chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +229,7 @@
 			children = (
 				82914CC129D5ED9200858B2C /* ChatSourcesViewModel.swift */,
 				82718CFB29D368E500545C32 /* ChatViewModel.swift */,
+				8227DA8C29D8D7E9000E554D /* ChatWindowContentViewModel.swift */,
 				82914CDE29D7A01900858B2C /* composer */,
 				82914CDD29D7A00A00858B2C /* messages */,
 			);
@@ -297,6 +310,7 @@
 			children = (
 				82914CC329D6E68900858B2C /* components */,
 				8255EA4729D58A0C000B9F83 /* chat */,
+				8227DA8E29D8D8CF000E554D /* restoration */,
 				8255EA4829D58A1D000B9F83 /* setup */,
 				8227DA6629D857F5000E554D /* sources */,
 				82AE198E29D7B072008189DF /* settings */,
@@ -515,6 +529,7 @@
 				82914CC229D5ED9200858B2C /* ChatSourcesViewModel.swift in Sources */,
 				8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */,
 				8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */,
+				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
 				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,
 				82AE199229D7B216008189DF /* SettingsToolbar.swift in Sources */,
@@ -526,6 +541,7 @@
 				8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */,
 				82914CDA29D79DFD00858B2C /* StaticMessageViewModel.swift in Sources */,
 				8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */,
+				8227DA8D29D8D7E9000E554D /* ChatWindowContentViewModel.swift in Sources */,
 				8227DA7829D86633000E554D /* SourcesSettingsDetailViewModel.swift in Sources */,
 				8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,
