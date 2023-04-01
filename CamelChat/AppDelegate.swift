@@ -9,7 +9,7 @@ import Cocoa
 import SwiftUI
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSToolbarDelegate {
   private lazy var chatSources = ChatSources()
   private lazy var setupViewModel = SetupViewModel(chatSources: chatSources)
 
@@ -35,6 +35,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     return windowController
   }()
 
+  private lazy var settingsToolbarDelegate = SettingsToolbarDelegate()
+
+  private lazy var settingsWindowController: NSWindowController = {
+    let hostingController = NSHostingController(rootView: SettingsWindowContentView())
+
+    // See https://github.com/billibala/SUIToolbarPlay/blob/master/SUIToolbarPlay/AppDelegate.swift#L21
+    NSToolbar.settings.delegate = settingsToolbarDelegate
+
+    let window = NSWindow(contentViewController: hostingController)
+    window.title = "Settings"
+    window.styleMask = [.titled, .closable, .resizable, .miniaturizable]
+    window.setContentSize(NSSize(width: 600, height: 400))
+    window.toolbarStyle = .preference
+    window.toolbar = .settings
+
+    let windowController = NSWindowController(window: window)
+    windowController.windowFrameAutosaveName = "settings"
+
+    return windowController
+  }()
+
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     if chatSources.sources.isEmpty {
       showSetupWindow()
@@ -50,5 +71,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   private func showChatWindow() {
     chatWindowController.showWindow(self)
+  }
+
+  @IBAction func showSettingsWindow(_ sender: Any) {
+    settingsWindowController.showWindow(self)
   }
 }
