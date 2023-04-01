@@ -13,7 +13,7 @@ class ChatModel: ObservableObject {
   private let source: ChatSource
 
   private lazy var session: Session = {
-    return Inference(config: .default).makeLlamaSession(with: source.modelURL, config: LlamaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
+    return Inference(config: .default).makeLlamaSession(with: source.modelURL, config: LlamaSessionConfig(numTokens: 10), stateChangeHandler: { _ in })
   }()
 
   enum ReplyState {
@@ -48,7 +48,6 @@ class ChatModel: ObservableObject {
     let cancellable = session.predict(
       with: content,
       tokenHandler: { token in
-        self.replyState = .responding
         message.append(contents: token)
       },
       stateChangeHandler: { newState in
@@ -57,12 +56,16 @@ class ChatModel: ObservableObject {
           message.updateState(.waiting)
         case .predicting:
           message.updateState(.generating)
+          self.replyState = .responding
         case .cancelled:
           message.updateState(.cancelled)
+          self.replyState = .none
         case .finished:
           message.updateState(.finished)
+          self.replyState = .none
         case .error(let error):
           message.updateState(.error(error))
+          self.replyState = .none
         }
       },
       handlerQueue: .main
