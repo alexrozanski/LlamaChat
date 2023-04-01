@@ -1,5 +1,5 @@
 //
-//  SourcesSettingsView.swift
+//  SourcesSettingsListView.swift
 //  CamelChat
 //
 //  Created by Alex Rozanski on 01/04/2023.
@@ -7,10 +7,8 @@
 
 import SwiftUI
 
-struct SourcesListView: View {
+struct SourcesSettingsListView: View {
   @ObservedObject var viewModel: SourcesSettingsViewModel
-
-  @State private var selectedSourceId: String?
 
   @ViewBuilder var heading: some View {
     VStack(spacing: 0) {
@@ -34,13 +32,13 @@ struct SourcesListView: View {
       })
       .buttonStyle(BorderlessButtonStyle())
       Button(action: {
-        guard let selectedSource = viewModel.sources.first(where: { $0.id == selectedSourceId }) else { return }
+        guard let selectedSource = viewModel.sources.first(where: { $0 == viewModel.selectedSource }) else { return }
         viewModel.showConfirmDeleteSourceSheet(for: selectedSource)
       }, label: {
         Image(systemName: "minus")
           .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 8))
       })
-      .disabled(selectedSourceId == nil)
+      .disabled(viewModel.selectedSource == nil)
       .buttonStyle(BorderlessButtonStyle())
       Spacer()
     }
@@ -48,9 +46,13 @@ struct SourcesListView: View {
   }
 
   var body: some View {
+    let selectionBinding = Binding<String?>(
+      get: { viewModel.selectedSource?.id },
+      set: { selectedId in viewModel.selectedSource = viewModel.sources.first(where: { $0.id == selectedId }) }
+    )
     VStack(spacing: 0) {
       heading
-      List(viewModel.sources, id: \.id, selection: $selectedSourceId) { source in
+      List(viewModel.sources, id: \.id, selection: selectionBinding) { source in
         Text(source.name)
       }
       .listStyle(PlainListStyle())
@@ -61,27 +63,7 @@ struct SourcesListView: View {
     }
     .border(.separator)
     .onAppear {
-      selectedSourceId = viewModel.sources.first?.id
+      viewModel.selectedSource = viewModel.sources.first
     }
-  }
-}
-
-struct SourcesSettingsView: View {
-  @ObservedObject var viewModel: SourcesSettingsViewModel  
-
-  var body: some View {
-    HStack {
-      SourcesListView(viewModel: viewModel)
-      .overlay {
-        SheetPresentingView(viewModel: viewModel.activeSheetViewModel) { viewModel in
-          if let viewModel = viewModel as? ConfirmDeleteSourceSheetViewModel {
-            ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
-          } else if let viewModel = viewModel as? AddSourceSheetViewModel {
-            AddSourceSheetContentView(viewModel: viewModel)
-          }
-        }
-      }
-    }
-    .padding()
   }
 }

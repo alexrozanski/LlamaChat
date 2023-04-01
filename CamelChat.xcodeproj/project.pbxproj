@@ -10,6 +10,8 @@
 		8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6829D8583D000E554D /* SheetPresentingView.swift */; };
 		8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */; };
 		8227DA6E29D858B7000E554D /* AddSourceSheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */; };
+		8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7029D86256000E554D /* SourcesSettingsListView.swift */; };
+		8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7229D8626F000E554D /* SourcesSettingsDetailView.swift */; };
 		8255EA4529D589C9000B9F83 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8255EA4429D589C9000B9F83 /* llama */; };
 		8255EA4A29D58A40000B9F83 /* SetupWindowContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */; };
 		8255EA4C29D58AF4000B9F83 /* ChatSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4B29D58AF4000B9F83 /* ChatSource.swift */; };
@@ -64,6 +66,8 @@
 		8227DA6829D8583D000E554D /* SheetPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentingView.swift; sourceTree = "<group>"; };
 		8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSheetDeletionContentView.swift; sourceTree = "<group>"; };
 		8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceSheetContentView.swift; sourceTree = "<group>"; };
+		8227DA7029D86256000E554D /* SourcesSettingsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsListView.swift; sourceTree = "<group>"; };
+		8227DA7229D8626F000E554D /* SourcesSettingsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsDetailView.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWindowContentView.swift; sourceTree = "<group>"; };
 		8255EA4B29D58AF4000B9F83 /* ChatSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSource.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
@@ -145,6 +149,18 @@
 				8227DA6829D8583D000E554D /* SheetPresentingView.swift */,
 			);
 			path = sheets;
+			sourceTree = "<group>";
+		};
+		8227DA6F29D8624A000E554D /* sources */ = {
+			isa = PBXGroup;
+			children = (
+				8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */,
+				8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */,
+				82AE199A29D834AE008189DF /* SourcesSettingsView.swift */,
+				8227DA7029D86256000E554D /* SourcesSettingsListView.swift */,
+				8227DA7229D8626F000E554D /* SourcesSettingsDetailView.swift */,
+			);
+			path = sources;
 			sourceTree = "<group>";
 		};
 		8255EA4729D58A0C000B9F83 /* chat */ = {
@@ -386,9 +402,7 @@
 		82AE199929D8349A008189DF /* tabs */ = {
 			isa = PBXGroup;
 			children = (
-				8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */,
-				8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */,
-				82AE199A29D834AE008189DF /* SourcesSettingsView.swift */,
+				8227DA6F29D8624A000E554D /* sources */,
 			);
 			path = tabs;
 			sourceTree = "<group>";
@@ -499,6 +513,7 @@
 				82718D0529D368EA00545C32 /* ChatWindowContentView.swift in Sources */,
 				8255EA5E29D59892000B9F83 /* ConfigureSourceViewModel.swift in Sources */,
 				82914CD829D79DD000858B2C /* MessageRowView.swift in Sources */,
+				8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */,
 				82914CDA29D79DFD00858B2C /* StaticMessageViewModel.swift in Sources */,
 				8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */,
 				8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */,
@@ -513,6 +528,7 @@
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
 				82718CDE29D3686200545C32 /* AppDelegate.swift in Sources */,
 				82AE199529D82FA5008189DF /* SettingsToolbarModel.swift in Sources */,
+				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
 				8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */,
 				828164CC29D59A39007AE984 /* ConfigureAlpacaSourceView.swift in Sources */,

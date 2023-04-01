@@ -1,0 +1,39 @@
+//
+//  SourcesSettingsView.swift
+//  CamelChat
+//
+//  Created by Alex Rozanski on 01/04/2023.
+//
+
+import SwiftUI
+
+struct SourcesSettingsView: View {
+  @ObservedObject var viewModel: SourcesSettingsViewModel
+
+  @ViewBuilder var detailView: some View {
+    if let selectedSource = viewModel.selectedSource {
+      SourcesSettingsDetailView(source: selectedSource)
+    } else {
+      Text("Select a source to configure its settings")
+    }
+  }
+
+  var body: some View {
+    HStack(spacing: 12) {
+      SourcesSettingsListView(viewModel: viewModel)
+        .overlay {
+          SheetPresentingView(viewModel: viewModel.activeSheetViewModel) { viewModel in
+            if let viewModel = viewModel as? ConfirmDeleteSourceSheetViewModel {
+              ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
+            } else if let viewModel = viewModel as? AddSourceSheetViewModel {
+              AddSourceSheetContentView(viewModel: viewModel)
+            }
+          }
+        }
+        .frame(width: 200)
+      detailView
+        .frame(maxWidth: .infinity)
+    }
+    .padding()
+  }
+}
