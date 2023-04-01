@@ -13,7 +13,12 @@ class ChatModel: ObservableObject {
   private let source: ChatSource
 
   private lazy var session: Session = {
-    return Inference(config: .default).makeLlamaSession(with: source.modelURL, config: LlamaSessionConfig(numTokens: 10), stateChangeHandler: { _ in })
+    switch source.type {
+    case .llama:
+      return Inference(config: .default).makeLlamaSession(with: source.modelURL, config: LlamaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
+    case .alpaca:
+      return Inference(config: .default).makeAlpacaSession(with: source.modelURL, config: AlpacaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
+    }
   }()
 
   enum ReplyState {

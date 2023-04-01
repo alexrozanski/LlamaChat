@@ -16,7 +16,7 @@
 		8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */; };
 		8227DA7F29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7E29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift */; };
 		8227DA8129D88228000E554D /* ConfigureLocalModelSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA8029D88228000E554D /* ConfigureLocalModelSourceView.swift */; };
-		8255EA4529D589C9000B9F83 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8255EA4429D589C9000B9F83 /* llama */; };
+		8227DA8B29D8C88D000E554D /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DA8A29D8C88D000E554D /* llama */; };
 		8255EA4A29D58A40000B9F83 /* SetupWindowContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
@@ -126,7 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8255EA4529D589C9000B9F83 /* llama in Frameworks */,
+				8227DA8B29D8C88D000E554D /* llama in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +435,7 @@
 			);
 			name = CamelChat;
 			packageProductDependencies = (
-				8255EA4429D589C9000B9F83 /* llama */,
+				8227DA8A29D8C88D000E554D /* llama */,
 			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* CamelChat.app */;
@@ -466,7 +466,7 @@
 			);
 			mainGroup = 82718CD129D3686200545C32;
 			packageReferences = (
-				8255EA4329D589C9000B9F83 /* XCRemoteSwiftPackageReference "llama" */,
+				8227DA8929D8C88D000E554D /* XCRemoteSwiftPackageReference "llama" */,
 			);
 			productRefGroup = 82718CDB29D3686200545C32 /* Products */;
 			projectDirPath = "";
@@ -746,7 +746,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8255EA4329D589C9000B9F83 /* XCRemoteSwiftPackageReference "llama" */ = {
+		8227DA8929D8C88D000E554D /* XCRemoteSwiftPackageReference "llama" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/alexrozanski/llama.swift/";
 			requirement = {
@@ -757,9 +757,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8255EA4429D589C9000B9F83 /* llama */ = {
+		8227DA8A29D8C88D000E554D /* llama */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8255EA4329D589C9000B9F83 /* XCRemoteSwiftPackageReference "llama" */;
+			package = 8227DA8929D8C88D000E554D /* XCRemoteSwiftPackageReference "llama" */;
 			productName = llama;
 		};
 /* End XCSwiftPackageProductDependency section */
