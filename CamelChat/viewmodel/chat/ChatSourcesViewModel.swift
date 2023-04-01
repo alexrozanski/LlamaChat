@@ -42,4 +42,9 @@ class ChatSourcesViewModel: ObservableObject {
       self.sources = newSources.map { ChatSourceViewModel(chatSource: $0) }
     }).store(in: &subscriptions)
   }
+
+  func chatSourceViewModel(with sourceId: String?) -> ChatSourceViewModel? {
+    guard let sourceId else { return nil }
+    return sources.first(where: { $0.id == sourceId })
+  }
 }

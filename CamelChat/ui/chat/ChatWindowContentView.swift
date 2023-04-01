@@ -18,18 +18,17 @@ struct ChatWindowSourceItemView: View {
 struct ChatWindowContentView: View {
   @ObservedObject var viewModel: ChatSourcesViewModel
 
-  @State var selection: String?
+  @State var selectedSourceId: String?
 
   var body: some View {
-    NavigationView {
-      List(viewModel.sources, id: \.id) { source in
-        NavigationLink(destination: ChatView(viewModel: source.makeChatViewModel()), tag: source.id, selection: $selection) {
-          ChatWindowSourceItemView(viewModel: source)
-        }
+    NavigationSplitView {
+      List(viewModel.sources, id: \.id, selection: $selectedSourceId) { source in
+        ChatWindowSourceItemView(viewModel: source)
       }
-      .listStyle(SidebarListStyle())
-      .onAppear {
-        selection = viewModel.sources.first?.id
+    } detail: {
+      if let source = viewModel.chatSourceViewModel(with: selectedSourceId) {
+        ChatView(viewModel: source.makeChatViewModel())
+          .id(source.id)
       }
     }
   }
