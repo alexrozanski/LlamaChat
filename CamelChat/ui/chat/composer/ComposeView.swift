@@ -38,7 +38,7 @@ struct ComposeView: View {
     .padding(.trailing, 5)
     .background(
       RoundedRectangle(cornerRadius: 15)
-        .fill(.white)
+        .fill(Color(NSColor.controlBackgroundColor.cgColor))
         .overlay {
           RoundedRectangle(cornerRadius: 15)
             .stroke(Color(NSColor.separatorColor.cgColor))
