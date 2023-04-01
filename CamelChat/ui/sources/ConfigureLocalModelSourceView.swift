@@ -1,14 +1,14 @@
 //
-//  ConfigureLlamaSourceView.swift
-//  Camel
+//  ConfigureLocalModelSourceView.swift
+//  CamelChat
 //
-//  Created by Alex Rozanski on 30/03/2023.
+//  Created by Alex Rozanski on 01/04/2023.
 //
 
 import SwiftUI
 
 fileprivate struct ModelPathTextField: View {
-  @ObservedObject var viewModel: ConfigureLlamaSourceViewModel
+  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
 
   var body: some View {
     VStack(alignment: .trailing) {
@@ -26,8 +26,8 @@ fileprivate struct ModelPathTextField: View {
   }
 }
 
-struct ConfigureLlamaSourceView: View {
-  @ObservedObject var viewModel: ConfigureLlamaSourceViewModel
+struct ConfigureLocalModelSourceView: View {
+  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
 
   @ViewBuilder var pathSelector: some View {
     VStack(alignment: .leading) {
@@ -58,30 +58,12 @@ struct ConfigureLlamaSourceView: View {
     )
   }
 
-  @ViewBuilder var navigation: some View {
-    HStack {
-      Button("Back") {
-        viewModel.goBack()
-      }
-      Spacer()
-      Button("Add") {
-        viewModel.addSource()
-      }
-      .keyboardShortcut(.return)
-      .disabled(!viewModel.modelPathState.isValid)
-    }
-  }
-
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
-      VStack(alignment: .leading, spacing: 12) {
-        Text("Set up LLaMa")
-          .font(.headline)
-      }
-      .padding(.horizontal, 12)
+      Text("Set up LLaMa")
+        .font(.headline)
+        .padding(.horizontal, 12)
       pathSelector
-      Spacer()
-      navigation
     }
   }
 }

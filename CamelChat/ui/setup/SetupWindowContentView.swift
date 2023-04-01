@@ -17,7 +17,7 @@ struct SetupWindowContentView: View {
     case .selectingSource(viewModel: let viewModel):
       SelectSourceTypeView(viewModel: viewModel)
     case .configuringSource(viewModel: let viewModel):
-      makeConfigureSourceView(for: viewModel)
+      makeConfigureSourceView(from: viewModel)
     case .success:
       AddSourceSuccessView()
     }

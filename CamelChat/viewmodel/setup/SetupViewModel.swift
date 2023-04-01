@@ -49,15 +49,23 @@ class SetupViewModel: ObservableObject {
     let viewModel: ConfigureSourceViewModel
     switch type {
     case .llama:
-      viewModel = ConfigureLlamaSourceViewModel(addSourceHandler: { [weak self] source in
-        self?.add(source: source)
-      }, goBackHandler: { [weak self] in
-        self?.goBack()
-      })
+      viewModel = ConfigureLocalModelSourceViewModel(
+        addSourceHandler: { [weak self] source in
+          self?.add(source: source)
+        }, goBackHandler: { [weak self] in
+          self?.goBack()
+        }
+      )
     case .alpaca:
-      viewModel = ConfigureAlpacaSourceViewModel()
+      viewModel = ConfigureAlpacaSourceViewModel(
+        addSourceHandler: { [weak self] source in
+          self?.add(source: source)
+        }, goBackHandler: { [weak self] in
+          self?.goBack()
+        }
+      )
     }
-
+    
     state = .configuringSource(viewModel: viewModel)
   }
 

@@ -1,13 +1,13 @@
 //
-//  ConfigureLlamaSourceViewModel.swift
-//  Camel
+//  ConfigureLocalModelSourceViewModel.swift
+//  CamelChat
 //
-//  Created by Alex Rozanski on 30/03/2023.
+//  Created by Alex Rozanski on 01/04/2023.
 //
 
 import Foundation
 
-class ConfigureLlamaSourceViewModel: ObservableObject, ConfigureSourceViewModel {
+class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
   typealias AddSourceHandler = (ChatSource) -> Void
   typealias GoBackHandler = () -> Void
 
@@ -16,6 +16,7 @@ class ConfigureLlamaSourceViewModel: ObservableObject, ConfigureSourceViewModel 
       modelPathState = FileManager().fileExists(atPath: modelPath) ? .valid : .invalid
     }
   }
+  @Published var canContinue: Bool = false
 
   enum ModelPathState {
     case none
@@ -32,7 +33,13 @@ class ConfigureLlamaSourceViewModel: ObservableObject, ConfigureSourceViewModel 
     }
   }
 
-  @Published private(set) var modelPathState: ModelPathState = .none
+  @Published private(set) var modelPathState: ModelPathState = .none {
+    didSet {
+      navigationViewModel.canContinue = modelPathState.isValid
+    }
+  }
+
+  let navigationViewModel: ConfigureSourceNavigationViewModel
 
   private let addSourceHandler: AddSourceHandler
   private let goBackHandler: GoBackHandler
@@ -40,17 +47,17 @@ class ConfigureLlamaSourceViewModel: ObservableObject, ConfigureSourceViewModel 
   init(addSourceHandler: @escaping AddSourceHandler, goBackHandler: @escaping GoBackHandler) {
     self.addSourceHandler = addSourceHandler
     self.goBackHandler = goBackHandler
+    navigationViewModel = ConfigureSourceNavigationViewModel()
+    navigationViewModel.delegate = self
   }
+}
 
-  func validate() -> Bool {
-    return modelPathState.isValid
-  }
-
+extension ConfigureLocalModelSourceViewModel: ConfigureSourceNavigationViewModelDelegate {
   func goBack() {
     goBackHandler()
   }
 
-  func addSource() {
+  func next() {
     guard modelPathState.isValid else { return }
     addSourceHandler(ChatSource(name: "LLaMa", type: .llama, modelURL: URL(fileURLWithPath: modelPath)))
   }
