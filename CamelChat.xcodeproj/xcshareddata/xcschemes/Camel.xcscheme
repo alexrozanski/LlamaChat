@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "82718CD929D3686200545C32"
-               BuildableName = "Camel.app"
-               BlueprintName = "Camel"
-               ReferencedContainer = "container:Camel.xcodeproj">
+               BuildableName = "CamelChat.app"
+               BlueprintName = "CamelChat"
+               ReferencedContainer = "container:CamelChat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "82718CD929D3686200545C32"
-            BuildableName = "Camel.app"
-            BlueprintName = "Camel"
-            ReferencedContainer = "container:Camel.xcodeproj">
+            BuildableName = "CamelChat.app"
+            BlueprintName = "CamelChat"
+            ReferencedContainer = "container:CamelChat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "82718CD929D3686200545C32"
-            BuildableName = "Camel.app"
-            BlueprintName = "Camel"
-            ReferencedContainer = "container:Camel.xcodeproj">
+            BuildableName = "CamelChat.app"
+            BlueprintName = "CamelChat"
+            ReferencedContainer = "container:CamelChat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

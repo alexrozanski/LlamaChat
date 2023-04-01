@@ -63,11 +63,11 @@
 		8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
 		8255EA6029D599AB000B9F83 /* ConfigureLlamaSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLlamaSourceViewModel.swift; sourceTree = "<group>"; };
 		8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureAlpacaSourceViewModel.swift; sourceTree = "<group>"; };
-		82718CDA29D3686200545C32 /* Camel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Camel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		82718CDA29D3686200545C32 /* CamelChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CamelChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82718CDD29D3686200545C32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82718CE129D3686300545C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82718CE429D3686300545C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		82718CE629D3686300545C32 /* Camel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Camel.entitlements; sourceTree = "<group>"; };
+		82718CE629D3686300545C32 /* CamelChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CamelChat.entitlements; sourceTree = "<group>"; };
 		82718CEC29D3689B00545C32 /* ChatModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		82718CF929D368E500545C32 /* MessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		82718CFA29D368E500545C32 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 		82718CD129D3686200545C32 = {
 			isa = PBXGroup;
 			children = (
-				82718CDC29D3686200545C32 /* Camel */,
+				82718CDC29D3686200545C32 /* CamelChat */,
 				82718CDB29D3686200545C32 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -191,12 +191,12 @@
 		82718CDB29D3686200545C32 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				82718CDA29D3686200545C32 /* Camel.app */,
+				82718CDA29D3686200545C32 /* CamelChat.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		82718CDC29D3686200545C32 /* Camel */ = {
+		82718CDC29D3686200545C32 /* CamelChat */ = {
 			isa = PBXGroup;
 			children = (
 				82718CDD29D3686200545C32 /* AppDelegate.swift */,
@@ -205,11 +205,11 @@
 				82914CBE29D5EB7100858B2C /* util */,
 				82718CF229D368C800545C32 /* viewmodel */,
 				82718CE129D3686300545C32 /* Assets.xcassets */,
-				82718CE629D3686300545C32 /* Camel.entitlements */,
+				82718CE629D3686300545C32 /* CamelChat.entitlements */,
 				82914CA229D5DB4900858B2C /* MainMenu.xib */,
 				82718CE329D3686300545C32 /* Preview Content */,
 			);
-			path = Camel;
+			path = CamelChat;
 			sourceTree = "<group>";
 		};
 		82718CE329D3686300545C32 /* Preview Content */ = {
@@ -329,9 +329,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		82718CD929D3686200545C32 /* Camel */ = {
+		82718CD929D3686200545C32 /* CamelChat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 82718CE929D3686300545C32 /* Build configuration list for PBXNativeTarget "Camel" */;
+			buildConfigurationList = 82718CE929D3686300545C32 /* Build configuration list for PBXNativeTarget "CamelChat" */;
 			buildPhases = (
 				82718CD629D3686200545C32 /* Sources */,
 				82718CD729D3686200545C32 /* Frameworks */,
@@ -341,12 +341,12 @@
 			);
 			dependencies = (
 			);
-			name = Camel;
+			name = CamelChat;
 			packageProductDependencies = (
 				8255EA4429D589C9000B9F83 /* llama */,
 			);
 			productName = Camel;
-			productReference = 82718CDA29D3686200545C32 /* Camel.app */;
+			productReference = 82718CDA29D3686200545C32 /* CamelChat.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -364,7 +364,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 82718CD529D3686200545C32 /* Build configuration list for PBXProject "Camel" */;
+			buildConfigurationList = 82718CD529D3686200545C32 /* Build configuration list for PBXProject "CamelChat" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -380,7 +380,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				82718CD929D3686200545C32 /* Camel */,
+				82718CD929D3686200545C32 /* CamelChat */,
 			);
 		};
 /* End PBXProject section */
@@ -565,11 +565,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Camel/Camel.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CamelChat/CamelChat.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Camel/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"CamelChat/Preview Content\"";
 				DEVELOPMENT_TEAM = 44847G58BM;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -581,7 +581,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alexrozanski.Camel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexrozanski.CamelChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -593,11 +593,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Camel/Camel.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CamelChat/CamelChat.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Camel/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"CamelChat/Preview Content\"";
 				DEVELOPMENT_TEAM = 44847G58BM;
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -609,7 +609,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alexrozanski.Camel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexrozanski.CamelChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -619,7 +619,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		82718CD529D3686200545C32 /* Build configuration list for PBXProject "Camel" */ = {
+		82718CD529D3686200545C32 /* Build configuration list for PBXProject "CamelChat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				82718CE729D3686300545C32 /* Debug */,
@@ -628,7 +628,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		82718CE929D3686300545C32 /* Build configuration list for PBXNativeTarget "Camel" */ = {
+		82718CE929D3686300545C32 /* Build configuration list for PBXNativeTarget "CamelChat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				82718CEA29D3686300545C32 /* Debug */,
