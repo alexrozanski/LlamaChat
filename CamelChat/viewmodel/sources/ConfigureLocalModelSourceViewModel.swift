@@ -11,12 +11,19 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
   typealias AddSourceHandler = (ChatSource) -> Void
   typealias GoBackHandler = () -> Void
 
+  @Published var name: String {
+    didSet {
+      validate()
+    }
+  }
   @Published var modelPath = "" {
     didSet {
       modelPathState = FileManager().fileExists(atPath: modelPath) ? .valid : .invalid
     }
   }
   @Published var canContinue: Bool = false
+
+  var modelType: String
 
   enum ModelPathState {
     case none
@@ -35,7 +42,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   @Published private(set) var modelPathState: ModelPathState = .none {
     didSet {
-      navigationViewModel.canContinue = modelPathState.isValid
+      validate()
     }
   }
 
@@ -44,11 +51,27 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
   private let addSourceHandler: AddSourceHandler
   private let goBackHandler: GoBackHandler
 
-  init(addSourceHandler: @escaping AddSourceHandler, goBackHandler: @escaping GoBackHandler) {
+  init(
+    defaultName: String? = nil,
+    chatSourceType: ChatSourceType,
+    addSourceHandler: @escaping AddSourceHandler,
+    goBackHandler: @escaping GoBackHandler
+  ) {
+    self.name = defaultName ?? ""
+    switch chatSourceType {
+    case .llama:
+      modelType = "LLaMa"
+    case .alpaca:
+      modelType = "Alpaca"
+    }
     self.addSourceHandler = addSourceHandler
     self.goBackHandler = goBackHandler
     navigationViewModel = ConfigureSourceNavigationViewModel()
     navigationViewModel.delegate = self
+  }
+
+  private func validate() {
+    navigationViewModel.canContinue = modelPathState.isValid && !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
   }
 }
 

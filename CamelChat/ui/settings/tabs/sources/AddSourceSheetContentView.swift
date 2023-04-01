@@ -39,7 +39,7 @@ class AddSourceSheetViewModel: SheetViewModel, ObservableObject {
     let viewModel: ConfigureSourceViewModel
     switch type {
     case .llama:
-      viewModel = ConfigureLocalModelSourceViewModel(
+      viewModel = makeConfigureLocalLlamaModelSourceViewModel(
         addSourceHandler: { [weak self] source in
           self?.add(source: source)
         }, goBackHandler: { [weak self] in
@@ -47,7 +47,7 @@ class AddSourceSheetViewModel: SheetViewModel, ObservableObject {
         }
       )
     case .alpaca:
-      viewModel = ConfigureAlpacaSourceViewModel(
+      viewModel = makeConfigureLocalAlpacaModelSourceViewModel(
         addSourceHandler:{ [weak self] source in
           self?.add(source: source)
         }, goBackHandler: { [weak self] in

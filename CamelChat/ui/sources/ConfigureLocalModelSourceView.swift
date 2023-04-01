@@ -23,7 +23,7 @@ fileprivate struct ModelPathTextField: View {
   var body: some View {
     VStack(alignment: .trailing) {
       TextField("Model path", text: $viewModel.modelPath, prompt: Text("/path/to/model/file"))
-        .textFieldStyle(.roundedBorder)
+        .textFieldStyle(.squareBorder)
         .alignmentGuide(.modelPathField, computeValue: { dimension in
           dimension[VerticalAlignment.center]
         })
@@ -65,8 +65,14 @@ struct ConfigureLocalModelSourceView: View {
   }
 
   var body: some View {
+    let nameBinding = Binding(
+      get: { viewModel.name },
+      set: { viewModel.name = $0 }
+    )
     Form {
-      Section("Set up LLaMa") {
+      Section("Set up \(viewModel.modelType) model") {
+        TextField("Name", text: nameBinding)
+          .textFieldStyle(.squareBorder)
         pathSelector
       }
     }

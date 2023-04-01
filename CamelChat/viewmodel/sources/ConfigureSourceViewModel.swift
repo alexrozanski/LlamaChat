@@ -53,6 +53,30 @@ protocol ConfigureSourceViewModel {
   var navigationViewModel: ConfigureSourceNavigationViewModel { get }
 }
 
+func makeConfigureLocalLlamaModelSourceViewModel(
+  addSourceHandler: @escaping ConfigureLocalModelSourceViewModel.AddSourceHandler,
+  goBackHandler: @escaping ConfigureLocalModelSourceViewModel.GoBackHandler
+) -> ConfigureLocalModelSourceViewModel {
+  return ConfigureLocalModelSourceViewModel(
+    defaultName: "LLaMa",
+    chatSourceType: .llama,
+    addSourceHandler: addSourceHandler,
+    goBackHandler: goBackHandler
+  )
+}
+
+func makeConfigureLocalAlpacaModelSourceViewModel(
+  addSourceHandler: @escaping ConfigureLocalModelSourceViewModel.AddSourceHandler,
+  goBackHandler: @escaping ConfigureLocalModelSourceViewModel.GoBackHandler
+) -> ConfigureLocalModelSourceViewModel {
+  return ConfigureLocalModelSourceViewModel(
+    defaultName: "Alpaca",
+    chatSourceType: .alpaca,
+    addSourceHandler: addSourceHandler,
+    goBackHandler: goBackHandler
+  )
+}
+
 @ViewBuilder func makeConfigureSourceView(from viewModel: ConfigureSourceViewModel) -> some View {
   VStack {
     if let viewModel = viewModel as? ConfigureLocalModelSourceViewModel {
