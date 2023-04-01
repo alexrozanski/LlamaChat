@@ -11,6 +11,7 @@ import Combine
 class SourcesSettingsDetailViewModel: ObservableObject {
   private let source: ChatSource
 
+  var id: String { return source.id }
   var modelPath: String
 
   var type: String {

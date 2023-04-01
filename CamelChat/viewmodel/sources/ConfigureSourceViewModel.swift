@@ -60,6 +60,7 @@ func makeConfigureLocalLlamaModelSourceViewModel(
   return ConfigureLocalModelSourceViewModel(
     defaultName: "LLaMa",
     chatSourceType: .llama,
+    exampleModelPath: "ggml-model-q4_0.bin",
     addSourceHandler: addSourceHandler,
     goBackHandler: goBackHandler
   )
@@ -72,6 +73,7 @@ func makeConfigureLocalAlpacaModelSourceViewModel(
   return ConfigureLocalModelSourceViewModel(
     defaultName: "Alpaca",
     chatSourceType: .alpaca,
+    exampleModelPath: "ggml-alpaca-7b-q4.bin",
     addSourceHandler: addSourceHandler,
     goBackHandler: goBackHandler
   )

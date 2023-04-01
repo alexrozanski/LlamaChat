@@ -55,7 +55,10 @@ class ChatSource: Codable, Equatable, ObservableObject {
   }
 
   static func == (lhs: ChatSource, rhs: ChatSource) -> Bool {
-    return lhs.id == rhs.id
+    return lhs.id == rhs.id &&
+    lhs.name == rhs.name &&
+    lhs.type == rhs.type &&
+    lhs.modelURL == rhs.modelURL
   }
 }
 

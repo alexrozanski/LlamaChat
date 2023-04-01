@@ -13,6 +13,7 @@ struct SourcesSettingsView: View {
   @ViewBuilder var detailView: some View {
     if let detailViewModel = viewModel.makeSelectedSourceDetailViewModel() {
       SourcesSettingsDetailView(viewModel: detailViewModel)
+        .id(detailViewModel.id)
     } else {
       Text("Select a source to configure its settings")
     }

@@ -23,7 +23,15 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
   }
   @Published var canContinue: Bool = false
 
-  var modelType: String
+  var modelType: String {
+    switch chatSourceType {
+    case .llama:
+      return "LLaMa"
+    case .alpaca:
+      return "Alpaca"
+    }
+  }
+  var exampleModelPath: String
 
   enum ModelPathState {
     case none
@@ -48,22 +56,20 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   let navigationViewModel: ConfigureSourceNavigationViewModel
 
+  private let chatSourceType: ChatSourceType
   private let addSourceHandler: AddSourceHandler
   private let goBackHandler: GoBackHandler
 
   init(
     defaultName: String? = nil,
     chatSourceType: ChatSourceType,
+    exampleModelPath: String,
     addSourceHandler: @escaping AddSourceHandler,
     goBackHandler: @escaping GoBackHandler
   ) {
     self.name = defaultName ?? ""
-    switch chatSourceType {
-    case .llama:
-      modelType = "LLaMa"
-    case .alpaca:
-      modelType = "Alpaca"
-    }
+    self.chatSourceType = chatSourceType
+    self.exampleModelPath = exampleModelPath
     self.addSourceHandler = addSourceHandler
     self.goBackHandler = goBackHandler
     navigationViewModel = ConfigureSourceNavigationViewModel()
@@ -82,6 +88,6 @@ extension ConfigureLocalModelSourceViewModel: ConfigureSourceNavigationViewModel
 
   func next() {
     guard modelPathState.isValid else { return }
-    addSourceHandler(ChatSource(name: "LLaMa", type: .llama, modelURL: URL(fileURLWithPath: modelPath)))
+    addSourceHandler(ChatSource(name: name, type: chatSourceType, modelURL: URL(fileURLWithPath: modelPath)))
   }
 }

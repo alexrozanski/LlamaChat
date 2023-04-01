@@ -58,7 +58,7 @@ struct ConfigureLocalModelSourceView: View {
           Image(systemName: "ellipsis")
         })
       }
-      Text("Select the quantized LLaMa model path. This should be called something like 'ggml-model-q4_0.bin'")
+      Text("Select the quantized \(viewModel.modelType) model path. This should be called something like '\(viewModel.exampleModelPath)'")
         .font(.footnote)
         .padding(.top, 8)
     }

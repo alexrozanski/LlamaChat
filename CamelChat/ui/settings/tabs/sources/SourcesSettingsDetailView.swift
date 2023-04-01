@@ -23,7 +23,6 @@ struct NameRowView: View {
         viewModel.updateName(newName)
       })
     }
-    .onChange(of: viewModel.name) { name = $0 }
   }
 }
 
