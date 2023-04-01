@@ -64,5 +64,6 @@ protocol ConfigureSourceViewModel {
     }
     Spacer()
     ConfigureSourceNavigationView(viewModel: viewModel.navigationViewModel)
+      .padding()
   }
 }

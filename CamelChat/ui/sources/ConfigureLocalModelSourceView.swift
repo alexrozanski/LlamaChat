@@ -7,12 +7,26 @@
 
 import SwiftUI
 
+extension VerticalAlignment {
+  private enum ModelPathField: AlignmentID {
+    static func defaultValue(in dimension: ViewDimensions) -> CGFloat {
+      return dimension[VerticalAlignment.center]
+    }
+  }
+
+  static let modelPathField = VerticalAlignment(ModelPathField.self)
+}
+
 fileprivate struct ModelPathTextField: View {
   @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
 
   var body: some View {
     VStack(alignment: .trailing) {
-      TextField("/path/to/model/file", text: $viewModel.modelPath)
+      TextField("Model path", text: $viewModel.modelPath, prompt: Text("/path/to/model/file"))
+        .textFieldStyle(.roundedBorder)
+        .alignmentGuide(.modelPathField, computeValue: { dimension in
+          dimension[VerticalAlignment.center]
+        })
       if viewModel.modelPathState == .invalid {
         HStack(spacing: 4) {
           Image(systemName: "exclamationmark.triangle")
@@ -31,8 +45,7 @@ struct ConfigureLocalModelSourceView: View {
 
   @ViewBuilder var pathSelector: some View {
     VStack(alignment: .leading) {
-      HStack(alignment: .top) {
-        Text("Model Path")
+      HStack(alignment: .modelPathField) {
         ModelPathTextField(viewModel: viewModel)
         Button(action: {
           let panel = NSOpenPanel()
@@ -49,21 +62,14 @@ struct ConfigureLocalModelSourceView: View {
         .font(.footnote)
         .padding(.top, 8)
     }
-    .padding(12)
-    .mask(RoundedRectangle(cornerRadius: 6))
-    .background(Color(cgColor: NSColor.systemGray.withAlphaComponent(0.05).cgColor))
-    .overlay(
-      RoundedRectangle(cornerRadius: 6)
-        .stroke(Color(cgColor: NSColor.separatorColor.cgColor), lineWidth: 0.5)
-    )
   }
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
-      Text("Set up LLaMa")
-        .font(.headline)
-        .padding(.horizontal, 12)
-      pathSelector
+    Form {
+      Section("Set up LLaMa") {
+        pathSelector
+      }
     }
+    .formStyle(GroupedFormStyle())
   }
 }

@@ -94,6 +94,7 @@ struct AddSourceSheetContentView: View {
         }
         .padding(.top, 12)
       }
+      .padding()
     case .configuringSource(viewModel: let viewModel):
       makeConfigureSourceView(from: viewModel)
     }
@@ -103,8 +104,6 @@ struct AddSourceSheetContentView: View {
     VStack {
       contentView
     }
-    .padding(.horizontal, 32)
-    .padding(.vertical)
     .frame(minWidth: 500, minHeight: 300)
     .onAppear() {
       viewModel.start()
