@@ -25,6 +25,8 @@ struct SetupWindowContentView: View {
 
   var body: some View {
     content
-    .padding(32)
+      .onAppear {
+        viewModel.start()
+      }
   }
 }

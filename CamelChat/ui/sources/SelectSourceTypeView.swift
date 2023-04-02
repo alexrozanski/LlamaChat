@@ -21,5 +21,6 @@ struct SelectSourceTypeView: View {
       SourceTypeSelectionView(viewModel: viewModel)
       Spacer()
     }
+    .padding(24)
   }
 }

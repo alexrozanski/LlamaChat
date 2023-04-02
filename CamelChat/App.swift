@@ -7,36 +7,37 @@
 
 import SwiftUI
 
-@main
-struct CamelApp: App {
-  private let chatSources: ChatSources
-  private let messagesModel: MessagesModel
-  private let stateRestoration: StateRestoration
+fileprivate struct Dependencies {
+  let chatSources = ChatSources()
+  let messagesModel = MessagesModel()
+  let stateRestoration = StateRestoration()
 
-  @StateObject var chatWindowContentViewModel: ChatWindowContentViewModel
-  @StateObject var settingsViewModel: SettingsViewModel
-  @StateObject var setupViewModel: SetupViewModel
+  static let shared = Dependencies()
 
-  init() {
-    let chatSources = ChatSources()
-    let messagesModel = MessagesModel()
-    let stateRestoration = StateRestoration()
+  private init() {}
+}
 
-    _chatWindowContentViewModel = StateObject(
-      wrappedValue: ChatWindowContentViewModel(
-        chatSources: chatSources,
-        messagesModel: messagesModel,
-        stateRestoration: stateRestoration
-      )
-    )
-
-    _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(chatSources: chatSources))
-    _setupViewModel = StateObject(wrappedValue: SetupViewModel(chatSources: chatSources))
-
-    self.chatSources = chatSources
-    self.messagesModel = messagesModel
-    self.stateRestoration = stateRestoration
+class CamelChatAppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+  func applicationDidFinishLaunching(_ notification: Notification) {
+    if Dependencies.shared.chatSources.sources.isEmpty {
+      if let url = URL(string: "camelChat://setup") {
+        NSWorkspace.shared.open(url)
+      }
+    }
   }
+}
+
+@main
+struct CamelChatApp: App {
+  @NSApplicationDelegateAdaptor private var appDelegate: CamelChatAppDelegate
+
+  @StateObject var chatWindowContentViewModel: ChatWindowContentViewModel = ChatWindowContentViewModel(
+    chatSources: Dependencies.shared.chatSources,
+    messagesModel: Dependencies.shared.messagesModel,
+    stateRestoration: Dependencies.shared.stateRestoration
+  )
+  @StateObject var settingsViewModel = SettingsViewModel(chatSources: Dependencies.shared.chatSources)
+  @StateObject var setupViewModel = SetupViewModel(chatSources: Dependencies.shared.chatSources)
 
   var body: some Scene {
     Settings {
@@ -46,8 +47,8 @@ struct CamelApp: App {
     Window("Chat", id: "chat") {
       ChatWindowContentView(viewModel: chatWindowContentViewModel)
     }
-    Window("Setup", id: "setup") {
+    WindowGroup("Setup") {
       SetupWindowContentView(viewModel: setupViewModel)
-    }
+    }.handlesExternalEvents(matching: Set(arrayLiteral: "setup"))
   }
 }
