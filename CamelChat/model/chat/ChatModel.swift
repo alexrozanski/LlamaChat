@@ -54,8 +54,8 @@ class ChatModel: ObservableObject {
     }
   }
 
-  func loadContext() async -> ChatContext {
-    let sessionContext = await session.currentContext()
+  func loadContext() async throws -> ChatContext {
+    let sessionContext = try await session.currentContext()
     return ChatContext(contextString: sessionContext.contextString, tokens: sessionContext.tokens)
   }
 
@@ -108,14 +108,18 @@ class ChatModel: ObservableObject {
 }
 
 private func errorText(from error: Error) -> String {
+  print(error)
+
   let nsError = error as NSError
   if nsError.domain == LlamaError.domain {
     if let code = LlamaError.Code(rawValue: nsError.code) {
       switch code {
       case .failedToLoadModel:
         return "Failed to load model"
-      case .predictionFailed:
+      case .failedToPredict:
         return "Failed to generate response"
+      default:
+        break
       }
     }
   }

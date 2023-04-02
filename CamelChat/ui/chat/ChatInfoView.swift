@@ -53,10 +53,12 @@ struct ChatInfoView: View {
     modelStat: ChatInfoViewModel.ModelStat<V>
   ) -> some View where V: CustomStringConvertible {
     switch modelStat {
-    case .loading:
-      return Text("Loading")
     case .none:
       return Text("Empty")
+    case .unknown:
+      return Text("Unknown")
+    case .loading:
+      return Text("Loading")
     case .value(let value):
       return Text(value.description)
     }

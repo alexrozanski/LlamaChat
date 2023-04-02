@@ -10,12 +10,14 @@ import Foundation
 class ChatInfoViewModel: ObservableObject {
   enum ModelStat<V> {
     case none
+    case unknown
     case loading
     case value(V)
 
     func map<U>(_ transform: (_ value: V) -> ModelStat<U>) -> ModelStat<U> {
       switch self {
       case .none: return .none
+      case .unknown: return .unknown
       case .loading: return .loading
       case .value(let value): return transform(value)
       }
@@ -49,11 +51,16 @@ class ChatInfoViewModel: ObservableObject {
     contextTokenCount = .loading
 
     Task.init {
-      let context = await chatModel.loadContext()
-      await MainActor.run {
-        self.context = context.contextString.map { .value($0) } ?? .none
-        let tokenCount = context.tokens?.count
-        self.contextTokenCount = tokenCount.map { .value($0) } ?? .none
+      do {
+        let context = try await chatModel.loadContext()
+        await MainActor.run {
+          self.context = context.contextString.map { .value($0) } ?? .none
+          let tokenCount = context.tokens?.count
+          self.contextTokenCount = tokenCount.map { .value($0) } ?? .none
+        }
+      } catch {
+        self.context = .unknown
+        self.contextTokenCount = .unknown
       }
     }
   }
