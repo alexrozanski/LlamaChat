@@ -11,6 +11,11 @@ import llama
 import SQLite
 
 class ChatModel: ObservableObject {
+  struct ChatContext {
+    let contextString: String?
+    let tokens: [Int64]?
+  }
+
   let source: ChatSource
   let messagesModel: MessagesModel
 
@@ -47,6 +52,11 @@ class ChatModel: ObservableObject {
     if (message.sender.isMe) {
       predictResponse(to: message.content)
     }
+  }
+
+  func loadContext() async -> ChatContext {
+    let sessionContext = await session.currentContext()
+    return ChatContext(contextString: sessionContext.contextString, tokens: sessionContext.tokens)
   }
 
   private func predictResponse(to content: String) {
