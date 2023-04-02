@@ -25,7 +25,7 @@ class ComposeViewModel: ObservableObject {
   }
 
   func send(message: String) {
-    chatModel.send(message: StaticMessage(content: message, sender: .me, sendDate: Date()))
+    chatModel.send(message: StaticMessage(content: message, sender: .me, sendDate: Date(), isError: false))
     text = ""
   }
 }

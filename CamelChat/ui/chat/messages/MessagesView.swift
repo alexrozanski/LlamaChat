@@ -18,7 +18,7 @@ struct MessagesView: View {
             ForEach(viewModel.messages, id: \.id) { messageViewModel in
               MessageRowView(sender: messageViewModel.sender, maxWidth: geometry.size.width * 0.8) {
                 if let staticMessageViewModel = messageViewModel as? StaticMessageViewModel {
-                  MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular) {
+                  MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular, isError: staticMessageViewModel.isError) {
                     Text(staticMessageViewModel.content)
                   }
                 } else if let generatedMessageViewModel = messageViewModel as? GeneratedMessageViewModel {

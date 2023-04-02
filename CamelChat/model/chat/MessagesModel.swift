@@ -29,6 +29,7 @@ class MessagesModel {
   private let isMeColumn = Expression<Bool>("is_me")
   private let messageColumn = Expression<String>("message")
   private let sendDateColumn = Expression<Date>("send_date")
+  private let isErrorColumn = Expression<Bool>("is_error")
 
   private func setUpSchema() {
     do {
@@ -44,6 +45,7 @@ class MessagesModel {
         t.column(isMeColumn)
         t.column(messageColumn)
         t.column(sendDateColumn)
+        t.column(isErrorColumn)
       })
     } catch {
       print(error)
@@ -71,7 +73,14 @@ class MessagesModel {
       var messages = [Message]()
       for message in messagesQuery {
         let isMe = message[isMeColumn]
-        messages.append(StaticMessage(content: message[messageColumn], sender: isMe ? .me : .other, sendDate: message[sendDateColumn]))
+        messages.append(
+          StaticMessage(
+            content: message[messageColumn],
+            sender: isMe ? .me : .other,
+            sendDate: message[sendDateColumn],
+            isError: message[isErrorColumn]
+          )
+        )
       }
       return messages
     } catch {
@@ -93,7 +102,8 @@ class MessagesModel {
         chatSourceIdColumn <- chatSourceId,
         isMeColumn <- message.sender.isMe,
         messageColumn <- message.content,
-        sendDateColumn <- message.sendDate
+        sendDateColumn <- message.sendDate,
+        isErrorColumn <- message.isError
       )
       _ = try db.run(insert)
     } catch {

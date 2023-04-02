@@ -13,4 +13,5 @@ protocol Message {
   var sender: Sender { get }
   var content: String { get }
   var sendDate: Date { get }
+  var isError: Bool { get }
 }

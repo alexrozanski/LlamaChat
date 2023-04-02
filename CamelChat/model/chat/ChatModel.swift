@@ -95,6 +95,8 @@ class ChatModel: ObservableObject {
           self.replyState = .none
         case .error(let error):
           message.updateState(.error(error))
+          message.update(contents: errorText(from: error))
+          self.messagesModel.append(message: message, in: self.source)
           self.replyState = .none
         }
       },
@@ -103,4 +105,19 @@ class ChatModel: ObservableObject {
 
     message.cancellationHandler = { cancellable.cancel() }
   }
+}
+
+private func errorText(from error: Error) -> String {
+  let nsError = error as NSError
+  if nsError.domain == LlamaError.domain {
+    if let code = LlamaError.Code(rawValue: nsError.code) {
+      switch code {
+      case .failedToLoadModel:
+        return "Failed to load model"
+      case .predictionFailed:
+        return "Failed to generate response"
+      }
+    }
+  }
+  return "Failed to generate response"
 }

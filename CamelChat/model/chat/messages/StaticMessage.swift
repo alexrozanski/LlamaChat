@@ -13,10 +13,12 @@ class StaticMessage: Message {
   let content: String
   let sender: Sender
   let sendDate: Date
+  let isError: Bool
 
-  init(content: String, sender: Sender, sendDate: Date) {
+  init(content: String, sender: Sender, sendDate: Date, isError: Bool) {
     self.content = content
     self.sender = sender
     self.sendDate = sendDate
+    self.isError = isError
   }
 }

@@ -19,6 +19,7 @@ struct MessageBubbleView<Content>: View where Content: View {
 
   let sender: Sender
   let style: Style
+  let isError: Bool
   @ViewBuilder var content: ContentBuilder
 
   var padding: Double {
@@ -31,8 +32,8 @@ struct MessageBubbleView<Content>: View where Content: View {
   var body: some View {
     content()
       .padding(padding)
-      .background(sender.isMe ? .blue : .gray.opacity(0.2))
-      .foregroundColor(sender.isMe ? .white : .black)
+      .background(backgroundColor)
+      .foregroundColor(textColor)
       .cornerRadius(15)
       .scaleEffect(scale)
       .onAppear {
@@ -41,6 +42,20 @@ struct MessageBubbleView<Content>: View where Content: View {
       .onChange(of: style) { newStyle in
         updateScaleAnimation(with: newStyle)
       }
+  }
+
+  private var backgroundColor: Color {
+    if isError {
+      return .red
+    }
+    return sender.isMe ? .blue : .gray.opacity(0.2)
+  }
+
+  private var textColor: Color {
+    if isError {
+      return .white
+    }
+    return sender.isMe ? .white : .black
   }
 
   private func updateScaleAnimation(with style: Style) {

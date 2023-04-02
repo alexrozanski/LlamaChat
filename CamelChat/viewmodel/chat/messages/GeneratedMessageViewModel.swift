@@ -13,8 +13,10 @@ class GeneratedMessageViewModel: ObservableObject, MessageViewModel {
 
   private let message: GeneratedMessage
 
-  @Published var content: String = ""
-  @Published var state: MessageGenerationState = .none
+  @Published var content: String
+  @Published var state: MessageGenerationState
+  @Published var isError: Bool = false
+
   var sender: Sender { return message.sender }
 
   private var subscriptions = Set<AnyCancellable>()
@@ -22,11 +24,16 @@ class GeneratedMessageViewModel: ObservableObject, MessageViewModel {
   init(message: GeneratedMessage) {
     self.message = message
     content = message.content
+    state = message.state
+
     message.contentDidChange.sink(receiveValue: {
       self.content = message.content
     }).store(in: &subscriptions)
     message.$state.sink(receiveValue: { newState in
       self.state = newState
+    }).store(in: &subscriptions)
+    message.$isError.sink(receiveValue: { newIsError in
+      self.isError = newIsError
     }).store(in: &subscriptions)
   }
 

@@ -21,7 +21,13 @@ class GeneratedMessage: ObservableObject, Message {
   let sender: Sender
   let sendDate: Date
 
-  @Published private(set) var state: MessageGenerationState = .none
+  @Published var isError = false
+
+  @Published private(set) var state: MessageGenerationState = .none {
+    didSet {
+      isError = state.isError
+    }
+  }
 
   var cancellationHandler: CancellationHandler?
 
@@ -30,11 +36,15 @@ class GeneratedMessage: ObservableObject, Message {
     self.sendDate = sendDate
   }
 
+  func update(contents: String) {
+    content = contents
+  }
+
   func append(contents: String) {
-    if self.content.isEmpty {
-      self.content = contents.trimmingCharactersInCharacterSetFromPrefix(.whitespacesAndNewlines)
+    if content.isEmpty {
+      content = contents.trimmingCharactersInCharacterSetFromPrefix(.whitespacesAndNewlines)
     } else {
-      self.content += contents
+      content += contents
     }
   }
 

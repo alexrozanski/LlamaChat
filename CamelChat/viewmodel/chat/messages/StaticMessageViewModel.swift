@@ -15,6 +15,7 @@ class StaticMessageViewModel: MessageViewModel {
     return message.content
   }
   var sender: Sender { message.sender }
+  var isError: Bool { message.isError }
 
   init(message: StaticMessage) {
     self.message = message

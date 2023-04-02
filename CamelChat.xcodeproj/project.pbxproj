@@ -777,7 +777,7 @@
 			repositoryURL = /Users/rozanski/Documents/GitHub/llama.swift;
 			requirement = {
 				kind = revision;
-				revision = 10c5ba05482957a997a566bab37bc245281eb6a8;
+				revision = dff6a68dd2a6052e4ecea621e36720f6534a61fb;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
