@@ -22,6 +22,8 @@
 		8227DA9329D8F841000E554D /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DA9229D8F841000E554D /* SQLite */; };
 		8227DA9529D8F959000E554D /* MessagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9429D8F959000E554D /* MessagesModel.swift */; };
 		8227DA9729D911A4000E554D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9629D911A4000E554D /* App.swift */; };
+		8227DA9929D919FD000E554D /* ChatInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9829D919FD000E554D /* ChatInfoView.swift */; };
+		8227DA9B29D91A1C000E554D /* ChatInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */; };
 		8255EA4A29D58A40000B9F83 /* SetupWindowContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
@@ -78,6 +80,8 @@
 		8227DA8F29D8D8D9000E554D /* StateRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateRestoration.swift; sourceTree = "<group>"; };
 		8227DA9429D8F959000E554D /* MessagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesModel.swift; sourceTree = "<group>"; };
 		8227DA9629D911A4000E554D /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		8227DA9829D919FD000E554D /* ChatInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInfoView.swift; sourceTree = "<group>"; };
+		8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInfoViewModel.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupWindowContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupWindowContentView.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				82718D0029D368EA00545C32 /* ChatWindowContentView.swift */,
+				8227DA9829D919FD000E554D /* ChatInfoView.swift */,
 				82718D0129D368EA00545C32 /* ChatView.swift */,
 				82914CDC29D79F9A00858B2C /* composer */,
 				82914CDB29D79F9200858B2C /* messages */,
@@ -231,6 +236,7 @@
 				8227DA8C29D8D7E9000E554D /* ChatWindowContentViewModel.swift */,
 				82914CDE29D7A01900858B2C /* composer */,
 				82914CDD29D7A00A00858B2C /* messages */,
+				8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */,
 			);
 			path = chat;
 			sourceTree = "<group>";
@@ -526,6 +532,7 @@
 				8255EA4A29D58A40000B9F83 /* SetupWindowContentView.swift in Sources */,
 				82914CCE29D76C0600858B2C /* GeneratedMessageViewModel.swift in Sources */,
 				82718D0529D368EA00545C32 /* ChatWindowContentView.swift in Sources */,
+				8227DA9B29D91A1C000E554D /* ChatInfoViewModel.swift in Sources */,
 				8255EA5E29D59892000B9F83 /* ConfigureSourceViewModel.swift in Sources */,
 				82914CD829D79DD000858B2C /* MessageRowView.swift in Sources */,
 				8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */,
@@ -534,6 +541,7 @@
 				8227DA8D29D8D7E9000E554D /* ChatWindowContentViewModel.swift in Sources */,
 				8227DA7829D86633000E554D /* SourcesSettingsDetailViewModel.swift in Sources */,
 				8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */,
+				8227DA9929D919FD000E554D /* ChatInfoView.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,
 				82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */,
 				828164CE29D5D3A3007AE984 /* AddSourceSuccessView.swift in Sources */,
