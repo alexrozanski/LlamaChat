@@ -11,9 +11,14 @@ import SwiftUI
 @main
 class AppDelegate: NSObject, NSApplicationDelegate, NSToolbarDelegate {
   private lazy var chatSources = ChatSources()
+  private lazy var messagesModel = MessagesModel()
   private lazy var stateRestoration = StateRestoration()
 
-  private lazy var chatWindowContentViewModel = ChatWindowContentViewModel(chatSources: chatSources, stateRestoration: stateRestoration)
+  private lazy var chatWindowContentViewModel = ChatWindowContentViewModel(
+    chatSources: chatSources,
+    messagesModel: messagesModel,
+    stateRestoration: stateRestoration
+  )
   private lazy var setupViewModel = SetupViewModel(chatSources: chatSources)
 
   private lazy var setupWindowController: NSWindowController = {

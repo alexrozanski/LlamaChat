@@ -12,4 +12,5 @@ protocol Message {
   var id: UUID { get }
   var sender: Sender { get }
   var content: String { get }
+  var sendDate: Date { get }
 }

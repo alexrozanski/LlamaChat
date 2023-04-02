@@ -23,10 +23,6 @@ class ChatSourceViewModel: ObservableObject {
       self?.title = newName
     }).store(in: &subscriptions)
   }
-
-  func makeChatViewModel() -> ChatViewModel {
-    return ChatViewModel(chatSource: chatSource)
-  }
 }
 
 class ChatSourcesViewModel: ObservableObject {

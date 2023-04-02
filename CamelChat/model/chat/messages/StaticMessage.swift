@@ -12,9 +12,11 @@ class StaticMessage: Message {
   let id = UUID()
   let content: String
   let sender: Sender
+  let sendDate: Date
 
-  init(content: String, sender: Sender) {
+  init(content: String, sender: Sender, sendDate: Date) {
     self.content = content
     self.sender = sender
+    self.sendDate = sendDate
   }
 }

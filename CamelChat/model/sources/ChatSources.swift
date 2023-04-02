@@ -70,6 +70,7 @@ class ChatSources: ObservableObject {
   }
 
   private lazy var persistedURL: URL? = {
+    print(applicationSupportDirectoryURL())
     return applicationSupportDirectoryURL()?.appending(path: "sources.json")
   }()
 

@@ -19,13 +19,15 @@ class GeneratedMessage: ObservableObject, Message {
   }
   let contentDidChange = PassthroughSubject<Void, Never>()
   let sender: Sender
+  let sendDate: Date
 
   @Published private(set) var state: MessageGenerationState = .none
 
   var cancellationHandler: CancellationHandler?
 
-  init(sender: Sender) {
+  init(sender: Sender, sendDate: Date) {
     self.sender = sender
+    self.sendDate = sendDate
   }
 
   func append(contents: String) {

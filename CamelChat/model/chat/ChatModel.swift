@@ -8,9 +8,11 @@
 import Foundation
 import Combine
 import llama
+import SQLite
 
 class ChatModel: ObservableObject {
-  private let source: ChatSource
+  let source: ChatSource
+  let messagesModel: MessagesModel
 
   private lazy var session: Session = {
     switch source.type {
@@ -25,19 +27,22 @@ class ChatModel: ObservableObject {
     case none
     case waitingToRespond
     case responding
-  }
+  }  
 
-  @Published var messages = [Message]()
+  @Published var messages: [Message]
   @Published var replyState: ReplyState = .none
 
   private var currentPredictionCancellable: PredictionCancellable?
 
-  init(source: ChatSource) {
+  init(source: ChatSource, messagesModel: MessagesModel) {
     self.source = source
+    self.messagesModel = messagesModel
+    messages = messagesModel.loadMessages(from: source)
   }
 
   func send(message: StaticMessage) {
     messages.append(message)
+    messagesModel.append(message: message, in: source)
 
     if (message.sender.isMe) {
       predictResponse(to: message.content)
@@ -47,7 +52,7 @@ class ChatModel: ObservableObject {
   private func predictResponse(to content: String) {
     replyState = .waitingToRespond
 
-    let message = GeneratedMessage(sender: .other)
+    let message = GeneratedMessage(sender: .other, sendDate: Date())
     messages.append(message)
 
     var hasReceivedTokens = false
@@ -72,9 +77,11 @@ class ChatModel: ObservableObject {
           break
         case .cancelled:
           message.updateState(.cancelled)
+          self.messagesModel.append(message: message, in: self.source)
           self.replyState = .none
         case .finished:
           message.updateState(.finished)
+          self.messagesModel.append(message: message, in: self.source)
           self.replyState = .none
         case .error(let error):
           message.updateState(.error(error))

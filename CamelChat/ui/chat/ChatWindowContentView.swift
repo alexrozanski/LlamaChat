@@ -19,6 +19,7 @@ struct ChatWindowContentView: View {
   @ObservedObject var viewModel: ChatWindowContentViewModel
 
   @State var initialWidth: Double?
+  @State var selectedChatViewModel: ChatViewModel?
 
   init(viewModel: ChatWindowContentViewModel) {
     self.viewModel = viewModel
@@ -50,13 +51,17 @@ struct ChatWindowContentView: View {
         list
       }
     } detail: {
-      if let source = viewModel.chatSourcesViewModel.chatSourceViewModel(with: viewModel.selectedSourceId) {
-        ChatView(viewModel: source.makeChatViewModel())
-          .id(source.id)
+      if let viewModel = selectedChatViewModel {
+        ChatView(viewModel: viewModel)
+          .id(viewModel.sourceId)
       }
     }
     .onAppear {
       initialWidth = nil
+      selectedChatViewModel = viewModel.selectedSourceId.flatMap { viewModel.makeChatViewModel(for: $0) }
+    }
+    .onChange(of: viewModel.selectedSourceId) { newSourceId in
+      selectedChatViewModel = newSourceId.flatMap { viewModel.makeChatViewModel(for: $0) }
     }
   }
 }

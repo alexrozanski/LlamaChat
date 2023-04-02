@@ -10,10 +10,14 @@ import Foundation
 class ChatViewModel: ObservableObject {
   private let chatModel: ChatModel
 
+  var sourceId: String {
+    chatModel.source.id
+  }
+
   private(set) lazy var composeViewModel = ComposeViewModel(chatModel: chatModel)
   private(set) lazy var messagesViewModel = MessagesViewModel(chatModel: chatModel)
 
-  init(chatSource: ChatSource) {
-    self.chatModel = ChatModel(source: chatSource)
+  init(chatSource: ChatSource, messagesModel: MessagesModel) {
+    self.chatModel = ChatModel(source: chatSource, messagesModel: messagesModel)
   }
 }
