@@ -19,13 +19,13 @@ class ChatModel: ObservableObject {
   let source: ChatSource
   let messagesModel: MessagesModel
 
-  private lazy var session = makeSession(for: source)
-
   enum ReplyState {
     case none
     case waitingToRespond
     case responding
-  }  
+  }
+
+  private var session: Session?
 
   @Published private(set) var messages: [Message]
   @Published private(set) var replyState: ReplyState = .none
@@ -53,11 +53,20 @@ class ChatModel: ObservableObject {
   }
 
   private func getReadySession() -> Session {
-    if session.state.isError {
-      let freshSession = makeSession(for: source)
-      session = freshSession
-      return freshSession
+    let makeAndStoreNewSession = { () -> Session in
+      let newSession = makeSession(for: self.source)
+      self.session = newSession
+      return newSession
     }
+
+    guard let session = session else {
+      return makeAndStoreNewSession()
+    }
+
+    if session.state.isError {
+      return makeAndStoreNewSession()
+    }
+
     return session
   }
 
@@ -123,9 +132,17 @@ fileprivate extension SessionState {
 private func makeSession(for source: ChatSource) -> Session {
   switch source.type {
   case .llama:
-    return Inference(config: .default).makeLlamaSession(with: source.modelURL, config: LlamaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
+    return Inference(config: .default).makeLlamaSession(
+      with: source.modelURL,
+      config: LlamaSessionConfig(numTokens: 512),
+      stateChangeHandler: { _ in }
+    )
   case .alpaca:
-    return Inference(config: .default).makeAlpacaSession(with: source.modelURL, config: AlpacaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
+    return Inference(config: .default).makeAlpacaSession(
+      with: source.modelURL,
+      config: AlpacaSessionConfig(numTokens: 512),
+      stateChangeHandler: { _ in }
+    )
   }
 }
 
