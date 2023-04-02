@@ -16,6 +16,15 @@ class SetupViewModel: ObservableObject {
     case selectingSource(viewModel: SelectSourceTypeViewModel)
     case configuringSource(viewModel: ConfigureSourceViewModel)
     case success
+
+    var canGoBack: Bool {
+      switch self {
+      case .none, .selectingSource, .success:
+        return false
+      case .configuringSource:
+        return true
+      }
+    }
   }
 
   @Published var state = State.none

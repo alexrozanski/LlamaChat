@@ -48,7 +48,9 @@ struct CamelChatApp: App {
       ChatWindowContentView(viewModel: chatWindowContentViewModel)
     }
     WindowGroup("Setup") {
-      SetupWindowContentView(viewModel: setupViewModel)
-    }.handlesExternalEvents(matching: Set(arrayLiteral: "setup"))
+      SetupView(viewModel: setupViewModel)
+    }
+    .windowToolbarStyle(.unified)
+    .handlesExternalEvents(matching: Set(arrayLiteral: "setup"))
   }
 }

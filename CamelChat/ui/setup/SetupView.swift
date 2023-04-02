@@ -1,5 +1,5 @@
 //
-//  SetupContentView.swift
+//  SetupView.swift
 //  Camel
 //
 //  Created by Alex Rozanski on 30/03/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SetupWindowContentView: View {
+struct SetupView: View {
   @ObservedObject var viewModel: SetupViewModel
 
   @ViewBuilder var content: some View {
@@ -16,8 +16,10 @@ struct SetupWindowContentView: View {
       EmptyView()
     case .selectingSource(viewModel: let viewModel):
       SelectSourceTypeView(viewModel: viewModel)
+        .navigationTitle("Add model")
     case .configuringSource(viewModel: let viewModel):
       makeConfigureSourceView(from: viewModel)
+        .navigationTitle("Configure model")
     case .success:
       AddSourceSuccessView()
     }
@@ -25,6 +27,20 @@ struct SetupWindowContentView: View {
 
   var body: some View {
     content
+      .toolbar {
+        if viewModel.state.canGoBack {
+          ToolbarItem(placement: .navigation) {
+            Button(action: {
+              viewModel.goBack()
+            }, label: { Image(systemName: "chevron.left") })
+          }
+        }
+
+        // Dummy item so we always display a unified window/toolbar.
+        if !viewModel.state.canGoBack {
+          ToolbarItem { Text(" ") }
+        }
+      }
       .onAppear {
         viewModel.start()
       }
