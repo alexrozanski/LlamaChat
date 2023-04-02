@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-struct ChatWindowSourceItemView: View {
-  @ObservedObject var viewModel: ChatSourceViewModel
-
-  var body: some View {
-    Text(viewModel.title)
-  }
-}
-
 struct MainChatView: View {
   @ObservedObject var viewModel: MainChatViewModel
 
@@ -28,11 +20,7 @@ struct MainChatView: View {
 
   @ViewBuilder var list: some View {
     GeometryReader { geometry in
-      HStack {
-        List(viewModel.chatSourcesViewModel.sources, id: \.id, selection: $viewModel.selectedSourceId) { source in
-          ChatWindowSourceItemView(viewModel: source)
-        }
-      }
+      ChatListView(viewModel: viewModel.chatListViewModel)
       .overlay(
         Color.clear
           .onChange(of: geometry.size.width) { newWidth in

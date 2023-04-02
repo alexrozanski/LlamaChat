@@ -28,7 +28,7 @@ class MainChatViewModel: ObservableObject {
     }
   }
 
-  lazy private(set) var chatSourcesViewModel = ChatSourcesViewModel(chatSources: chatSources)
+  lazy private(set) var chatListViewModel = ChatListViewModel(chatSources: chatSources, mainChatViewModel: self)
 
   init(
     chatSources: ChatSources,
@@ -39,8 +39,8 @@ class MainChatViewModel: ObservableObject {
     self.messagesModel = messagesModel
     self.restorableData = stateRestoration.restorableData(for: "ChatWindow")
     _sidebarWidth = Published(initialValue: restorableData.getValue(for: .sidebarWidth) ?? 200)
-    _selectedSourceId = Published(initialValue: restorableData.getValue(for: .selectedSourceId) ?? chatSourcesViewModel.sources.first?.id)
-  }
+    _selectedSourceId = Published(initialValue: restorableData.getValue(for: .selectedSourceId) ?? chatSources.sources.first?.id)
+  }  
 
   func makeChatViewModel(for sourceId: String) -> ChatViewModel? {
     guard let chatSource = chatSources.sources.first(where: { $0.id == sourceId }) else { return nil }
