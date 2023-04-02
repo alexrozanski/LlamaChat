@@ -19,14 +19,7 @@ class ChatModel: ObservableObject {
   let source: ChatSource
   let messagesModel: MessagesModel
 
-  private lazy var session: Session = {
-    switch source.type {
-    case .llama:
-      return Inference(config: .default).makeLlamaSession(with: source.modelURL, config: LlamaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
-    case .alpaca:
-      return Inference(config: .default).makeAlpacaSession(with: source.modelURL, config: AlpacaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
-    }
-  }()
+  private lazy var session = makeSession(for: source)
 
   enum ReplyState {
     case none
@@ -55,8 +48,17 @@ class ChatModel: ObservableObject {
   }
 
   func loadContext() async throws -> ChatContext {
-    let sessionContext = try await session.currentContext()
+    let sessionContext = try await getReadySession().currentContext()
     return ChatContext(contextString: sessionContext.contextString, tokens: sessionContext.tokens)
+  }
+
+  private func getReadySession() -> Session {
+    if session.state.isError {
+      let freshSession = makeSession(for: source)
+      session = freshSession
+      return freshSession
+    }
+    return session
   }
 
   private func predictResponse(to content: String) {
@@ -66,7 +68,7 @@ class ChatModel: ObservableObject {
     messages.append(message)
 
     var hasReceivedTokens = false
-    let cancellable = session.predict(
+    let cancellable = getReadySession().predict(
       with: content,
       tokenHandler: { token in
         if !hasReceivedTokens {
@@ -104,6 +106,26 @@ class ChatModel: ObservableObject {
     )
 
     message.cancellationHandler = { cancellable.cancel() }
+  }
+}
+
+fileprivate extension SessionState {
+  var isError: Bool {
+    switch self {
+    case .notStarted, .loadingModel, .predicting, .readyToPredict:
+      return false
+    case .error:
+      return true
+    }
+  }
+}
+
+private func makeSession(for source: ChatSource) -> Session {
+  switch source.type {
+  case .llama:
+    return Inference(config: .default).makeLlamaSession(with: source.modelURL, config: LlamaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
+  case .alpaca:
+    return Inference(config: .default).makeAlpacaSession(with: source.modelURL, config: AlpacaSessionConfig(numTokens: 512), stateChangeHandler: { _ in })
   }
 }
 
