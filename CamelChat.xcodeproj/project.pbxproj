@@ -143,11 +143,11 @@
 		8227DA6629D857F5000E554D /* sources */ = {
 			isa = PBXGroup;
 			children = (
+				8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */,
 				828164CD29D5D3A3007AE984 /* AddSourceSuccessView.swift */,
 				8227DA8029D88228000E554D /* ConfigureLocalModelSourceView.swift */,
 				8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */,
 				8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */,
-				8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -233,11 +233,11 @@
 			isa = PBXGroup;
 			children = (
 				82914CC129D5ED9200858B2C /* ChatSourcesViewModel.swift */,
+				8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */,
 				82718CFB29D368E500545C32 /* ChatViewModel.swift */,
 				8227DA8C29D8D7E9000E554D /* ChatWindowContentViewModel.swift */,
 				82914CDE29D7A01900858B2C /* composer */,
 				82914CDD29D7A00A00858B2C /* messages */,
-				8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */,
 			);
 			path = chat;
 			sourceTree = "<group>";
