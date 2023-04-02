@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class MainChatViewModel: ObservableObject {
   enum RestorableKey: String {
@@ -30,6 +31,8 @@ class MainChatViewModel: ObservableObject {
 
   lazy private(set) var chatListViewModel = ChatListViewModel(chatSources: chatSources, mainChatViewModel: self)
 
+  private var subscriptions = Set<AnyCancellable>()
+
   init(
     chatSources: ChatSources,
     messagesModel: MessagesModel,
@@ -40,6 +43,12 @@ class MainChatViewModel: ObservableObject {
     self.restorableData = stateRestoration.restorableData(for: "ChatWindow")
     _sidebarWidth = Published(initialValue: restorableData.getValue(for: .sidebarWidth) ?? 200)
     _selectedSourceId = Published(initialValue: restorableData.getValue(for: .selectedSourceId) ?? chatSources.sources.first?.id)
+    chatSources.$sources.scan(nil as [ChatSource]?) { [weak self] (previousSources, newSources) in
+      if newSources.count == 1 && (previousSources?.isEmpty ?? true) {
+        self?.selectedSourceId = newSources.first?.id
+      }
+      return newSources
+    }.sink { _ in }.store(in: &subscriptions)
   }  
 
   func makeChatViewModel(for sourceId: String) -> ChatViewModel? {
