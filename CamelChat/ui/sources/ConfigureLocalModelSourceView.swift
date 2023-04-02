@@ -42,6 +42,7 @@ fileprivate struct ModelPathTextField: View {
 
 struct ConfigureLocalModelSourceView: View {
   @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
+  var presentationStyle: AddSourceFlowPresentationStyle
 
   @ViewBuilder var pathSelector: some View {
     VStack(alignment: .leading) {
@@ -64,16 +65,24 @@ struct ConfigureLocalModelSourceView: View {
     }
   }
 
-  var body: some View {
+  @ViewBuilder var settings: some View {
     let nameBinding = Binding(
       get: { viewModel.name },
       set: { viewModel.name = $0 }
     )
+    TextField("Name", text: nameBinding)
+      .textFieldStyle(.squareBorder)
+    pathSelector
+  }
+
+  var body: some View {
     Form {
-      Section("Set up \(viewModel.modelType) model") {
-        TextField("Name", text: nameBinding)
-          .textFieldStyle(.squareBorder)
-        pathSelector
+      if presentationStyle.showTitle {
+        Section("Set up \(viewModel.modelType) model") {
+          settings
+        }
+      } else {
+        settings
       }
     }
     .formStyle(GroupedFormStyle())

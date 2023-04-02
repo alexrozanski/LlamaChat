@@ -87,7 +87,7 @@ struct AddSourceSheetContentView: View {
       EmptyView()
     case .selectingSource(viewModel: let viewModel):
       VStack {
-        SelectSourceTypeView(viewModel: viewModel)
+        SelectSourceTypeView(viewModel: viewModel, presentationStyle: .standalone)
         HStack {
           Button("Cancel") { self.viewModel.cancel() }
           Spacer()
@@ -96,7 +96,7 @@ struct AddSourceSheetContentView: View {
       }
       .padding()
     case .configuringSource(viewModel: let viewModel):
-      makeConfigureSourceView(from: viewModel)
+      makeConfigureSourceView(from: viewModel, presentationStyle: .standalone)
     }
   }
 

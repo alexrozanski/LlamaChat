@@ -15,10 +15,10 @@ struct SetupView: View {
     case .none:
       EmptyView()
     case .selectingSource(viewModel: let viewModel):
-      SelectSourceTypeView(viewModel: viewModel)
+      SelectSourceTypeView(viewModel: viewModel, presentationStyle: .embedded)
         .navigationTitle("Add model")
     case .configuringSource(viewModel: let viewModel):
-      makeConfigureSourceView(from: viewModel)
+      makeConfigureSourceView(from: viewModel, presentationStyle: .embedded)
         .navigationTitle("Configure model")
     case .success:
       AddSourceSuccessView()

@@ -24,6 +24,7 @@
 		8227DA9729D911A4000E554D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9629D911A4000E554D /* App.swift */; };
 		8227DA9929D919FD000E554D /* ChatInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9829D919FD000E554D /* ChatInfoView.swift */; };
 		8227DA9B29D91A1C000E554D /* ChatInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */; };
+		8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */; };
 		8255EA4A29D58A40000B9F83 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupView.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
@@ -44,7 +45,6 @@
 		82718D0629D368EA00545C32 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0129D368EA00545C32 /* ChatView.swift */; };
 		82718D0729D368EA00545C32 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0229D368EA00545C32 /* ComposeView.swift */; };
 		82718D0829D368EA00545C32 /* MessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0329D368EA00545C32 /* MessageBubbleView.swift */; };
-		828164CC29D59A39007AE984 /* ConfigureAlpacaSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828164CB29D59A39007AE984 /* ConfigureAlpacaSourceView.swift */; };
 		828164CE29D5D3A3007AE984 /* AddSourceSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828164CD29D5D3A3007AE984 /* AddSourceSuccessView.swift */; };
 		82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CBF29D5EB7A00858B2C /* FileUtils.swift */; };
 		82914CC229D5ED9200858B2C /* ChatSourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC129D5ED9200858B2C /* ChatSourcesViewModel.swift */; };
@@ -83,6 +83,7 @@
 		8227DA9829D919FD000E554D /* ChatInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInfoView.swift; sourceTree = "<group>"; };
 		8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInfoViewModel.swift; sourceTree = "<group>"; };
 		8227DA9C29D91F33000E554D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceFlowPresentationStyle.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
@@ -105,7 +106,6 @@
 		82718D0129D368EA00545C32 /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		82718D0229D368EA00545C32 /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		82718D0329D368EA00545C32 /* MessageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleView.swift; sourceTree = "<group>"; };
-		828164CB29D59A39007AE984 /* ConfigureAlpacaSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureAlpacaSourceView.swift; sourceTree = "<group>"; };
 		828164CD29D5D3A3007AE984 /* AddSourceSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceSuccessView.swift; sourceTree = "<group>"; };
 		82914CBF29D5EB7A00858B2C /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
 		82914CC129D5ED9200858B2C /* ChatSourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSourcesViewModel.swift; sourceTree = "<group>"; };
@@ -144,10 +144,10 @@
 			isa = PBXGroup;
 			children = (
 				828164CD29D5D3A3007AE984 /* AddSourceSuccessView.swift */,
-				828164CB29D59A39007AE984 /* ConfigureAlpacaSourceView.swift */,
 				8227DA8029D88228000E554D /* ConfigureLocalModelSourceView.swift */,
 				8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */,
 				8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */,
+				8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -550,6 +550,7 @@
 				82914CE029D7A06C00858B2C /* Message.swift in Sources */,
 				82AE198B29D7A330008189DF /* GeneratedMessageView.swift in Sources */,
 				8227DA8129D88228000E554D /* ConfigureLocalModelSourceView.swift in Sources */,
+				8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */,
 				8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */,
 				82914CD029D76F6300858B2C /* GeneratedMessage.swift in Sources */,
 				8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */,
@@ -557,7 +558,6 @@
 				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
 				8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */,
-				828164CC29D59A39007AE984 /* ConfigureAlpacaSourceView.swift in Sources */,
 				82AE198D29D7A803008189DF /* MessageGenerationState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

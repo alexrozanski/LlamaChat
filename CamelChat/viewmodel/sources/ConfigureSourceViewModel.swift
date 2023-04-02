@@ -33,11 +33,14 @@ class ConfigureSourceNavigationViewModel: ObservableObject {
 
 struct ConfigureSourceNavigationView: View {
   @ObservedObject var viewModel: ConfigureSourceNavigationViewModel
+  var presentationStyle: AddSourceFlowPresentationStyle
 
   var body: some View {
     HStack {
-      Button("Back") {
-        viewModel.goBack()
+      if presentationStyle.showBackButton {
+        Button("Back") {
+          viewModel.goBack()
+        }
       }
       Spacer()
       Button("Add") {
@@ -79,17 +82,18 @@ func makeConfigureLocalAlpacaModelSourceViewModel(
   )
 }
 
-@ViewBuilder func makeConfigureSourceView(from viewModel: ConfigureSourceViewModel) -> some View {
+@ViewBuilder func makeConfigureSourceView(
+  from viewModel: ConfigureSourceViewModel,
+  presentationStyle: AddSourceFlowPresentationStyle
+) -> some View {
   VStack {
     if let viewModel = viewModel as? ConfigureLocalModelSourceViewModel {
-      ConfigureLocalModelSourceView(viewModel: viewModel)
-    } else if let viewModel = viewModel as? ConfigureAlpacaSourceViewModel {
-      ConfigureAlpacaSourceView(viewModel: viewModel)
+      ConfigureLocalModelSourceView(viewModel: viewModel, presentationStyle: presentationStyle)
     } else {
       EmptyView()
     }
     Spacer()
-    ConfigureSourceNavigationView(viewModel: viewModel.navigationViewModel)
+    ConfigureSourceNavigationView(viewModel: viewModel.navigationViewModel, presentationStyle: presentationStyle)
       .padding()
   }
 }
