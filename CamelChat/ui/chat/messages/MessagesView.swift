@@ -12,24 +12,30 @@ struct MessagesView: View {
 
   var body: some View {
     GeometryReader { geometry in
-      ScrollView(.vertical) {
-        VStack {
-          ForEach(viewModel.messages, id: \.id) { messageViewModel in
-            MessageRowView(sender: messageViewModel.sender, maxWidth: geometry.size.width * 0.8) {
-              if let staticMessageViewModel = messageViewModel as? StaticMessageViewModel {
-                MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular) {
-                  Text(staticMessageViewModel.content)
+      ScrollViewReader { proxy in
+        ScrollView(.vertical) {
+          VStack {
+            ForEach(viewModel.messages, id: \.id) { messageViewModel in
+              MessageRowView(sender: messageViewModel.sender, maxWidth: geometry.size.width * 0.8) {
+                if let staticMessageViewModel = messageViewModel as? StaticMessageViewModel {
+                  MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular) {
+                    Text(staticMessageViewModel.content)
+                  }
+                } else if let generatedMessageViewModel = messageViewModel as? GeneratedMessageViewModel {
+                  GeneratedMessageView(viewModel: generatedMessageViewModel)
+                } else {
+                  EmptyView()
                 }
-              } else if let generatedMessageViewModel = messageViewModel as? GeneratedMessageViewModel {
-                GeneratedMessageView(viewModel: generatedMessageViewModel)
-              } else {
-                EmptyView()
               }
+              .id(messageViewModel.id)
             }
           }
+          .frame(maxWidth: .infinity)
+          .padding()
         }
-        .frame(maxWidth: .infinity)
-        .padding()
+        .onAppear {
+          proxy.scrollTo(viewModel.messages.last?.id, anchor: .top)
+        }
       }
     }
   }
