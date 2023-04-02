@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainChatView.swift
 //  Camel
 //
 //  Created by Alex Rozanski on 26/03/2023.
@@ -15,13 +15,13 @@ struct ChatWindowSourceItemView: View {
   }
 }
 
-struct ChatWindowContentView: View {
-  @ObservedObject var viewModel: ChatWindowContentViewModel
+struct MainChatView: View {
+  @ObservedObject var viewModel: MainChatViewModel
 
   @State var initialWidth: Double?
   @State var selectedChatViewModel: ChatViewModel?
 
-  init(viewModel: ChatWindowContentViewModel) {
+  init(viewModel: MainChatViewModel) {
     self.viewModel = viewModel
     _initialWidth = State(wrappedValue: viewModel.sidebarWidth)
   }

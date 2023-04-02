@@ -1,5 +1,5 @@
 //
-//  ChatWindowContentViewModel.swift
+//  MainChatViewModel.swift
 //  CamelChat
 //
 //  Created by Alex Rozanski on 01/04/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ChatWindowContentViewModel: ObservableObject {
+class MainChatViewModel: ObservableObject {
   enum RestorableKey: String {
     case sidebarWidth
     case selectedSourceId

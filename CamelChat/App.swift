@@ -31,7 +31,7 @@ class CamelChatAppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 struct CamelChatApp: App {
   @NSApplicationDelegateAdaptor private var appDelegate: CamelChatAppDelegate
 
-  @StateObject var chatWindowContentViewModel: ChatWindowContentViewModel = ChatWindowContentViewModel(
+  @StateObject var mainChatViewModel: MainChatViewModel = MainChatViewModel(
     chatSources: Dependencies.shared.chatSources,
     messagesModel: Dependencies.shared.messagesModel,
     stateRestoration: Dependencies.shared.stateRestoration
@@ -45,7 +45,7 @@ struct CamelChatApp: App {
     }
     .windowToolbarStyle(.expanded)
     Window("Chat", id: "chat") {
-      ChatWindowContentView(viewModel: chatWindowContentViewModel)
+      MainChatView(viewModel: mainChatViewModel)
     }
     WindowGroup("Setup") {
       SetupView(viewModel: setupViewModel)

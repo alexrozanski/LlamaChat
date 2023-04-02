@@ -41,7 +41,7 @@
 		82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CFA29D368E500545C32 /* ComposeViewModel.swift */; };
 		82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CFB29D368E500545C32 /* ChatViewModel.swift */; };
 		82718D0429D368EA00545C32 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CFF29D368EA00545C32 /* MessagesView.swift */; };
-		82718D0529D368EA00545C32 /* ChatWindowContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0029D368EA00545C32 /* ChatWindowContentView.swift */; };
+		82718D0529D368EA00545C32 /* MainChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0029D368EA00545C32 /* MainChatView.swift */; };
 		82718D0629D368EA00545C32 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0129D368EA00545C32 /* ChatView.swift */; };
 		82718D0729D368EA00545C32 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0229D368EA00545C32 /* ComposeView.swift */; };
 		82718D0829D368EA00545C32 /* MessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0329D368EA00545C32 /* MessageBubbleView.swift */; };
@@ -102,7 +102,7 @@
 		82718CFA29D368E500545C32 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		82718CFB29D368E500545C32 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		82718CFF29D368EA00545C32 /* MessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
-		82718D0029D368EA00545C32 /* ChatWindowContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatWindowContentView.swift; sourceTree = "<group>"; };
+		82718D0029D368EA00545C32 /* MainChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainChatView.swift; sourceTree = "<group>"; };
 		82718D0129D368EA00545C32 /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		82718D0229D368EA00545C32 /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		82718D0329D368EA00545C32 /* MessageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleView.swift; sourceTree = "<group>"; };
@@ -192,7 +192,7 @@
 		8255EA4729D58A0C000B9F83 /* chat */ = {
 			isa = PBXGroup;
 			children = (
-				82718D0029D368EA00545C32 /* ChatWindowContentView.swift */,
+				82718D0029D368EA00545C32 /* MainChatView.swift */,
 				8227DA9829D919FD000E554D /* ChatInfoView.swift */,
 				82718D0129D368EA00545C32 /* ChatView.swift */,
 				82914CDC29D79F9A00858B2C /* composer */,
@@ -533,7 +533,7 @@
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,
 				8255EA4A29D58A40000B9F83 /* SetupView.swift in Sources */,
 				82914CCE29D76C0600858B2C /* GeneratedMessageViewModel.swift in Sources */,
-				82718D0529D368EA00545C32 /* ChatWindowContentView.swift in Sources */,
+				82718D0529D368EA00545C32 /* MainChatView.swift in Sources */,
 				8227DA9B29D91A1C000E554D /* ChatInfoViewModel.swift in Sources */,
 				8255EA5E29D59892000B9F83 /* ConfigureSourceViewModel.swift in Sources */,
 				82914CD829D79DD000858B2C /* MessageRowView.swift in Sources */,
