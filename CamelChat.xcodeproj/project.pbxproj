@@ -26,6 +26,7 @@
 		8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */; };
 		8227DAA029D98577000E554D /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9F29D98577000E554D /* ChatListView.swift */; };
 		8227DAA329D992BF000E554D /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DAA229D992BF000E554D /* llama */; };
+		8227DAB429D9E710000E554D /* MessageRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DAB329D9E710000E554D /* MessageRowViewModel.swift */; };
 		8255EA4A29D58A40000B9F83 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupView.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
@@ -86,6 +87,7 @@
 		8227DA9C29D91F33000E554D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceFlowPresentationStyle.swift; sourceTree = "<group>"; };
 		8227DA9F29D98577000E554D /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
+		8227DAB329D9E710000E554D /* MessageRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRowViewModel.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				82718CF929D368E500545C32 /* MessagesViewModel.swift */,
 				82914CCD29D76C0600858B2C /* GeneratedMessageViewModel.swift */,
 				82914CD929D79DFD00858B2C /* StaticMessageViewModel.swift */,
+				8227DAB329D9E710000E554D /* MessageRowViewModel.swift */,
 			);
 			path = messages;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				8227DA8129D88228000E554D /* ConfigureLocalModelSourceView.swift in Sources */,
 				8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */,
 				8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */,
+				8227DAB429D9E710000E554D /* MessageRowViewModel.swift in Sources */,
 				82914CD029D76F6300858B2C /* GeneratedMessage.swift in Sources */,
 				8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */,
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,

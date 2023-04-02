@@ -27,8 +27,8 @@ class ChatModel: ObservableObject {
     case responding
   }  
 
-  @Published var messages: [Message]
-  @Published var replyState: ReplyState = .none
+  @Published private(set) var messages: [Message]
+  @Published private(set) var replyState: ReplyState = .none
 
   private var currentPredictionCancellable: PredictionCancellable?
 

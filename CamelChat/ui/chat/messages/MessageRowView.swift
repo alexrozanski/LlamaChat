@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct MessageRowView<MessageView>: View where MessageView: View {
-  typealias MessageBuilder = () -> MessageView
+  typealias MessageBuilder = (MessageViewModel) -> MessageView
+
+  var viewModel: MessageRowViewModel
 
   let sender: Sender
   let maxWidth: Double?
@@ -19,7 +21,7 @@ struct MessageRowView<MessageView>: View where MessageView: View {
       if sender.isMe {
         Spacer()
       }
-      messageBuilder()
+      messageBuilder(viewModel.messageViewModel)
       .frame(maxWidth: maxWidth ?? .infinity, alignment: sender.isMe ? .trailing : .leading)
       if !sender.isMe {
         Spacer()
