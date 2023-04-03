@@ -10,7 +10,9 @@ import llama
 
 class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
   typealias AddSourceHandler = (ChatSource) -> Void
-  typealias GoBackHandler = () -> Void  
+  typealias GoBackHandler = () -> Void
+
+  private lazy var nameGenerator = SourceNameGenerator()
 
   @Published var name: String {
     didSet {
@@ -95,6 +97,12 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   private func validate() {
     navigationViewModel.canContinue = modelPathState.isValid && !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+  }
+
+  func generateName() {
+    if let generatedName = nameGenerator.generateName(for: chatSourceType) {
+      name = generatedName
+    }
   }
 }
 

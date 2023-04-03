@@ -17,32 +17,9 @@ extension VerticalAlignment {
   static let modelPathField = VerticalAlignment(ModelPathField.self)
 }
 
-fileprivate struct ModelPathTextField: View {
-  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
-
-  var body: some View {
-    VStack(alignment: .trailing) {
-      Text(viewModel.modelPath ?? "No path selected")
-        .lineLimit(1)
-        .truncationMode(.head)
-        .frame(maxWidth: 200, alignment: .trailing)
-        .help(viewModel.modelPath ?? "")
-      if viewModel.modelPathState == .invalid {
-        HStack(spacing: 4) {
-          Image(systemName: "exclamationmark.triangle")
-            .foregroundColor(.red)
-          Text("Model file not found at path")
-            .foregroundColor(.red)
-            .font(.footnote)
-        }
-      }
-    }
-  }
-}
-
 struct ConfigureLocalModelSourceView: View {
   @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
-  var presentationStyle: AddSourceFlowPresentationStyle
+  var presentationStyle: AddSourceFlowPresentationStyle  
 
   @FocusState var isNameFocused: Bool
 
@@ -50,7 +27,11 @@ struct ConfigureLocalModelSourceView: View {
     VStack(alignment: .leading) {
       HStack(alignment: .modelPathField) {
         LabeledContent("Model path") {
-          ModelPathTextField(viewModel: viewModel)
+          Text(viewModel.modelPath ?? "No path selected")
+            .lineLimit(1)
+            .truncationMode(.head)
+            .frame(maxWidth: 200, alignment: .trailing)
+            .help(viewModel.modelPath ?? "")
         }
         Button(action: {
           let panel = NSOpenPanel()
@@ -76,9 +57,14 @@ struct ConfigureLocalModelSourceView: View {
       get: { viewModel.name },
       set: { viewModel.name = $0 }
     )
-    TextField("Name", text: nameBinding)
-      .textFieldStyle(.squareBorder)
-      .focused($isNameFocused)
+    HStack {
+      TextField("Name", text: nameBinding)
+        .textFieldStyle(.squareBorder)
+        .focused($isNameFocused)
+      Button(action: {
+        viewModel.generateName()
+      }, label: { Image(systemName: "hands.sparkles.fill") })
+    }
   }
 
   @ViewBuilder var modelGroup: some View {

@@ -28,6 +28,8 @@
 		8227DAB429D9E710000E554D /* MessageRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DAB329D9E710000E554D /* MessageRowViewModel.swift */; };
 		8227DAC429DA4915000E554D /* ModelSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DAC329DA4915000E554D /* ModelSize.swift */; };
 		8227DAC729DA500A000E554D /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DAC629DA500A000E554D /* llama */; };
+		8227DACA29DA5080000E554D /* names.json in Resources */ = {isa = PBXBuildFile; fileRef = 8227DAC929DA5080000E554D /* names.json */; };
+		8227DACC29DA53EA000E554D /* SourceNameGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DACB29DA53EA000E554D /* SourceNameGenerator.swift */; };
 		8255EA4A29D58A40000B9F83 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupView.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
@@ -90,6 +92,8 @@
 		8227DA9F29D98577000E554D /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		8227DAB329D9E710000E554D /* MessageRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRowViewModel.swift; sourceTree = "<group>"; };
 		8227DAC329DA4915000E554D /* ModelSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSize.swift; sourceTree = "<group>"; };
+		8227DAC929DA5080000E554D /* names.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = names.json; sourceTree = "<group>"; };
+		8227DACB29DA53EA000E554D /* SourceNameGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceNameGenerator.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
@@ -195,6 +199,14 @@
 			path = restoration;
 			sourceTree = "<group>";
 		};
+		8227DAC829DA5060000E554D /* data */ = {
+			isa = PBXGroup;
+			children = (
+				8227DAC929DA5080000E554D /* names.json */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
 		8255EA4729D58A0C000B9F83 /* chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +234,7 @@
 				8255EA4F29D58B2B000B9F83 /* ChatSources.swift */,
 				8255EA5529D58C58000B9F83 /* ChatSourceType.swift */,
 				8227DAC329DA4915000E554D /* ModelSize.swift */,
+				8227DACB29DA53EA000E554D /* SourceNameGenerator.swift */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -290,6 +303,7 @@
 			children = (
 				8227DA9C29D91F33000E554D /* Info.plist */,
 				8227DA9629D911A4000E554D /* App.swift */,
+				8227DAC829DA5060000E554D /* data */,
 				82718CF029D368A000545C32 /* model */,
 				82718CF129D368C200545C32 /* ui */,
 				82914CBE29D5EB7100858B2C /* util */,
@@ -504,6 +518,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */,
+				8227DACA29DA5080000E554D /* names.json in Resources */,
 				82718CE229D3686300545C32 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -567,6 +582,7 @@
 				8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */,
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
 				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
+				8227DACC29DA53EA000E554D /* SourceNameGenerator.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
 				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */,
