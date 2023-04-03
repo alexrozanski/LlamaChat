@@ -66,7 +66,15 @@ class ChatModel: ObservableObject {
   @Published private(set) var messages: [Message]
   @Published private(set) var replyState: ReplyState = .none
 
-  @Published private(set) var lastChatContext: ChatContext? = nil
+  @Published private(set) var lastChatContext: ChatContext? = nil {
+    didSet {
+      guard let lastChatContext else {
+        canClearContext = false
+        return
+      }
+      canClearContext = lastChatContext.contextString != nil && lastChatContext.tokens != nil
+    }
+  }
   @Published private(set) var canClearContext: Bool = false
 
   private var currentPredictionCancellable: PredictionCancellable?
@@ -93,7 +101,9 @@ class ChatModel: ObservableObject {
   func loadContext() async throws -> ChatContext {
     let sessionContext = try await getReadySession().currentContext()
     let context = ChatModel.ChatContext(sessionContext: sessionContext)
-    self.lastChatContext = context
+    await MainActor.run {
+      self.lastChatContext = context
+    }
     return context
   }
 
@@ -122,6 +132,8 @@ class ChatModel: ObservableObject {
     }
 
     self.session = newSession
+    self.lastChatContext = nil
+
     return newSession
   }
 
@@ -151,7 +163,6 @@ class ChatModel: ObservableObject {
           message.updateState(.generating)
           self.replyState = .responding
           hasReceivedTokens = true
-          self.canClearContext = true
         }
 
         message.append(contents: token)
