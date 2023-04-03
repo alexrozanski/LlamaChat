@@ -14,14 +14,7 @@ struct ChatInfoView: View {
     Form {
       Section {
         VStack {
-          Circle()
-            .fill(.gray)
-            .frame(width: 48, height: 48)
-            .overlay {
-              Text(String(viewModel.name.prefix(1)))
-                .font(.system(size: 24))
-                .foregroundColor(.white)
-            }
+          AvatarView(viewModel: viewModel.avatarViewModel, size: .large)
             .padding(.bottom, 8)
           Text(viewModel.name)
             .font(.headline)

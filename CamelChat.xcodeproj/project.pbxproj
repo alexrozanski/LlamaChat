@@ -69,6 +69,8 @@
 		82AE199829D83206008189DF /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199729D83205008189DF /* SettingsViewModel.swift */; };
 		82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199A29D834AE008189DF /* SourcesSettingsView.swift */; };
 		82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */; };
+		82C6869A29DA627800B76BA6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869929DA627800B76BA6 /* AvatarView.swift */; };
+		82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -135,6 +137,8 @@
 		82AE199729D83205008189DF /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		82AE199A29D834AE008189DF /* SourcesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsView.swift; sourceTree = "<group>"; };
 		82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsViewModel.swift; sourceTree = "<group>"; };
+		82C6869929DA627800B76BA6 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +218,7 @@
 				8227DA9F29D98577000E554D /* ChatListView.swift */,
 				8227DA9829D919FD000E554D /* ChatInfoView.swift */,
 				82718D0129D368EA00545C32 /* ChatView.swift */,
+				82C6869E29DA637400B76BA6 /* avatar */,
 				82914CDC29D79F9A00858B2C /* composer */,
 				82914CDB29D79F9200858B2C /* messages */,
 			);
@@ -257,6 +262,7 @@
 				82914CC129D5ED9200858B2C /* ChatListViewModel.swift */,
 				82718CFB29D368E500545C32 /* ChatViewModel.swift */,
 				8227DA8C29D8D7E9000E554D /* ChatWindowContentViewModel.swift */,
+				82C6869D29DA636A00B76BA6 /* avatar */,
 				82914CDE29D7A01900858B2C /* composer */,
 				82914CDD29D7A00A00858B2C /* messages */,
 			);
@@ -451,6 +457,22 @@
 			path = tabs;
 			sourceTree = "<group>";
 		};
+		82C6869D29DA636A00B76BA6 /* avatar */ = {
+			isa = PBXGroup;
+			children = (
+				82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */,
+			);
+			path = avatar;
+			sourceTree = "<group>";
+		};
+		82C6869E29DA637400B76BA6 /* avatar */ = {
+			isa = PBXGroup;
+			children = (
+				82C6869929DA627800B76BA6 /* AvatarView.swift */,
+			);
+			path = avatar;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -569,6 +591,7 @@
 				8227DA7829D86633000E554D /* SourcesSettingsDetailViewModel.swift in Sources */,
 				8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */,
 				8227DA9929D919FD000E554D /* ChatInfoView.swift in Sources */,
+				82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,
 				82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */,
 				828164CE29D5D3A3007AE984 /* AddSourceSuccessView.swift in Sources */,
@@ -587,6 +610,7 @@
 				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */,
 				82AE198D29D7A803008189DF /* MessageGenerationState.swift in Sources */,
+				82C6869A29DA627800B76BA6 /* AvatarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

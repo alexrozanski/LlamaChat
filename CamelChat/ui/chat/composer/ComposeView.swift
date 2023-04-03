@@ -12,7 +12,7 @@ struct ComposeView: View {
 
   @FocusState private var isFocused: Bool
 
-  var body: some View {
+  @ViewBuilder var textField: some View {
     let messageEmpty = viewModel.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     HStack(spacing: 4) {
       BorderlessTextField("Chat here...", text: $viewModel.text)
@@ -44,6 +44,24 @@ struct ComposeView: View {
             .stroke(Color(NSColor.separatorColor.cgColor))
         }
     )
+  }
+
+  var body: some View {
+    HStack {
+      if viewModel.canClearContext {
+        Button(action: {
+          viewModel.clearContext()
+        }, label: {
+          Image(systemName: "eraser.line.dashed")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 20, height: 20)
+        })
+        .buttonStyle(BorderlessButtonStyle())
+        .help("Clear model context")
+      }
+      textField
+    }
     .padding()
     .background(Color(NSColor.controlBackgroundColor.cgColor))
     .onAppear {

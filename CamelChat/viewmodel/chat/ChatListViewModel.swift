@@ -12,9 +12,29 @@ class ChatListItemViewModel: ObservableObject {
   private let chatSource: ChatSource
 
   var id: String { chatSource.id }
+  var modelDescription: String {
+    var suffix: String
+    switch chatSource.modelSize {
+    case .unknown: suffix = ""
+    case .size7B: suffix = " (7B)"
+    case .size12B: suffix = " (12B)"
+    case .size30B: suffix = " (30B)"
+    case .size65B: suffix = " (65B)"
+    }
+
+    var sourceType: String
+    switch chatSource.type {
+    case .llama: sourceType = "LLaMA"
+    case .alpaca: sourceType = "Alpaca"
+    }
+
+    return "\(sourceType)\(suffix)"
+  }
   @Published var title: String
 
   private var subscriptions = Set<AnyCancellable>()
+
+  private(set) lazy var avatarViewModel = AvatarViewModel(chatSource: chatSource)
 
   fileprivate init(chatSource: ChatSource) {
     self.chatSource = chatSource

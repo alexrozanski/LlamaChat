@@ -11,7 +11,16 @@ fileprivate struct ItemView: View {
   @ObservedObject var viewModel: ChatListItemViewModel
 
   var body: some View {
-    Text(viewModel.title)
+    HStack {
+      AvatarView(viewModel: viewModel.avatarViewModel, size: .medium)
+      VStack(alignment: .leading, spacing: 4) {
+        Text(viewModel.title)
+          .font(.system(size: 13, weight: .semibold))
+        Text(viewModel.modelDescription)
+          .font(.system(size: 11))
+      }
+    }
+    .padding(8)
   }
 }
 

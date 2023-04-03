@@ -56,6 +56,8 @@ class ChatInfoViewModel: ObservableObject {
   @Published private(set) var context: ModelStat<String> = .none
   @Published private(set) var contextTokenCount: ModelStat<Int> = .none
 
+  private(set) lazy var avatarViewModel = AvatarViewModel(chatSource: chatModel.source)
+
   init(chatModel: ChatModel) {
     self.chatModel = chatModel
   }
