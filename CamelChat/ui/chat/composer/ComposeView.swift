@@ -45,6 +45,7 @@ struct ComposeView: View {
         }
     )
     .padding()
+    .background(Color(NSColor.controlBackgroundColor.cgColor))
     .onAppear {
       isFocused = true
     }

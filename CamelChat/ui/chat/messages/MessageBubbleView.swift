@@ -55,7 +55,7 @@ struct MessageBubbleView<Content>: View where Content: View {
     if isError {
       return .white
     }
-    return sender.isMe ? .white : .black
+    return sender.isMe ? .white : .primary
   }
 
   private func updateScaleAnimation(with style: Style) {

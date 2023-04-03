@@ -13,7 +13,7 @@ struct ChatView: View {
   @State var presentingInfo = false
 
   var body: some View {
-    VStack {
+    VStack(spacing: 0) {
       MessagesView(viewModel: viewModel.messagesViewModel)
       ComposeView(viewModel: viewModel.composeViewModel)
     }

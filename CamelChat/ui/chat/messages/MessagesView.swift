@@ -50,5 +50,6 @@ struct MessagesView: View {
         }
       }
     }
+    .background(Color(NSColor.controlBackgroundColor.cgColor))
   }
 }
