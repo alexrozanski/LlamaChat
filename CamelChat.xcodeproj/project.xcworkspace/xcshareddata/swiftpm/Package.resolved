@@ -2,10 +2,11 @@
   "pins" : [
     {
       "identity" : "llama.swift",
-      "kind" : "localSourceControl",
-      "location" : "/Users/rozanski/Documents/GitHub/llama.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alexrozanski/llama.swift.git",
       "state" : {
-        "revision" : "dff6a68dd2a6052e4ecea621e36720f6534a61fb"
+        "branch" : "v2",
+        "revision" : "2586851d3e60e33e011c1ee490d4ac35a9877598"
       }
     },
     {

@@ -25,8 +25,9 @@
 		8227DA9B29D91A1C000E554D /* ChatInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9A29D91A1C000E554D /* ChatInfoViewModel.swift */; };
 		8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */; };
 		8227DAA029D98577000E554D /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9F29D98577000E554D /* ChatListView.swift */; };
-		8227DAA329D992BF000E554D /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DAA229D992BF000E554D /* llama */; };
 		8227DAB429D9E710000E554D /* MessageRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DAB329D9E710000E554D /* MessageRowViewModel.swift */; };
+		8227DAC429DA4915000E554D /* ModelSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DAC329DA4915000E554D /* ModelSize.swift */; };
+		8227DAC729DA500A000E554D /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DAC629DA500A000E554D /* llama */; };
 		8255EA4A29D58A40000B9F83 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4929D58A40000B9F83 /* SetupView.swift */; };
 		8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA4F29D58B2B000B9F83 /* ChatSources.swift */; };
 		8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5329D58B89000B9F83 /* SetupViewModel.swift */; };
@@ -88,6 +89,7 @@
 		8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceFlowPresentationStyle.swift; sourceTree = "<group>"; };
 		8227DA9F29D98577000E554D /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		8227DAB329D9E710000E554D /* MessageRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRowViewModel.swift; sourceTree = "<group>"; };
+		8227DAC329DA4915000E554D /* ModelSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSize.swift; sourceTree = "<group>"; };
 		8255EA4929D58A40000B9F83 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		8255EA4F29D58B2B000B9F83 /* ChatSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSources.swift; sourceTree = "<group>"; };
 		8255EA5329D58B89000B9F83 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
@@ -136,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8227DAA329D992BF000E554D /* llama in Frameworks */,
+				8227DAC729DA500A000E554D /* llama in Frameworks */,
 				8227DA9329D8F841000E554D /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,6 +221,7 @@
 			children = (
 				8255EA4F29D58B2B000B9F83 /* ChatSources.swift */,
 				8255EA5529D58C58000B9F83 /* ChatSourceType.swift */,
+				8227DAC329DA4915000E554D /* ModelSize.swift */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -452,7 +455,7 @@
 			name = CamelChat;
 			packageProductDependencies = (
 				8227DA9229D8F841000E554D /* SQLite */,
-				8227DAA229D992BF000E554D /* llama */,
+				8227DAC629DA500A000E554D /* llama */,
 			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* CamelChat.app */;
@@ -484,7 +487,7 @@
 			mainGroup = 82718CD129D3686200545C32;
 			packageReferences = (
 				8227DA9129D8F841000E554D /* XCRemoteSwiftPackageReference "SQLite.swift" */,
-				8227DAA129D992BF000E554D /* XCRemoteSwiftPackageReference "llama" */,
+				8227DAC529DA500A000E554D /* XCRemoteSwiftPackageReference "llama.swift" */,
 			);
 			productRefGroup = 82718CDB29D3686200545C32 /* Products */;
 			projectDirPath = "";
@@ -565,6 +568,7 @@
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
 				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
+				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */,
 				82AE198D29D7A803008189DF /* MessageGenerationState.swift in Sources */,
 			);
@@ -776,12 +780,12 @@
 				minimumVersion = 0.9.2;
 			};
 		};
-		8227DAA129D992BF000E554D /* XCRemoteSwiftPackageReference "llama" */ = {
+		8227DAC529DA500A000E554D /* XCRemoteSwiftPackageReference "llama.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = /Users/rozanski/Documents/GitHub/llama.swift;
+			repositoryURL = "https://github.com/alexrozanski/llama.swift.git";
 			requirement = {
-				kind = revision;
-				revision = dff6a68dd2a6052e4ecea621e36720f6534a61fb;
+				branch = v2;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -792,9 +796,9 @@
 			package = 8227DA9129D8F841000E554D /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
 		};
-		8227DAA229D992BF000E554D /* llama */ = {
+		8227DAC629DA500A000E554D /* llama */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8227DAA129D992BF000E554D /* XCRemoteSwiftPackageReference "llama" */;
+			package = 8227DAC529DA500A000E554D /* XCRemoteSwiftPackageReference "llama.swift" */;
 			productName = llama;
 		};
 /* End XCSwiftPackageProductDependency section */

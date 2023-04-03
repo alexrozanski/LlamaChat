@@ -22,11 +22,11 @@ fileprivate struct ModelPathTextField: View {
 
   var body: some View {
     VStack(alignment: .trailing) {
-      TextField("Model path", text: $viewModel.modelPath, prompt: Text("/path/to/model/file"))
-        .textFieldStyle(.squareBorder)
-        .alignmentGuide(.modelPathField, computeValue: { dimension in
-          dimension[VerticalAlignment.center]
-        })
+      Text(viewModel.modelPath ?? "No path selected")
+        .lineLimit(1)
+        .truncationMode(.head)
+        .frame(maxWidth: 200, alignment: .trailing)
+        .help(viewModel.modelPath ?? "")
       if viewModel.modelPathState == .invalid {
         HStack(spacing: 4) {
           Image(systemName: "exclamationmark.triangle")
@@ -44,10 +44,14 @@ struct ConfigureLocalModelSourceView: View {
   @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
   var presentationStyle: AddSourceFlowPresentationStyle
 
+  @FocusState var isNameFocused: Bool
+
   @ViewBuilder var pathSelector: some View {
     VStack(alignment: .leading) {
       HStack(alignment: .modelPathField) {
-        ModelPathTextField(viewModel: viewModel)
+        LabeledContent("Model path") {
+          ModelPathTextField(viewModel: viewModel)
+        }
         Button(action: {
           let panel = NSOpenPanel()
           panel.allowsMultipleSelection = false
@@ -56,7 +60,7 @@ struct ConfigureLocalModelSourceView: View {
             viewModel.modelPath = panel.url?.path ?? ""
           }
         }, label: {
-          Image(systemName: "ellipsis")
+          Text("Select...")
         })
       }
       Text("Select the quantized \(viewModel.modelType) model path. This should be called something like '\(viewModel.exampleModelPath)'")
@@ -65,26 +69,52 @@ struct ConfigureLocalModelSourceView: View {
     }
   }
 
-  @ViewBuilder var settings: some View {
+  @State var selectedModelType: String = ""
+
+  @ViewBuilder var nameGroup: some View {
     let nameBinding = Binding(
       get: { viewModel.name },
       set: { viewModel.name = $0 }
     )
     TextField("Name", text: nameBinding)
       .textFieldStyle(.squareBorder)
+      .focused($isNameFocused)
+  }
+
+  @ViewBuilder var modelGroup: some View {
+    let modelTypeBinding = Binding(
+      get: { viewModel.modelSize },
+      set: { viewModel.modelSize = $0 }
+    )
     pathSelector
+    Picker("Number of Parameters", selection: modelTypeBinding) {
+      Text("7B").tag(ModelSize.size7B)
+      Text("12B").tag(ModelSize.size12B)
+      Text("30B").tag(ModelSize.size30B)
+      Text("65B").tag(ModelSize.size65B)
+      Text("Unknown").tag(ModelSize.unknown)
+    }
+    .disabled(!viewModel.modelPathState.isValid)
   }
 
   var body: some View {
     Form {
       if presentationStyle.showTitle {
         Section("Set up \(viewModel.modelType) model") {
-          settings
+          nameGroup
         }
       } else {
-        settings
+        Section {
+          nameGroup
+        }
+      }
+      Section("Model Settings") {
+        modelGroup
       }
     }
     .formStyle(GroupedFormStyle())
+    .onAppear {
+      isNameFocused = true
+    }
   }
 }

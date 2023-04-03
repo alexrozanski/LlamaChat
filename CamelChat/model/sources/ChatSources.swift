@@ -20,6 +20,7 @@ class ChatSource: Codable, Equatable, ObservableObject {
   }
   let type: ChatSourceType
   let modelURL: URL
+  let modelSize: ModelSize
 
   fileprivate weak var chatSources: ChatSources?
 
@@ -28,6 +29,7 @@ class ChatSource: Codable, Equatable, ObservableObject {
     case name
     case type
     case modelURL
+    case modelSize
   }
 
   required init(from decoder: Decoder) throws {
@@ -37,6 +39,7 @@ class ChatSource: Codable, Equatable, ObservableObject {
     name = try values.decode(String.self, forKey: .name)
     type = try values.decode(ChatSourceType.self, forKey: .type)
     modelURL = try values.decode(URL.self, forKey: .modelURL)
+    modelSize = try values.decode(ModelSize.self, forKey: .modelSize)
   }
 
   func encode(to encoder: Encoder) throws {
@@ -45,20 +48,23 @@ class ChatSource: Codable, Equatable, ObservableObject {
     try container.encode(name, forKey: .name)
     try container.encode(type, forKey: .type)
     try container.encode(modelURL, forKey: .modelURL)
+    try container.encode(modelSize, forKey: .modelSize)
   }
 
-  init(name: String, type: ChatSourceType, modelURL: URL) {
+  init(name: String, type: ChatSourceType, modelURL: URL, modelSize: ModelSize) {
     self.id = UUID().uuidString
     self.name = name
     self.type = type
     self.modelURL = modelURL
+    self.modelSize = modelSize
   }
 
   static func == (lhs: ChatSource, rhs: ChatSource) -> Bool {
     return lhs.id == rhs.id &&
     lhs.name == rhs.name &&
     lhs.type == rhs.type &&
-    lhs.modelURL == rhs.modelURL
+    lhs.modelURL == rhs.modelURL &&
+    lhs.modelSize == rhs.modelSize
   }
 }
 
