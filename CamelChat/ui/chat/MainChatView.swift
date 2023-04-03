@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainChatView: View {
+  @Environment(\.openWindow) var openWindow
+
   @ObservedObject var viewModel: MainChatViewModel
 
   @State var initialWidth: Double?
@@ -29,7 +31,11 @@ struct MainChatView: View {
       )
       .toolbar {
         Spacer()
-        Button {} label: { Image(systemName: "square.and.pencil") }
+        Button {
+          openWindow(id: WindowIdentifier.setup.rawValue)
+        } label: {
+          Image(systemName: "square.and.pencil")
+        }
       }
     }
   }

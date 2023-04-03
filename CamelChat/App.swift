@@ -30,6 +30,7 @@ class CamelChatAppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
 enum WindowIdentifier: String {
   case chat
+  case setup
   case modelContext
 }
 
@@ -51,12 +52,15 @@ struct CamelChatApp: App {
       SettingsView(viewModel: settingsViewModel)
     }
     .windowToolbarStyle(.expanded)
+
     Window("Chat", id: WindowIdentifier.chat.rawValue) {
       MainChatView(viewModel: mainChatViewModel)
     }
-    WindowGroup("Setup") {
+
+    WindowGroup("Setup", id: WindowIdentifier.setup.rawValue) {
       SetupView(viewModel: setupViewModel)
     }
+    .windowResizability(.contentSize)
     .windowToolbarStyle(.unified)
     .handlesExternalEvents(matching: Set(arrayLiteral: "setup"))
 

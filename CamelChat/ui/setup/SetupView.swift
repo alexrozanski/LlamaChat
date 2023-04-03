@@ -44,5 +44,6 @@ struct SetupView: View {
       .onAppear {
         viewModel.start()
       }
+      .frame(width: 600, height: 380)
   }
 }
