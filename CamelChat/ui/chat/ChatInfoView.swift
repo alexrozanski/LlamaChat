@@ -16,10 +16,12 @@ struct ChatInfoView: View {
         VStack {
           AvatarView(viewModel: viewModel.avatarViewModel, size: .large)
             .padding(.bottom, 8)
-          Text(viewModel.name)
-            .font(.headline)
-          Text(viewModel.modelType)
-            .font(.system(size: 11))
+          VStack(spacing: 4) {
+            Text(viewModel.name)
+              .font(.headline)
+            Text(viewModel.modelType)
+              .font(.system(size: 12))
+          }
         }
         .frame(maxWidth: .infinity)
       }
