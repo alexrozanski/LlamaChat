@@ -22,13 +22,27 @@ class ChatInfoViewModel: ObservableObject {
       case .value(let value): return transform(value)
       }
     }
+
+    var value: V? {
+      switch self {
+      case .none, .unknown, .loading:
+        return nil
+      case .value(let value):
+        return value
+      }
+    }
   }
 
   private let chatModel: ChatModel
 
-  var name: String {
-    chatModel.source.name
+  var sourceId: ChatSource.ID {
+    return chatModel.source.id
   }
+
+  var name: String {
+    return chatModel.source.name
+  }
+  
   var modelSize: String {
     switch chatModel.source.modelSize {
     case .unknown:

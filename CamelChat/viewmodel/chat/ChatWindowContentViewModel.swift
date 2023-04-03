@@ -15,6 +15,7 @@ class MainChatViewModel: ObservableObject {
   }
 
   private let chatSources: ChatSources
+  private let chatModels: ChatModels
   private let messagesModel: MessagesModel
   private let restorableData: any RestorableData<RestorableKey>
 
@@ -35,10 +36,12 @@ class MainChatViewModel: ObservableObject {
 
   init(
     chatSources: ChatSources,
+    chatModels: ChatModels,
     messagesModel: MessagesModel,
     stateRestoration: StateRestoration
   ) {
     self.chatSources = chatSources
+    self.chatModels = chatModels
     self.messagesModel = messagesModel
     self.restorableData = stateRestoration.restorableData(for: "ChatWindow")
     _sidebarWidth = Published(initialValue: restorableData.getValue(for: .sidebarWidth) ?? 200)
@@ -53,6 +56,6 @@ class MainChatViewModel: ObservableObject {
 
   func makeChatViewModel(for sourceId: String) -> ChatViewModel? {
     guard let chatSource = chatSources.sources.first(where: { $0.id == sourceId }) else { return nil }
-    return ChatViewModel(chatSource: chatSource, messagesModel: messagesModel)
+    return ChatViewModel(chatSource: chatSource, chatModels: chatModels, messagesModel: messagesModel)
   }
 }

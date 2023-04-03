@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ChatInfoView: View {
+  @Environment(\.openWindow) var openWindow
+
   @ObservedObject var viewModel: ChatInfoViewModel
 
   var body: some View {
@@ -32,7 +34,15 @@ struct ChatInfoView: View {
           Text("Model Size")
         })
         LabeledContent(content: {
-          modelStatText(modelStat: viewModel.contextTokenCount, unit: Unit(singular: "token", plural: "tokens"))
+          VStack(alignment: .trailing) {
+            modelStatText(modelStat: viewModel.contextTokenCount, unit: Unit(singular: "token", plural: "tokens"))
+            if let value = viewModel.contextTokenCount.value, value > 0 {
+              Button(action: {
+                openWindow(id: WindowIdentifier.modelContext.rawValue, value: viewModel.sourceId)
+              }, label: { Text("Show...") })
+                .focusable(false)
+            }
+          }
         }, label: {
           Text("Current Context")
         })

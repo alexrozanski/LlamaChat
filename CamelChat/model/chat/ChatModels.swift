@@ -10,6 +10,26 @@ import Combine
 import llama
 import SQLite
 
+class ChatModels: ObservableObject {
+  let messagesModel: MessagesModel
+
+  private var models: [ChatModel] = []
+
+  init(messagesModel: MessagesModel) {
+    self.messagesModel = messagesModel
+  }
+
+  func chatModel(for source: ChatSource) -> ChatModel {
+    if let existingModel = models.first(where: { $0.source.id == source.id }) {
+      return existingModel
+    }
+
+    let newModel = ChatModel(source: source, messagesModel: messagesModel)
+    models.append(newModel)
+    return newModel
+  }
+}
+
 class ChatModel: ObservableObject {
   struct ChatContext {
     let contextString: String?
@@ -29,11 +49,13 @@ class ChatModel: ObservableObject {
 
   @Published private(set) var messages: [Message]
   @Published private(set) var replyState: ReplyState = .none
+
+  @Published private(set) var lastChatContext: ChatContext? = nil
   @Published private(set) var canClearContext: Bool = false
 
   private var currentPredictionCancellable: PredictionCancellable?
 
-  init(source: ChatSource, messagesModel: MessagesModel) {
+  fileprivate init(source: ChatSource, messagesModel: MessagesModel) {
     self.source = source
     self.messagesModel = messagesModel
     messages = messagesModel.loadMessages(from: source)
@@ -54,7 +76,9 @@ class ChatModel: ObservableObject {
 
   func loadContext() async throws -> ChatContext {
     let sessionContext = try await getReadySession().currentContext()
-    return ChatContext(contextString: sessionContext.contextString, tokens: sessionContext.tokens)
+    let context = ChatContext(contextString: sessionContext.contextString, tokens: sessionContext.tokens)
+    self.lastChatContext = context
+    return context
   }
 
   private func makeAndStoreNewSession() -> Session {

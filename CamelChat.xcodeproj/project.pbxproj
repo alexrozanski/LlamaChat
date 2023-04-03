@@ -41,7 +41,7 @@
 		8255EA6329D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */; };
 		82718CE229D3686300545C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE129D3686300545C32 /* Assets.xcassets */; };
 		82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE429D3686300545C32 /* Preview Assets.xcassets */; };
-		82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CEC29D3689B00545C32 /* ChatModel.swift */; };
+		82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CEC29D3689B00545C32 /* ChatModels.swift */; };
 		82718CFC29D368E500545C32 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CF929D368E500545C32 /* MessagesViewModel.swift */; };
 		82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CFA29D368E500545C32 /* ComposeViewModel.swift */; };
 		82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CFB29D368E500545C32 /* ChatViewModel.swift */; };
@@ -71,6 +71,8 @@
 		82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */; };
 		82C6869A29DA627800B76BA6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869929DA627800B76BA6 /* AvatarView.swift */; };
 		82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */; };
+		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
+		82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,7 +111,7 @@
 		82718CE129D3686300545C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82718CE429D3686300545C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		82718CE629D3686300545C32 /* CamelChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CamelChat.entitlements; sourceTree = "<group>"; };
-		82718CEC29D3689B00545C32 /* ChatModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
+		82718CEC29D3689B00545C32 /* ChatModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		82718CF929D368E500545C32 /* MessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		82718CFA29D368E500545C32 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		82718CFB29D368E500545C32 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -139,6 +141,8 @@
 		82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsViewModel.swift; sourceTree = "<group>"; };
 		82C6869929DA627800B76BA6 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
+		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
+		82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextContentViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,9 +251,9 @@
 		8255EA4E29D58B21000B9F83 /* chat */ = {
 			isa = PBXGroup;
 			children = (
-				82718CEC29D3689B00545C32 /* ChatModel.swift */,
 				8227DA9429D8F959000E554D /* MessagesModel.swift */,
 				82914CC929D76A2F00858B2C /* Sender.swift */,
+				82718CEC29D3689B00545C32 /* ChatModels.swift */,
 				82914CC829D76A1C00858B2C /* messages */,
 			);
 			path = chat;
@@ -343,6 +347,7 @@
 			children = (
 				82914CC329D6E68900858B2C /* components */,
 				8255EA4729D58A0C000B9F83 /* chat */,
+				82C686A329DAEC6200B76BA6 /* debug */,
 				8227DA8E29D8D8CF000E554D /* restoration */,
 				8255EA4829D58A1D000B9F83 /* setup */,
 				8227DA6629D857F5000E554D /* sources */,
@@ -355,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				8255EA5129D58B6E000B9F83 /* chat */,
+				82C686A629DAF31800B76BA6 /* debug */,
 				82AE199629D831F7008189DF /* settings */,
 				8255EA5F29D5998B000B9F83 /* sources */,
 				8255EA5229D58B78000B9F83 /* setup */,
@@ -473,6 +479,22 @@
 			path = avatar;
 			sourceTree = "<group>";
 		};
+		82C686A329DAEC6200B76BA6 /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */,
+			);
+			path = debug;
+			sourceTree = "<group>";
+		};
+		82C686A629DAF31800B76BA6 /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */,
+			);
+			path = debug;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -562,6 +584,7 @@
 				82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */,
 				82AE199829D83206008189DF /* SettingsViewModel.swift in Sources */,
 				8227DA9729D911A4000E554D /* App.swift in Sources */,
+				82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */,
 				8227DA9529D8F959000E554D /* MessagesModel.swift in Sources */,
 				82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */,
 				8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */,
@@ -569,6 +592,7 @@
 				82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */,
 				82718CFC29D368E500545C32 /* MessagesViewModel.swift in Sources */,
 				8227DA7F29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift in Sources */,
+				82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */,
 				82AE199029D7B07E008189DF /* SettingsView.swift in Sources */,
 				8227DA6E29D858B7000E554D /* AddSourceSheetContentView.swift in Sources */,
 				82914CC229D5ED9200858B2C /* ChatListViewModel.swift in Sources */,
@@ -606,7 +630,7 @@
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
 				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
 				8227DACC29DA53EA000E554D /* SourceNameGenerator.swift in Sources */,
-				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
+				82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */,
 				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */,
 				82AE198D29D7A803008189DF /* MessageGenerationState.swift in Sources */,

@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-fileprivate struct Dependencies {
-  let chatSources = ChatSources()
-  let messagesModel = MessagesModel()
-  let stateRestoration = StateRestoration()
+fileprivate class Dependencies {
+  private(set) lazy var chatSources = ChatSources()
+  private(set) lazy var chatModels = ChatModels(messagesModel: messagesModel)
+  private(set) lazy var messagesModel = MessagesModel()
+  private(set) lazy var stateRestoration = StateRestoration()
 
   static let shared = Dependencies()
 
@@ -27,12 +28,18 @@ class CamelChatAppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
   }
 }
 
+enum WindowIdentifier: String {
+  case chat
+  case modelContext
+}
+
 @main
 struct CamelChatApp: App {
   @NSApplicationDelegateAdaptor private var appDelegate: CamelChatAppDelegate
 
   @StateObject var mainChatViewModel: MainChatViewModel = MainChatViewModel(
     chatSources: Dependencies.shared.chatSources,
+    chatModels: Dependencies.shared.chatModels,
     messagesModel: Dependencies.shared.messagesModel,
     stateRestoration: Dependencies.shared.stateRestoration
   )
@@ -44,7 +51,7 @@ struct CamelChatApp: App {
       SettingsView(viewModel: settingsViewModel)
     }
     .windowToolbarStyle(.expanded)
-    Window("Chat", id: "chat") {
+    Window("Chat", id: WindowIdentifier.chat.rawValue) {
       MainChatView(viewModel: mainChatViewModel)
     }
     WindowGroup("Setup") {
@@ -52,5 +59,11 @@ struct CamelChatApp: App {
     }
     .windowToolbarStyle(.unified)
     .handlesExternalEvents(matching: Set(arrayLiteral: "setup"))
+
+    WindowGroup("Model Context", id: WindowIdentifier.modelContext.rawValue, for: ChatSource.ID.self) { $chatId in
+      ModelContextView(chatSourceId: chatId)
+        .environmentObject(Dependencies.shared.chatSources)
+        .environmentObject(Dependencies.shared.chatModels)
+    }
   }
 }

@@ -12,7 +12,9 @@ fileprivate struct Payload: Codable {
 }
 
 class ChatSource: Codable, Equatable, ObservableObject {
-  let id: String
+  typealias ID = String
+
+  let id: ID
   @Published var name: String {
     didSet {
       chatSources?.didUpdate(self)
@@ -89,6 +91,10 @@ class ChatSources: ObservableObject {
 
   func remove(source: ChatSource) {
     _ = sources.firstIndex(of: source).map { sources.remove(at: $0) }
+  }
+
+  func source(for id: ChatSource.ID) -> ChatSource? {
+    return sources.first(where: { $0.id == id })
   }
 
   fileprivate func didUpdate(_ source: ChatSource) {

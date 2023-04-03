@@ -9,6 +9,7 @@ import Foundation
 
 class ChatViewModel: ObservableObject {
   private let chatSource: ChatSource
+  private let chatModels: ChatModels
   private let chatModel: ChatModel
 
   var sourceId: String {
@@ -20,8 +21,9 @@ class ChatViewModel: ObservableObject {
   private(set) lazy var messagesViewModel = MessagesViewModel(chatModel: chatModel)
 
 
-  init(chatSource: ChatSource, messagesModel: MessagesModel) {
+  init(chatSource: ChatSource, chatModels: ChatModels, messagesModel: MessagesModel) {
     self.chatSource = chatSource
-    self.chatModel = ChatModel(source: chatSource, messagesModel: messagesModel)
+    self.chatModels = chatModels
+    self.chatModel = chatModels.chatModel(for: chatSource)
   }
 }
