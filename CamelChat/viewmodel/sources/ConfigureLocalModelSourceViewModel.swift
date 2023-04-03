@@ -48,6 +48,8 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
       return "LLaMa"
     case .alpaca:
       return "Alpaca"
+    case .gpt4All:
+      return "GPT4All"
     }
   }
   var exampleModelPath: String

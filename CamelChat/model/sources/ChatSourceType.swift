@@ -10,4 +10,5 @@ import Foundation
 enum ChatSourceType: String, CaseIterable, Codable {
   case llama = "llama"
   case alpaca = "alpaca"
+  case gpt4All = "gpt4all"
 }

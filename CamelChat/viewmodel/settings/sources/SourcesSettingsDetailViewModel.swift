@@ -20,6 +20,8 @@ class SourcesSettingsDetailViewModel: ObservableObject {
       return "LLaMa model"
     case .alpaca:
       return "Alpaca model"
+    case .gpt4All:
+      return "GPT4All model"
     }
   }
   var modelSize: String {

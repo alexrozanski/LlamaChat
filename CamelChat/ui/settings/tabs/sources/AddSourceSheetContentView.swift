@@ -54,6 +54,14 @@ class AddSourceSheetViewModel: SheetViewModel, ObservableObject {
           self?.goBack()
         }
       )
+    case .gpt4All:
+      viewModel = makeConfigureLocalGPT4AllModelSourceViewModel(
+        addSourceHandler:{ [weak self] source in
+          self?.add(source: source)
+        }, goBackHandler: { [weak self] in
+          self?.goBack()
+        }
+      )
     }
 
     state = .configuringSource(viewModel: viewModel)

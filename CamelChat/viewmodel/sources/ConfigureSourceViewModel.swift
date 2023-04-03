@@ -82,6 +82,19 @@ func makeConfigureLocalAlpacaModelSourceViewModel(
   )
 }
 
+func makeConfigureLocalGPT4AllModelSourceViewModel(
+  addSourceHandler: @escaping ConfigureLocalModelSourceViewModel.AddSourceHandler,
+  goBackHandler: @escaping ConfigureLocalModelSourceViewModel.GoBackHandler
+) -> ConfigureLocalModelSourceViewModel {
+  return ConfigureLocalModelSourceViewModel(
+    defaultName: "GPT4All",
+    chatSourceType: .gpt4All,
+    exampleModelPath: "gpt4all-lora-quantized.bin",
+    addSourceHandler: addSourceHandler,
+    goBackHandler: goBackHandler
+  )
+}
+
 @ViewBuilder func makeConfigureSourceView(
   from viewModel: ConfigureSourceViewModel,
   presentationStyle: AddSourceFlowPresentationStyle

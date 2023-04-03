@@ -42,6 +42,13 @@ class SelectSourceTypeViewModel: ObservableObject {
           name: "Alpaca",
           description: "Stanford's Alpaca model: a fine-tuned instruction-following LLaMa model"
         )
+      case .gpt4All:
+        return Source(
+          id: type.rawValue,
+          type: type,
+          name: "GPT4All",
+          description: "Nomic AI's assistant-style LLM based on LLaMa"
+        )
       }
     }
   }

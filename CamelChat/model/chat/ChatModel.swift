@@ -149,6 +149,12 @@ private func makeSession(for source: ChatSource) -> Session {
       config: AlpacaSessionConfig(numTokens: 512),
       stateChangeHandler: { _ in }
     )
+  case .gpt4All:
+    return Inference(config: .default).makeGPT4AllSession(
+      with: source.modelURL,
+      config: GPT4AllSessionConfig.default,
+      stateChangeHandler: { _ in }
+    )
   }
 }
 

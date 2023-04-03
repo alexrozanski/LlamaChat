@@ -50,6 +50,8 @@ class ChatInfoViewModel: ObservableObject {
       return "LLaMA model"
     case .alpaca:
       return "Alpaca model"
+    case .gpt4All:
+      return "GPT4All model"
     }
   }
 

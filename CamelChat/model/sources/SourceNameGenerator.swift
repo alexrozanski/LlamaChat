@@ -34,6 +34,10 @@ class SourceNameGenerator {
       return names.llamaNames.randomElement()
     case .alpaca:
       return names.alpacaNames.randomElement()
+    case .gpt4All:
+      var all = names.alpacaNames
+      all.append(contentsOf: names.llamaNames)
+      return all.randomElement()
     }
   }
 }
