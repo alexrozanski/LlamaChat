@@ -31,9 +31,25 @@ class ChatModels: ObservableObject {
 }
 
 class ChatModel: ObservableObject {
-  struct ChatContext {
-    let contextString: String?
-    let tokens: [Int64]?
+  class ChatContext {
+    struct Token {
+      let value: Int32
+      let string: String
+    }
+
+    var contextString: String? {
+      return sessionContext.contextString
+    }
+
+    private(set) lazy var tokens: [Token]? = {
+      return sessionContext.tokens?.map { Token(value: $0.value, string: $0.string) }
+    }()
+
+    private let sessionContext: SessionContext
+
+    init(sessionContext: SessionContext) {
+      self.sessionContext = sessionContext
+    }
   }
 
   let source: ChatSource
@@ -76,7 +92,7 @@ class ChatModel: ObservableObject {
 
   func loadContext() async throws -> ChatContext {
     let sessionContext = try await getReadySession().currentContext()
-    let context = sessionContext.toChatContext()
+    let context = ChatModel.ChatContext(sessionContext: sessionContext)
     self.lastChatContext = context
     return context
   }
@@ -101,8 +117,8 @@ class ChatModel: ObservableObject {
       )
     }
 
-    newSession.updatedContextHandler = { [weak self] newContext in
-      self?.lastChatContext = newContext.toChatContext()
+    newSession.updatedContextHandler = { [weak self] newSessionContext in
+      self?.lastChatContext = ChatModel.ChatContext(sessionContext: newSessionContext)
     }
 
     self.session = newSession
@@ -178,12 +194,6 @@ fileprivate extension SessionState {
     case .error:
       return true
     }
-  }
-}
-
-fileprivate extension SessionContext {
-  func toChatContext() -> ChatModel.ChatContext {
-    return ChatModel.ChatContext(contextString: contextString, tokens: tokens)
   }
 }
 
