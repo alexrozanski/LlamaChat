@@ -26,7 +26,6 @@ struct SourcesSettingsListView: View {
           .padding(.vertical, 8)
       }
       .frame(maxWidth: .infinity)
-      .background(.white)
       Divider()
         .foregroundColor(Color(NSColor.separatorColor.cgColor))
     }
@@ -50,7 +49,6 @@ struct SourcesSettingsListView: View {
       .buttonStyle(BorderlessButtonStyle())
       Spacer()
     }
-    .background(.white)
   }
 
   var body: some View {
@@ -58,16 +56,19 @@ struct SourcesSettingsListView: View {
       get: { viewModel.selectedSource?.id },
       set: { selectedId in viewModel.selectedSource = viewModel.sources.first(where: { $0.id == selectedId }) }
     )
-    VStack(spacing: 0) {
-      heading
-      List(viewModel.sources, id: \.id, selection: selectionBinding) { source in
-        SourcesSettingsSourceItemView(viewModel: source)
+    ZStack {
+      List(selection: selectionBinding) {
+        Section(header: Text("Sources").frame(maxWidth: .infinity), content: {
+          ForEach(viewModel.sources, id: \.id) { source in
+            SourcesSettingsSourceItemView(viewModel: source)
+          }
+        })
       }
       .listStyle(PlainListStyle())
-      // the selection background extends outside of the bounds of the List (presumably to cover its border)
-      // but since we apply a border to the outside of this control separately, inset the list on the left and right.
-      .padding(.horizontal, 1)
-      actionButtons
+      VStack {
+        Spacer()
+        actionButtons
+      }
     }
     .border(.separator)
     .onAppear {

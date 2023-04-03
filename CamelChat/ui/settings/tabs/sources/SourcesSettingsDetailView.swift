@@ -31,24 +31,32 @@ struct SourcesSettingsDetailView: View {
 
   var body: some View {
     Form {
-      NameRowView(viewModel: viewModel)
-      LabeledContent("Model type", value: viewModel.type)
-      LabeledContent("Model path") {
-        HStack {
-          Text(viewModel.modelPath)
-            .font(.system(size: 11))
-            .lineLimit(1)
-            .help(viewModel.modelPath)
-          Menu(content: {
-            Button("Show in Finder...") {
-              viewModel.showModelInFinder()
-            }
-          }, label: {
-            Image(systemName: "ellipsis.circle")
-          })
-          .buttonStyle(.borderless)
-          .menuIndicator(.hidden)
-          Spacer()
+      Section {
+        NameRowView(viewModel: viewModel)
+      }
+      Section("Model") {
+        LabeledContent("Model Type", value: viewModel.type)
+        LabeledContent("Model Path") {
+          HStack {
+            Text(viewModel.modelPath)
+              .font(.system(size: 11))
+              .lineLimit(1)
+              .truncationMode(.middle)
+              .frame(maxWidth: 200)
+              .help(viewModel.modelPath)
+            Menu(content: {
+              Button("Show in Finder...") {
+                viewModel.showModelInFinder()
+              }
+            }, label: {
+              Image(systemName: "ellipsis.circle")
+            })
+            .buttonStyle(.borderless)
+            .menuIndicator(.hidden)
+          }
+        }
+        LabeledContent("Model Size") {
+          Text(viewModel.modelSize)
         }
       }
     }

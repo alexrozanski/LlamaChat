@@ -32,9 +32,14 @@ struct ChatInfoView: View {
       }
       Section(content: {
         LabeledContent(content: {
+          Text(viewModel.modelSize)
+        }, label: {
+          Text("Model Size")
+        })
+        LabeledContent(content: {
           modelStatText(modelStat: viewModel.contextTokenCount, unit: Unit(singular: "token", plural: "tokens"))
         }, label: {
-          Text("Context")
+          Text("Current Context")
         })
       }, header: {
         Text("Model Stats")

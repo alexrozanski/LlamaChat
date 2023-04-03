@@ -19,7 +19,7 @@ extension VerticalAlignment {
 
 struct ConfigureLocalModelSourceView: View {
   @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
-  var presentationStyle: AddSourceFlowPresentationStyle  
+  var presentationStyle: AddSourceFlowPresentationStyle
 
   @FocusState var isNameFocused: Bool
 
@@ -73,7 +73,7 @@ struct ConfigureLocalModelSourceView: View {
       set: { viewModel.modelSize = $0 }
     )
     pathSelector
-    Picker("Number of Parameters", selection: modelTypeBinding) {
+    Picker("Model size", selection: modelTypeBinding) {
       Text("7B").tag(ModelSize.size7B)
       Text("12B").tag(ModelSize.size12B)
       Text("30B").tag(ModelSize.size30B)

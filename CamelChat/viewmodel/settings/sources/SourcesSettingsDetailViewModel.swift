@@ -22,6 +22,21 @@ class SourcesSettingsDetailViewModel: ObservableObject {
       return "Alpaca model"
     }
   }
+  var modelSize: String {
+    switch source.modelSize {
+    case .unknown:
+      return "Unknown"
+    case .size7B:
+      return "7B"
+    case .size12B:
+      return "12B"
+    case .size30B:
+      return "30B"
+    case .size65B:
+      return "65B"
+    }
+  }
+
   @Published private(set) var name: String
 
   private var subscriptions = Set<AnyCancellable>()
