@@ -27,6 +27,10 @@ struct MainChatView: View {
             viewModel.sidebarWidth = newWidth
           }
       )
+      .toolbar {
+        Spacer()
+        Button {} label: { Image(systemName: "square.and.pencil") }
+      }
     }
   }
 
