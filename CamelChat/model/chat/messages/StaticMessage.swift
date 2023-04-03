@@ -9,6 +9,8 @@ import Foundation
 import Combine
 
 class StaticMessage: Message {
+  var messageType: MessageType { return .message }
+  
   let id = UUID()
   let content: String
   let sender: Sender

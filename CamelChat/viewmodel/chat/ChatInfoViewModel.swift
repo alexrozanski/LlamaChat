@@ -59,14 +59,7 @@ class ChatInfoViewModel: ObservableObject {
   }
 
   var modelType: String {
-    switch chatModel.source.type {
-    case .llama:
-      return "LLaMA model"
-    case .alpaca:
-      return "Alpaca model"
-    case .gpt4All:
-      return "GPT4All model"
-    }
+    return "\(chatModel.source.type.readableName) model"
   }
 
   @Published private(set) var context: ModelStat<String> = .none

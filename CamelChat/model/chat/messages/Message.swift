@@ -8,8 +8,15 @@
 import Foundation
 import Combine
 
+enum MessageType: Int {
+  case message = 1
+  // Implement this as a message just to make this easier
+  case clearedContext = 2
+}
+
 protocol Message {
   var id: UUID { get }
+  var messageType: MessageType { get }
   var sender: Sender { get }
   var content: String { get }
   var sendDate: Date { get }

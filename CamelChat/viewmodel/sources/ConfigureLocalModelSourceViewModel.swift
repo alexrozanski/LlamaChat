@@ -43,14 +43,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
   @Published var modelSize: ModelSize = .unknown
 
   var modelType: String {
-    switch chatSourceType {
-    case .llama:
-      return "LLaMa"
-    case .alpaca:
-      return "Alpaca"
-    case .gpt4All:
-      return "GPT4All"
-    }
+    return chatSourceType.readableName
   }
   var exampleModelPath: String
 
@@ -77,7 +70,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   let navigationViewModel: ConfigureSourceNavigationViewModel
 
-  private let chatSourceType: ChatSourceType
+  let chatSourceType: ChatSourceType
   private let addSourceHandler: AddSourceHandler
   private let goBackHandler: GoBackHandler
 

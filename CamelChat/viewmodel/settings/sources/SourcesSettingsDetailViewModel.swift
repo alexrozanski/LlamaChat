@@ -15,14 +15,7 @@ class SourcesSettingsDetailViewModel: ObservableObject {
   var modelPath: String
 
   var type: String {
-    switch source.type {
-    case .llama:
-      return "LLaMa model"
-    case .alpaca:
-      return "Alpaca model"
-    case .gpt4All:
-      return "GPT4All model"
-    }
+    return "\(source.type.readableName) model"
   }
   var modelSize: String {
     switch source.modelSize {

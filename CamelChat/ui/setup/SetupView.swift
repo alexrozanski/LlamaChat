@@ -19,7 +19,7 @@ struct SetupView: View {
         .navigationTitle("Add model")
     case .configuringSource(viewModel: let viewModel):
       makeConfigureSourceView(from: viewModel, presentationStyle: .embedded)
-        .navigationTitle("Configure model")
+        .navigationTitle(viewModel.chatSourceType.configureWindowTitle)
     case .success:
       AddSourceSuccessView()
     }
@@ -45,5 +45,11 @@ struct SetupView: View {
         viewModel.start()
       }
       .frame(width: 600, height: 380)
+  }
+}
+
+fileprivate extension ChatSourceType {
+  var configureWindowTitle: String {
+    return "Configure \(readableName) model"
   }
 }

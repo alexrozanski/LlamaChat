@@ -25,6 +25,7 @@ class MessagesModel {
   private let chatIdColumn = Expression<String>("chat_id")
   
   private let seqColumn = Expression<Int64>("seq")
+  private let messageTypeColumn = Expression<Int>("message_type")
   private let chatSourceIdColumn = Expression<Int64>("chat_source_id")
   private let isMeColumn = Expression<Bool>("is_me")
   private let messageColumn = Expression<String>("message")
@@ -41,6 +42,7 @@ class MessagesModel {
       try db?.run(messagesTable.create(ifNotExists: true) { t in
         t.column(idColumn, primaryKey: true)
         t.column(seqColumn)
+        t.column(messageTypeColumn)
         t.column(chatSourceIdColumn)
         t.column(isMeColumn)
         t.column(messageColumn)
@@ -99,6 +101,7 @@ class MessagesModel {
       let lastSeq = try db.scalar(messagesTable.select(seqColumn.max).where(chatSourceIdColumn == chatSourceId)) ?? 0
       let insert = messagesTable.insert(
         seqColumn <- lastSeq + 1,
+        messageTypeColumn <- message.messageType.rawValue,
         chatSourceIdColumn <- chatSourceId,
         isMeColumn <- message.sender.isMe,
         messageColumn <- message.content,

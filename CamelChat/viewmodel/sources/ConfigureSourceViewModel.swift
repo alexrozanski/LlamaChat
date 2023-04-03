@@ -53,6 +53,8 @@ struct ConfigureSourceNavigationView: View {
 }
 
 protocol ConfigureSourceViewModel {
+  var chatSourceType: ChatSourceType { get }
+
   var navigationViewModel: ConfigureSourceNavigationViewModel { get }
 }
 

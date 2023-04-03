@@ -96,6 +96,10 @@ class ChatModel: ObservableObject {
 
   func clearContext() {
     _ = makeAndStoreNewSession()
+
+    let message = ClearedContextMessage(sendDate: Date())
+    messages.append(message)
+    messagesModel.append(message: message, in: source)
   }
 
   func loadContext() async throws -> ChatContext {

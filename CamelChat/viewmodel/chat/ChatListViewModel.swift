@@ -22,14 +22,7 @@ class ChatListItemViewModel: ObservableObject {
     case .size65B: suffix = " (65B)"
     }
 
-    var sourceType: String
-    switch chatSource.type {
-    case .llama: sourceType = "LLaMA"
-    case .alpaca: sourceType = "Alpaca"
-    case .gpt4All: sourceType = "GPT4All"
-    }
-
-    return "\(sourceType)\(suffix)"
+    return "\(chatSource.type.readableName)\(suffix)"
   }
   @Published var title: String
 

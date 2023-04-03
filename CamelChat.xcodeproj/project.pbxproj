@@ -38,7 +38,6 @@
 		8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */; };
 		8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */; };
 		8255EA5E29D59892000B9F83 /* ConfigureSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */; };
-		8255EA6329D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */; };
 		82718CE229D3686300545C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE129D3686300545C32 /* Assets.xcassets */; };
 		82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE429D3686300545C32 /* Preview Assets.xcassets */; };
 		82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CEC29D3689B00545C32 /* ChatModels.swift */; };
@@ -73,6 +72,7 @@
 		82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */; };
 		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
 		82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */; };
+		82C686AC29DB344100B76BA6 /* ClearedContextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,7 +106,6 @@
 		8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeViewModel.swift; sourceTree = "<group>"; };
 		8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeView.swift; sourceTree = "<group>"; };
 		8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
-		8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureAlpacaSourceViewModel.swift; sourceTree = "<group>"; };
 		82718CDA29D3686200545C32 /* CamelChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CamelChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82718CE129D3686300545C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82718CE429D3686300545C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -143,6 +142,7 @@
 		82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
 		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
 		82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextContentViewModel.swift; sourceTree = "<group>"; };
+		82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearedContextMessage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,7 +286,6 @@
 			children = (
 				8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */,
 				8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */,
-				8255EA6229D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift */,
 				8227DA7E29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift */,
 			);
 			path = sources;
@@ -392,6 +391,7 @@
 				82914CDF29D7A06C00858B2C /* Message.swift */,
 				82914CCB29D76ABE00858B2C /* StaticMessage.swift */,
 				82914CCF29D76F6300858B2C /* GeneratedMessage.swift */,
+				82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */,
 				82AE198C29D7A803008189DF /* MessageGenerationState.swift */,
 			);
 			path = messages;
@@ -580,7 +580,6 @@
 				82914CCA29D76A2F00858B2C /* Sender.swift in Sources */,
 				82718D0629D368EA00545C32 /* ChatView.swift in Sources */,
 				82718D0729D368EA00545C32 /* ComposeView.swift in Sources */,
-				8255EA6329D599C4000B9F83 /* ConfigureAlpacaSourceViewModel.swift in Sources */,
 				82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */,
 				82AE199829D83206008189DF /* SettingsViewModel.swift in Sources */,
 				8227DA9729D911A4000E554D /* App.swift in Sources */,
@@ -614,6 +613,7 @@
 				8227DA8D29D8D7E9000E554D /* ChatWindowContentViewModel.swift in Sources */,
 				8227DA7829D86633000E554D /* SourcesSettingsDetailViewModel.swift in Sources */,
 				8255EA5429D58B89000B9F83 /* SetupViewModel.swift in Sources */,
+				82C686AC29DB344100B76BA6 /* ClearedContextMessage.swift in Sources */,
 				8227DA9929D919FD000E554D /* ChatInfoView.swift in Sources */,
 				82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,

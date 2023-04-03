@@ -11,6 +11,8 @@ import Combine
 class GeneratedMessage: ObservableObject, Message {
   typealias CancellationHandler = () -> Void
 
+  var messageType: MessageType { return .message }
+
   let id = UUID()
   private(set) var content: String = "" {
     didSet {
