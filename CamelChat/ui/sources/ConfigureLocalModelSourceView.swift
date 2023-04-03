@@ -78,6 +78,7 @@ struct ConfigureLocalModelSourceView: View {
       Text("12B").tag(ModelSize.size12B)
       Text("30B").tag(ModelSize.size30B)
       Text("65B").tag(ModelSize.size65B)
+      Divider()
       Text("Unknown").tag(ModelSize.unknown)
     }
     .disabled(!viewModel.modelPathState.isValid)

@@ -29,14 +29,6 @@ class ModelContextContentViewModel: ObservableObject {
     var id: String {
       return rawValue
     }
-
-    var label: String {
-      switch self {
-      case .text: return "Text"
-      case .tokens: return "Tokens"
-      case .both: return "Both"
-      }
-    }
   }
 
   let chatSourceId: ChatSource.ID?

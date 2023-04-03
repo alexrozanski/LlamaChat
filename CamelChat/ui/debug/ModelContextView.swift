@@ -203,9 +203,10 @@ struct ModelContextContentView: View {
     )
     HStack {
       Picker("Show: ", selection: presentationBinding) {
-        ForEach(ModelContextContentViewModel.ContextPresentation.allCases) { presentation in
-          Text(presentation.label).tag(presentation)
-        }
+        Text("Text").tag(ModelContextContentViewModel.ContextPresentation.text)
+        Text("Tokens").tag(ModelContextContentViewModel.ContextPresentation.tokens)
+        Divider()
+        Text("Both").tag(ModelContextContentViewModel.ContextPresentation.both)
       }
       .disabled(!viewModel.hasSource || viewModel.context.isEmpty)
       .fixedSize()
