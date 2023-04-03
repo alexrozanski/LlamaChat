@@ -52,8 +52,8 @@ struct ChatInfoView: View {
       })
     }
     .formStyle(.grouped)
-    .frame(width: 300)
-    .frame(maxHeight: 250)
+    .frame(width: 280)
+    .frame(maxHeight: 350)
     .onAppear {
       viewModel.loadModelStats()
     }
