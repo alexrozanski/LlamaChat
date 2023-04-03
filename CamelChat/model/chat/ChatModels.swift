@@ -76,13 +76,35 @@ class ChatModel: ObservableObject {
 
   func loadContext() async throws -> ChatContext {
     let sessionContext = try await getReadySession().currentContext()
-    let context = ChatContext(contextString: sessionContext.contextString, tokens: sessionContext.tokens)
+    let context = sessionContext.toChatContext()
     self.lastChatContext = context
     return context
   }
 
   private func makeAndStoreNewSession() -> Session {
-    let newSession = makeSession(for: self.source)
+    var newSession: Session
+    switch source.type {
+    case .llama:
+      newSession = Inference(config: .default).makeLlamaSession(
+        with: source.modelURL,
+        config: LlamaSessionConfig(numTokens: 512)
+      )
+    case .alpaca:
+      newSession = Inference(config: .default).makeAlpacaSession(
+        with: source.modelURL,
+        config: AlpacaSessionConfig(numTokens: 512)
+      )
+    case .gpt4All:
+      newSession = Inference(config: .default).makeGPT4AllSession(
+        with: source.modelURL,
+        config: GPT4AllSessionConfig.default
+      )
+    }
+
+    newSession.updatedContextHandler = { [weak self] newContext in
+      self?.lastChatContext = newContext.toChatContext()
+    }
+
     self.session = newSession
     return newSession
   }
@@ -159,26 +181,9 @@ fileprivate extension SessionState {
   }
 }
 
-private func makeSession(for source: ChatSource) -> Session {
-  switch source.type {
-  case .llama:
-    return Inference(config: .default).makeLlamaSession(
-      with: source.modelURL,
-      config: LlamaSessionConfig(numTokens: 512),
-      stateChangeHandler: { _ in }
-    )
-  case .alpaca:
-    return Inference(config: .default).makeAlpacaSession(
-      with: source.modelURL,
-      config: AlpacaSessionConfig(numTokens: 512),
-      stateChangeHandler: { _ in }
-    )
-  case .gpt4All:
-    return Inference(config: .default).makeGPT4AllSession(
-      with: source.modelURL,
-      config: GPT4AllSessionConfig.default,
-      stateChangeHandler: { _ in }
-    )
+fileprivate extension SessionContext {
+  func toChatContext() -> ChatModel.ChatContext {
+    return ChatModel.ChatContext(contextString: contextString, tokens: tokens)
   }
 }
 
