@@ -20,19 +20,23 @@ struct MessagesView: View {
           // Add space for banner overlay so it doesn't cover messages.
           Color.clear.frame(height: bannerHeight)
           LazyVStack {
-            ForEach(viewModel.messages, id: \.id) { messageRowViewModel in
-              MessageRowView(viewModel: messageRowViewModel, sender: messageRowViewModel.sender, maxWidth: geometry.size.width * 0.8) { messageViewModel in
-                if let staticMessageViewModel = messageViewModel as? StaticMessageViewModel {
-                  MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular, isError: staticMessageViewModel.isError) {
-                    Text(staticMessageViewModel.content)
-                  }
-                } else if let generatedMessageViewModel = messageViewModel as? GeneratedMessageViewModel {
-                  GeneratedMessageView(viewModel: generatedMessageViewModel)
-                } else {
-                  EmptyView()
+            ForEach(viewModel.messages, id: \.id) { messageViewModel in
+              if let staticMessageViewModel = messageViewModel as? StaticMessageViewModel {
+                MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular, isError: staticMessageViewModel.isError, availableWidth: geometry.size.width) {
+                  Text(staticMessageViewModel.content)
                 }
+              } else if let generatedMessageViewModel = messageViewModel as? GeneratedMessageViewModel {
+                GeneratedMessageView(viewModel: generatedMessageViewModel, availableWidth: geometry.size.width)
+              } else if let clearedContextMessageViewModel = messageViewModel as? ClearedContextMessageViewModel {
+                ClearedContextMessageView(viewModel: clearedContextMessageViewModel)
+              } else {
+                #if DEBUG
+                Text("Missing row view for `\(String(describing: type(of: messageViewModel)))`")
+                  .padding()
+                #else
+                EmptyView()
+                #endif
               }
-              .id(messageRowViewModel.id)
             }
           }
           .frame(maxWidth: .infinity)

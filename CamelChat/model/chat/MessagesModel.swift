@@ -75,14 +75,23 @@ class MessagesModel {
       var messages = [Message]()
       for message in messagesQuery {
         let isMe = message[isMeColumn]
-        messages.append(
-          StaticMessage(
-            content: message[messageColumn],
-            sender: isMe ? .me : .other,
-            sendDate: message[sendDateColumn],
-            isError: message[isErrorColumn]
+        let type = MessageType(rawValue: message[messageTypeColumn]) ?? .message
+
+        switch type {
+        case .message:
+          messages.append(
+            StaticMessage(
+              content: message[messageColumn],
+              sender: isMe ? .me : .other,
+              sendDate: message[sendDateColumn],
+              isError: message[isErrorColumn]
+            )
           )
-        )
+        case .clearedContext:
+          messages.append(
+            ClearedContextMessage(sendDate: message[sendDateColumn])
+          )
+        }
       }
       return messages
     } catch {

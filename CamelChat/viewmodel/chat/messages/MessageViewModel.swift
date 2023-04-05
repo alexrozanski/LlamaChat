@@ -9,5 +9,4 @@ import Foundation
 
 protocol MessageViewModel {
   var id: UUID { get }
-  var sender: Sender { get }
 }

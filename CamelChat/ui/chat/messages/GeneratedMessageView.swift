@@ -10,6 +10,8 @@ import SwiftUI
 struct GeneratedMessageView: View {
   @ObservedObject var viewModel: GeneratedMessageViewModel
 
+  let availableWidth: Double
+
   var body: some View {
     VStack(alignment: .leading) {
       if showStopButton {
@@ -22,7 +24,7 @@ struct GeneratedMessageView: View {
         }
         .buttonStyle(BorderlessButtonStyle())
       }
-      MessageBubbleView(sender: viewModel.sender, style: viewModel.state.isWaiting ? .typing: .regular, isError: viewModel.isError) {
+      MessageBubbleView(sender: viewModel.sender, style: viewModel.state.isWaiting ? .typing: .regular, isError: viewModel.isError, availableWidth: availableWidth) {
         switch viewModel.state {
         case .none:
           EmptyView()

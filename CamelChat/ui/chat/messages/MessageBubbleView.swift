@@ -20,6 +20,7 @@ struct MessageBubbleView<Content>: View where Content: View {
   let sender: Sender
   let style: Style
   let isError: Bool
+  let availableWidth: Double?
   @ViewBuilder var content: ContentBuilder
 
   var padding: Double {
@@ -30,18 +31,27 @@ struct MessageBubbleView<Content>: View where Content: View {
   }
 
   var body: some View {
-    content()
-      .padding(padding)
-      .background(backgroundColor)
-      .foregroundColor(textColor)
-      .cornerRadius(15)
-      .scaleEffect(scale)
-      .onAppear {
-        updateScaleAnimation(with: style)
+    HStack {
+      if sender.isMe {
+        Spacer()
       }
-      .onChange(of: style) { newStyle in
-        updateScaleAnimation(with: newStyle)
+      content()
+        .padding(padding)
+        .background(backgroundColor)
+        .foregroundColor(textColor)
+        .cornerRadius(15)
+        .scaleEffect(scale)
+        .onAppear {
+          updateScaleAnimation(with: style)
+        }
+        .onChange(of: style) { newStyle in
+          updateScaleAnimation(with: newStyle)
+        }
+        .frame(maxWidth: availableWidth.map { $0 * 0.8 } ?? .infinity, alignment: sender.isMe ? .trailing : .leading)
+      if !sender.isMe {
+        Spacer()
       }
+    }
   }
 
   private var backgroundColor: Color {
