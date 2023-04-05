@@ -10,12 +10,15 @@ import SwiftUI
 struct MessagesView: View {
   @ObservedObject var viewModel: MessagesViewModel
 
+  @State private var bannerHeight = Double(0)
   @State private var lastMessageId: UUID?
 
   var body: some View {
     GeometryReader { geometry in
       ScrollViewReader { proxy in
         ScrollView(.vertical) {
+          // Add space for banner overlay so it doesn't cover messages.
+          Color.clear.frame(height: bannerHeight)
           LazyVStack {
             ForEach(viewModel.messages, id: \.id) { messageRowViewModel in
               MessageRowView(viewModel: messageRowViewModel, sender: messageRowViewModel.sender, maxWidth: geometry.size.width * 0.8) { messageViewModel in
@@ -51,5 +54,28 @@ struct MessagesView: View {
       }
     }
     .background(Color(NSColor.controlBackgroundColor.cgColor))
+    .overlay {
+      if viewModel.isBuiltForDebug {
+        VStack {
+          DebugBuildBannerView()
+            .background(
+              GeometryReader { geometry in
+                Color.clear.preference(key: BannerHeightKey.self, value: geometry.size.height)
+              }
+            )
+          Spacer()
+        }
+      }
+    }
+    .onPreferenceChange(BannerHeightKey.self) { newHeight in
+      bannerHeight = newHeight
+    }
+  }
+}
+
+fileprivate struct BannerHeightKey: PreferenceKey {
+  static var defaultValue: CGFloat { 0 }
+  static func reduce(value: inout Value, nextValue: () -> Value) {
+    value = value + nextValue()
   }
 }

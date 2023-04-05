@@ -11,6 +11,12 @@ import Combine
 class MessagesViewModel: ObservableObject {
   private let chatModel: ChatModel
 
+  #if DEBUG
+  let isBuiltForDebug = true
+  #else
+  let isBuiltForDebug = false
+  #endif
+
   @Published var messages: [MessageRowViewModel]
 
   private var subscriptions = Set<AnyCancellable>()

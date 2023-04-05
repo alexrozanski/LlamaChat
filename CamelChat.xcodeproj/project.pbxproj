@@ -38,6 +38,7 @@
 		8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */; };
 		8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */; };
 		8255EA5E29D59892000B9F83 /* ConfigureSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */; };
+		826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826F4C6A29DCFBB90099A729 /* DebugBuildBannerView.swift */; };
 		82718CE229D3686300545C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE129D3686300545C32 /* Assets.xcassets */; };
 		82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE429D3686300545C32 /* Preview Assets.xcassets */; };
 		82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CEC29D3689B00545C32 /* ChatModels.swift */; };
@@ -106,6 +107,7 @@
 		8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeViewModel.swift; sourceTree = "<group>"; };
 		8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeView.swift; sourceTree = "<group>"; };
 		8255EA5D29D59892000B9F83 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
+		826F4C6A29DCFBB90099A729 /* DebugBuildBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugBuildBannerView.swift; sourceTree = "<group>"; };
 		82718CDA29D3686200545C32 /* CamelChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CamelChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82718CE129D3686300545C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82718CE429D3686300545C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -482,6 +484,7 @@
 		82C686A329DAEC6200B76BA6 /* debug */ = {
 			isa = PBXGroup;
 			children = (
+				826F4C6A29DCFBB90099A729 /* DebugBuildBannerView.swift */,
 				82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */,
 			);
 			path = debug;
@@ -599,6 +602,7 @@
 				8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */,
 				8227DAA029D98577000E554D /* ChatListView.swift in Sources */,
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
+				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
 				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,
 				8255EA4A29D58A40000B9F83 /* SetupView.swift in Sources */,
