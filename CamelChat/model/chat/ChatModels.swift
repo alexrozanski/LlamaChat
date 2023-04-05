@@ -216,7 +216,7 @@ private func errorText(from error: Error) -> String {
   print(error)
 
   let nsError = error as NSError
-  if nsError.domain == LlamaError.domain {
+  if nsError.domain == LlamaError.Domain {
     if let code = LlamaError.Code(rawValue: nsError.code) {
       switch code {
       case .failedToLoadModel:

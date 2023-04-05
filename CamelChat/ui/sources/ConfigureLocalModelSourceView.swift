@@ -7,14 +7,34 @@
 
 import SwiftUI
 
-extension VerticalAlignment {
-  private enum ModelPathField: AlignmentID {
+fileprivate extension VerticalAlignment {
+  private enum LabelAlignment: AlignmentID {
     static func defaultValue(in dimension: ViewDimensions) -> CGFloat {
       return dimension[VerticalAlignment.center]
     }
   }
 
-  static let modelPathField = VerticalAlignment(ModelPathField.self)
+  static let label = VerticalAlignment(LabelAlignment.self)
+}
+
+fileprivate extension Alignment {
+  static let label = Alignment(horizontal: .leading, vertical: .label)
+}
+
+private func errorText(for modelState: ConfigureLocalModelSourceViewModel.ModelState) -> String? {
+  switch modelState {
+  case .none, .valid:
+    return nil
+  case .invalidPath:
+    return "Selected file is invalid"
+  case .invalidModel(let reason):
+    switch reason {
+    case .unknown, .invalidFileType:
+      return "Selected file is not a valid model"
+    case .unsupportedModelVersion:
+      return "Selected model is of an unsupported version"
+    }
+  }
 }
 
 struct ConfigureLocalModelSourceView: View {
@@ -25,13 +45,25 @@ struct ConfigureLocalModelSourceView: View {
 
   @ViewBuilder var pathSelector: some View {
     VStack(alignment: .leading) {
-      HStack(alignment: .modelPathField) {
-        LabeledContent("Model path") {
-          Text(viewModel.modelPath ?? "No path selected")
-            .lineLimit(1)
-            .truncationMode(.head)
-            .frame(maxWidth: 200, alignment: .trailing)
-            .help(viewModel.modelPath ?? "")
+      HStack(alignment: .label) {
+        LabeledContent {
+          VStack(alignment: .trailing, spacing: 4) {
+            Text(viewModel.modelPath ?? "No path selected")
+              .lineLimit(1)
+              .truncationMode(.head)
+              .frame(maxWidth: 200, alignment: .trailing)
+              .help(viewModel.modelPath ?? "")
+            if let errorText = errorText(for: viewModel.modelState) {
+              Text(errorText)
+                .foregroundColor(.red)
+                .font(.footnote)
+            }
+          }
+        } label: {
+          Text("Model path")
+            .alignmentGuide(.label) { d in
+              d[VerticalAlignment.firstTextBaseline]
+            }
         }
         Button(action: {
           let panel = NSOpenPanel()
@@ -43,6 +75,9 @@ struct ConfigureLocalModelSourceView: View {
         }, label: {
           Text("Select...")
         })
+        .alignmentGuide(.label) { d in
+          d[VerticalAlignment.firstTextBaseline]
+        }
       }
       Text("Select the quantized \(viewModel.modelType) model path. This should be called something like '\(viewModel.exampleModelPath)'")
         .font(.footnote)
@@ -81,7 +116,7 @@ struct ConfigureLocalModelSourceView: View {
       Divider()
       Text("Unknown").tag(ModelSize.unknown)
     }
-    .disabled(!viewModel.modelPathState.isValid)
+    .disabled(!viewModel.modelState.isValid)
   }
 
   var body: some View {
