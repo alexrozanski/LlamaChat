@@ -46,7 +46,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
       }
 
       do {
-        try Inference.validateModel(fileURL: URL(fileURLWithPath: modelPath))
+        try ModelUtils.validateModel(fileURL: URL(fileURLWithPath: modelPath))
       } catch {
         print(error)
         modelState = .invalidModel(getInvalidModelTypeReason(from: error))
@@ -56,7 +56,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
       modelState = .valid
 
       do {
-        let type = try Inference.getModelType(forFileAt: URL(fileURLWithPath: modelPath))
+        let type = try ModelUtils.getModelType(forFileAt: URL(fileURLWithPath: modelPath))
         switch type {
         case .unknown: modelSize = .unknown
         case .size7B: modelSize = .size7B

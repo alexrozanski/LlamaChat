@@ -115,17 +115,17 @@ class ChatModel: ObservableObject {
     var newSession: Session
     switch source.type {
     case .llama:
-      newSession = Inference(config: .default).makeLlamaSession(
+      newSession = SessionManager().makeLlamaSession(
         with: source.modelURL,
         config: LlamaSessionConfig(numTokens: 512)
       )
     case .alpaca:
-      newSession = Inference(config: .default).makeAlpacaSession(
+      newSession = SessionManager().makeAlpacaSession(
         with: source.modelURL,
         config: AlpacaSessionConfig(numTokens: 512)
       )
     case .gpt4All:
-      newSession = Inference(config: .default).makeGPT4AllSession(
+      newSession = SessionManager().makeGPT4AllSession(
         with: source.modelURL,
         config: GPT4AllSessionConfig.default
       )
