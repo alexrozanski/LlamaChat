@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct MainChatView: View {
-  @Environment(\.openWindow) var openWindow
-
   @ObservedObject var viewModel: MainChatViewModel
 
   @State var initialWidth: Double?
@@ -29,17 +27,10 @@ struct MainChatView: View {
             viewModel.sidebarWidth = newWidth
           }
       )
-      .overlay {
-        SheetPresentingView(viewModel: viewModel.sheetViewModel) { viewModel in
-          if let viewModel = viewModel as? ConfirmDeleteSourceSheetViewModel {
-            ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
-          }
-        }
-      }
       .toolbar {
         Spacer()
         Button {
-          openWindow(id: WindowIdentifier.setup.rawValue)
+          viewModel.presentAddSourceSheet()
         } label: {
           Image(systemName: "square.and.pencil")
         }
@@ -61,9 +52,17 @@ struct MainChatView: View {
           .id(viewModel.sourceId)
       }
     }
+    .sheet(isPresented: $viewModel.sheetPresented) {
+      if let viewModel = viewModel.sheetViewModel as? ConfirmDeleteSourceSheetViewModel {
+        ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
+      } else if let viewModel = viewModel.sheetViewModel as? AddSourceViewModel {
+        AddSourceContentView(viewModel: viewModel)
+      }
+    }
     .onAppear {
       initialWidth = nil
       selectedChatViewModel = viewModel.selectedSourceId.flatMap { viewModel.makeChatViewModel(for: $0) }
+      viewModel.presentAddSourceSheetIfNeeded()
     }
     .onChange(of: viewModel.selectedSourceId) { newSourceId in
       selectedChatViewModel = newSourceId.flatMap { viewModel.makeChatViewModel(for: $0) }

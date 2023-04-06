@@ -56,7 +56,7 @@ fileprivate class DomainScopedRestorableData<DomainKey>: RestorableData where Do
 }
 
 // We're not using a Scene (so can't use SceneStorage) so build out this simple state restoration class.
-class StateRestoration {
+class StateRestoration: ObservableObject {
   func restorableData<DomainKey>(for domain: String) -> any RestorableData<DomainKey> where DomainKey: RawRepresentable, DomainKey.RawValue == String {
     return DomainScopedRestorableData(domain: domain, stateRestoration: self)
   }

@@ -8,7 +8,7 @@
 import Foundation
 import SQLite
 
-class MessagesModel {
+class MessagesModel: ObservableObject {
   private lazy var databaseURL: URL? = {
     return applicationSupportDirectoryURL()?.appending(path: "messages.db")
   }()

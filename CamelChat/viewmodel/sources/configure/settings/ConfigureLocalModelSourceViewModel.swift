@@ -10,7 +10,6 @@ import Combine
 
 class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
   typealias AddSourceHandler = (ChatSource) -> Void
-  typealias GoBackHandler = () -> Void
 
   private lazy var nameGenerator = SourceNameGenerator()
 
@@ -63,7 +62,6 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
   let chatSourceType: ChatSourceType
   let exampleGgmlModelPath: String
   private let addSourceHandler: AddSourceHandler
-  private let goBackHandler: GoBackHandler
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -71,14 +69,12 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
     defaultName: String? = nil,
     chatSourceType: ChatSourceType,
     exampleGgmlModelPath: String,
-    addSourceHandler: @escaping AddSourceHandler,
-    goBackHandler: @escaping GoBackHandler
+    addSourceHandler: @escaping AddSourceHandler
   ) {
     self.name = defaultName ?? ""
     self.chatSourceType = chatSourceType
     self.exampleGgmlModelPath = exampleGgmlModelPath
     self.addSourceHandler = addSourceHandler
-    self.goBackHandler = goBackHandler
     navigationViewModel = ConfigureSourceNavigationViewModel()
     navigationViewModel.delegate = self
 
@@ -92,6 +88,20 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
       .combineLatest(settingsValid)
       .sink { [weak self] nameValid, settingsValid in
         self?.navigationViewModel.canContinue = nameValid && settingsValid
+      }.store(in: &subscriptions)
+
+    $modelSourceType
+      .sink { [weak self] newSourceType in
+        self?.navigationViewModel.showContinueButton = newSourceType != nil
+
+        if let newSourceType {
+          switch newSourceType {
+          case .pyTorch:
+            self?.navigationViewModel.nextButtonTitle = "Continue"
+          case .ggml:
+            self?.navigationViewModel.nextButtonTitle = "Add"
+          }
+        }
       }.store(in: &subscriptions)
   }
 
@@ -116,10 +126,6 @@ extension ConfigureLocalModelSourceType {
 }
 
 extension ConfigureLocalModelSourceViewModel: ConfigureSourceNavigationViewModelDelegate {
-  func goBack() {
-    goBackHandler()
-  }
-
   func next() {
     guard let modelPath = settingsViewModel?.modelPath, let modelSize = settingsViewModel?.modelSize else { return }
     addSourceHandler(

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class ConfirmDeleteSourceSheetViewModel: SheetViewModel {
+class ConfirmDeleteSourceSheetViewModel: ObservableObject {
   let chatSource: ChatSource
   let chatSources: ChatSources
   private let closeHandler: () -> Void
@@ -47,7 +47,7 @@ struct ConfirmDeleteSourceSheetContentView: View {
         Button("Cancel") {
           viewModel.cancel()
         }
-        Button("Delete") {
+        Button("Remove") {
           viewModel.delete()
         }
       }

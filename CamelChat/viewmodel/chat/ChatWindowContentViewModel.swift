@@ -30,7 +30,8 @@ class MainChatViewModel: ObservableObject {
     }
   }
 
-  @Published var sheetViewModel: SheetViewModel?
+  @Published var sheetViewModel: (any ObservableObject)?
+  @Published var sheetPresented = true
 
   lazy private(set) var chatListViewModel = ChatListViewModel(chatSources: chatSources, mainChatViewModel: self)
 
@@ -68,6 +69,18 @@ class MainChatViewModel: ObservableObject {
           self.selectedSourceId = nil
         }
       }.store(in: &subscriptions)
+
+    $sheetViewModel.sink { [weak self] newSheetViewModel in
+      if newSheetViewModel != nil {
+        self?.sheetPresented = true
+      }
+    }.store(in: &subscriptions)
+
+    $sheetPresented.sink { [weak self] isSheetPresented in
+      if !isSheetPresented {
+        self?.sheetViewModel = nil
+      }
+    }.store(in: &subscriptions)
   }  
 
   func makeChatViewModel(for sourceId: String) -> ChatViewModel? {
@@ -83,5 +96,17 @@ class MainChatViewModel: ObservableObject {
         self?.sheetViewModel = nil
       }
     )
+  }
+
+  func presentAddSourceSheet() {
+    sheetViewModel = AddSourceViewModel(chatSources: chatSources, closeHandler: { [weak self] _ in
+      self?.sheetViewModel = nil
+    })
+  }
+
+  func presentAddSourceSheetIfNeeded() {
+    if chatSources.sources.isEmpty {
+      presentAddSourceSheet()
+    }
   }
 }

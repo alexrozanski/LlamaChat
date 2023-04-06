@@ -10,7 +10,7 @@ import Foundation
 class SelectSourceTypeViewModel: ObservableObject {
   typealias SelectSourceHandler = (ChatSourceType) -> Void
 
-  struct Source {
+  struct Source: Equatable {
     let id: String
     let type: ChatSourceType
     let name: String

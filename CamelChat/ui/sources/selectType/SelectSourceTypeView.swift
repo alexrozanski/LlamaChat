@@ -10,14 +10,9 @@ import SwiftUI
 struct SelectSourceTypeView: View {
   @ObservedObject var viewModel: SelectSourceTypeViewModel
 
-  var presentationStyle: AddSourceFlowPresentationStyle
   var body: some View {
     VStack(alignment: .leading) {
       VStack(alignment: .leading, spacing: 4) {
-        if presentationStyle.showTitle {
-          Text("Add Chat Source")
-            .font(.headline)
-        }
         Text("To start interacting with one of the models, choose a chat source based on your available model data.")
           .lineLimit(nil)
           .fixedSize(horizontal: false, vertical: true)

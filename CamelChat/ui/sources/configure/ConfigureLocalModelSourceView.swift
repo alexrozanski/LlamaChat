@@ -9,20 +9,13 @@ import SwiftUI
 
 struct ConfigureLocalModelSourceView: View {
   @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
-  var presentationStyle: AddSourceFlowPresentationStyle
 
   @State var selectedModelType: String = ""
 
   var body: some View {
     Form {
-      if presentationStyle.showTitle {
-        Section("Set up \(viewModel.modelType) model") {
-          ConfigureModelDisplayNameView(viewModel: viewModel)
-        }
-      } else {
-        Section {
-          ConfigureModelDisplayNameView(viewModel: viewModel)
-        }
+      Section {
+        ConfigureModelDisplayNameView(viewModel: viewModel)
       }
       ConfigureLocalModelSelectFormatView(viewModel: viewModel)
 

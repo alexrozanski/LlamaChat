@@ -44,7 +44,9 @@ class SourcesSettingsViewModel: ObservableObject {
   }
 
   @Published var detailViewModel: SourcesSettingsDetailViewModel?
-  @Published var activeSheetViewModel: SheetViewModel?
+  @Published var sheetViewModel: (any ObservableObject)?
+
+  @Published var sheetPresented = false
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -75,6 +77,18 @@ class SourcesSettingsViewModel: ObservableObject {
           self.selectedSourceId = nil
         }
       }).store(in: &subscriptions)
+
+    $sheetViewModel.sink { [weak self] newSheetViewModel in
+      if newSheetViewModel != nil {
+        self?.sheetPresented = true
+      }
+    }.store(in: &subscriptions)
+
+    $sheetPresented.sink { [weak self] isSheetPresented in
+      if !isSheetPresented {
+        self?.sheetViewModel = nil
+      }
+    }.store(in: &subscriptions)
   }
 
   func remove(_ source: ChatSource) {
@@ -86,8 +100,8 @@ class SourcesSettingsViewModel: ObservableObject {
   }
 
   func showAddSourceSheet() {
-    activeSheetViewModel = AddSourceSheetViewModel(chatSources: chatSources, closeHandler: { [weak self] newSource in
-      self?.activeSheetViewModel = nil
+    sheetViewModel = AddSourceViewModel(chatSources: chatSources, closeHandler: { [weak self] newSource in
+      self?.sheetViewModel = nil
       if let newSource {
         self?.selectedSourceId = newSource.id
       }
@@ -97,11 +111,11 @@ class SourcesSettingsViewModel: ObservableObject {
   func showConfirmDeleteSourceSheet(forSourceWithId sourceId: ChatSource.ID) {
     guard let source = chatSources.source(for: sourceId) else { return }
 
-    activeSheetViewModel = ConfirmDeleteSourceSheetViewModel(
+    sheetViewModel = ConfirmDeleteSourceSheetViewModel(
       chatSource: source,
       chatSources: chatSources,
       closeHandler: { [weak self] in
-        self?.activeSheetViewModel = nil
+        self?.sheetViewModel = nil
       }
     )
   }

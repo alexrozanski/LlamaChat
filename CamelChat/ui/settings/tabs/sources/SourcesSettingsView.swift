@@ -27,13 +27,11 @@ struct SourcesSettingsView: View {
       detailView
         .frame(maxWidth: .infinity)
     }
-    .overlay {
-      SheetPresentingView(viewModel: viewModel.activeSheetViewModel) { viewModel in
-        if let viewModel = viewModel as? ConfirmDeleteSourceSheetViewModel {
-          ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
-        } else if let viewModel = viewModel as? AddSourceSheetViewModel {
-          AddSourceSheetContentView(viewModel: viewModel)
-        }
+    .sheet(isPresented: $viewModel.sheetPresented) {
+      if let viewModel = viewModel.sheetViewModel as? ConfirmDeleteSourceSheetViewModel {
+        ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
+      } else if let viewModel = viewModel.sheetViewModel as? AddSourceViewModel {
+        AddSourceContentView(viewModel: viewModel)
       }
     }
   }
