@@ -17,7 +17,7 @@ class ChatListItemViewModel: ObservableObject {
     switch chatSource.modelSize {
     case .unknown: suffix = ""
     case .size7B: suffix = " (7B)"
-    case .size12B: suffix = " (12B)"
+    case .size13B: suffix = " (13B)"
     case .size30B: suffix = " (30B)"
     case .size65B: suffix = " (65B)"
     }

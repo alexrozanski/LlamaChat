@@ -15,7 +15,7 @@ class SourcesSettingsDetailViewModel: ObservableObject {
   var modelPath: String
 
   var type: String {
-    return "\(source.type.readableName) model"
+    return source.type.readableName
   }
   var modelSize: String {
     switch source.modelSize {
@@ -23,8 +23,8 @@ class SourcesSettingsDetailViewModel: ObservableObject {
       return "Unknown"
     case .size7B:
       return "7B"
-    case .size12B:
-      return "12B"
+    case .size13B:
+      return "13B"
     case .size30B:
       return "30B"
     case .size65B:
