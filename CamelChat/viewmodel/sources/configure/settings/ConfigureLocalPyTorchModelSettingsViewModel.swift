@@ -98,17 +98,11 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
         case .failure(let error):
           var errorMessage: String
           switch error {
-          case .missingParamsFile(filename: let filename):
-            errorMessage = "Directory doesn't contain params file '\(filename)'"
-          case .missingTokenizerFile(filename: let filename):
-            errorMessage = "Directory doesn't contain tokenizer file '\(filename)'"
-          case .missingPyTorchCheckpoint(filename: let filename):
-            errorMessage = "Directory doesn't contain PyTorch checkpoint file '\(filename)'"
+          case .missingFiles(let filenames):
+            errorMessage = "Directory is missing \(filenames.count) \(filenames.count == 1 ? "file" : "files")"
           }
           self.pathSelectorViewModel.modelState = .invalid(message: errorMessage)
         }
-
-        ConvertPyTorchToGgmlConversion.requiredFiles(for: data).map { $0.path }
       }.store(in: &subscriptions)
   }
 
