@@ -47,9 +47,16 @@ class MainChatViewModel: ObservableObject {
     _sidebarWidth = Published(initialValue: restorableData.getValue(for: .sidebarWidth) ?? 200)
     _selectedSourceId = Published(initialValue: restorableData.getValue(for: .selectedSourceId) ?? chatSources.sources.first?.id)
     chatSources.$sources.scan(nil as [ChatSource]?) { [weak self] (previousSources, newSources) in
+      guard let self else { return newSources }
+
       if newSources.count == 1 && (previousSources?.isEmpty ?? true) {
-        self?.selectedSourceId = newSources.first?.id
+        self.selectedSourceId = newSources.first?.id
       }
+
+      if !newSources.map({ $0.id }).contains(self.selectedSourceId) {
+        self.selectedSourceId = nil
+      }
+
       return newSources
     }.sink { _ in }.store(in: &subscriptions)
   }  
