@@ -8,6 +8,8 @@
 import SwiftUI
 
 class AddSourceSheetViewModel: SheetViewModel, ObservableObject {
+  typealias CloseHandler = (_ newChatSource: ChatSource?) -> Void
+
   enum State {
     case none
     case selectingSource(viewModel: SelectSourceTypeViewModel)
@@ -15,11 +17,11 @@ class AddSourceSheetViewModel: SheetViewModel, ObservableObject {
   }
 
   private let chatSources: ChatSources
-  private let closeHandler: () -> Void
+  private let closeHandler: CloseHandler
 
   @Published var state: State = .none
 
-  init(chatSources: ChatSources, closeHandler: @escaping () -> Void) {
+  init(chatSources: ChatSources, closeHandler: @escaping CloseHandler) {
     self.chatSources = chatSources
     self.closeHandler = closeHandler
   }
@@ -78,11 +80,11 @@ class AddSourceSheetViewModel: SheetViewModel, ObservableObject {
 
   private func add(source: ChatSource) {
     chatSources.add(source: source)
-    closeHandler()
+    closeHandler(source)
   }
 
   func cancel() {
-    closeHandler()
+    closeHandler(nil)
   }
 }
 
@@ -100,9 +102,9 @@ struct AddSourceSheetContentView: View {
           Button("Cancel") { self.viewModel.cancel() }
           Spacer()
         }
-        .padding(.top, 12)
+        .padding(.bottom, 24)
+        .padding(.horizontal, 24)
       }
-      .padding()
     case .configuringSource(viewModel: let viewModel):
       makeConfigureSourceView(from: viewModel, presentationStyle: .standalone)
     }
@@ -112,7 +114,7 @@ struct AddSourceSheetContentView: View {
     VStack {
       contentView
     }
-    .frame(minWidth: 500, minHeight: 300)
+    .frame(minWidth: 600, minHeight: 400)
     .onAppear() {
       viewModel.start()
     }

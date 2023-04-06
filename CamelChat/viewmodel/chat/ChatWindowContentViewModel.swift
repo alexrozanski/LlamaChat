@@ -19,7 +19,7 @@ class MainChatViewModel: ObservableObject {
   private let messagesModel: MessagesModel
   private let restorableData: any RestorableData<RestorableKey>
 
-  @Published var selectedSourceId: String? {
+  @Published var selectedSourceId: ChatSource.ID? {
     didSet {
       restorableData.set(value: selectedSourceId, for: .selectedSourceId)
     }
@@ -29,6 +29,8 @@ class MainChatViewModel: ObservableObject {
       restorableData.set(value: sidebarWidth, for: .sidebarWidth)
     }
   }
+
+  @Published var sheetViewModel: SheetViewModel?
 
   lazy private(set) var chatListViewModel = ChatListViewModel(chatSources: chatSources, mainChatViewModel: self)
 
@@ -46,23 +48,40 @@ class MainChatViewModel: ObservableObject {
     self.restorableData = stateRestoration.restorableData(for: "ChatWindow")
     _sidebarWidth = Published(initialValue: restorableData.getValue(for: .sidebarWidth) ?? 200)
     _selectedSourceId = Published(initialValue: restorableData.getValue(for: .selectedSourceId) ?? chatSources.sources.first?.id)
-    chatSources.$sources.scan(nil as [ChatSource]?) { [weak self] (previousSources, newSources) in
-      guard let self else { return newSources }
 
-      if newSources.count == 1 && (previousSources?.isEmpty ?? true) {
-        self.selectedSourceId = newSources.first?.id
+    // bit hacky but use receive(on:) to ensure chatSources.sources has been updated to its new value
+    // to ensure consistent state (otherwise in the `sink()` chatSources.sources will not have been updated yet.
+    chatSources.$sources
+      .receive(on: DispatchQueue.main)
+      .scan((nil as [ChatSource]?, chatSources.sources)) { (previous, current) in
+        let lastCurrent = previous.1
+        return (lastCurrent, current)
       }
+      .sink { [weak self] (previousSources, newSources) in
+        guard let self else { return }
 
-      if !newSources.map({ $0.id }).contains(self.selectedSourceId) {
-        self.selectedSourceId = nil
-      }
+        if newSources.count == 1 && (previousSources?.isEmpty ?? true) {
+          self.selectedSourceId = newSources.first?.id
+        }
 
-      return newSources
-    }.sink { _ in }.store(in: &subscriptions)
+        if !newSources.map({ $0.id }).contains(self.selectedSourceId) {
+          self.selectedSourceId = nil
+        }
+      }.store(in: &subscriptions)
   }  
 
   func makeChatViewModel(for sourceId: String) -> ChatViewModel? {
     guard let chatSource = chatSources.sources.first(where: { $0.id == sourceId }) else { return nil }
     return ChatViewModel(chatSource: chatSource, chatModels: chatModels, messagesModel: messagesModel)
+  }
+
+  func removeChatSource(_ chatSource: ChatSource) {
+    sheetViewModel = ConfirmDeleteSourceSheetViewModel(
+      chatSource: chatSource,
+      chatSources: chatSources,
+      closeHandler: { [weak self] in
+        self?.sheetViewModel = nil
+      }
+    )
   }
 }

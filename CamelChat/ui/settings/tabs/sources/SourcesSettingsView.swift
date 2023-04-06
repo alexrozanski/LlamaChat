@@ -11,7 +11,7 @@ struct SourcesSettingsView: View {
   @ObservedObject var viewModel: SourcesSettingsViewModel
 
   @ViewBuilder var detailView: some View {
-    if let detailViewModel = viewModel.makeSelectedSourceDetailViewModel() {
+    if let detailViewModel = viewModel.detailViewModel {
       SourcesSettingsDetailView(viewModel: detailViewModel)
         .id(detailViewModel.id)
     } else {
@@ -22,19 +22,19 @@ struct SourcesSettingsView: View {
   var body: some View {
     HStack(spacing: 0) {
       SourcesSettingsListView(viewModel: viewModel)
-        .overlay {
-          SheetPresentingView(viewModel: viewModel.activeSheetViewModel) { viewModel in
-            if let viewModel = viewModel as? ConfirmDeleteSourceSheetViewModel {
-              ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
-            } else if let viewModel = viewModel as? AddSourceSheetViewModel {
-              AddSourceSheetContentView(viewModel: viewModel)
-            }
-          }
-        }
         .padding([.top, .leading, .bottom])
         .frame(width: 200)
       detailView
         .frame(maxWidth: .infinity)
+    }
+    .overlay {
+      SheetPresentingView(viewModel: viewModel.activeSheetViewModel) { viewModel in
+        if let viewModel = viewModel as? ConfirmDeleteSourceSheetViewModel {
+          ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
+        } else if let viewModel = viewModel as? AddSourceSheetViewModel {
+          AddSourceSheetContentView(viewModel: viewModel)
+        }
+      }
     }
   }
 }

@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
-      "identity" : "llama.swift",
+      "identity" : "coquille",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/alexrozanski/llama.swift.git",
+      "location" : "https://github.com/alexrozanski/Coquille.git",
       "state" : {
-        "branch" : "v2",
-        "revision" : "e9a3028abc1819eed9dea6424f386e3d7c1ea207"
+        "revision" : "ae4dbfbf2d423092e5bb02d1565fc1a2e2407ee3",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "llama.swift",
+      "kind" : "localSourceControl",
+      "location" : "/Users/rozanski/Documents/GitHub/llama.swift",
+      "state" : {
+        "branch" : "conversion",
+        "revision" : "52b4e28724ab31cccdaae62c5c08ab996fa1549d"
       }
     },
     {

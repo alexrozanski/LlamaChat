@@ -21,6 +21,20 @@ fileprivate struct ItemView: View {
       }
     }
     .padding(8)
+    .contextMenu {
+      Button("Configure...") {
+        if #available(macOS 13.0, *) {
+          NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        }
+        else {
+          NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+        }
+      }
+      Divider()
+      Button("Remove...") {
+        viewModel.remove()
+      }
+    }
   }
 }
 

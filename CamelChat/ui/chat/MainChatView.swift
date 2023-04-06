@@ -29,6 +29,13 @@ struct MainChatView: View {
             viewModel.sidebarWidth = newWidth
           }
       )
+      .overlay {
+        SheetPresentingView(viewModel: viewModel.sheetViewModel) { viewModel in
+          if let viewModel = viewModel as? ConfirmDeleteSourceSheetViewModel {
+            ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
+          }
+        }
+      }
       .toolbar {
         Spacer()
         Button {

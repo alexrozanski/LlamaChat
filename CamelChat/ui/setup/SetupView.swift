@@ -50,6 +50,6 @@ struct SetupView: View {
 
 fileprivate extension ChatSourceType {
   var configureWindowTitle: String {
-    return "Configure \(readableName) model"
+    return "Add \(readableName) model"
   }
 }

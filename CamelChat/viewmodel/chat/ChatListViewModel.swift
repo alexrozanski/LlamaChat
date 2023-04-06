@@ -30,12 +30,19 @@ class ChatListItemViewModel: ObservableObject {
 
   private(set) lazy var avatarViewModel = AvatarViewModel(chatSource: chatSource)
 
-  fileprivate init(chatSource: ChatSource) {
+  private weak var chatListViewModel: ChatListViewModel?
+
+  fileprivate init(chatSource: ChatSource, chatListViewModel: ChatListViewModel) {
     self.chatSource = chatSource
+    self.chatListViewModel = chatListViewModel
     self.title = chatSource.name
     chatSource.$name.sink(receiveValue: { [weak self] newName in
       self?.title = newName
     }).store(in: &subscriptions)
+  }
+
+  func remove() {
+    chatListViewModel?.removeSource(chatSource)
   }
 }
 
@@ -51,10 +58,12 @@ class ChatListViewModel: ObservableObject {
   init(chatSources: ChatSources, mainChatViewModel: MainChatViewModel) {
     self.chatSources = chatSources
     self.mainChatViewModel = mainChatViewModel
-    self.items = chatSources.sources.map { ChatListItemViewModel(chatSource: $0) }
+
+    items = []
+    items = chatSources.sources.map { ChatListItemViewModel(chatSource: $0, chatListViewModel: self) }
 
     chatSources.$sources.sink(receiveValue: { newSources in
-      self.items = newSources.map { ChatListItemViewModel(chatSource: $0) }
+      self.items = newSources.map { ChatListItemViewModel(chatSource: $0, chatListViewModel: self) }
     }).store(in: &subscriptions)
     mainChatViewModel.$selectedSourceId.sink(receiveValue: { newSelectedSourceId in
       self.selectedSourceId = newSelectedSourceId
@@ -63,6 +72,10 @@ class ChatListViewModel: ObservableObject {
 
   func selectSource(with id: String?) {
     mainChatViewModel?.selectedSourceId = id
+  }
+
+  func removeSource(_ source: ChatSource) {
+    mainChatViewModel?.removeChatSource(source)
   }
 
   func itemViewModel(with sourceId: String?) -> ChatListItemViewModel? {

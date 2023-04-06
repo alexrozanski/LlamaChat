@@ -39,22 +39,22 @@ struct SourcesSettingsListView: View {
       })
       .buttonStyle(BorderlessButtonStyle())
       Button(action: {
-        guard let selectedSource = viewModel.sources.first(where: { $0 == viewModel.selectedSource }) else { return }
-        viewModel.showConfirmDeleteSourceSheet(for: selectedSource)
+        guard let selectedSourceId = viewModel.selectedSourceId else { return }
+        viewModel.showConfirmDeleteSourceSheet(forSourceWithId: selectedSourceId)
       }, label: {
         Image(systemName: "minus")
           .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 8))
       })
-      .disabled(viewModel.selectedSource == nil)
+      .disabled(viewModel.selectedSourceId == nil)
       .buttonStyle(BorderlessButtonStyle())
       Spacer()
     }
   }
 
   var body: some View {
-    let selectionBinding = Binding<String?>(
-      get: { viewModel.selectedSource?.id },
-      set: { selectedId in viewModel.selectedSource = viewModel.sources.first(where: { $0.id == selectedId }) }
+    let selectionBinding = Binding<ChatSource.ID?>(
+      get: { viewModel.selectedSourceId },
+      set: { viewModel.selectedSourceId = $0 }
     )
     ZStack {
       List(selection: selectionBinding) {
@@ -72,7 +72,7 @@ struct SourcesSettingsListView: View {
     }
     .border(.separator)
     .onAppear {
-      viewModel.selectedSource = viewModel.sources.first
+      viewModel.selectFirstSource()
     }
   }
 }

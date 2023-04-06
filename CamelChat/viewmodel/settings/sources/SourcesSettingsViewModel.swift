@@ -33,8 +33,17 @@ class SourcesSettingsViewModel: ObservableObject {
   private let chatSources: ChatSources
 
   @Published var sources: [SourcesSettingsSourceItemViewModel]
-  @Published var selectedSource: SourcesSettingsSourceItemViewModel?
+  @Published var selectedSourceId: ChatSource.ID? {
+    didSet {
+      guard let selectedSourceId, let source = chatSources.source(for: selectedSourceId) else {
+        detailViewModel = nil
+        return
+      }
+      detailViewModel = SourcesSettingsDetailViewModel(source: source)
+    }
+  }
 
+  @Published var detailViewModel: SourcesSettingsDetailViewModel?
   @Published var activeSheetViewModel: SheetViewModel?
 
   private var subscriptions = Set<AnyCancellable>()
@@ -42,32 +51,58 @@ class SourcesSettingsViewModel: ObservableObject {
   init(chatSources: ChatSources) {
     self.chatSources = chatSources
     self.sources = chatSources.sources.map { SourcesSettingsSourceItemViewModel(source: $0) }
+
     chatSources.$sources.sink(receiveValue: { sources in
       self.sources = sources.map { SourcesSettingsSourceItemViewModel(source: $0) }
     }).store(in: &subscriptions)
+
+    // bit hacky but use receive(on:) to ensure chatSources.sources has been updated to its new value
+    // to ensure consistent state (otherwise in the `sink()` chatSources.sources will not have been updated yet.
+    chatSources.$sources
+      .receive(on: DispatchQueue.main)
+      .scan((nil as [ChatSource]?, chatSources.sources)) { (previous, current) in
+        let lastCurrent = previous.1
+        return (lastCurrent, current)
+      }
+      .sink(receiveValue: { [weak self] previousSources, newSources in
+        guard let self else { return }
+
+        if newSources.count == 1 && (previousSources?.isEmpty ?? true) {
+          self.selectedSourceId = newSources.first?.id
+        }
+
+        if !newSources.map({ $0.id }).contains(self.selectedSourceId) {
+          self.selectedSourceId = nil
+        }
+      }).store(in: &subscriptions)
   }
 
   func remove(_ source: ChatSource) {
     chatSources.remove(source: source)
   }
 
+  func selectFirstSource() {
+    selectedSourceId = sources.first?.id
+  }
+
   func showAddSourceSheet() {
-    activeSheetViewModel = AddSourceSheetViewModel(chatSources: chatSources, closeHandler: { [weak self] in
+    activeSheetViewModel = AddSourceSheetViewModel(chatSources: chatSources, closeHandler: { [weak self] newSource in
       self?.activeSheetViewModel = nil
+      if let newSource {
+        self?.selectedSourceId = newSource.id
+      }
     })
   }
 
-  func showConfirmDeleteSourceSheet(for viewModel: SourcesSettingsSourceItemViewModel) {
+  func showConfirmDeleteSourceSheet(forSourceWithId sourceId: ChatSource.ID) {
+    guard let source = chatSources.source(for: sourceId) else { return }
+
     activeSheetViewModel = ConfirmDeleteSourceSheetViewModel(
-      chatSource: viewModel.source,
+      chatSource: source,
       chatSources: chatSources,
       closeHandler: { [weak self] in
         self?.activeSheetViewModel = nil
       }
     )
-  }
-
-  func makeSelectedSourceDetailViewModel() -> SourcesSettingsDetailViewModel? {
-    return selectedSource.map { SourcesSettingsDetailViewModel(source: $0.source) }
   }
 }

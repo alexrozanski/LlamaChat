@@ -19,6 +19,8 @@ struct SelectSourceTypeView: View {
             .font(.headline)
         }
         Text("To start interacting with one of the models, choose a chat source based on your available model data.")
+          .lineLimit(nil)
+          .fixedSize(horizontal: false, vertical: true)
       }
       .padding()
       SourceTypeSelectionView(viewModel: viewModel)

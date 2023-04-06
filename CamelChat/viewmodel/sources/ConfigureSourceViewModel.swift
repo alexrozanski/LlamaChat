@@ -18,10 +18,6 @@ class ConfigureSourceNavigationViewModel: ObservableObject {
 
   weak var delegate: ConfigureSourceNavigationViewModelDelegate?
 
-  init() {
-    canContinue = false
-  }
-
   func goBack() {
     delegate?.goBack()
   }
@@ -65,7 +61,7 @@ func makeConfigureLocalLlamaModelSourceViewModel(
   return ConfigureLocalModelSourceViewModel(
     defaultName: "LLaMa",
     chatSourceType: .llama,
-    exampleModelPath: "ggml-model-q4_0.bin",
+    exampleGgmlModelPath: "ggml-model-q4_0.bin",
     addSourceHandler: addSourceHandler,
     goBackHandler: goBackHandler
   )
@@ -78,7 +74,7 @@ func makeConfigureLocalAlpacaModelSourceViewModel(
   return ConfigureLocalModelSourceViewModel(
     defaultName: "Alpaca",
     chatSourceType: .alpaca,
-    exampleModelPath: "ggml-alpaca-7b-q4.bin",
+    exampleGgmlModelPath: "ggml-alpaca-7b-q4.bin",
     addSourceHandler: addSourceHandler,
     goBackHandler: goBackHandler
   )
@@ -91,7 +87,7 @@ func makeConfigureLocalGPT4AllModelSourceViewModel(
   return ConfigureLocalModelSourceViewModel(
     defaultName: "GPT4All",
     chatSourceType: .gpt4All,
-    exampleModelPath: "gpt4all-lora-quantized.bin",
+    exampleGgmlModelPath: "gpt4all-lora-quantized.bin",
     addSourceHandler: addSourceHandler,
     goBackHandler: goBackHandler
   )
