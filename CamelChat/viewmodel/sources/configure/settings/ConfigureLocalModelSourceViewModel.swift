@@ -39,6 +39,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
         switch modelSourceType {
         case .pyTorch:
           let viewModel = ConfigureLocalPyTorchModelSettingsViewModel(chatSourceType: chatSourceType)
+          viewModel.determineConversionStateIfNeeded()
           settingsViewModels[.pyTorch] = viewModel
           settingsViewModel = viewModel
         case .ggml:

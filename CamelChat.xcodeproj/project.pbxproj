@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820C795F29DEEA8F00F70723 /* DebouncedView.swift */; };
 		8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6829D8583D000E554D /* SheetPresentingView.swift */; };
 		8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */; };
 		8227DA6E29D858B7000E554D /* AddSourceSheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */; };
@@ -88,6 +89,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		820C795F29DEEA8F00F70723 /* DebouncedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncedView.swift; sourceTree = "<group>"; };
 		8227DA6829D8583D000E554D /* SheetPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentingView.swift; sourceTree = "<group>"; };
 		8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSheetDeletionContentView.swift; sourceTree = "<group>"; };
 		8227DA6D29D858B7000E554D /* AddSourceSheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceSheetContentView.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 			isa = PBXGroup;
 			children = (
 				82914CC429D6E69C00858B2C /* BorderlessTextField.swift */,
+				820C795F29DEEA8F00F70723 /* DebouncedView.swift */,
 				8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */,
 				8227DA6729D85827000E554D /* sheets */,
 			);
@@ -734,6 +737,7 @@
 				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
 				82A7B4EF29DE49C300BCBB6B /* ConfigureLocalPyTorchModelSettingsViewModel.swift in Sources */,
 				8227DACC29DA53EA000E554D /* SourceNameGenerator.swift in Sources */,
+				820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */,
 				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				8227DA6929D8583D000E554D /* SheetPresentingView.swift in Sources */,

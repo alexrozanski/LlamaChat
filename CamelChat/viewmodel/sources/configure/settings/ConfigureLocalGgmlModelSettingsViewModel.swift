@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import llama
 
-private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalModelInvalidModelTypeReason {
+private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalGgmlModelSettingsViewModel.InvalidModelTypeReason {
   // Reason is always stored in the underlying error
   guard let underlyingError = ((error as NSError).underlyingErrors as [NSError]).first(where: { $0.domain == LlamaError.Domain }) else {
     return .unknown
@@ -27,6 +27,28 @@ private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalModel
 }
 
 class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocalModelSettingsViewModel {
+  enum InvalidModelTypeReason {
+    case unknown
+    case invalidFileType
+    case unsupportedModelVersion
+  }
+
+  enum ModelState {
+    case none
+    case invalidPath
+    case invalidModel(_ reason: InvalidModelTypeReason)
+    case valid
+
+    var isValid: Bool {
+      switch self {
+      case .none, .invalidPath, .invalidModel:
+        return false
+      case .valid:
+        return true
+      }
+    }
+  }
+
   let settingsValid = CurrentValueSubject<Bool, Never>(false)
 
   var sourceType: ConfigureLocalModelSourceType {
@@ -43,7 +65,25 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     }
   })
 
-  @Published private(set) var modelState: ConfigureLocalModelState = .none
+  @Published private(set) var modelState: ModelState = .none {
+    didSet {
+      switch modelState {
+      case .none:
+        pathSelectorViewModel.modelState = .none
+      case .valid:
+        pathSelectorViewModel.modelState = .valid
+      case .invalidPath:
+        pathSelectorViewModel.modelState = .invalid(message: "Selected file is invalid")
+      case .invalidModel(let reason):
+        switch reason {
+        case .unknown, .invalidFileType:
+          pathSelectorViewModel.modelState = .invalid(message: "Selected file is not a valid model")
+        case .unsupportedModelVersion:
+          pathSelectorViewModel.modelState = .invalid(message: "Selected model is of an unsupported version")
+        }
+      }
+    }
+  }
 
   var modelPath: String? { return pathSelectorViewModel.modelPaths.first }
   var modelSize: ModelSize? { return modelSizePickerViewModel.modelSize }

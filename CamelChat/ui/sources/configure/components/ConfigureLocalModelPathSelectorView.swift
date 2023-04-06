@@ -21,30 +21,20 @@ fileprivate extension Alignment {
   static let label = Alignment(horizontal: .leading, vertical: .label)
 }
 
-private func errorText(for modelState: ConfigureLocalModelState) -> String? {
+private func errorText(for modelState: ConfigureLocalModelPathSelectorViewModel.ModelState) -> String? {
   switch modelState {
   case .none, .valid:
     return nil
-  case .invalidPath:
-    return "Selected file is invalid"
-  case .invalidModel(let reason):
-    switch reason {
-    case .unknown, .invalidFileType:
-      return "Selected file is not a valid model"
-    case .unsupportedModelVersion:
-      return "Selected model is of an unsupported version"
-    }
+  case .invalid(let message):
+    return message
   }
 }
 
 struct ConfigureLocalModelPathSelectorView: View {
   @ObservedObject var viewModel: ConfigureLocalModelPathSelectorViewModel
 
-  let useMultiplePathSelection: Bool
-  let modelState: ConfigureLocalModelState
-
   @ViewBuilder var label: some View {
-    Text(useMultiplePathSelection ? "Model Paths" : "Model Path")
+    Text(viewModel.label)
       .alignmentGuide(.label) { d in
         d[VerticalAlignment.firstTextBaseline]
       }
@@ -53,8 +43,9 @@ struct ConfigureLocalModelPathSelectorView: View {
   @ViewBuilder var selectButton: some View {
     Button(action: {
       let panel = NSOpenPanel()
-      panel.allowsMultipleSelection = useMultiplePathSelection
-      panel.canChooseDirectories = false
+      panel.allowsMultipleSelection = viewModel.allowMultipleSelection
+      panel.canChooseFiles = viewModel.selectionMode.canSelectFiles
+      panel.canChooseDirectories = viewModel.selectionMode.canSelectDirectories
       if panel.runModal() == .OK {
         viewModel.modelPaths = panel.urls.map { $0.path }
       }
@@ -75,7 +66,7 @@ struct ConfigureLocalModelPathSelectorView: View {
           .truncationMode(.head)
           .frame(maxWidth: 200, alignment: .trailing)
           .help(viewModel.modelPaths.first ?? "")
-          if let errorText = errorText(for: modelState) {
+          if let errorText = errorText(for: viewModel.modelState) {
             Text(errorText)
               .foregroundColor(.red)
               .font(.footnote)
@@ -97,7 +88,7 @@ struct ConfigureLocalModelPathSelectorView: View {
               viewModel.modelPaths.isEmpty ? "No paths selected" : "\(viewModel.modelPaths.count) paths selected"
             )
             .frame(maxWidth: 200, alignment: .trailing)
-            if let errorText = errorText(for: modelState) {
+            if let errorText = errorText(for: viewModel.modelState) {
               Text(errorText)
                 .foregroundColor(.red)
                 .font(.footnote)
@@ -120,10 +111,26 @@ struct ConfigureLocalModelPathSelectorView: View {
   }
 
   var body: some View {
-    if useMultiplePathSelection {
+    if viewModel.allowMultipleSelection {
       multiplePathSelectorContent
     } else {
       singlePathSelectorContent
+    }
+  }
+}
+
+fileprivate extension ConfigureLocalModelPathSelectorViewModel.SelectionMode {
+  var canSelectFiles: Bool {
+    switch self {
+    case .files: return true
+    case .directories: return false
+    }
+  }
+
+  var canSelectDirectories: Bool {
+    switch self {
+    case .files: return false
+    case .directories: return true
     }
   }
 }

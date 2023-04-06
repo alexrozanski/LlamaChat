@@ -15,28 +15,6 @@ enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
   var id: String { return rawValue }  
 }
 
-enum ConfigureLocalModelInvalidModelTypeReason {
-  case unknown
-  case invalidFileType
-  case unsupportedModelVersion
-}
-
-enum ConfigureLocalModelState {
-  case none
-  case invalidPath
-  case invalidModel(_ reason: ConfigureLocalModelInvalidModelTypeReason)
-  case valid
-
-  var isValid: Bool {
-    switch self {
-    case .none, .invalidPath, .invalidModel:
-      return false
-    case .valid:
-      return true
-    }
-  }
-}
-
 protocol ConfigureLocalModelSettingsViewModel {
   var sourceType: ConfigureLocalModelSourceType { get }
 
