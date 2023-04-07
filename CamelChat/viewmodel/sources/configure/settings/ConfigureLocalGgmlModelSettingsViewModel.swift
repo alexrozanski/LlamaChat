@@ -37,7 +37,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     case none
     case invalidPath
     case invalidModel(_ reason: InvalidModelTypeReason)
-    case valid
+    case valid(modelURL: URL)
 
     var isValid: Bool {
       switch self {
@@ -49,7 +49,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     }
   }
 
-  let settingsValid = CurrentValueSubject<Bool, Never>(false)
+  let sourceSettings = CurrentValueSubject<SourceSettings?, Never>(nil)
 
   var sourceType: ConfigureLocalModelSourceType {
     return .ggml
@@ -65,25 +65,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     }
   })
 
-  @Published private(set) var modelState: ModelState = .none {
-    didSet {
-      switch modelState {
-      case .none:
-        pathSelectorViewModel.modelState = .none
-      case .valid:
-        pathSelectorViewModel.modelState = .valid
-      case .invalidPath:
-        pathSelectorViewModel.modelState = .invalid(message: "Selected file is invalid")
-      case .invalidModel(let reason):
-        switch reason {
-        case .unknown, .invalidFileType:
-          pathSelectorViewModel.modelState = .invalid(message: "Selected file is not a valid model")
-        case .unsupportedModelVersion:
-          pathSelectorViewModel.modelState = .invalid(message: "Selected model is of an unsupported version")
-        }
-      }
-    }
-  }
+  @Published private(set) var modelState: ModelState = .none
 
   var modelPath: String? { return pathSelectorViewModel.modelPaths.first }
   var modelSize: ModelSize? { return modelSizePickerViewModel.modelSize }
@@ -108,15 +90,16 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
         return
       }
 
+      let modelURL = URL(fileURLWithPath: modelPath)
       do {
-        try ModelUtils.validateModel(fileURL: URL(fileURLWithPath: modelPath))
+        try ModelUtils.validateModel(fileURL: modelURL)
       } catch {
         print(error)
         self.modelState = .invalidModel(getInvalidModelTypeReason(from: error))
         return
       }
 
-      self.modelState = .valid
+      self.modelState = .valid(modelURL: modelURL)
 
       do {
         self.modelSizePickerViewModel.modelSize = (try ModelUtils.getModelType(forFileAt: URL(fileURLWithPath: modelPath))).toModelSize()
@@ -125,11 +108,36 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
       }
     }.store(in: &subscriptions)
 
-    modelSizePickerViewModel.$modelSize.combineLatest($modelState)
-      .map { modelSize, modelState -> Bool in
-        return modelState.isValid && !modelSize.isUnknown
-      }.sink { [weak self] isValid in
-        self?.settingsValid.send(isValid)
+    $modelState.sink { [weak self] newModelState in
+      switch newModelState {
+      case .none, .valid:
+        self?.pathSelectorViewModel.errorMessage = nil
+      case .invalidPath:
+        self?.pathSelectorViewModel.errorMessage = "Selected file is invalid"
+      case .invalidModel(let reason):
+        switch reason {
+        case .unknown, .invalidFileType:
+          self?.pathSelectorViewModel.errorMessage = "Selected file is not a valid model"
+        case .unsupportedModelVersion:
+          self?.pathSelectorViewModel.errorMessage = "Selected model is of an unsupported version"
+        }
+      }
+    }.store(in: &subscriptions)
+
+    $modelState
+      .combineLatest(modelSizePickerViewModel.$modelSize)
+      .sink { [weak self] modelState, modelSize in
+        guard !modelSize.isUnknown else {
+          self?.sourceSettings.send(nil)
+          return
+        }
+
+        switch modelState {
+        case .none, .invalidModel, .invalidPath:
+          self?.sourceSettings.send(nil)
+        case .valid(modelURL: let modelURL):
+          self?.sourceSettings.send(.ggmlModel(modelURL: modelURL, modelSize: modelSize))
+        }
       }.store(in: &subscriptions)
   }
 }

@@ -21,15 +21,6 @@ fileprivate extension Alignment {
   static let label = Alignment(horizontal: .leading, vertical: .label)
 }
 
-private func errorText(for modelState: ConfigureLocalModelPathSelectorViewModel.ModelState) -> String? {
-  switch modelState {
-  case .none, .valid:
-    return nil
-  case .invalid(let message):
-    return message
-  }
-}
-
 struct ConfigureLocalModelPathSelectorView: View {
   @ObservedObject var viewModel: ConfigureLocalModelPathSelectorViewModel
 
@@ -66,8 +57,8 @@ struct ConfigureLocalModelPathSelectorView: View {
           .truncationMode(.head)
           .frame(maxWidth: 200, alignment: .trailing)
           .help(viewModel.modelPaths.first ?? "")
-          if let errorText = errorText(for: viewModel.modelState) {
-            Text(errorText)
+          if let errorMessage = viewModel.errorMessage {
+            Text(errorMessage)
               .foregroundColor(.red)
               .font(.footnote)
           }
@@ -88,8 +79,8 @@ struct ConfigureLocalModelPathSelectorView: View {
               viewModel.modelPaths.isEmpty ? "No paths selected" : "\(viewModel.modelPaths.count) paths selected"
             )
             .frame(maxWidth: 200, alignment: .trailing)
-            if let errorText = errorText(for: viewModel.modelState) {
-              Text(errorText)
+            if let errorMessage = viewModel.errorMessage {
+              Text(errorMessage)
                 .foregroundColor(.red)
                 .font(.footnote)
             }

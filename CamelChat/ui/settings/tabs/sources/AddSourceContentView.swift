@@ -21,6 +21,8 @@ struct AddSourceContentView: View {
               makeConfigureSourceView(from: configureSourceViewModel)
                 .navigationTitle("Set up \(configureSourceViewModel.chatSourceType.readableName) model")
             }
+          case .convertPyTorchSource:
+            Text("Convert")
           }
         }
     }

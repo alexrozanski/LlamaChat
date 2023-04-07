@@ -8,19 +8,13 @@
 import Foundation
 
 class ConfigureLocalModelPathSelectorViewModel: ObservableObject {
-  enum ModelState {
-    case none
-    case invalid(message: String)
-    case valid
-  }
-
   enum SelectionMode {
     case files
     case directories
   }
 
   @Published var modelPaths: [String] = []
-  @Published var modelState: ModelState = .none
+  @Published var errorMessage: String?
 
   var label: String {
     return customLabel ?? (allowMultipleSelection ? "Model Paths" : "Model Path")

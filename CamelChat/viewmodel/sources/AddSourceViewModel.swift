@@ -8,7 +8,8 @@
 import Foundation
 
 enum AddSourceStep: Hashable {
-  case configureSource
+  case configureSource(type: ChatSourceType)
+  case convertPyTorchSource(type: ChatSourceType, modelDirectoryURL: URL, modelSize: ModelSize)
 }
 
 class AddSourceViewModel: ObservableObject {
@@ -24,7 +25,7 @@ class AddSourceViewModel: ObservableObject {
   private(set) lazy var selectSourceTypeViewModel: SelectSourceTypeViewModel = {
     return SelectSourceTypeViewModel(chatSources: chatSources) { [weak self] sourceType in
       self?.configureSourceViewModel = self?.makeConfigureSourceViewModel(for: sourceType)
-      self?.navigationPath.append(.configureSource)
+      self?.navigationPath.append(.configureSource(type: sourceType))
     }
   }()
 
@@ -34,25 +35,28 @@ class AddSourceViewModel: ObservableObject {
   }
 
   private func makeConfigureSourceViewModel(for sourceType: ChatSourceType) -> ConfigureSourceViewModel {
+    let nextHandler: ConfigureLocalModelSourceViewModel.NextHandler = { [weak self] configuredSource in
+      switch configuredSource.settings {
+      case .ggmlModel(modelURL: let modelURL, modelSize: let modelSize):
+        let source = ChatSource(
+          name: configuredSource.name,
+          type: sourceType,
+          modelURL: modelURL,
+          modelSize: modelSize
+        )
+        self?.add(source: source)
+      case .pyTorchCheckpoints(directory: let directoryURL, modelSize: let modelSize):
+        self?.navigationPath.append(.convertPyTorchSource(type: sourceType, modelDirectoryURL: directoryURL, modelSize: modelSize))
+      }
+    }
+
     switch sourceType {
     case .llama:
-      return makeConfigureLocalLlamaModelSourceViewModel(
-        addSourceHandler: { [weak self] source in
-          self?.add(source: source)
-        }
-      )
+      return makeConfigureLocalLlamaModelSourceViewModel(nextHandler: nextHandler)
     case .alpaca:
-      return makeConfigureLocalAlpacaModelSourceViewModel(
-        addSourceHandler:{ [weak self] source in
-          self?.add(source: source)
-        }
-      )
+      return makeConfigureLocalAlpacaModelSourceViewModel(nextHandler:nextHandler)
     case .gpt4All:
-      return makeConfigureLocalGPT4AllModelSourceViewModel(
-        addSourceHandler:{ [weak self] source in
-          self?.add(source: source)
-        }
-      )
+      return makeConfigureLocalGPT4AllModelSourceViewModel(nextHandler:nextHandler)
     }
   }
 

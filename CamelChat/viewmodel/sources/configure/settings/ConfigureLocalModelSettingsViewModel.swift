@@ -15,12 +15,14 @@ enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
   var id: String { return rawValue }  
 }
 
+enum SourceSettings: Equatable, Hashable {
+  case ggmlModel(modelURL: URL, modelSize: ModelSize)
+  case pyTorchCheckpoints(directory: URL, modelSize: ModelSize)
+}
+
 protocol ConfigureLocalModelSettingsViewModel {
   var sourceType: ConfigureLocalModelSourceType { get }
-
-  // Should be a ggml model path
-  var modelPath: String? { get }
   var modelSize: ModelSize? { get }
 
-  var settingsValid: CurrentValueSubject<Bool, Never> { get }
+  var sourceSettings: CurrentValueSubject<SourceSettings?, Never> { get }
 }

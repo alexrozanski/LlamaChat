@@ -8,8 +8,13 @@
 import Foundation
 import Combine
 
+struct ConfiguredSource {
+  let name: String
+  let settings: SourceSettings
+}
+
 class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
-  typealias AddSourceHandler = (ChatSource) -> Void
+  typealias NextHandler = (ConfiguredSource) -> Void
 
   private lazy var nameGenerator = SourceNameGenerator()
 
@@ -61,7 +66,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   let chatSourceType: ChatSourceType
   let exampleGgmlModelPath: String
-  private let addSourceHandler: AddSourceHandler
+  private let nextHandler: NextHandler
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -69,25 +74,25 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
     defaultName: String? = nil,
     chatSourceType: ChatSourceType,
     exampleGgmlModelPath: String,
-    addSourceHandler: @escaping AddSourceHandler
+    nextHandler: @escaping NextHandler
   ) {
     self.name = defaultName ?? ""
     self.chatSourceType = chatSourceType
     self.exampleGgmlModelPath = exampleGgmlModelPath
-    self.addSourceHandler = addSourceHandler
+    self.nextHandler = nextHandler
     navigationViewModel = ConfigureSourceNavigationViewModel()
     navigationViewModel.delegate = self
 
-    let settingsValid = $settingsViewModel
+    let configuredSource = $settingsViewModel
       .compactMap { $0 }
-      .map { $0.settingsValid }
+      .map { $0.sourceSettings }
       .switchToLatest()
 
     $name
       .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-      .combineLatest(settingsValid)
-      .sink { [weak self] nameValid, settingsValid in
-        self?.navigationViewModel.canContinue = nameValid && settingsValid
+      .combineLatest(configuredSource)
+      .sink { [weak self] nameValid, configuredSource in
+        self?.navigationViewModel.canContinue = nameValid && configuredSource != nil
       }.store(in: &subscriptions)
 
     $modelSourceType
@@ -127,14 +132,9 @@ extension ConfigureLocalModelSourceType {
 
 extension ConfigureLocalModelSourceViewModel: ConfigureSourceNavigationViewModelDelegate {
   func next() {
-    guard let modelPath = settingsViewModel?.modelPath, let modelSize = settingsViewModel?.modelSize else { return }
-    addSourceHandler(
-      ChatSource(
-        name: name,
-        type: chatSourceType,
-        modelURL: URL(fileURLWithPath: modelPath),
-        modelSize: modelSize
-      )
+    guard let sourceSettings = settingsViewModel?.sourceSettings.value else { return }
+    nextHandler(
+      ConfiguredSource(name: name, settings: sourceSettings)
     )
   }
 }

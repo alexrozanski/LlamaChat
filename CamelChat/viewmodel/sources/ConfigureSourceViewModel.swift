@@ -48,35 +48,35 @@ protocol ConfigureSourceViewModel {
 }
 
 func makeConfigureLocalLlamaModelSourceViewModel(
-  addSourceHandler: @escaping ConfigureLocalModelSourceViewModel.AddSourceHandler
+  nextHandler: @escaping ConfigureLocalModelSourceViewModel.NextHandler
 ) -> ConfigureLocalModelSourceViewModel {
   return ConfigureLocalModelSourceViewModel(
     defaultName: "LLaMa",
     chatSourceType: .llama,
     exampleGgmlModelPath: "ggml-model-q4_0.bin",
-    addSourceHandler: addSourceHandler
+    nextHandler: nextHandler
   )
 }
 
 func makeConfigureLocalAlpacaModelSourceViewModel(
-  addSourceHandler: @escaping ConfigureLocalModelSourceViewModel.AddSourceHandler
+  nextHandler: @escaping ConfigureLocalModelSourceViewModel.NextHandler
 ) -> ConfigureLocalModelSourceViewModel {
   return ConfigureLocalModelSourceViewModel(
     defaultName: "Alpaca",
     chatSourceType: .alpaca,
     exampleGgmlModelPath: "ggml-alpaca-7b-q4.bin",
-    addSourceHandler: addSourceHandler
+    nextHandler: nextHandler
   )
 }
 
 func makeConfigureLocalGPT4AllModelSourceViewModel(
-  addSourceHandler: @escaping ConfigureLocalModelSourceViewModel.AddSourceHandler
+  nextHandler: @escaping ConfigureLocalModelSourceViewModel.NextHandler
 ) -> ConfigureLocalModelSourceViewModel {
   return ConfigureLocalModelSourceViewModel(
     defaultName: "GPT4All",
     chatSourceType: .gpt4All,
     exampleGgmlModelPath: "gpt4all-lora-quantized.bin",
-    addSourceHandler: addSourceHandler
+    nextHandler: nextHandler
   )
 }
 

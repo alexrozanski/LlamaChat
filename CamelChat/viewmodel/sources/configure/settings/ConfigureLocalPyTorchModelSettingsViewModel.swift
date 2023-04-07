@@ -42,6 +42,18 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
     }
   }
 
+  enum InvalidModelDirectoryReason {
+    case missingFiles(_ count: Int)
+  }
+
+  enum ModelState {
+    case none
+    case invalidModelDirectory(reason: InvalidModelDirectoryReason)
+    case valid(modelDirectoryURL: URL)
+  }
+
+  @Published private(set) var modelState: ModelState = .none
+
   @Published var conversionState: ConversionState = .unknown
   @Published var files: [ModelConversionFile]? = nil
 
@@ -60,7 +72,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   )
 
   let chatSourceType: ChatSourceType
-  let settingsValid = CurrentValueSubject<Bool, Never>(false)
+  let sourceSettings = CurrentValueSubject<SourceSettings?, Never>(nil)
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -83,25 +95,46 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
         guard let self else { return }
 
         guard let modelPath = modelPaths.first else {
-          self.pathSelectorViewModel.modelState = .none
+          self.modelState = .none
           return
         }
 
+        let directoryURL = URL(fileURLWithPath: modelPath)
         let data = ConvertPyTorchToGgmlConversion.Data(
           modelType: modelSize.toModelType(),
-          directoryURL: URL(fileURLWithPath: modelPath)
+          directoryURL: directoryURL
         )
         let result = ModelConverter.validateData(data, requiredFiles: &self.files)
         switch result {
         case .success:
-          self.pathSelectorViewModel.modelState = .valid
+          self.modelState = .valid(modelDirectoryURL: directoryURL)
         case .failure(let error):
-          var errorMessage: String
           switch error {
           case .missingFiles(let filenames):
-            errorMessage = "Directory is missing \(filenames.count) \(filenames.count == 1 ? "file" : "files")"
+            self.modelState = .invalidModelDirectory(reason: .missingFiles(filenames.count))
           }
-          self.pathSelectorViewModel.modelState = .invalid(message: errorMessage)
+        }
+      }.store(in: &subscriptions)
+
+    $modelState
+      .combineLatest(modelSizePickerViewModel.$modelSize)
+      .sink { [weak self] modelState, modelSize in
+        guard !modelSize.isUnknown else {
+          self?.sourceSettings.send(nil)
+          return
+        }
+
+        switch modelState {
+        case .none:
+          self?.sourceSettings.send(nil)
+        case .invalidModelDirectory(reason: let reason):
+          switch reason {
+          case .missingFiles(let count):
+            self?.pathSelectorViewModel.errorMessage = "Directory is missing \(count) \(count == 1 ? "file" : "files")"
+          }
+          self?.sourceSettings.send(nil)
+        case .valid(modelDirectoryURL: let modelDirectoryURL):
+          self?.sourceSettings.send(.pyTorchCheckpoints(directory: modelDirectoryURL, modelSize: modelSize))
         }
       }.store(in: &subscriptions)
   }
