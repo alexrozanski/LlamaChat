@@ -47,8 +47,8 @@ struct SourceTypeSelectionView: View {
         }
       }
     }
+    .background(Color(nsColor: .systemGray).opacity(0.05))
     .mask(RoundedRectangle(cornerRadius: 4))
-    .background(Color(nsColor: .systemGray.withAlphaComponent(0.5)))
     .overlay(
       RoundedRectangle(cornerRadius: 4)
         .stroke(Color(nsColor: .separatorColor))
