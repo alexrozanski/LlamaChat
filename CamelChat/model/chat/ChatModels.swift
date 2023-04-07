@@ -115,8 +115,9 @@ class ChatModel: ObservableObject {
   private func clearContext(insertClearedContextMessage: Bool) async {
     _ = await makeAndStoreNewSession()
 
-    if insertClearedContextMessage {
-      await MainActor.run {
+    await MainActor.run {
+      lastChatContext = nil
+      if insertClearedContextMessage {
         let message = ClearedContextMessage(sendDate: Date())
         messages.append(message)
         messagesModel.append(message: message, in: source)
