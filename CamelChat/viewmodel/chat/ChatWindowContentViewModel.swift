@@ -31,7 +31,7 @@ class MainChatViewModel: ObservableObject {
   }
 
   @Published var sheetViewModel: (any ObservableObject)?
-  @Published var sheetPresented = true
+  @Published var sheetPresented = false
 
   lazy private(set) var chatListViewModel = ChatListViewModel(chatSources: chatSources, mainChatViewModel: self)
 
@@ -66,20 +66,17 @@ class MainChatViewModel: ObservableObject {
         }
 
         if !newSources.map({ $0.id }).contains(self.selectedSourceId) {
-          self.selectedSourceId = nil
+          if let previousIndex = previousSources?.firstIndex(where: { $0.id == self.selectedSourceId }) {
+            let nextIndex = previousIndex > 0 ? previousIndex - 1 : previousIndex
+            self.selectedSourceId = nextIndex < newSources.count ? newSources[nextIndex].id : nil
+          } else {
+            self.selectedSourceId = newSources.first?.id
+          }
         }
       }.store(in: &subscriptions)
 
     $sheetViewModel.sink { [weak self] newSheetViewModel in
-      if newSheetViewModel != nil {
-        self?.sheetPresented = true
-      }
-    }.store(in: &subscriptions)
-
-    $sheetPresented.sink { [weak self] isSheetPresented in
-      if !isSheetPresented {
-        self?.sheetViewModel = nil
-      }
+      self?.sheetPresented = newSheetViewModel != nil
     }.store(in: &subscriptions)
   }  
 

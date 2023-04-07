@@ -25,5 +25,5 @@ class AvatarViewModel: ObservableObject {
 }
 
 private func makeInitials(for name: String) -> String {
-  return String(name.prefix(1))
+  return String(name.components(separatedBy: .whitespacesAndNewlines).map({$0.prefix(1)}).joined(separator: ""))
 }

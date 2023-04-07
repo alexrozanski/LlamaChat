@@ -19,6 +19,13 @@ struct AvatarView: View {
       }
     }
 
+    var textSideLength: Double {
+      switch self {
+      case .medium: return 30
+      case .large: return 35
+      }
+    }
+
     var fontSize: Double {
       switch self {
       case .medium: return 20
@@ -37,7 +44,10 @@ struct AvatarView: View {
       .overlay {
         Text(viewModel.initials)
           .font(.system(size: size.fontSize))
+          .lineLimit(1)
+          .minimumScaleFactor(0.5)
           .foregroundColor(.white)
+          .frame(width: size.textSideLength, height: size.textSideLength)
       }
   }
 }

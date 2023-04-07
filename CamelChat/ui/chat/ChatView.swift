@@ -25,5 +25,6 @@ struct ChatView: View {
           ChatInfoView(viewModel: viewModel.infoViewModel)
         }
     }
+    .navigationTitle("\(viewModel.sourceName)")
   }
 }

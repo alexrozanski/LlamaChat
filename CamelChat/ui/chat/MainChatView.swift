@@ -67,5 +67,10 @@ struct MainChatView: View {
     .onChange(of: viewModel.selectedSourceId) { newSourceId in
       selectedChatViewModel = newSourceId.flatMap { viewModel.makeChatViewModel(for: $0) }
     }
+    .onChange(of: viewModel.sheetPresented) { isPresented in
+      if !isPresented {
+        viewModel.sheetViewModel = nil
+      }
+    }
   }
 }

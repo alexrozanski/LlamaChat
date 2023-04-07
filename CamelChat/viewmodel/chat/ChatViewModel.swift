@@ -16,6 +16,10 @@ class ChatViewModel: ObservableObject {
     chatModel.source.id
   }
 
+  var sourceName: String {
+    chatModel.source.name
+  }
+
   private(set) lazy var composeViewModel = ComposeViewModel(chatModel: chatModel)
   private(set) lazy var infoViewModel = ChatInfoViewModel(chatModel: chatModel)
   private(set) lazy var messagesViewModel = MessagesViewModel(chatModel: chatModel)

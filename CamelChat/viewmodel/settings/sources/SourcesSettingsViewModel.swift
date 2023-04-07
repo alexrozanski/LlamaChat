@@ -79,15 +79,7 @@ class SourcesSettingsViewModel: ObservableObject {
       }).store(in: &subscriptions)
 
     $sheetViewModel.sink { [weak self] newSheetViewModel in
-      if newSheetViewModel != nil {
-        self?.sheetPresented = true
-      }
-    }.store(in: &subscriptions)
-
-    $sheetPresented.sink { [weak self] isSheetPresented in
-      if !isSheetPresented {
-        self?.sheetViewModel = nil
-      }
+      self?.sheetPresented = newSheetViewModel != nil
     }.store(in: &subscriptions)
   }
 
