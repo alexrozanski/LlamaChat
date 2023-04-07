@@ -57,7 +57,7 @@ struct MessagesView: View {
         }
       }
     }
-    .background(Color(NSColor.controlBackgroundColor.cgColor))
+    .background(Color(nsColor: .controlBackgroundColor))
     .overlay {
       if viewModel.isBuiltForDebug {
         VStack {

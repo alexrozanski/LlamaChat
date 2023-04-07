@@ -38,10 +38,10 @@ struct ComposeView: View {
     .padding(.trailing, 5)
     .background(
       RoundedRectangle(cornerRadius: 15)
-        .fill(Color(NSColor.controlBackgroundColor.cgColor))
+        .fill(Color(nsColor: .controlBackgroundColor))
         .overlay {
           RoundedRectangle(cornerRadius: 15)
-            .stroke(Color(NSColor.separatorColor.cgColor))
+            .stroke(Color(nsColor: .separatorColor))
         }
     )
   }
@@ -63,7 +63,7 @@ struct ComposeView: View {
       textField
     }
     .padding()
-    .background(Color(NSColor.controlBackgroundColor.cgColor))
+    .background(Color(nsColor: .controlBackgroundColor))
     .onAppear {
       isFocused = true
     }

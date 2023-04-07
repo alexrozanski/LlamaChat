@@ -48,10 +48,10 @@ struct SourceTypeSelectionView: View {
       }
     }
     .mask(RoundedRectangle(cornerRadius: 4))
-    .background(Color(cgColor: NSColor.systemGray.withAlphaComponent(0.05).cgColor))
+    .background(Color(nsColor: .systemGray.withAlphaComponent(0.5)))
     .overlay(
       RoundedRectangle(cornerRadius: 4)
-        .stroke(Color(cgColor: NSColor.separatorColor.cgColor))
+        .stroke(Color(nsColor: .separatorColor))
     )
   }
 }
