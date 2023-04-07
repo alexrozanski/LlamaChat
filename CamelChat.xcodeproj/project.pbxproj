@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820C795F29DEEA8F00F70723 /* DebouncedView.swift */; };
+		821B253929DFA39600CF1001 /* NSApplication+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B253829DFA39600CF1001 /* NSApplication+Settings.swift */; };
 		8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */; };
 		8227DA6E29D858B7000E554D /* AddSourceContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6D29D858B7000E554D /* AddSourceContentView.swift */; };
 		8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7029D86256000E554D /* SourcesSettingsListView.swift */; };
@@ -88,6 +89,7 @@
 
 /* Begin PBXFileReference section */
 		820C795F29DEEA8F00F70723 /* DebouncedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncedView.swift; sourceTree = "<group>"; };
+		821B253829DFA39600CF1001 /* NSApplication+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApplication+Settings.swift"; sourceTree = "<group>"; };
 		8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSheetDeletionContentView.swift; sourceTree = "<group>"; };
 		8227DA6D29D858B7000E554D /* AddSourceContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceContentView.swift; sourceTree = "<group>"; };
 		8227DA7029D86256000E554D /* SourcesSettingsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsListView.swift; sourceTree = "<group>"; };
@@ -180,6 +182,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		821B253729DFA38700CF1001 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				821B253829DFA39600CF1001 /* NSApplication+Settings.swift */,
+			);
+			path = extensions;
+			sourceTree = "<group>";
+		};
 		8227DA6629D857F5000E554D /* sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,6 +321,7 @@
 				8227DA9C29D91F33000E554D /* Info.plist */,
 				8227DA9629D911A4000E554D /* CamelChatApp.swift */,
 				8227DAC829DA5060000E554D /* data */,
+				821B253729DFA38700CF1001 /* extensions */,
 				82718CF029D368A000545C32 /* model */,
 				82718CF129D368C200545C32 /* ui */,
 				82914CBE29D5EB7100858B2C /* util */,
@@ -674,6 +685,7 @@
 				8227DAA029D98577000E554D /* ChatListView.swift in Sources */,
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
 				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
+				821B253929DFA39600CF1001 /* NSApplication+Settings.swift in Sources */,
 				82A7B4E229DE430A00BCBB6B /* ConfigureLocalModelDisplayNameView.swift in Sources */,
 				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,

@@ -123,6 +123,17 @@ class MessagesModel: ObservableObject {
     }
   }
 
+  func clearMessages(for chatSource: ChatSource) {
+    do {
+      guard let db, let chatSourceId = try getId(for: chatSource) else { return }
+
+      let delete = messagesTable.filter(chatSourceIdColumn == chatSourceId).delete()
+      _ = try db.run(delete)
+    } catch {
+      print(error)
+    }
+  }
+
   private func getId(for chatSource: ChatSource) throws -> Int64? {
     guard let db else { return nil }
     return try db.pluck(chatSourcesTable.select(idColumn).where(chatIdColumn == chatSource.id))?[idColumn]

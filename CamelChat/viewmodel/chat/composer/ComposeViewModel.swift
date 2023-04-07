@@ -36,7 +36,9 @@ class ComposeViewModel: ObservableObject {
   }
 
   func clearContext() {
-    chatModel.clearContext()
+    Task.init {
+      await chatModel.clearContext()
+    }
   }
 }
 

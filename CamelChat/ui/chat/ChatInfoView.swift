@@ -7,10 +7,46 @@
 
 import SwiftUI
 
+struct ActionButton: View {
+  typealias Handler = () -> Void
+
+  @Environment(\.isEnabled) private var isEnabled
+
+  let title: String
+  let imageName: String
+  let enabledTextColor: Color
+  let handler: Handler
+
+  init(title: String, imageName: String, enabledTextColor: Color, handler: @escaping Handler) {
+    self.title = title
+    self.imageName = imageName
+    self.enabledTextColor = enabledTextColor
+    self.handler = handler
+  }
+
+  var body: some View {
+    Button(action: handler) {
+      VStack {
+        Image(systemName: imageName)
+          .symbolRenderingMode(isEnabled ? .multicolor : .monochrome)
+          .resizable()
+          .frame(width: 28, height: 28)
+          .foregroundColor(isEnabled ? nil : .gray)
+        Text(title)
+          .foregroundColor(isEnabled ? enabledTextColor : .gray)
+      }
+    }
+    .focusable(false)
+    .buttonStyle(BorderlessButtonStyle())
+  }
+}
+
 struct ChatInfoView: View {
   @Environment(\.openWindow) var openWindow
 
   @ObservedObject var viewModel: ChatInfoViewModel
+
+  @State private var showClearMessagesAlert = false
 
   var body: some View {
     Form {
@@ -26,6 +62,18 @@ struct ChatInfoView: View {
           }
         }
         .frame(maxWidth: .infinity)
+      }
+      Section {
+        HStack(spacing: 16) {
+          ActionButton(title: "clear", imageName: "trash.circle.fill", enabledTextColor: .red, handler: {
+            showClearMessagesAlert = true
+          })
+          .disabled(!viewModel.canClearMessages)
+          ActionButton(title: "info", imageName: "info.circle.fill", enabledTextColor: .blue, handler: {
+            print("clear")
+          })
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
       }
       Section(content: {
         LabeledContent(content: {
@@ -54,6 +102,14 @@ struct ChatInfoView: View {
     .formStyle(.grouped)
     .frame(width: 280)
     .frame(maxHeight: 350)
+    .alert(isPresented: $showClearMessagesAlert) {
+      Alert(
+        title: Text("Clear messages in chat?"),
+        message: Text("This cannot be undone"),
+        primaryButton: .destructive(Text("Clear"), action: { viewModel.clearMessages() }),
+        secondaryButton: .cancel()
+      )
+    }
     .onAppear {
       viewModel.loadModelStats()
     }

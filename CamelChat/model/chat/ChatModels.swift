@@ -90,16 +90,38 @@ class ChatModel: ObservableObject {
     messagesModel.append(message: message, in: source)
 
     if (message.sender.isMe) {
-      predictResponse(to: message.content)
+      Task.init {
+        await predictResponse(to: message.content)
+      }
     }
   }
 
-  func clearContext() {
-    _ = makeAndStoreNewSession()
+  // MARK: - Messages
 
-    let message = ClearedContextMessage(sendDate: Date())
-    messages.append(message)
-    messagesModel.append(message: message, in: source)
+  func clearMessages() async {
+    await MainActor.run {
+      messagesModel.clearMessages(for: source)
+      messages = []
+    }
+    await clearContext(insertClearedContextMessage: false)
+  }
+
+  // MARK: - Context
+
+  func clearContext() async {
+    await clearContext(insertClearedContextMessage: true)
+  }
+
+  private func clearContext(insertClearedContextMessage: Bool) async {
+    _ = await makeAndStoreNewSession()
+
+    if insertClearedContextMessage {
+      await MainActor.run {
+        let message = ClearedContextMessage(sendDate: Date())
+        messages.append(message)
+        messagesModel.append(message: message, in: source)
+      }
+    }
   }
 
   func loadContext() async throws -> ChatContext {
@@ -111,6 +133,9 @@ class ChatModel: ObservableObject {
     return context
   }
 
+  // MARK: - Private
+
+  @MainActor
   private func makeAndStoreNewSession() -> Session {
     var newSession: Session
     switch source.type {
@@ -141,26 +166,29 @@ class ChatModel: ObservableObject {
     return newSession
   }
 
-  private func getReadySession() -> Session {
+  private func getReadySession() async -> Session {
     guard let session = session else {
-      return makeAndStoreNewSession()
+      return await makeAndStoreNewSession()
     }
 
     if session.state.isError {
-      return makeAndStoreNewSession()
+      return await makeAndStoreNewSession()
     }
 
     return session
   }
 
-  private func predictResponse(to content: String) {
-    replyState = .waitingToRespond
-
+  private func predictResponse(to content: String) async {
     let message = GeneratedMessage(sender: .other, sendDate: Date())
-    messages.append(message)
+
+    await MainActor.run {
+      replyState = .waitingToRespond
+      messages.append(message)
+    }
 
     var hasReceivedTokens = false
-    let cancellable = getReadySession().predict(
+    let session = await getReadySession()
+    let cancellable = session.predict(
       with: content,
       tokenHandler: { token in
         if !hasReceivedTokens {

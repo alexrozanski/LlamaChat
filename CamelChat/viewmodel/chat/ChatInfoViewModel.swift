@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class ChatInfoViewModel: ObservableObject {
   enum ModelStat<V> {
@@ -64,11 +65,28 @@ class ChatInfoViewModel: ObservableObject {
 
   @Published private(set) var context: ModelStat<String> = .none
   @Published private(set) var contextTokenCount: ModelStat<Int> = .none
+  @Published private(set) var canClearMessages: Bool
 
   private(set) lazy var avatarViewModel = AvatarViewModel(chatSource: chatModel.source)
 
+  private var subscriptions = Set<AnyCancellable>()
+
   init(chatModel: ChatModel) {
     self.chatModel = chatModel
+    canClearMessages = !chatModel.messages.isEmpty
+    chatModel.$messages.sink { [weak self] messages in
+      self?.canClearMessages = !messages.isEmpty
+    }.store(in: &subscriptions)
+  }
+
+  func clearMessages() {
+    Task.init {
+      await chatModel.clearMessages()
+    }
+  }
+
+  func showInfo() {
+    
   }
 
   func loadModelStats() {

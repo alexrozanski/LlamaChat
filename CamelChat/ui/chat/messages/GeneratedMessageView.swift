@@ -15,14 +15,16 @@ struct GeneratedMessageView: View {
   var body: some View {
     VStack(alignment: .leading) {
       if showStopButton {
-        Button(action: {
-          viewModel.stopGeneratingContent()
-        }) {
-          Text("Stop generating response")
-            .font(.footnote)
-            .foregroundColor(.blue)
+        DebouncedView(delay: 0.5) {
+          Button(action: {
+            viewModel.stopGeneratingContent()
+          }) {
+            Text("Stop generating response")
+              .font(.footnote)
+              .foregroundColor(.blue)
+          }
+          .buttonStyle(BorderlessButtonStyle())
         }
-        .buttonStyle(BorderlessButtonStyle())
       }
       MessageBubbleView(sender: viewModel.sender, style: viewModel.state.isWaiting ? .typing: .regular, isError: viewModel.isError, availableWidth: availableWidth) {
         switch viewModel.state {
