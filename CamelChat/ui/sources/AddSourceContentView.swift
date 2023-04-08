@@ -22,7 +22,10 @@ struct AddSourceContentView: View {
                 .navigationTitle("Set up \(configureSourceViewModel.chatSourceType.readableName) model")
             }
           case .convertPyTorchSource:
-            Text("Convert")
+            if let convertSourceViewModel = viewModel.convertSourceViewModel {
+              ConvertSourceView(viewModel: convertSourceViewModel)
+                .navigationTitle("Convert PyTorch model files")
+            }
           }
         }
     }

@@ -8,8 +8,8 @@
 import Foundation
 
 enum AddSourceStep: Hashable {
-  case configureSource(type: ChatSourceType)
-  case convertPyTorchSource(type: ChatSourceType, modelDirectoryURL: URL, modelSize: ModelSize)
+  case configureSource
+  case convertPyTorchSource
 }
 
 class AddSourceViewModel: ObservableObject {
@@ -20,14 +20,15 @@ class AddSourceViewModel: ObservableObject {
 
   @Published var navigationPath = [AddSourceStep]()
 
-  private(set) var configureSourceViewModel: ConfigureSourceViewModel?
-
   private(set) lazy var selectSourceTypeViewModel: SelectSourceTypeViewModel = {
     return SelectSourceTypeViewModel(chatSources: chatSources) { [weak self] sourceType in
       self?.configureSourceViewModel = self?.makeConfigureSourceViewModel(for: sourceType)
-      self?.navigationPath.append(.configureSource(type: sourceType))
+      self?.navigationPath.append(.configureSource)
     }
   }()
+
+  private(set) var configureSourceViewModel: ConfigureSourceViewModel?
+  private(set) var convertSourceViewModel: ConvertSourceViewModel?
 
   init(chatSources: ChatSources, closeHandler: @escaping CloseHandler) {
     self.chatSources = chatSources
@@ -46,7 +47,8 @@ class AddSourceViewModel: ObservableObject {
         )
         self?.add(source: source)
       case .pyTorchCheckpoints(directory: let directoryURL, modelSize: let modelSize):
-        self?.navigationPath.append(.convertPyTorchSource(type: sourceType, modelDirectoryURL: directoryURL, modelSize: modelSize))
+        self?.convertSourceViewModel = ConvertSourceViewModel(sourceType: sourceType, modelDirectoryURL: directoryURL, modelSize: modelSize)
+        self?.navigationPath.append(.convertPyTorchSource)
       }
     }
 

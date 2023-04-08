@@ -7,30 +7,6 @@
 
 import SwiftUI
 
-struct ModelContextTextView: NSViewRepresentable {
-  let text: String
-
-  func makeNSView(context: Context) -> NSScrollView {
-    let scrollView = NSTextView.scrollableTextView()
-    guard let textView = scrollView.documentView as? NSTextView else {
-      return scrollView
-    }
-    scrollView.documentView = textView
-    textView.string = text
-    textView.isEditable = false
-    textView.textContainerInset = NSSize(width: 8, height: 8)
-    textView.font = NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
-
-    return scrollView
-  }
-
-  func updateNSView(_ nsView: NSScrollView, context: Context) {
-    if let textView = nsView.documentView as? NSTextView {
-      textView.string = text
-    }
-  }
-}
-
 private let tokenTextAttributes: [NSAttributedString.Key: Any] = [
   .font: NSFont.systemFont(ofSize: 12),
   .foregroundColor: NSColor.white
@@ -221,7 +197,7 @@ struct ModelContextContentView: View {
     case .context(string: let string, tokens: let tokens):
       switch viewModel.contextPresentation {
       case .text:
-        ModelContextTextView(text: string)
+        NonEditableTextView(text: string, font: NSFont.monospacedSystemFont(ofSize: 12, weight: .regular))
       case .tokens:
         ModelContextTokenView(tokens: tokens, style: .tokensOnly)
       case .both:
