@@ -5,6 +5,7 @@
 //  Created by Alex Rozanski on 08/04/2023.
 //
 
+import AppKit
 import Foundation
 import Combine
 
@@ -53,7 +54,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
   @Published var state: State = .notStarted
   @Published private(set) var expanded = false
 
-  @Published private(set) var output = ""
+  @Published private(set) var output = NSMutableAttributedString()
   @Published private(set) var exitCode: Int32?
 
   @Published private var startDate: Date?
@@ -129,21 +130,44 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
   }
 
   private func appendOutput(string: String, outputType: OutputType) {
-    if outputType != lastOutputType && !output.isEmpty {
-      output.append("\n")
+    var outputString: String = ""
+    if outputType != lastOutputType && output.length > 0 {
+      outputString += "\n"
     }
 
     if outputType.isCommand {
-      output.append("> ")
+      outputString += "> "
     }
-    output.append(string)
+    outputString += string
     if outputType.isCommand {
-      output.append("\n")
+      outputString += "\n"
     }
+
+    var color: NSColor?
+    switch outputType {
+    case .command:
+      color = nil
+    case .stdout:
+      color = .gray
+    case .stderr:
+      color = .red
+    }
+
+    output.append(makeFormattedText(string: outputString, color: color))
     lastOutputType = outputType
   }
 
   func toggleExpansion() {
     expanded = !expanded
   }
+}
+
+private func makeFormattedText(string: String, color: NSColor? = nil) -> NSAttributedString {
+  var attributes = [NSAttributedString.Key: Any]()
+  attributes[.font] = NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
+  if let color {
+    attributes[.foregroundColor] = color
+  }
+
+  return NSAttributedString(string: string, attributes: attributes)
 }

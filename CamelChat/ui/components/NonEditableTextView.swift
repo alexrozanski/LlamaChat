@@ -9,8 +9,12 @@ import AppKit
 import SwiftUI
 
 struct NonEditableTextView: NSViewRepresentable {
-  let text: String
-  let font: NSFont
+  enum Text {
+    case unformatted(String, NSFont?)
+    case richText(NSAttributedString)
+  }
+
+  let text: Text
 
   func makeNSView(context: Context) -> NSScrollView {
     let scrollView = NSTextView.scrollableTextView()
@@ -18,18 +22,27 @@ struct NonEditableTextView: NSViewRepresentable {
       return scrollView
     }
     scrollView.documentView = textView
-    textView.string = text
+
+    setText(text, in: textView)
     textView.isEditable = false
     textView.textContainerInset = NSSize(width: 8, height: 8)
-    textView.font = font
 
     return scrollView
   }
 
   func updateNSView(_ nsView: NSScrollView, context: Context) {
     if let textView = nsView.documentView as? NSTextView {
-      textView.string = text
-      textView.font = font
+      setText(text, in: textView)
     }
+  }
+}
+
+private func setText(_ text: NonEditableTextView.Text, in textView: NSTextView) {
+  switch text {
+  case .unformatted(let string, let font):
+    textView.string = string
+    textView.font = font
+  case .richText(let attributedString):
+    textView.textStorage?.setAttributedString(attributedString)
   }
 }

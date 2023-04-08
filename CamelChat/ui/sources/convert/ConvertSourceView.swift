@@ -39,7 +39,7 @@ fileprivate struct DetailView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      NonEditableTextView(text: viewModel.output, font: .monospacedSystemFont(ofSize: 12, weight: .regular))
+      NonEditableTextView(text: .richText(viewModel.output))
         .frame(maxWidth: .infinity)
         .frame(height: 100)
       Rectangle()
