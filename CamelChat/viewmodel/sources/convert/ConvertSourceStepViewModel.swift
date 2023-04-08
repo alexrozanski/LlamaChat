@@ -14,6 +14,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
   typealias ID = String
 
   enum Status {
+    case skipped
     case success
     case failure
 
@@ -24,7 +25,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
     var isSuccess: Bool {
       switch self {
       case .success: return true
-      case .failure: return false
+      case .failure, .skipped: return false
       }
     }
   }
@@ -38,6 +39,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
 
   enum State {
     case notStarted
+    case skipped
     case running
     case finished(result: Result<Void, Error>)
 
@@ -45,7 +47,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
       switch self {
       case .notStarted:
         return true
-      case .running, .finished:
+      case .skipped, .running, .finished:
         return false
       }
     }
@@ -73,7 +75,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
   @Published var state: State = .notStarted
   @Published private(set) var expanded = false
 
-  @Published private(set) var output = NSMutableAttributedString()
+  @Published private(set) var textViewModel = NonEditableTextViewModel()
   @Published private(set) var exitCode: Int32?
 
   @Published private var startDate: Date?
@@ -116,36 +118,56 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
     timerSubscription = timer.map { $0 as Date? }.assign(to: \.runUntilDate, on: self)
 
     Task.init {
-      do {
-        func makeAppend(prefix: String?, outputType: OutputType) -> ((String) -> Void) {
-          return { [weak self] string in
-            DispatchQueue.main.async { [weak self] in
-              self?.appendOutput(string: string, outputType: outputType)
-            }
+      func makeAppend(prefix: String?, outputType: OutputType) -> ((String) -> Void) {
+        return { [weak self] string in
+          DispatchQueue.main.async { [weak self] in
+            self?.appendOutput(string: string, outputType: outputType)
           }
         }
+      }
+
+      let stderr = makeAppend(prefix: nil, outputType: .stderr)
+      do {
 
         let exitCode = try await executionHandler(
           makeAppend(prefix: "> ", outputType: .command),
           makeAppend(prefix: nil, outputType: .stdout),
-          makeAppend(prefix: nil, outputType: .stderr)
+          stderr
         )
-
         await MainActor.run {
+          // .success() is a bit misleading because the command could have failed, but
+          // .success() indicates that *executing* the command succeeded.
           finish(with: .success(exitCode))
         }
       } catch {
         await MainActor.run {
+          stderr(error.localizedDescription)
           finish(with: .failure(error))
         }
       }
     }
   }
 
-  private func finish(with result: Result<Int32, Error>) {
-    let exitCode = (try? result.get()) ?? -1
+  func skip() {
+    guard state.canStart else { return }
+
+    appendOutput(string: "Skipped step", outputType: .stdout)
+    state = .skipped
+    completionHandler(id, .skipped)
+  }
+
+  private func finish(with executionResult: Result<Int32, Error>) {
+    let exitCode = (try? executionResult.get()) ?? -1
     self.exitCode = exitCode
-    state = .finished(result: result.map { _ in () })
+    state = .finished(result: exitCode == 0 ? .success(()) : .failure(
+      NSError(
+        domain: CamelChatError.domain,
+        code: CamelChatError.Code.failedToExecuteConversionStep.rawValue,
+        userInfo: [
+          NSLocalizedDescriptionKey: "Couldn't run conversion step"
+        ]
+      )
+    ))
     if runUntilDate == nil {
       runUntilDate = Date()
     }
@@ -155,7 +177,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
 
   private func appendOutput(string: String, outputType: OutputType) {
     var outputString: String = ""
-    if outputType != lastOutputType && output.length > 0 {
+    if outputType != lastOutputType && !textViewModel.isEmpty {
       outputString += "\n"
     }
 
@@ -169,15 +191,12 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
 
     var color: NSColor?
     switch outputType {
-    case .command:
-      color = nil
-    case .stdout:
-      color = .gray
-    case .stderr:
-      color = .red
+    case .command: color = NSColor.controlTextColor
+    case .stdout: color = .gray
+    case .stderr: color = .red
     }
 
-    output.append(makeFormattedText(string: outputString, color: color))
+    textViewModel.append(attributedString: makeFormattedText(string: outputString, color: color))
     lastOutputType = outputType
   }
 

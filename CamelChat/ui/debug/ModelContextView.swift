@@ -197,7 +197,7 @@ struct ModelContextContentView: View {
     case .context(string: let string, tokens: let tokens):
       switch viewModel.contextPresentation {
       case .text:
-        NonEditableTextView(text: .unformatted(string, NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)))
+        NonEditableTextView(string: string, font: NSFont.monospacedSystemFont(ofSize: 12, weight: .regular))
       case .tokens:
         ModelContextTokenView(tokens: tokens, style: .tokensOnly)
       case .both:

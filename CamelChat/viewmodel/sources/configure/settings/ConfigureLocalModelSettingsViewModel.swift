@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import llama
 
 enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
   case pyTorch
@@ -15,9 +16,9 @@ enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
   var id: String { return rawValue }  
 }
 
-enum SourceSettings: Equatable, Hashable {
+enum SourceSettings {
   case ggmlModel(modelURL: URL, modelSize: ModelSize)
-  case pyTorchCheckpoints(directory: URL, modelSize: ModelSize)
+  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>)
 }
 
 protocol ConfigureLocalModelSettingsViewModel {

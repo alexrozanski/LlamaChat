@@ -14,6 +14,8 @@
 		821B254A29E0E86B00CF1001 /* NonEditableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B254929E0E86B00CF1001 /* NonEditableTextView.swift */; };
 		821B254C29E10C6500CF1001 /* ConvertSourceStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B254B29E10C6500CF1001 /* ConvertSourceStepViewModel.swift */; };
 		821B255229E11C6100CF1001 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 821B255129E11C6100CF1001 /* llama */; };
+		821B255529E1D98400CF1001 /* CamelChatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B255429E1D98400CF1001 /* CamelChatError.swift */; };
+		821B255729E1F05000CF1001 /* NSScrollView+Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */; };
 		8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */; };
 		8227DA6E29D858B7000E554D /* AddSourceContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6D29D858B7000E554D /* AddSourceContentView.swift */; };
 		8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7029D86256000E554D /* SourcesSettingsListView.swift */; };
@@ -97,6 +99,8 @@
 		821B254729E0DD9200CF1001 /* ConvertSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourceViewModel.swift; sourceTree = "<group>"; };
 		821B254929E0E86B00CF1001 /* NonEditableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonEditableTextView.swift; sourceTree = "<group>"; };
 		821B254B29E10C6500CF1001 /* ConvertSourceStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourceStepViewModel.swift; sourceTree = "<group>"; };
+		821B255429E1D98400CF1001 /* CamelChatError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamelChatError.swift; sourceTree = "<group>"; };
+		821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScrollView+Bottom.swift"; sourceTree = "<group>"; };
 		8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSheetDeletionContentView.swift; sourceTree = "<group>"; };
 		8227DA6D29D858B7000E554D /* AddSourceContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceContentView.swift; sourceTree = "<group>"; };
 		8227DA7029D86256000E554D /* SourcesSettingsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsListView.swift; sourceTree = "<group>"; };
@@ -192,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				821B253829DFA39600CF1001 /* NSApplication+Settings.swift */,
+				821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -211,6 +216,14 @@
 				821B254229E0A46B00CF1001 /* ConvertSourceView.swift */,
 			);
 			path = convert;
+			sourceTree = "<group>";
+		};
+		821B255329E1D97B00CF1001 /* error */ = {
+			isa = PBXGroup;
+			children = (
+				821B255429E1D98400CF1001 /* CamelChatError.swift */,
+			);
+			path = error;
 			sourceTree = "<group>";
 		};
 		8227DA6629D857F5000E554D /* sources */ = {
@@ -345,6 +358,7 @@
 				8227DA9C29D91F33000E554D /* Info.plist */,
 				8227DA9629D911A4000E554D /* CamelChatApp.swift */,
 				8227DAC829DA5060000E554D /* data */,
+				821B255329E1D97B00CF1001 /* error */,
 				821B253729DFA38700CF1001 /* extensions */,
 				82718CF029D368A000545C32 /* model */,
 				82718CF129D368C200545C32 /* ui */,
@@ -694,6 +708,7 @@
 				82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */,
 				82AE199029D7B07E008189DF /* SettingsView.swift in Sources */,
 				82A7B4E429DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift in Sources */,
+				821B255529E1D98400CF1001 /* CamelChatError.swift in Sources */,
 				8227DA6E29D858B7000E554D /* AddSourceContentView.swift in Sources */,
 				82914CC229D5ED9200858B2C /* ChatListViewModel.swift in Sources */,
 				82E3F1D829DF2865003F0368 /* ConfigureSourceViewModel.swift in Sources */,
@@ -715,6 +730,7 @@
 				8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */,
 				82914CDA29D79DFD00858B2C /* StaticMessageViewModel.swift in Sources */,
 				8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */,
+				821B255729E1F05000CF1001 /* NSScrollView+Bottom.swift in Sources */,
 				8227DA8D29D8D7E9000E554D /* ChatWindowContentViewModel.swift in Sources */,
 				8227DA7829D86633000E554D /* SourcesSettingsDetailViewModel.swift in Sources */,
 				82C686AC29DB344100B76BA6 /* ClearedContextMessage.swift in Sources */,

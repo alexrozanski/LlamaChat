@@ -44,14 +44,9 @@ class ConvertSourceViewModel: ObservableObject {
 
   @Published private(set) var state: State = .notStarted
 
-  let sourceType: ChatSourceType
-  let modelDirectoryURL: URL
-  let modelSize: ModelSize
-
-  init(sourceType: ChatSourceType, modelDirectoryURL: URL, modelSize: ModelSize) {
-    self.sourceType = sourceType
-    self.modelDirectoryURL = modelDirectoryURL
-    self.modelSize = modelSize
+  let validatedData: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>
+  init(validatedData: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>) {
+    self.validatedData = validatedData
   }
 
   public func startConversion() {
@@ -60,27 +55,33 @@ class ConvertSourceViewModel: ObservableObject {
     let completionHandler: ConvertSourceStepViewModel.CompletionHandler = { [weak self] id, status in
       guard
         let self,
-        status.isSuccess,
         let steps = self.state.conversionSteps,
         let stepIndex = steps.firstIndex(where: { $0.id == id })
       else { return }
 
       if stepIndex < steps.count - 1 {
-        steps[stepIndex + 1].start()
+        if status.isSuccess {
+          steps[stepIndex + 1].start()
+        } else {
+          steps[stepIndex + 1].skip()
+        }
       }
     }
+
+    let validatedData = self.validatedData
+    let modelConverter = ModelConverter()
     let steps = [
       ConvertSourceStepViewModel(label: "Checking environment", convertSourceViewModel: self, executionHandler: { command, stdout, stderr in
-        return try await ModelConverter.canRunConversion(CommandConnectors(command: command, stdout: stdout, stderr: stderr)).exitCode
+        return try await modelConverter.canRunConversion(CommandConnectors(command: command, stdout: stdout, stderr: stderr)).exitCode
       }, completionHandler: completionHandler),
       ConvertSourceStepViewModel(label: "Installing dependencies", convertSourceViewModel: self, executionHandler: { command, stdout, stderr in
-        return try await ModelConverter.installDependencies(CommandConnectors(command: command, stdout: stdout, stderr: stderr)).exitCode
+        return try await modelConverter.installDependencies(CommandConnectors(command: command, stdout: stdout, stderr: stderr)).exitCode
       }, completionHandler: completionHandler),
       ConvertSourceStepViewModel(label: "Checking dependencies", convertSourceViewModel: self, executionHandler: { command, stdout, stderr in
-        return try await ModelConverter.checkInstalledDependencies(CommandConnectors(command: command, stdout: stdout, stderr: stderr)).exitCode
+        return try await modelConverter.checkInstalledDependencies(CommandConnectors(command: command, stdout: stdout, stderr: stderr)).exitCode
       }, completionHandler: completionHandler),
       ConvertSourceStepViewModel(label: "Converting model", convertSourceViewModel: self, executionHandler: { command, stdout, stderr in
-        return 0
+        return try await modelConverter.convert(with: validatedData, commandConnectors: CommandConnectors(command: command, stdout: stdout, stderr: stderr)).exitCode
       }, completionHandler: completionHandler),
       ConvertSourceStepViewModel(label: "Quantizing model", convertSourceViewModel: self, executionHandler: { command, stdout, stderr in
         return 0

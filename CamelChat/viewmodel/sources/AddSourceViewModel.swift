@@ -46,8 +46,8 @@ class AddSourceViewModel: ObservableObject {
           modelSize: modelSize
         )
         self?.add(source: source)
-      case .pyTorchCheckpoints(directory: let directoryURL, modelSize: let modelSize):
-        self?.convertSourceViewModel = ConvertSourceViewModel(sourceType: sourceType, modelDirectoryURL: directoryURL, modelSize: modelSize)
+      case .pyTorchCheckpoints(data: let validatedData):
+        self?.convertSourceViewModel = ConvertSourceViewModel(validatedData: validatedData)
         self?.navigationPath.append(.convertPyTorchSource)
       }
     }

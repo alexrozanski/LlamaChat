@@ -13,15 +13,15 @@ fileprivate struct RunTimeLabel: View {
   @ViewBuilder var label: some View {
     if let runTime = viewModel.runTime {
       switch viewModel.state {
-      case .notStarted:
+      case .notStarted, .skipped:
         EmptyView()
       case .running:
-        Text("Running for \(String(format: "%.0f", runTime)) seconds...")
+        Text("Running for \(String(format: "%.1f", floor(runTime))) seconds...")
           .font(.footnote)
           .padding(.horizontal, 14)
           .padding(.vertical, 8)
       case .finished:
-        Text("Finished in \(String(format: "%.1f", runTime)) seconds")
+        Text("Finished in \(String(format: "%.1f", floor(runTime))) seconds")
           .font(.footnote)
           .padding(.horizontal, 14)
           .padding(.vertical, 8)
@@ -39,7 +39,7 @@ fileprivate struct DetailView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      NonEditableTextView(text: .richText(viewModel.output))
+      NonEditableTextView(viewModel: viewModel.textViewModel, scrollBehavior: .pinToBottom)
         .frame(maxWidth: .infinity)
         .frame(height: 100)
       Rectangle()
@@ -79,6 +79,9 @@ struct ConvertSourceStepView: View {
         switch viewModel.state {
         case .notStarted:
           EmptyView()
+        case .skipped:
+          Image(systemName: "exclamationmark.octagon")
+            .foregroundColor(.gray)
         case .running:
           ProgressView()
             .progressViewStyle(.circular)

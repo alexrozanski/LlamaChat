@@ -49,7 +49,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   enum ModelState {
     case none
     case invalidModelDirectory(reason: InvalidModelDirectoryReason)
-    case valid(modelDirectoryURL: URL)
+    case valid(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>)
   }
 
   @Published private(set) var modelState: ModelState = .none
@@ -100,14 +100,13 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
         }
 
         let directoryURL = URL(fileURLWithPath: modelPath)
-        let data = ConvertPyTorchToGgmlConversion.Data(
+        let data = ConvertPyTorchToGgmlConversionData(
           modelType: modelSize.toModelType(),
           directoryURL: directoryURL
         )
-        let result = ModelConverter.validateData(data, requiredFiles: &self.files)
-        switch result {
-        case .success:
-          self.modelState = .valid(modelDirectoryURL: directoryURL)
+        switch ModelConverter().validateConversionData(data, requiredFiles: &self.files) {
+        case .success(let validatedData):
+          self.modelState = .valid(data: validatedData)
         case .failure(let error):
           switch error {
           case .missingFiles(let filenames):
@@ -133,8 +132,8 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
             self?.pathSelectorViewModel.errorMessage = "Directory is missing \(count) \(count == 1 ? "file" : "files")"
           }
           self?.sourceSettings.send(nil)
-        case .valid(modelDirectoryURL: let modelDirectoryURL):
-          self?.sourceSettings.send(.pyTorchCheckpoints(directory: modelDirectoryURL, modelSize: modelSize))
+        case .valid(data: let validatedData):
+          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData))
         }
       }.store(in: &subscriptions)
   }
@@ -144,7 +143,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
 
     conversionState = .loading
     Task.init {
-      let canConvert = (try? await ModelConverter.canRunConversion()) ?? false
+      let canConvert = (try? await ModelConverter().canRunConversion()) ?? false
       await MainActor.run {
         conversionState = .canConvert(canConvert)
       }
