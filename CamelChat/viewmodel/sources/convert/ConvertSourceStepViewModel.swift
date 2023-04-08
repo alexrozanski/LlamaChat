@@ -8,14 +8,33 @@
 import AppKit
 import Foundation
 import Combine
+import llama
 
 class ConvertSourceStepViewModel: Identifiable, ObservableObject {
+  typealias ID = String
+
+  enum Status {
+    case success
+    case failure
+
+    init(exitCode: Int32) {
+      self = exitCode == 0 ? .success : .failure
+    }
+
+    var isSuccess: Bool {
+      switch self {
+      case .success: return true
+      case .failure: return false
+      }
+    }
+  }
+
   typealias ExecutionHandler = (
     _ command: @escaping (String) -> Void,
     _ stdout: @escaping (String) -> Void,
-    _ stderr: @escaping (String) -> Void,
-    _ exitCode: @escaping (Int32) -> Void
-  ) async throws -> Bool
+    _ stderr: @escaping (String) -> Void
+  ) async throws -> Int32
+  typealias CompletionHandler = (ID, Status) -> Void
 
   enum State {
     case notStarted
@@ -63,14 +82,21 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
 
   private var lastOutputType: OutputType?
 
-  let id: String
+  let id: ID
   let label: String
   let executionHandler: ExecutionHandler
+  let completionHandler: CompletionHandler
 
-  init(label: String, executionHandler: @escaping ExecutionHandler) {
+  init(
+    label: String,
+    convertSourceViewModel: ConvertSourceViewModel,
+    executionHandler: @escaping ExecutionHandler,
+    completionHandler: @escaping CompletionHandler
+  ) {
     self.id = UUID().uuidString
     self.label = label
     self.executionHandler = executionHandler
+    self.completionHandler = completionHandler
     $startDate
       .combineLatest($runUntilDate)
       .sink { [weak self] startDate, endDate in
@@ -80,7 +106,6 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
           self?.runTime = nil
         }
       }.store(in: &subscriptions)
-
   }
 
   func start() {
@@ -100,33 +125,32 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
           }
         }
 
-        var exitCode: Int32 = -1
-        _ = try await executionHandler(
+        let exitCode = try await executionHandler(
           makeAppend(prefix: "> ", outputType: .command),
           makeAppend(prefix: nil, outputType: .stdout),
-          makeAppend(prefix: nil, outputType: .stderr),
-          { exitCode = $0 }
+          makeAppend(prefix: nil, outputType: .stderr)
         )
 
-        let newExitCode = exitCode
         await MainActor.run {
-          self.exitCode = newExitCode
-          state = .finished(result: newExitCode == 0 ? .success(()) : .failure(NSError()))
-          if runUntilDate == nil {
-            runUntilDate = Date()
-          }
-          timerSubscription = nil
+          finish(with: .success(exitCode))
         }
       } catch {
         await MainActor.run {
-          state = .finished(result: .failure(error))
-          if runUntilDate == nil {
-            runUntilDate = Date()
-          }
-          timerSubscription = nil
+          finish(with: .failure(error))
         }
       }
     }
+  }
+
+  private func finish(with result: Result<Int32, Error>) {
+    let exitCode = (try? result.get()) ?? -1
+    self.exitCode = exitCode
+    state = .finished(result: result.map { _ in () })
+    if runUntilDate == nil {
+      runUntilDate = Date()
+    }
+    timerSubscription = nil
+    completionHandler(id, Status(exitCode: exitCode))
   }
 
   private func appendOutput(string: String, outputType: OutputType) {

@@ -109,9 +109,6 @@ struct ConvertSourceStepView: View {
           Text(viewModel.label)
         }
       })
-      .onAppear {
-        viewModel.start()
-      }
       if viewModel.expanded {
         DetailView(viewModel: viewModel)
       }
