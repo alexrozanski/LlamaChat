@@ -21,7 +21,7 @@ class ConvertSourceViewModel: ObservableObject {
   enum State {
     case notStarted
     case converting
-    case finishedConverting
+    case finishedConverting(result: ConvertPyTorchToGgmlConversionResult)
     case failedToConvert
 
     var isConverting: Bool {
@@ -70,10 +70,30 @@ class ConvertSourceViewModel: ObservableObject {
 
     $pipeline.sink { [weak self] newPipeline in
       guard let self else { return }
-      self.conversionSteps = self.pipeline.steps.map { ConvertSourceStepViewModel(conversionStep: $0) }
+      self.conversionSteps = newPipeline.steps.map { ConvertSourceStepViewModel(conversionStep: $0) }
     }.store(in: &subscriptions)
 
-    pipeline.$state
+    $pipeline
+      .map { $0.$state }
+      .switchToLatest()
+      .scan(ConvertPyTorchModelConversionPipeline.State.notRunning, { oldState, newState in
+        switch newState {
+        case .notRunning, .running, .failed:
+          switch oldState {
+          case .finished(result: let result):
+            do {
+              try result.cleanUp()
+            } catch {
+              print("WARNING: Failed to clean up converted GGML model")
+            }
+          case .notRunning, .running, .failed:
+            break
+          }
+        case .finished:
+          break
+        }
+        return newState
+      })
       .sink { [weak self] newState in
         switch newState {
         case .notRunning:
@@ -82,23 +102,21 @@ class ConvertSourceViewModel: ObservableObject {
           self?.state = .converting
         case .failed:
           self?.state = .failedToConvert
-        case .finished:
-          self?.state = .finishedConverting
+        case .finished(result: let result):
+          self?.state = .finishedConverting(result: result)
         }
       }.store(in: &subscriptions)
   }
 
   public func startConversion() {
     switch state {
-    case .converting, .finishedConverting:
-      return
+    case .converting, .failedToConvert, .finishedConverting:
+      break
     case .notStarted:
       state = .converting
       Task.init {
         try await pipeline.run(with: data)
       }
-    case .failedToConvert:
-      restartConversion()
     }
   }
 
@@ -109,13 +127,22 @@ class ConvertSourceViewModel: ObservableObject {
 
   public func restartConversion() {
     pipeline = ModelConverter().makeConversionPipeline(with: data)
-    state = .converting
-    Task.init {
-      try await pipeline.run(with: data)
-    }
+    state = .notStarted
+    startConversion()
   }
 
   public func cancel() {
+    switch state {
+    case .notStarted, .converting, .failedToConvert:
+      break
+    case .finishedConverting(result: let result):
+      do {
+        try result.cleanUp()
+      } catch {
+        print("WARNING: Failed to clean up converted GGML model")
+      }
+    }
+
     cancelHandler()
   }
 }
