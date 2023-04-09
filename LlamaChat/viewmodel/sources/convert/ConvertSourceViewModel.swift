@@ -73,20 +73,19 @@ class ConvertSourceViewModel: ObservableObject {
       self.conversionSteps = self.pipeline.steps.map { ConvertSourceStepViewModel(conversionStep: $0) }
     }.store(in: &subscriptions)
 
-//    pipeline.$state
-//      .sink { [weak self] newState in
-//        switch newState {
-//        case .notRunning:
-//          self?.state = .notStarted
-//        case .running:
-//          self?.state = .converting
-//        case .finished(let success):
-//          self?.state = success ? .finishedConverting : .failedToConvert
-//        }
-//      }.store(in: &subscriptions)
-//    pipeline.$steps.sink { [weak self] newSteps in
-//      self?.conversionSteps = newSteps.map { ConvertSourceStepViewModel(convertStep: $0) }
-//    }.store(in: &subscriptions)
+    pipeline.$state
+      .sink { [weak self] newState in
+        switch newState {
+        case .notRunning:
+          self?.state = .notStarted
+        case .running:
+          self?.state = .converting
+        case .failed:
+          self?.state = .failedToConvert
+        case .finished:
+          self?.state = .finishedConverting
+        }
+      }.store(in: &subscriptions)
   }
 
   public func startConversion() {
