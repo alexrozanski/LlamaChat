@@ -31,9 +31,17 @@ class AddSourceViewModel: ObservableObject {
   private(set) var configureSourceViewModel: ConfigureSourceViewModel?
   private(set) var convertSourceViewModel: ConvertSourceViewModel?
 
+  private var addedModel = false
+
   init(chatSources: ChatSources, closeHandler: @escaping CloseHandler) {
     self.chatSources = chatSources
     self.closeHandler = closeHandler
+  }
+
+  deinit {
+    if !addedModel {
+      convertSourceViewModel?.cleanUp()
+    }
   }
 
   private func makeConfigureSourceViewModel(for sourceType: ChatSourceType) -> ConfigureSourceViewModel {
@@ -67,7 +75,10 @@ class AddSourceViewModel: ObservableObject {
   }
 
   private func add(source: ChatSource) {
+    guard !addedModel else { return }
+
     chatSources.add(source: source)
+    addedModel = true
     closeHandler(source)
   }
 }

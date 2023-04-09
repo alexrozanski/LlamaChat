@@ -108,7 +108,7 @@ class ConvertSourceViewModel: ObservableObject {
       }.store(in: &subscriptions)
   }
 
-  public func startConversion() {
+  func startConversion() {
     switch state {
     case .converting, .failedToConvert, .finishedConverting:
       break
@@ -120,18 +120,23 @@ class ConvertSourceViewModel: ObservableObject {
     }
   }
 
-  public func stopConversion() {
+  func stopConversion() {
     guard state.isConverting else { return }
     pipeline.stop()
   }
 
-  public func restartConversion() {
+  func restartConversion() {
     pipeline = ModelConverter().makeConversionPipeline(with: data)
     state = .notStarted
     startConversion()
   }
 
-  public func cancel() {
+  func cancel() {
+    cleanUp()
+    cancelHandler()
+  }
+
+  func cleanUp() {
     switch state {
     case .notStarted, .converting, .failedToConvert:
       break
@@ -143,7 +148,6 @@ class ConvertSourceViewModel: ObservableObject {
       }
     }
 
-    cancelHandler()
   }
 }
 
