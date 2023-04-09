@@ -88,9 +88,14 @@ struct ConvertSourceStepView: View {
             .controlSize(.small)
         case .finished(result: let result):
           switch result {
-          case .success:
-            Image(systemName: "checkmark.circle.fill")
-              .foregroundColor(.green)
+          case .success(let status):
+            if status.isSuccess {
+              Image(systemName: "checkmark.circle.fill")
+                .foregroundColor(.green)
+            } else {
+              Image(systemName: "xmark.circle.fill")
+                .foregroundColor(.red)
+            }
           case .failure:
             Image(systemName: "xmark.circle.fill")
               .foregroundColor(.red)
@@ -122,11 +127,50 @@ struct ConvertSourceStepView: View {
 struct ConvertSourceView: View {
   @ObservedObject var viewModel: ConvertSourceViewModel
 
-  @ViewBuilder var startButton: some View {
+  @ViewBuilder var primaryButton: some View {
     Button(action: {
-      viewModel.startConversion()
+      switch viewModel.state {
+      case .finishedConverting:
+        break
+      case .failedToConvert:
+        viewModel.restartConversion()
+      case .notStarted, .converting:
+        viewModel.startConversion()
+      }
     }) {
-      Text("Start")
+      switch viewModel.state {
+      case .finishedConverting:
+        Text("Finish")
+      case .failedToConvert:
+        Text("Retry")
+      case .notStarted, .converting:
+        Text("Start")
+      }
+    }
+    .keyboardShortcut(.return)
+    .disabled(viewModel.state.isConverting)
+  }
+
+  @ViewBuilder var cancelButton: some View {
+    Button(action: {
+      viewModel.cancel()
+    }) {
+      Text("Cancel")
+    }
+  }
+
+  @ViewBuilder var stopButton: some View {
+    Button(action: {
+      viewModel.stopConversion()
+    }) {
+      Text("Stop")
+    }
+  }
+
+  @ViewBuilder var finishButton: some View {
+    Button(action: {
+    }) {
+      Text("Finish")
     }
   }
 
@@ -138,30 +182,27 @@ struct ConvertSourceView: View {
           Section {
             Text("CamelChat will convert the PyTorch model weights to the .ggml format.\n\nAdditional disk space is required since the original file(s) are left untouched.")
           }
-        case .converting(let steps):
-          makeConversionView(for: steps)
+        case .converting, .failedToConvert, .finishedConverting:
+          if let steps = viewModel.conversionSteps {
+            makeConversionView(for: steps)
+          }
         }
       }
       .formStyle(.grouped)
       HStack {
         Spacer()
         if viewModel.state.isConverting {
-          Button(action: {
-            viewModel.stopConversion()
-          }) {
-            Text("Stop")
-          }
+          stopButton
         }
-        Button(action: {
-          viewModel.startConversion()
-        }) {
-          Text("Start")
+        if viewModel.state.isFinished {
+          cancelButton
         }
-        .disabled(viewModel.state.isConverting)
+        primaryButton
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding()
+    .navigationBarBackButtonHidden(viewModel.state.startedConverting)
   }
 
   @ViewBuilder private func makeConversionView(for steps: [ConvertSourceStepViewModel]) -> some View {

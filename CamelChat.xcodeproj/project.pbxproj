@@ -16,6 +16,7 @@
 		821B255229E11C6100CF1001 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 821B255129E11C6100CF1001 /* llama */; };
 		821B255529E1D98400CF1001 /* CamelChatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B255429E1D98400CF1001 /* CamelChatError.swift */; };
 		821B255729E1F05000CF1001 /* NSScrollView+Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */; };
+		821B255A29E22BC000CF1001 /* ConvertStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B255929E22BC000CF1001 /* ConvertStep.swift */; };
 		8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */; };
 		8227DA6E29D858B7000E554D /* AddSourceContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA6D29D858B7000E554D /* AddSourceContentView.swift */; };
 		8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA7029D86256000E554D /* SourcesSettingsListView.swift */; };
@@ -85,6 +86,7 @@
 		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
 		82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */; };
 		82C686AC29DB344100B76BA6 /* ClearedContextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */; };
+		82CE3E0629E237D000EC4D3A /* ConversionPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CE3E0529E237D000EC4D3A /* ConversionPipeline.swift */; };
 		82E3F1D829DF2865003F0368 /* ConfigureSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */; };
 		82E3F1DC29DF37DA003F0368 /* AddSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */; };
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
@@ -101,6 +103,7 @@
 		821B254B29E10C6500CF1001 /* ConvertSourceStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourceStepViewModel.swift; sourceTree = "<group>"; };
 		821B255429E1D98400CF1001 /* CamelChatError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamelChatError.swift; sourceTree = "<group>"; };
 		821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScrollView+Bottom.swift"; sourceTree = "<group>"; };
+		821B255929E22BC000CF1001 /* ConvertStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertStep.swift; sourceTree = "<group>"; };
 		8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSheetDeletionContentView.swift; sourceTree = "<group>"; };
 		8227DA6D29D858B7000E554D /* AddSourceContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceContentView.swift; sourceTree = "<group>"; };
 		8227DA7029D86256000E554D /* SourcesSettingsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsListView.swift; sourceTree = "<group>"; };
@@ -172,6 +175,7 @@
 		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
 		82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextContentViewModel.swift; sourceTree = "<group>"; };
 		82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearedContextMessage.swift; sourceTree = "<group>"; };
+		82CE3E0529E237D000EC4D3A /* ConversionPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionPipeline.swift; sourceTree = "<group>"; };
 		82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
 		82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
@@ -224,6 +228,15 @@
 				821B255429E1D98400CF1001 /* CamelChatError.swift */,
 			);
 			path = error;
+			sourceTree = "<group>";
+		};
+		821B255829E22BAF00CF1001 /* convert */ = {
+			isa = PBXGroup;
+			children = (
+				821B255929E22BC000CF1001 /* ConvertStep.swift */,
+				82CE3E0529E237D000EC4D3A /* ConversionPipeline.swift */,
+			);
+			path = convert;
 			sourceTree = "<group>";
 		};
 		8227DA6629D857F5000E554D /* sources */ = {
@@ -383,6 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				8255EA4E29D58B21000B9F83 /* chat */,
+				821B255829E22BAF00CF1001 /* convert */,
 				8255EA4D29D58B1C000B9F83 /* sources */,
 			);
 			path = model;
@@ -712,9 +726,11 @@
 				8227DA6E29D858B7000E554D /* AddSourceContentView.swift in Sources */,
 				82914CC229D5ED9200858B2C /* ChatListViewModel.swift in Sources */,
 				82E3F1D829DF2865003F0368 /* ConfigureSourceViewModel.swift in Sources */,
+				82CE3E0629E237D000EC4D3A /* ConversionPipeline.swift in Sources */,
 				821B254C29E10C6500CF1001 /* ConvertSourceStepViewModel.swift in Sources */,
 				8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */,
 				8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */,
+				821B255A29E22BC000CF1001 /* ConvertStep.swift in Sources */,
 				8227DAA029D98577000E554D /* ChatListView.swift in Sources */,
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
 				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
@@ -964,7 +980,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = /Users/rozanski/Documents/GitHub/llama.swift;
 			requirement = {
-				branch = conversion;
+				branch = v2;
 				kind = branch;
 			};
 		};
