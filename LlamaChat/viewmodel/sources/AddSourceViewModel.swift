@@ -49,7 +49,7 @@ class AddSourceViewModel: ObservableObject {
         self?.add(source: source)
       case .pyTorchCheckpoints(data: let validatedData):
         self?.convertSourceViewModel = ConvertSourceViewModel(
-          pipeline: makeConvertPyTorchConversionPipeline(for: validatedData),
+          data: validatedData,
           cancelHandler: { [weak self] in self?.closeHandler(nil) }
         )
         self?.navigationPath.append(.convertPyTorchSource)
@@ -69,46 +69,5 @@ class AddSourceViewModel: ObservableObject {
   private func add(source: ChatSource) {
     chatSources.add(source: source)
     closeHandler(source)
-  }
-}
-
-private func makeConvertPyTorchConversionPipeline(for validatedData: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>) -> ConversionPipeline {
-  let modelConverter = ModelConverter()
-
-  class PipelineData {
-    var convertedModelURL: URL?
-  }
-
-  let pipelineData = PipelineData()
-  return ConversionPipeline {
-    return [
-      ConvertStep(label: "Checking environment", withCommandConnectors: { commandConnectors in
-        return try await modelConverter.canRunConversion(commandConnectors).exitCode
-      }),
-      ConvertStep(label: "Installing dependencies", withCommandConnectors: { commandConnectors in
-        return try await modelConverter.installDependencies(commandConnectors).exitCode
-      }),
-      ConvertStep(label: "Checking dependencies", withCommandConnectors: { commandConnectors in
-        return try await modelConverter.checkInstalledDependencies(commandConnectors).exitCode
-      }),
-      ConvertStep(label: "Converting model", withCommandConnectors: { commandConnectors in
-        var result: ConvertPyTorchToGgmlConversionResult?
-        let status = try await modelConverter.convert(with: validatedData, result: &result, commandConnectors: commandConnectors)
-        switch status {
-        case .success:
-          pipelineData.convertedModelURL = result?.outputFileURL
-        case .failure:
-          break
-        }
-        return status.exitCode
-      }),
-      ConvertStep(label: "Quantizing model", withCommandConnectors: { commandConnectors in
-        guard let convertedModelURL = pipelineData.convertedModelURL else { return 1 }
-
-        let destinationModelURL = convertedModelURL.deletingLastPathComponent().appendingPathComponent("test")
-        try await modelConverter.quantizeModel(from: convertedModelURL, to: destinationModelURL)
-        return 0
-      })
-    ]
   }
 }

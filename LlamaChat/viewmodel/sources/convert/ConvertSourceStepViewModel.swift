@@ -11,36 +11,120 @@ import Combine
 import llama
 
 class ConvertSourceStepViewModel: Identifiable, ObservableObject {
+  enum State {
+    case notStarted
+    case skipped
+    case running
+    case finished(result: Result<Int32, Error>)
+
+    var canStart: Bool {
+      switch self {
+      case .notStarted: return true
+      case .skipped, .running, .finished: return false
+      }
+    }
+
+    var isFinished: Bool {
+      switch self {
+      case .notStarted, .running: return false
+      case .skipped, .finished: return true
+      }
+    }
+  }
+
+  enum OutputType {
+    case command
+    case stdout
+    case stderr
+
+    var isCommand: Bool {
+      switch self {
+      case .command:
+        return true
+      case .stdout, .stderr:
+        return false
+      }
+    }
+  }
+
   typealias ID = String
 
   private let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
   private var timerSubscription: AnyCancellable?
   private var subscriptions = Set<AnyCancellable>()
 
-  @Published private(set) var state: ConvertStep.State
+  @Published private(set) var state: State = .notStarted
   @Published private(set) var exitCode: Int32?
   @Published private(set) var expanded = false
 
   @Published private(set) var textViewModel = NonEditableTextViewModel()
   @Published var runTime: Double?
 
-  private var lastOutputType: ConvertStep.OutputType?
+  private var lastOutputType: OutputType?
 
   var label: String {
-    return convertStep.label
+    switch conversionStep.type {
+    case .checkEnvironment:
+      return "Checking environment"
+    case .installDependencies:
+      return "Installing dependencies"
+    case .checkDependencies:
+      return "Checking dependencies"
+    case .convertModel:
+      return "Converting model"
+    case .quantizeModel:
+      return "Quantizing model"
+    }
   }
 
   let id: ID
-  private let convertStep: ConvertStep
+  private let conversionStep: AnyConversionStep<ConvertPyTorchToGgmlConversionStep>
 
-  init(convertStep: ConvertStep) {
+  init(conversionStep: AnyConversionStep<ConvertPyTorchToGgmlConversionStep>) {
     self.id = UUID().uuidString
-    self.convertStep = convertStep
+    self.conversionStep = conversionStep
 
-    self.state = convertStep.state
+    conversionStep.$state.receive(on: DispatchQueue.main).sink { [weak self] newState in
+      guard let self else { return }
 
-    convertStep.$startDate
-      .combineLatest(convertStep.$runUntilDate)
+      switch newState {
+      case .notStarted:
+        self.state = .notStarted
+        self.exitCode = nil
+      case .skipped:
+        self.state = .skipped
+        self.exitCode = nil
+      case .running:
+        self.state = .running
+        self.exitCode = nil
+      case .finished(result: let result):
+        if let status = try? result.get() {
+          self.state = .finished(result: .success(status.exitCode))
+          self.exitCode = status.exitCode
+        } else {
+          self.state = .finished(result: .success(1))
+          self.exitCode = Int32(1)
+        }
+      }
+    }.store(in: &subscriptions)
+
+    $state.sink { newState in
+      switch newState {
+      case .notStarted, .skipped, .running:
+        self.exitCode = nil
+      case .finished(result: let result):
+        switch result {
+        case .success(let exitCode):
+          self.exitCode = exitCode
+        case .failure:
+          self.exitCode = nil
+        }
+      }
+    }.store(in: &subscriptions)
+
+    conversionStep.$startDate
+      .combineLatest(conversionStep.$runUntilDate)
+      .receive(on: DispatchQueue.main)
       .sink { [weak self] startDate, endDate in
         if let startDate, let endDate {
           self?.runTime = endDate.timeIntervalSince(startDate)
@@ -48,32 +132,17 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
           self?.runTime = nil
         }
       }.store(in: &subscriptions)
-    convertStep.$state.sink { [weak self] newState in
-      guard let self else { return }
 
-      self.state = newState
-
-      switch newState {
-      case .notStarted, .skipped, .running:
-        self.exitCode = nil
-      case .finished(result: let result):
-        if let status = try? result.get() {
-          self.exitCode = status.exitCode
-        } else {
-          self.exitCode = Int32(1)
-        }
-      }
-    }.store(in: &subscriptions)
-    convertStep.commandOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .command) }.store(in: &subscriptions)
-    convertStep.stdoutOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .stdout) }.store(in: &subscriptions)
-    convertStep.stderrOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .stderr) }.store(in: &subscriptions)
+    conversionStep.commandOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .command) }.store(in: &subscriptions)
+    conversionStep.stdoutOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .stdout) }.store(in: &subscriptions)
+    conversionStep.stderrOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .stderr) }.store(in: &subscriptions)
   }
 
   func toggleExpansion() {
     expanded = !expanded
   }
 
-  private func appendOutput(string: String, outputType: ConvertStep.OutputType) {
+  private func appendOutput(string: String, outputType: OutputType) {
     if outputType != lastOutputType && !textViewModel.isEmpty {
       textViewModel.append(attributedString: NSAttributedString(string: "\n"))
     }

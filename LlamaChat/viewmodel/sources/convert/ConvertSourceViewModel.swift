@@ -11,6 +11,11 @@ import Coquille
 import llama
 
 class ConvertSourceViewModel: ObservableObject {
+  private typealias ConvertPyTorchModelConversionPipeline = ModelConversionPipeline<
+    ConvertPyTorchToGgmlConversionStep,
+    ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>,
+    ConvertPyTorchToGgmlConversionResult
+  >
   typealias CancelHandler = () -> Void
 
   enum State {
@@ -49,36 +54,53 @@ class ConvertSourceViewModel: ObservableObject {
   }
 
   @Published private(set) var state: State = .notStarted
+  @Published private var pipeline: ConvertPyTorchModelConversionPipeline
   @Published var conversionSteps: [ConvertSourceStepViewModel]
 
   private var subscriptions = Set<AnyCancellable>()
 
-  private let pipeline: ConversionPipeline
+  private let data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>
   private let cancelHandler: CancelHandler
 
-  init(pipeline: ConversionPipeline, cancelHandler: @escaping CancelHandler) {
-    self.pipeline = pipeline
+  init(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>, cancelHandler: @escaping CancelHandler) {
+    self.data = data
+    self.pipeline = ModelConverter().makeConversionPipeline(with: data)
     self.cancelHandler = cancelHandler
-    self.conversionSteps = pipeline.steps.map { ConvertSourceStepViewModel(convertStep: $0) }
+    self.conversionSteps = []
 
-    pipeline.$state
-      .sink { [weak self] newState in
-        switch newState {
-        case .notRunning:
-          self?.state = .notStarted
-        case .running:
-          self?.state = .converting
-        case .finished(let success):
-          self?.state = success ? .finishedConverting : .failedToConvert
-        }
-      }.store(in: &subscriptions)
-    pipeline.$steps.sink { [weak self] newSteps in
-      self?.conversionSteps = newSteps.map { ConvertSourceStepViewModel(convertStep: $0) }
+    $pipeline.sink { [weak self] newPipeline in
+      guard let self else { return }
+      self.conversionSteps = self.pipeline.steps.map { ConvertSourceStepViewModel(conversionStep: $0) }
     }.store(in: &subscriptions)
+
+//    pipeline.$state
+//      .sink { [weak self] newState in
+//        switch newState {
+//        case .notRunning:
+//          self?.state = .notStarted
+//        case .running:
+//          self?.state = .converting
+//        case .finished(let success):
+//          self?.state = success ? .finishedConverting : .failedToConvert
+//        }
+//      }.store(in: &subscriptions)
+//    pipeline.$steps.sink { [weak self] newSteps in
+//      self?.conversionSteps = newSteps.map { ConvertSourceStepViewModel(convertStep: $0) }
+//    }.store(in: &subscriptions)
   }
 
   public func startConversion() {
-    pipeline.run()
+    switch state {
+    case .converting, .finishedConverting:
+      return
+    case .notStarted:
+      state = .converting
+      Task.init {
+        try await pipeline.run(with: data)
+      }
+    case .failedToConvert:
+      restartConversion()
+    }
   }
 
   public func stopConversion() {
@@ -87,7 +109,11 @@ class ConvertSourceViewModel: ObservableObject {
   }
 
   public func restartConversion() {
-    pipeline.restart()
+    pipeline = ModelConverter().makeConversionPipeline(with: data)
+    state = .converting
+    Task.init {
+      try await pipeline.run(with: data)
+    }
   }
 
   public func cancel() {
@@ -103,14 +129,5 @@ private extension Coquille.Process.Status {
     case .failure(let code):
       return code
     }
-  }
-}
-
-private func withCommandConnectors(
-  _ handler: @escaping (CommandConnectors) async throws -> Int32
-) -> ConvertStep.ExecutionHandler {
-  return { command, stdout, stderr in
-    let commandConnectors = CommandConnectors(command: command, stdout: stdout, stderr: stderr)
-    return try await handler(commandConnectors)
   }
 }

@@ -21,7 +21,7 @@ fileprivate struct RunTimeLabel: View {
           .padding(.horizontal, 14)
           .padding(.vertical, 8)
       case .finished:
-        Text("Finished in \(String(format: "%.1f", floor(runTime))) seconds")
+        Text("Finished in \(String(format: "%.1f", runTime)) seconds")
           .font(.footnote)
           .padding(.horizontal, 14)
           .padding(.vertical, 8)
@@ -88,8 +88,8 @@ struct ConvertSourceStepView: View {
             .controlSize(.small)
         case .finished(result: let result):
           switch result {
-          case .success(let status):
-            if status.isSuccess {
+          case .success(let exitCode):
+            if exitCode == 0 {
               Image(systemName: "checkmark.circle.fill")
                 .foregroundColor(.green)
             } else {
@@ -184,7 +184,9 @@ struct ConvertSourceView: View {
           }
         case .converting, .failedToConvert, .finishedConverting:
           if let steps = viewModel.conversionSteps {
-            makeConversionView(for: steps)
+            ForEach(steps, id: \.id) { stepViewModel in
+              ConvertSourceStepView(viewModel: stepViewModel)
+            }
           }
         }
       }
@@ -203,11 +205,5 @@ struct ConvertSourceView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding()
     .navigationBarBackButtonHidden(viewModel.state.startedConverting)
-  }
-
-  @ViewBuilder private func makeConversionView(for steps: [ConvertSourceStepViewModel]) -> some View {
-    ForEach(steps, id: \.id) { stepViewModel in
-      ConvertSourceStepView(viewModel: stepViewModel)
-    }
   }
 }
