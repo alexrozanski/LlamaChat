@@ -83,6 +83,13 @@ class ChatModel: ObservableObject {
     self.source = source
     self.messagesModel = messagesModel
     messages = messagesModel.loadMessages(from: source)
+
+    // By definition we clear the context on each launch because we don't persist session state.
+    if messages.count > 0 && !(messages.last?.messageType.isClearedContext ?? false) {
+      let clearedContextMessage = ClearedContextMessage(sendDate: Date())
+      messages.append(clearedContextMessage)
+      messagesModel.append(message: clearedContextMessage, in: source)
+    }
   }
 
   func send(message: StaticMessage) {

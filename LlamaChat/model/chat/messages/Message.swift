@@ -12,6 +12,15 @@ enum MessageType: Int {
   case message = 1
   // Implement this as a message just to make this easier
   case clearedContext = 2
+
+  var isClearedContext: Bool {
+    switch self {
+    case .message:
+      return false
+    case .clearedContext:
+      return true
+    }
+  }
 }
 
 protocol Message {
