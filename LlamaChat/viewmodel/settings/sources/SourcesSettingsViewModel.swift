@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class SourcesSettingsSourceItemViewModel: ObservableObject, Equatable {
+class SourcesSettingsSourceItemViewModel: ObservableObject {
   fileprivate let source: ChatSource
 
   var id: String { source.id }
@@ -22,10 +22,6 @@ class SourcesSettingsSourceItemViewModel: ObservableObject, Equatable {
     source.$name.sink(receiveValue: { [weak self] newName in
       self?.title = newName
     }).store(in: &subscriptions)
-  }
-
-  static func == (lhs: SourcesSettingsSourceItemViewModel, rhs: SourcesSettingsSourceItemViewModel) -> Bool {
-    return lhs.source == rhs.source
   }
 }
 

@@ -15,19 +15,13 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
     case notStarted
     case skipped
     case running
+    case cancelled
     case finished(result: Result<Int32, Error>)
 
     var canStart: Bool {
       switch self {
       case .notStarted: return true
-      case .skipped, .running, .finished: return false
-      }
-    }
-
-    var isFinished: Bool {
-      switch self {
-      case .notStarted, .running: return false
-      case .skipped, .finished: return true
+      case .skipped, .running, .cancelled, .finished: return false
       }
     }
   }
@@ -66,8 +60,8 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
     switch conversionStep.type {
     case .checkEnvironment:
       return "Checking environment"
-    case .installDependencies:
-      return "Installing dependencies"
+    case .setUpEnvironment:
+      return "Setting up environment"
     case .checkDependencies:
       return "Checking dependencies"
     case .convertModel:
@@ -97,8 +91,11 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
       case .running:
         self.state = .running
         self.exitCode = nil
+      case .cancelled:
+        self.state = .cancelled
+        self.exitCode = nil
       case .finished(result: let result):
-        if let status = try? result.get() {
+        if let status = try? result.get(), status.exitCode == 0 {
           self.state = .finished(result: .success(status.exitCode))
           self.exitCode = status.exitCode
         } else {
@@ -110,7 +107,7 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
 
     $state.sink { newState in
       switch newState {
-      case .notStarted, .skipped, .running:
+      case .notStarted, .skipped, .running, .cancelled:
         self.exitCode = nil
       case .finished(result: let result):
         switch result {

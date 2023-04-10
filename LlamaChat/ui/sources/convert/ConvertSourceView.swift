@@ -13,7 +13,7 @@ fileprivate struct RunTimeLabel: View {
   @ViewBuilder var label: some View {
     if let runTime = viewModel.runTime {
       switch viewModel.state {
-      case .notStarted, .skipped:
+      case .notStarted, .skipped, .cancelled:
         EmptyView()
       case .running:
         Text("Running for \(String(format: "%.1f", floor(runTime))) seconds...")
@@ -86,6 +86,9 @@ struct ConvertSourceStepView: View {
           ProgressView()
             .progressViewStyle(.circular)
             .controlSize(.small)
+        case .cancelled:
+          Image(systemName: "xmark.circle.fill")
+            .foregroundColor(.red)
         case .finished(result: let result):
           switch result {
           case .success(let exitCode):
@@ -131,9 +134,9 @@ struct ConvertSourceView: View {
     Button(action: {
       switch viewModel.state {
       case .finishedConverting:
-        break
+        viewModel.finish()
       case .failedToConvert:
-        viewModel.restartConversion()
+        viewModel.retryConversion()
       case .notStarted, .converting:
         viewModel.startConversion()
       }
@@ -196,7 +199,7 @@ struct ConvertSourceView: View {
         if viewModel.state.isConverting {
           stopButton
         }
-        if viewModel.state.isFinished {
+        if viewModel.state.isFinishedConverting {
           cancelButton
         }
         primaryButton

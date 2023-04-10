@@ -11,7 +11,7 @@ fileprivate struct Payload: Codable {
   let sources: [ChatSource]
 }
 
-class ChatSource: Codable, Equatable, ObservableObject {
+class ChatSource: Codable, ObservableObject {
   typealias ID = String
 
   let id: ID
@@ -22,6 +22,7 @@ class ChatSource: Codable, Equatable, ObservableObject {
   }
   let type: ChatSourceType
   let modelURL: URL
+  let modelDirectoryId: ModelDirectory.ID?
   let modelSize: ModelSize
 
   fileprivate weak var chatSources: ChatSources?
@@ -31,6 +32,7 @@ class ChatSource: Codable, Equatable, ObservableObject {
     case name
     case type
     case modelURL
+    case modelDirectoryId
     case modelSize
   }
 
@@ -41,6 +43,7 @@ class ChatSource: Codable, Equatable, ObservableObject {
     name = try values.decode(String.self, forKey: .name)
     type = try values.decode(ChatSourceType.self, forKey: .type)
     modelURL = try values.decode(URL.self, forKey: .modelURL)
+    modelDirectoryId = try values.decode(ModelDirectory.ID?.self, forKey: .modelDirectoryId)
     modelSize = try values.decode(ModelSize.self, forKey: .modelSize)
   }
 
@@ -50,23 +53,23 @@ class ChatSource: Codable, Equatable, ObservableObject {
     try container.encode(name, forKey: .name)
     try container.encode(type, forKey: .type)
     try container.encode(modelURL, forKey: .modelURL)
+    try container.encode(modelDirectoryId, forKey: .modelDirectoryId)
     try container.encode(modelSize, forKey: .modelSize)
   }
 
-  init(name: String, type: ChatSourceType, modelURL: URL, modelSize: ModelSize) {
+  init(
+    name: String,
+    type: ChatSourceType,
+    modelURL: URL,
+    modelDirectoryId: ModelDirectory.ID?,
+    modelSize: ModelSize
+  ) {
     self.id = UUID().uuidString
     self.name = name
     self.type = type
     self.modelURL = modelURL
+    self.modelDirectoryId = modelDirectoryId
     self.modelSize = modelSize
-  }
-
-  static func == (lhs: ChatSource, rhs: ChatSource) -> Bool {
-    return lhs.id == rhs.id &&
-    lhs.name == rhs.name &&
-    lhs.type == rhs.type &&
-    lhs.modelURL == rhs.modelURL &&
-    lhs.modelSize == rhs.modelSize
   }
 }
 
@@ -90,7 +93,10 @@ class ChatSources: ObservableObject {
   }
 
   func remove(source: ChatSource) {
-    _ = sources.firstIndex(of: source).map { sources.remove(at: $0) }
+    _ = sources.firstIndex(where: { $0 === source }).map { sources.remove(at: $0) }
+    if let modelDirectoryId = source.modelDirectoryId, let modelDirectory = ModelFileManager().modelDirectory(with: modelDirectoryId) {
+      modelDirectory.cleanUp()
+    }
   }
 
   func source(for id: ChatSource.ID) -> ChatSource? {
@@ -103,16 +109,19 @@ class ChatSources: ObservableObject {
   }
 
   private func loadSources() {
-    guard
-      let persistedURL,
-      let jsonData = try? Data(contentsOf: persistedURL),
-      let payload = try? JSONDecoder().decode(Payload.self, from: jsonData)
-    else { return }
+    guard let persistedURL else { return }
 
-    payload.sources.forEach { source in
-      source.chatSources = self
+    do {
+      let jsonData = try Data(contentsOf: persistedURL)
+      let payload = try JSONDecoder().decode(Payload.self, from: jsonData)
+
+      payload.sources.forEach { source in
+        source.chatSources = self
+      }
+      sources = payload.sources
+    } catch {
+      print("Error loading sources:", error)
     }
-    sources = payload.sources
   }
 
   private func persistSources() {

@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alexrozanski/Coquille.git",
       "state" : {
-        "revision" : "ae4dbfbf2d423092e5bb02d1565fc1a2e2407ee3",
-        "version" : "0.2.0"
+        "branch" : "v0.3",
+        "revision" : "4250068ef7d259e0023c099be58459e5d7dbcedd"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "/Users/rozanski/Documents/GitHub/llama.swift",
       "state" : {
         "branch" : "v2",
-        "revision" : "33505106d1e8a82a0863be0734cedfe0421574f4"
+        "revision" : "977c0bc7fc4007802f3f84bc2e411e8efc75a48d"
       }
     },
     {

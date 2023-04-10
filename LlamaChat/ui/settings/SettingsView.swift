@@ -26,5 +26,6 @@ struct SettingsView: View {
         }
         .tag(Tab.sources)
     }
+    .frame(idealWidth: 640, idealHeight: 380)
   }
 }

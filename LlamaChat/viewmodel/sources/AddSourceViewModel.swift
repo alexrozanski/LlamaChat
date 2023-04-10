@@ -40,7 +40,7 @@ class AddSourceViewModel: ObservableObject {
 
   deinit {
     if !addedModel {
-      convertSourceViewModel?.cleanUp()
+      convertSourceViewModel?.cleanUp_DANGEROUS()
     }
   }
 
@@ -48,17 +48,21 @@ class AddSourceViewModel: ObservableObject {
     let nextHandler: ConfigureLocalModelSourceViewModel.NextHandler = { [weak self] configuredSource in
       switch configuredSource.settings {
       case .ggmlModel(modelURL: let modelURL, modelSize: let modelSize):
-        let source = ChatSource(
-          name: configuredSource.name,
-          type: sourceType,
-          modelURL: modelURL,
-          modelSize: modelSize
+        self?.add(
+          source: ChatSource(
+            name: configuredSource.name,
+            type: sourceType,
+            modelURL: modelURL,
+            modelDirectoryId: nil,
+            modelSize: modelSize
+          )
         )
-        self?.add(source: source)
-      case .pyTorchCheckpoints(data: let validatedData):
-        self?.convertSourceViewModel = ConvertSourceViewModel(
-          data: validatedData,
-          cancelHandler: { [weak self] in self?.closeHandler(nil) }
+      case .pyTorchCheckpoints(data: let validatedData, let modelSize):
+        self?.convertSourceViewModel = self?.makeConvertSourceViewModel(
+          with: sourceType,
+          configuredSource: configuredSource,
+          modelSize: modelSize,
+          validatedData: validatedData
         )
         self?.navigationPath.append(.convertPyTorchSource)
       }
@@ -72,6 +76,29 @@ class AddSourceViewModel: ObservableObject {
     case .gpt4All:
       return makeConfigureLocalGPT4AllModelSourceViewModel(nextHandler:nextHandler)
     }
+  }
+
+  private func makeConvertSourceViewModel(
+    with sourceType: ChatSourceType,
+    configuredSource: ConfiguredSource,
+    modelSize: ModelSize,
+    validatedData: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>
+  ) -> ConvertSourceViewModel {
+    return ConvertSourceViewModel(
+      data: validatedData,
+      completionHandler: { [weak self] modelURL, modelDirectory in
+        self?.add(
+          source: ChatSource(
+            name: configuredSource.name,
+            type: sourceType,
+            modelURL: modelURL,
+            modelDirectoryId: modelDirectory.id,
+            modelSize: modelSize
+          )
+        )
+      },
+      cancelHandler: { [weak self] in self?.closeHandler(nil) }
+    )
   }
 
   private func add(source: ChatSource) {

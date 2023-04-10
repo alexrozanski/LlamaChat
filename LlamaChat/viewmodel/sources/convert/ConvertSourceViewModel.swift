@@ -13,9 +13,10 @@ import llama
 class ConvertSourceViewModel: ObservableObject {
   private typealias ConvertPyTorchModelConversionPipeline = ModelConversionPipeline<
     ConvertPyTorchToGgmlConversionStep,
-    ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>,
+    ConvertPyTorchToGgmlConversionPipelineInput,
     ConvertPyTorchToGgmlConversionResult
   >
+  typealias CompletionHandler = (_ modelURL: URL, _ modelDirectory: ModelDirectory) -> Void
   typealias CancelHandler = () -> Void
 
   enum State {
@@ -31,17 +32,19 @@ class ConvertSourceViewModel: ObservableObject {
       }
     }
 
-    var isFinished: Bool {
+    var isFinishedConverting: Bool {
       switch self {
       case .notStarted, .converting: return false
       case .finishedConverting, .failedToConvert: return true
       }
     }
 
-    var finishedSuccessfully: Bool {
+    var result: ConvertPyTorchToGgmlConversionResult? {
       switch self {
-      case .notStarted, .converting, .failedToConvert: return false
-      case .finishedConverting: return true
+      case .notStarted, .converting, .failedToConvert:
+        return nil
+      case .finishedConverting(result: let result):
+        return result
       }
     }
 
@@ -60,11 +63,21 @@ class ConvertSourceViewModel: ObservableObject {
   private var subscriptions = Set<AnyCancellable>()
 
   private let data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>
+  private let completionHandler: CompletionHandler
   private let cancelHandler: CancelHandler
 
-  init(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>, cancelHandler: @escaping CancelHandler) {
+  @Published private var modelDirectory: ModelDirectory?
+
+  private var hasFinished = false
+
+  init(
+    data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>,
+    completionHandler: @escaping CompletionHandler,
+    cancelHandler: @escaping CancelHandler
+  ) {
     self.data = data
-    self.pipeline = ModelConverter().makeConversionPipeline(with: data)
+    self.pipeline = ModelConverter().makeConversionPipeline()
+    self.completionHandler = completionHandler
     self.cancelHandler = cancelHandler
     self.conversionSteps = []
 
@@ -78,15 +91,12 @@ class ConvertSourceViewModel: ObservableObject {
       .switchToLatest()
       .scan(ConvertPyTorchModelConversionPipeline.State.notRunning, { oldState, newState in
         switch newState {
-        case .notRunning, .running, .failed:
+        case .notRunning, .running, .cancelled, .failed:
           switch oldState {
           case .finished(result: let result):
-            do {
-              try result.cleanUp()
-            } catch {
-              print("WARNING: Failed to clean up converted GGML model")
-            }
-          case .notRunning, .running, .failed:
+            // Capture self explicitly so that we clean up even if we have been deallocated.
+            self.cleanUp(with: result)
+          case .notRunning, .running, .cancelled, .failed:
             break
           }
         case .finished:
@@ -100,23 +110,42 @@ class ConvertSourceViewModel: ObservableObject {
           self?.state = .notStarted
         case .running:
           self?.state = .converting
-        case .failed:
+        case .failed, .cancelled:
           self?.state = .failedToConvert
         case .finished(result: let result):
           self?.state = .finishedConverting(result: result)
         }
       }.store(in: &subscriptions)
+
+    $modelDirectory
+      .scan(ModelDirectory?.none) { oldModelDirectory, newModelDirectory in
+        // Make sure we don't accidentally delete the directory if we have already finished.
+        if !self.hasFinished {
+          oldModelDirectory?.cleanUp()
+        }
+        return newModelDirectory
+      }.sink { _ in }.store(in: &subscriptions)
   }
 
   func startConversion() {
-    switch state {
-    case .converting, .failedToConvert, .finishedConverting:
-      break
-    case .notStarted:
-      state = .converting
+    guard !state.startedConverting else { return }
+
+    state = .converting
+
+    do {
+      let modelDirectory = try ModelFileManager().makeNewModelDirectory()
+      self.modelDirectory = modelDirectory
+
       Task.init {
-        try await pipeline.run(with: data)
+        try await pipeline.run(
+          with: ConvertPyTorchToGgmlConversionPipelineInput(
+            data: data,
+            conversionBehavior: modelDirectory.map { .inOtherDirectory($0.url) } ?? .alongsideInputFile
+          )
+        )
       }
+    } catch {
+      state = .failedToConvert
     }
   }
 
@@ -125,29 +154,42 @@ class ConvertSourceViewModel: ObservableObject {
     pipeline.stop()
   }
 
-  func restartConversion() {
-    pipeline = ModelConverter().makeConversionPipeline(with: data)
+  func retryConversion() {
+    pipeline = ModelConverter().makeConversionPipeline()
     state = .notStarted
     startConversion()
   }
 
+  func finish() {
+    guard let result = state.result, let modelDirectory, !hasFinished else { return }
+
+    completionHandler(result.outputFileURL, modelDirectory)
+    hasFinished = true
+  }
+
   func cancel() {
-    cleanUp()
+    cleanUp_DANGEROUS()
     cancelHandler()
   }
 
-  func cleanUp() {
+  // Cleans up the converted model files :)
+  func cleanUp_DANGEROUS() {
     switch state {
     case .notStarted, .converting, .failedToConvert:
       break
     case .finishedConverting(result: let result):
-      do {
-        try result.cleanUp()
-      } catch {
-        print("WARNING: Failed to clean up converted GGML model")
-      }
+      cleanUp(with: result)
     }
+    modelDirectory?.cleanUp()
+    modelDirectory = nil
+  }
 
+  private func cleanUp(with result: ConvertPyTorchToGgmlConversionResult) {
+    do {
+      try result.cleanUp()
+    } catch {
+      print("WARNING: Failed to clean up converted GGML model")
+    }
   }
 }
 

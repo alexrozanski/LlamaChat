@@ -18,7 +18,7 @@ enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
 
 enum SourceSettings {
   case ggmlModel(modelURL: URL, modelSize: ModelSize)
-  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>)
+  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>, modelSize: ModelSize)
 }
 
 protocol ConfigureLocalModelSettingsViewModel {

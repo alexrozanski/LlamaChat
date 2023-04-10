@@ -125,6 +125,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
 
         switch modelState {
         case .none:
+          self?.pathSelectorViewModel.errorMessage = nil
           self?.sourceSettings.send(nil)
         case .invalidModelDirectory(reason: let reason):
           switch reason {
@@ -133,7 +134,8 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
           }
           self?.sourceSettings.send(nil)
         case .valid(data: let validatedData):
-          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData))
+          self?.pathSelectorViewModel.errorMessage = nil
+          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData, modelSize: modelSize))
         }
       }.store(in: &subscriptions)
   }
