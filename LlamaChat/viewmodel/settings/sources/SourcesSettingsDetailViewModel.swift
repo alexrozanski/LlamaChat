@@ -33,6 +33,7 @@ class SourcesSettingsDetailViewModel: ObservableObject {
   }
 
   @Published private(set) var name: String
+  @Published var avatarImageName: String?
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -40,8 +41,14 @@ class SourcesSettingsDetailViewModel: ObservableObject {
     self.source = source
     modelPath = source.modelURL.path
     name = source.name
-    source.$name.sink(receiveValue: { newName in
-      self.name = newName
+    avatarImageName = source.avatarImageName
+
+    source.$name.sink(receiveValue: { [weak self] newName in
+      self?.name = newName
+    }).store(in: &subscriptions)
+
+    $avatarImageName.sink(receiveValue: { [weak self] newAvatarImageName in
+      self?.source.avatarImageName = newAvatarImageName
     }).store(in: &subscriptions)
   }
 

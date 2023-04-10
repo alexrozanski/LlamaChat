@@ -60,14 +60,7 @@ fileprivate struct AvatarRowView: View {
         get: { viewModel.avatarImageName },
         set: { viewModel.avatarImageName = $0 }
       )
-      picker
-        .frame(width: 48, height: 48)
-        .onTapGesture {
-          pickerPresented = true
-        }
-        .popover(isPresented: $pickerPresented, arrowEdge: .bottom) {
-          AvatarPickerView(selectedAvatar: selectedAvatarBinding)
-        }
+      AvatarPickerView(selectedAvatar: selectedAvatarBinding)
     } label: {
       Text("Avatar")
     }

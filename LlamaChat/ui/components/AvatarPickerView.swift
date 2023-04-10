@@ -43,7 +43,7 @@ fileprivate struct AvatarItemView: View {
       Circle()
         .fill(.blue)
         .frame(width: 68, height: 68)
-        // Resources are a bit off-center oops
+      // Resources are a bit off-center oops
         .padding(.top, 2)
     }
   }
@@ -65,21 +65,48 @@ fileprivate struct AvatarItemView: View {
 struct AvatarPickerView: View {
   var selectedAvatar: Binding<String?>
 
-  var body: some View {
-    Grid {
-      GridRow {
-        EmptyAvatarItemView(selection: selectedAvatar)
-        AvatarItemView(resourceName: "avatar-1", selection: selectedAvatar)
-        AvatarItemView(resourceName: "avatar-2", selection: selectedAvatar)
-        AvatarItemView(resourceName: "avatar-3", selection: selectedAvatar)
-      }
-      GridRow {
-        AvatarItemView(resourceName: "avatar-4", selection: selectedAvatar)
-        AvatarItemView(resourceName: "avatar-6", selection: selectedAvatar)
-        AvatarItemView(resourceName: "avatar-7", selection: selectedAvatar)
-        AvatarItemView(resourceName: "avatar-8", selection: selectedAvatar)
-      }
+  @State private var isPickerPresented = false
+
+  @ViewBuilder var picker: some View {
+    if let avatarImageName = selectedAvatar.wrappedValue {
+      Image(avatarImageName)
+        .resizable()
+
+    } else {
+      Circle()
+        .fill(.gray.opacity(0.2))
+        .overlay(
+          Image(systemName: "plus")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 16, height: 16)
+            .foregroundColor(.gray)
+        )
     }
-      .padding()
+  }
+
+  var body: some View {
+    picker
+      .frame(width: 48, height: 48)
+      .onTapGesture {
+        isPickerPresented = true
+      }
+      .popover(isPresented: $isPickerPresented, arrowEdge: .bottom) {
+        Grid {
+          GridRow {
+            EmptyAvatarItemView(selection: selectedAvatar)
+            AvatarItemView(resourceName: "avatar-1", selection: selectedAvatar)
+            AvatarItemView(resourceName: "avatar-2", selection: selectedAvatar)
+            AvatarItemView(resourceName: "avatar-3", selection: selectedAvatar)
+          }
+          GridRow {
+            AvatarItemView(resourceName: "avatar-4", selection: selectedAvatar)
+            AvatarItemView(resourceName: "avatar-6", selection: selectedAvatar)
+            AvatarItemView(resourceName: "avatar-7", selection: selectedAvatar)
+            AvatarItemView(resourceName: "avatar-8", selection: selectedAvatar)
+          }
+        }
+        .padding()
+      }
   }
 }

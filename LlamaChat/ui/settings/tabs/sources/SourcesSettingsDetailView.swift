@@ -8,7 +8,7 @@
 import SwiftUI
 
 fileprivate struct NameRowView: View {
-  var viewModel: SourcesSettingsDetailViewModel
+  @ObservedObject var viewModel: SourcesSettingsDetailViewModel
 
   @State var name: String
 
@@ -27,7 +27,7 @@ fileprivate struct NameRowView: View {
 }
 
 fileprivate struct AvatarRowView: View {
-  var viewModel: SourcesSettingsDetailViewModel
+  @ObservedObject var viewModel: SourcesSettingsDetailViewModel
 
   @State var name: String
 
@@ -37,10 +37,12 @@ fileprivate struct AvatarRowView: View {
   }
 
   var body: some View {
+    let selectedAvatarBinding = Binding(
+      get: { viewModel.avatarImageName },
+      set: { viewModel.avatarImageName = $0 }
+    )
     LabeledContent("Avatar") {
-      DidEndEditingTextField(text: $name, didEndEditing: { newName in
-        viewModel.updateName(newName)
-      })
+      AvatarPickerView(selectedAvatar: selectedAvatarBinding)
     }
   }
 }
