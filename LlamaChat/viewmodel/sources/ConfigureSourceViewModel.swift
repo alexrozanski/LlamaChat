@@ -51,7 +51,7 @@ func makeConfigureLocalLlamaModelSourceViewModel(
   nextHandler: @escaping ConfigureLocalModelSourceViewModel.NextHandler
 ) -> ConfigureLocalModelSourceViewModel {
   return ConfigureLocalModelSourceViewModel(
-    defaultName: "LLaMa",
+    defaultName: "LLaMA",
     chatSourceType: .llama,
     exampleGgmlModelPath: "ggml-model-q4_0.bin",
     nextHandler: nextHandler

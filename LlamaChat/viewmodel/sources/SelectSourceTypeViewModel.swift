@@ -26,28 +26,28 @@ class SelectSourceTypeViewModel: ObservableObject {
     self.chatSources = chatSources
     self.selectSourceHandler = selectSourceHandler
 
-    sources = ChatSourceType.allCases.map { type in
+    sources = [ChatSourceType.alpaca, ChatSourceType.gpt4All, ChatSourceType.llama].map { type in
       switch type {
       case .llama:
         return Source(
           id: type.rawValue,
           type: type,
           name: "Llama",
-          description: "The OG Facebook LLaMa model"
+          description: "The OG Facebook LLaMA model"
         )
       case .alpaca:
         return Source(
           id: type.rawValue,
           type: type,
           name: "Alpaca",
-          description: "Stanford's Alpaca model: a fine-tuned instruction-following LLaMa model"
+          description: "Stanford's Alpaca model: a fine-tuned instruction-following LLaMA model"
         )
       case .gpt4All:
         return Source(
           id: type.rawValue,
           type: type,
           name: "GPT4All",
-          description: "Nomic AI's assistant-style LLM based on LLaMa"
+          description: "Nomic AI's assistant-style LLM based on LLaMA"
         )
       }
     }
