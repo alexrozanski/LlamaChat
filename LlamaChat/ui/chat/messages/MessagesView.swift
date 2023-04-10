@@ -7,6 +7,41 @@
 
 import SwiftUI
 
+struct MessageView: View {
+  @ObservedObject var viewModel: ObservableMessageViewModel
+  let availableWidth: Double
+
+  @ViewBuilder var messageView: some View {
+    if let staticMessageViewModel: StaticMessageViewModel = viewModel.get() {
+      MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular, isError: staticMessageViewModel.isError, availableWidth: availableWidth * 0.8) {
+        Text(staticMessageViewModel.content)
+      }
+    } else if let generatedMessageViewModel: GeneratedMessageViewModel = viewModel.get() {
+      GeneratedMessageView(viewModel: generatedMessageViewModel, availableWidth: availableWidth * 0.8)
+    } else if let clearedContextMessageViewModel: ClearedContextMessageViewModel = viewModel.get() {
+      ClearedContextMessageView(viewModel: clearedContextMessageViewModel)
+    } else {
+      #if DEBUG
+      Text("Missing row view for `\(String(describing: type(of: viewModel.getUnderlyingViewModel())))`")
+        .padding()
+      #else
+      EmptyView()
+      #endif
+    }
+  }
+
+  var body: some View {
+    messageView
+      .contextMenu {
+        if viewModel.canCopyContents {
+          Button("Copy") {
+            viewModel.copyContents()
+          }
+        }
+      }
+  }
+}
+
 struct MessagesView: View {
   @ObservedObject var viewModel: MessagesViewModel
 
@@ -21,22 +56,7 @@ struct MessagesView: View {
           Color.clear.frame(height: bannerHeight)
           LazyVStack {
             ForEach(viewModel.messages, id: \.id) { messageViewModel in
-              if let staticMessageViewModel = messageViewModel as? StaticMessageViewModel {
-                MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular, isError: staticMessageViewModel.isError, availableWidth: geometry.size.width) {
-                  Text(staticMessageViewModel.content)
-                }
-              } else if let generatedMessageViewModel = messageViewModel as? GeneratedMessageViewModel {
-                GeneratedMessageView(viewModel: generatedMessageViewModel, availableWidth: geometry.size.width)
-              } else if let clearedContextMessageViewModel = messageViewModel as? ClearedContextMessageViewModel {
-                ClearedContextMessageView(viewModel: clearedContextMessageViewModel)
-              } else {
-                #if DEBUG
-                Text("Missing row view for `\(String(describing: type(of: messageViewModel)))`")
-                  .padding()
-                #else
-                EmptyView()
-                #endif
-              }
+              MessageView(viewModel: messageViewModel, availableWidth: geometry.size.width)
             }
           }
           .frame(maxWidth: .infinity)

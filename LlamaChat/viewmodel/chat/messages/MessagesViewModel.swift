@@ -17,7 +17,7 @@ class MessagesViewModel: ObservableObject {
   let isBuiltForDebug = false
   #endif
 
-  @Published var messages: [MessageViewModel]
+  @Published var messages: [ObservableMessageViewModel]
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -31,14 +31,14 @@ class MessagesViewModel: ObservableObject {
   }
 }
 
-private func makeViewModels(from messages: [Message], in messagesViewModel: MessagesViewModel) -> [MessageViewModel] {
+private func makeViewModels(from messages: [Message], in messagesViewModel: MessagesViewModel) -> [ObservableMessageViewModel] {
   return messages.compactMap { message in
     if let staticMessage = message as? StaticMessage {
-      return StaticMessageViewModel(message: staticMessage)
+      return ObservableMessageViewModel(StaticMessageViewModel(message: staticMessage))
     } else if let generatedMessage = message as? GeneratedMessage {
-      return GeneratedMessageViewModel(message: generatedMessage)
+      return ObservableMessageViewModel(GeneratedMessageViewModel(message: generatedMessage))
     } else if let clearedContextMessage = message as? ClearedContextMessage {
-      return ClearedContextMessageViewModel(message: clearedContextMessage)
+      return ObservableMessageViewModel(ClearedContextMessageViewModel(message: clearedContextMessage))
     } else {
       print("Unsupported message type for \(message)")
       return nil

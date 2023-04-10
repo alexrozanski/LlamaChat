@@ -32,4 +32,13 @@ enum MessageGenerationState {
       return true
     }
   }
+
+  var isFinished: Bool {
+    switch self {
+    case .none, .waiting, .generating, .cancelled, .error:
+      return false
+    case .finished:
+      return true
+    }
+  }
 }
