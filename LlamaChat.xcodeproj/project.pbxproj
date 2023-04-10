@@ -68,7 +68,6 @@
 		82980F1E29E37D15000329E6 /* ModelFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82980F1D29E37D15000329E6 /* ModelFileManager.swift */; };
 		82980F2429E39219000329E6 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 82980F2329E39219000329E6 /* llama */; };
 		82A7B4E029DE42B500BCBB6B /* ConfigureLocalModelSelectFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4DF29DE42B500BCBB6B /* ConfigureLocalModelSelectFormatView.swift */; };
-		82A7B4E229DE430A00BCBB6B /* ConfigureLocalModelDisplayNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4E129DE430A00BCBB6B /* ConfigureLocalModelDisplayNameView.swift */; };
 		82A7B4E429DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4E329DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift */; };
 		82A7B4E629DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4E529DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift */; };
 		82A7B4E929DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4E829DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift */; };
@@ -91,6 +90,7 @@
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
 		82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */; };
 		82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */; };
+		82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,7 +156,6 @@
 		82980F1B29E263E8000329E6 /* LlamaChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LlamaChat.entitlements; sourceTree = "<group>"; };
 		82980F1D29E37D15000329E6 /* ModelFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFileManager.swift; sourceTree = "<group>"; };
 		82A7B4DF29DE42B500BCBB6B /* ConfigureLocalModelSelectFormatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSelectFormatView.swift; sourceTree = "<group>"; };
-		82A7B4E129DE430A00BCBB6B /* ConfigureLocalModelDisplayNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelDisplayNameView.swift; sourceTree = "<group>"; };
 		82A7B4E329DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorView.swift; sourceTree = "<group>"; };
 		82A7B4E529DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalPyTorchModelSettingsView.swift; sourceTree = "<group>"; };
 		82A7B4E829DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalGgmlModelSettingsView.swift; sourceTree = "<group>"; };
@@ -179,6 +178,7 @@
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerView.swift; sourceTree = "<group>"; };
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
+		82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +426,7 @@
 		82914CC329D6E68900858B2C /* components */ = {
 			isa = PBXGroup;
 			children = (
+				82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */,
 				82914CC429D6E69C00858B2C /* BorderlessTextField.swift */,
 				820C795F29DEEA8F00F70723 /* DebouncedView.swift */,
 				8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */,
@@ -517,7 +518,6 @@
 		82A7B4E729DE470000BCBB6B /* components */ = {
 			isa = PBXGroup;
 			children = (
-				82A7B4E129DE430A00BCBB6B /* ConfigureLocalModelDisplayNameView.swift */,
 				82A7B4E329DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift */,
 				82A7B4DF29DE42B500BCBB6B /* ConfigureLocalModelSelectFormatView.swift */,
 				82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */,
@@ -703,6 +703,7 @@
 				82718D0729D368EA00545C32 /* ComposeView.swift in Sources */,
 				82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */,
 				82AE199829D83206008189DF /* SettingsViewModel.swift in Sources */,
+				82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */,
 				8227DA9729D911A4000E554D /* LlamaChatApp.swift in Sources */,
 				82980F1E29E37D15000329E6 /* ModelFileManager.swift in Sources */,
 				826F4C6D29DCFFFD0099A729 /* ClearedContextMessageViewModel.swift in Sources */,
@@ -731,7 +732,6 @@
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
 				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
 				821B253929DFA39600CF1001 /* NSApplication+Settings.swift in Sources */,
-				82A7B4E229DE430A00BCBB6B /* ConfigureLocalModelDisplayNameView.swift in Sources */,
 				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				821B254329E0A46B00CF1001 /* ConvertSourceView.swift in Sources */,
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,

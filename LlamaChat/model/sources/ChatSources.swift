@@ -20,6 +20,11 @@ class ChatSource: Codable, ObservableObject {
       chatSources?.didUpdate(self)
     }
   }
+  @Published var avatarImageName: String? {
+    didSet {
+      chatSources?.didUpdate(self)
+    }
+  }
   let type: ChatSourceType
   let modelURL: URL
   let modelDirectoryId: ModelDirectory.ID?
@@ -30,6 +35,7 @@ class ChatSource: Codable, ObservableObject {
   enum CodingKeys: CodingKey {
     case id
     case name
+    case avatarImageName
     case type
     case modelURL
     case modelDirectoryId
@@ -41,6 +47,7 @@ class ChatSource: Codable, ObservableObject {
 
     id = try values.decode(String.self, forKey: .id)
     name = try values.decode(String.self, forKey: .name)
+    avatarImageName = try values.decode(String.self, forKey: .avatarImageName)
     type = try values.decode(ChatSourceType.self, forKey: .type)
     modelURL = try values.decode(URL.self, forKey: .modelURL)
     modelDirectoryId = try values.decode(ModelDirectory.ID?.self, forKey: .modelDirectoryId)
@@ -51,6 +58,7 @@ class ChatSource: Codable, ObservableObject {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(id, forKey: .id)
     try container.encode(name, forKey: .name)
+    try container.encode(avatarImageName, forKey: .avatarImageName)
     try container.encode(type, forKey: .type)
     try container.encode(modelURL, forKey: .modelURL)
     try container.encode(modelDirectoryId, forKey: .modelDirectoryId)
@@ -59,6 +67,7 @@ class ChatSource: Codable, ObservableObject {
 
   init(
     name: String,
+    avatarImageName: String?,
     type: ChatSourceType,
     modelURL: URL,
     modelDirectoryId: ModelDirectory.ID?,
@@ -66,6 +75,7 @@ class ChatSource: Codable, ObservableObject {
   ) {
     self.id = UUID().uuidString
     self.name = name
+    self.avatarImageName = avatarImageName
     self.type = type
     self.modelURL = modelURL
     self.modelDirectoryId = modelDirectoryId

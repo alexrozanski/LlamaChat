@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NameRowView: View {
+fileprivate struct NameRowView: View {
   var viewModel: SourcesSettingsDetailViewModel
 
   @State var name: String
@@ -18,7 +18,26 @@ struct NameRowView: View {
   }
 
   var body: some View {
-    LabeledContent("Name") {
+    LabeledContent("Display Name") {
+      DidEndEditingTextField(text: $name, didEndEditing: { newName in
+        viewModel.updateName(newName)
+      })
+    }
+  }
+}
+
+fileprivate struct AvatarRowView: View {
+  var viewModel: SourcesSettingsDetailViewModel
+
+  @State var name: String
+
+  init(viewModel: SourcesSettingsDetailViewModel) {
+    self.viewModel = viewModel
+    _name = State(wrappedValue: viewModel.name)
+  }
+
+  var body: some View {
+    LabeledContent("Avatar") {
       DidEndEditingTextField(text: $name, didEndEditing: { newName in
         viewModel.updateName(newName)
       })
@@ -33,6 +52,7 @@ struct SourcesSettingsDetailView: View {
     Form {
       Section {
         NameRowView(viewModel: viewModel)
+        AvatarRowView(viewModel: viewModel)
       }
       Section("Model") {
         LabeledContent("Model Type", value: viewModel.type)

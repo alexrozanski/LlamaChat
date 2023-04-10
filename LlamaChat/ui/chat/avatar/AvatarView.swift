@@ -37,17 +37,28 @@ struct AvatarView: View {
   @ObservedObject var viewModel: AvatarViewModel
   var size: Size
 
+  @ViewBuilder var avatarView: some View {
+    switch viewModel.avatar {
+    case .initials(let initials):
+      Circle()
+        .fill(.gray)
+        .frame(width: size.sideLength, height: size.sideLength)
+        .overlay {
+          Text(initials)
+            .font(.system(size: size.fontSize))
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
+            .foregroundColor(.white)
+            .frame(width: size.textSideLength, height: size.textSideLength)
+        }
+    case .image(named: let name):
+      Image(name)
+        .resizable()
+        .frame(width: size.sideLength, height: size.sideLength)
+    }
+  }
+
   var body: some View {
-    Circle()
-      .fill(.gray)
-      .frame(width: size.sideLength, height: size.sideLength)
-      .overlay {
-        Text(viewModel.initials)
-          .font(.system(size: size.fontSize))
-          .lineLimit(1)
-          .minimumScaleFactor(0.5)
-          .foregroundColor(.white)
-          .frame(width: size.textSideLength, height: size.textSideLength)
-      }
+    avatarView
   }
 }

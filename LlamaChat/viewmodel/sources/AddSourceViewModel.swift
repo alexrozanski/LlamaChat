@@ -51,6 +51,7 @@ class AddSourceViewModel: ObservableObject {
         self?.add(
           source: ChatSource(
             name: configuredSource.name,
+            avatarImageName: configuredSource.avatarImageName,
             type: sourceType,
             modelURL: modelURL,
             modelDirectoryId: nil,
@@ -90,6 +91,7 @@ class AddSourceViewModel: ObservableObject {
         self?.add(
           source: ChatSource(
             name: configuredSource.name,
+            avatarImageName: configuredSource.avatarImageName,
             type: sourceType,
             modelURL: modelURL,
             modelDirectoryId: modelDirectory.id,

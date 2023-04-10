@@ -10,6 +10,7 @@ import Combine
 
 struct ConfiguredSource {
   let name: String
+  let avatarImageName: String?
   let settings: SourceSettings
 }
 
@@ -21,6 +22,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
   // MARK: - Info
 
   @Published var name: String
+  @Published var avatarImageName: String?
 
   var modelType: String {
     return chatSourceType.readableName
@@ -134,7 +136,7 @@ extension ConfigureLocalModelSourceViewModel: ConfigureSourceNavigationViewModel
   func next() {
     guard let sourceSettings = settingsViewModel?.sourceSettings.value else { return }
     nextHandler(
-      ConfiguredSource(name: name, settings: sourceSettings)
+      ConfiguredSource(name: name, avatarImageName: avatarImageName, settings: sourceSettings)
     )
   }
 }
