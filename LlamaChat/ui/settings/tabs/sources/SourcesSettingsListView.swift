@@ -27,7 +27,7 @@ struct SourcesSettingsListView: View {
       }
       .frame(maxWidth: .infinity)
       Divider()
-        .foregroundColor(Color(NSColor.separatorColor.cgColor))
+        .foregroundColor(Color(nsColor: NSColor.separatorColor))
     }
   }
 

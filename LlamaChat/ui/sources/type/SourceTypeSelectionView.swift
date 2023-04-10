@@ -19,6 +19,23 @@ struct SourceTypeSelectionRow: View {
         Text(source.name)
           .fontWeight(.bold)
         Text(source.description)
+        if let learnMoreLink = source.learnMoreLink {
+          Text("Learn More")
+            .font(.footnote)
+            .foregroundColor(.blue)
+            .underline()
+            .onHover { isHovered in
+              // TODO: Use cursor rects to make this more robust.
+              if isHovered {
+                NSCursor.pointingHand.set()
+              } else {
+                NSCursor.arrow.set()
+              }
+            }
+            .onTapGesture {
+              NSWorkspace.shared.open(learnMoreLink)
+            }
+        }
       }
       .padding()
       Spacer()

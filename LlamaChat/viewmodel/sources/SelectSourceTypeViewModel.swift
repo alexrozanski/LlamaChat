@@ -10,11 +10,12 @@ import Foundation
 class SelectSourceTypeViewModel: ObservableObject {
   typealias SelectSourceHandler = (ChatSourceType) -> Void
 
-  struct Source: Equatable {
+  struct Source {
     let id: String
     let type: ChatSourceType
     let name: String
     let description: String
+    let learnMoreLink: URL?
   }
 
   @Published var sources: [Source]
@@ -32,22 +33,25 @@ class SelectSourceTypeViewModel: ObservableObject {
         return Source(
           id: type.rawValue,
           type: type,
-          name: "Llama",
-          description: "The OG Facebook LLaMA model"
+          name: "LLaMA",
+          description: "The original Facebook LLaMA Large Language Model",
+          learnMoreLink: URL(string: "https://github.com/facebookresearch/llama")
         )
       case .alpaca:
         return Source(
           id: type.rawValue,
           type: type,
           name: "Alpaca",
-          description: "Stanford's Alpaca model: a fine-tuned instruction-following LLaMA model"
+          description: "Stanford's Alpaca model: a fine-tuned instruction-following LLaMA model",
+          learnMoreLink: URL(string: "https://github.com/tatsu-lab/stanford_alpaca")
         )
       case .gpt4All:
         return Source(
           id: type.rawValue,
           type: type,
           name: "GPT4All",
-          description: "Nomic AI's assistant-style LLM based on LLaMA"
+          description: "Nomic AI's assistant-style LLM based on LLaMA",
+          learnMoreLink: URL(string: "https://github.com/nomic-ai/gpt4all")
         )
       }
     }

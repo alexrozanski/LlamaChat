@@ -29,6 +29,6 @@ struct AddSourceContentView: View {
           }
         }
     }
-    .frame(width: 600, height: 400)
+    .frame(width: 620, height: 430)
   }
 }

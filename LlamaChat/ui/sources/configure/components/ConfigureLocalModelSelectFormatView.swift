@@ -18,7 +18,7 @@ struct ConfigureLocalModelSelectFormatView: View {
     Section {
       Picker("Format", selection: sourceTypeBinding) {
         Text("Select Format")
-          .foregroundColor(Color(NSColor.disabledControlTextColor.cgColor))
+          .foregroundColor(Color(nsColor: NSColor.disabledControlTextColor))
           .tag(ConfigureLocalModelSourceType?(nil))
         ForEach(ConfigureLocalModelSourceType.allCases) { source in
           Text(source.label).tag(ConfigureLocalModelSourceType?(source))

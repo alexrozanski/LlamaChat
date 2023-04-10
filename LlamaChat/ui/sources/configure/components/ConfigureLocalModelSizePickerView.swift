@@ -42,7 +42,7 @@ struct ConfigureLocalModelSizePickerView: View {
     )
     Picker("Model Size", selection: modelTypeBinding) {
       Text(viewModel.label(for: .unknown))
-        .foregroundColor(unknownModelSizeAppearance.isDisabled ? Color(NSColor.disabledControlTextColor.cgColor) : nil)
+        .foregroundColor(unknownModelSizeAppearance.isDisabled ? Color(nsColor: NSColor.disabledControlTextColor) : nil)
         .tag(ModelSize.unknown)
       if !unknownModelSizeAppearance.isDisabled {
         Divider()
