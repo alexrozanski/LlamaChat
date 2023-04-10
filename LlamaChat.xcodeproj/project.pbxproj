@@ -91,6 +91,7 @@
 		82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */; };
 		82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */; };
 		82F14EA629E46454001E9C1E /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 82F14EA529E46454001E9C1E /* llama */; };
+		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -179,6 +180,7 @@
 		82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerView.swift; sourceTree = "<group>"; };
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
 		82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPickerView.swift; sourceTree = "<group>"; };
+		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -358,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				8227DA9C29D91F33000E554D /* Info.plist */,
+				82F14EA729E4D2DD001E9C1E /* Credits.rtf */,
 				8227DA9629D911A4000E554D /* LlamaChatApp.swift */,
 				8227DAC829DA5060000E554D /* data */,
 				821B255329E1D97B00CF1001 /* error */,
@@ -682,6 +685,7 @@
 				82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */,
 				8227DACA29DA5080000E554D /* names.json in Resources */,
 				82718CE229D3686300545C32 /* Assets.xcassets in Resources */,
+				82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
