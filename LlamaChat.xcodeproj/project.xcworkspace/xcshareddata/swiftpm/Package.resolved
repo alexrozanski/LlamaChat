@@ -11,8 +11,8 @@
     },
     {
       "identity" : "llama.swift",
-      "kind" : "localSourceControl",
-      "location" : "/Users/rozanski/Documents/GitHub/llama.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alexrozanski/llama.swift/",
       "state" : {
         "branch" : "v2",
         "revision" : "977c0bc7fc4007802f3f84bc2e411e8efc75a48d"
