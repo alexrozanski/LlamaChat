@@ -27,7 +27,12 @@ struct ConfigureLocalModelSelectFormatView: View {
         }
       }
     } header: {
-      Text("Model Settings")
+      VStack(alignment: .leading, spacing: 6) {
+        Text("Model Settings")
+        Text(viewModel.modelSourcingDescription)
+          .font(.system(size: 12, weight: .regular))
+      }
+      .padding(.bottom, 12)
     }
   }
 }

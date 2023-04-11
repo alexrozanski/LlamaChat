@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 struct ConfiguredSource {
   let name: String
@@ -26,6 +27,17 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   var modelType: String {
     return chatSourceType.readableName
+  }
+
+  var modelSourcingDescription: LocalizedStringKey {
+    switch chatSourceType {
+    case .llama:
+      return "The LLaMA model checkpoints and tokenizer are required to add this chat source. Learn more and request access to these on the [LLaMA GitHub repo](https://github.com/facebookresearch/llama)."
+    case .alpaca:
+      return "The Alpaca model checkpoints and tokenizer are required to add this chat source. Learn more on the [Alpaca GitHub repo](https://github.com/tatsu-lab/stanford_alpaca)."
+    case .gpt4All:
+      return "The GPT4All .ggml model file is required to add this chat source. Learn more on the [llama.cpp GitHub repo](https://github.com/ggerganov/llama.cpp/blob/a0caa34/README.md#using-gpt4all)."
+    }
   }
 
   // MARK: - Model Settings
