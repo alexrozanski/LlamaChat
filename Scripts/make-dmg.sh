@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-OUTPUT_DMG=output/LlamaChat.dmg
+OUTPUT_DMG=LlamaChat.dmg
 
 if [ "$#" -ne 1 ]; then
     SCRIPT=$(readlink -f "${BASH_SOURCE[0]}")
@@ -49,7 +49,7 @@ create-dmg \
       --icon "LlamaChat.app" 188 198 \
       --hide-extension "LlamaChat.app" \
       --app-drop-link 460 198 \
-      "LlamaChat.dmg" \
+      "$OUTPUT_DMG" \
       "$1"
 
 rm -rf tmp
