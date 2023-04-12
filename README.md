@@ -22,9 +22,17 @@ open LlamaChat.xcodeproj
 
 **NOTE:** model inference runs really slowly in Debug builds, so if building from source make sure that the `Build Configuration` in `LlamaChat > Edit Scheme... > Run` is set to `Release`.
 
-## ✨ Features
+## 🔮 Models
 
 **NOTE:** LlamaChat doesn't ship with any model files and requires that you obtain these from the respective sources in accordance with their respective terms and conditions.
+
+- LlamaChat allows you to use the LLaMA family of models in either their raw Python checkpoint form (`.pth`) or pre-converted to `.ggml` files (the format used by [llama.cpp](https://github.com/ggerganov/llama.cpp), which powers LlamaChat).
+- **Troubleshooting:** If using `.ggml` files, make sure these are up-to-date. If you run into problems, you may need to use the conversion scripts from [llama.cpp](https://github.com/ggerganov/llama.cpp):
+  - For the GPT4All model, you may need to use [convert-gpt4all-to-ggml.py](https://github.com/ggerganov/llama.cpp/blob/master/convert-gpt4all-to-ggml.py)
+  - For the Alpaca model, you may need to use [convert-unversioned-ggml-to-ggml.py](https://github.com/ggerganov/llama.cpp/blob/master/convert-unversioned-ggml-to-ggml.py)
+  - You may also need to use [migrate-ggml-2023-03-30-pr613.py](https://github.com/ggerganov/llama.cpp/blob/master/migrate-ggml-2023-03-30-pr613.py) as well. For more information check out the [llama.cpp](https://github.com/ggerganov/llama.cpp) repo.
+
+## ✨ Features
 
 - **Supported Models:** LlamaChat supports LLaMA, Alpaca and GPT4All models out of the box. Support for other models including [Vicuna](https://vicuna.lmsys.org/) and [Koala](https://bair.berkeley.edu/blog/2023/04/03/koala/) is coming soon. We are also looking for Chinese and French speakers to add support for [Chinese LLaMA/Alpaca](https://github.com/ymcui/Chinese-LLaMA-Alpaca) and [Vigogne](https://github.com/bofenghuang/vigogne).
 - **Flexible Model Formats:** LLamaChat is built on top of [llama.cpp](https://github.com/ggerganov/llama.cpp) and [llama.swift](https://github.com/alexrozanski/llama.swift). The app supports adding LLaMA models in either their raw `.pth` PyTorch checkpoints form or the `.ggml` format.
