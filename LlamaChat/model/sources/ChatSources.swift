@@ -47,7 +47,7 @@ class ChatSource: Codable, ObservableObject {
 
     id = try values.decode(String.self, forKey: .id)
     name = try values.decode(String.self, forKey: .name)
-    avatarImageName = try values.decode(String.self, forKey: .avatarImageName)
+    avatarImageName = try values.decode(String?.self, forKey: .avatarImageName)
     type = try values.decode(ChatSourceType.self, forKey: .type)
     modelURL = try values.decode(URL.self, forKey: .modelURL)
     modelDirectoryId = try values.decode(ModelDirectory.ID?.self, forKey: .modelDirectoryId)
