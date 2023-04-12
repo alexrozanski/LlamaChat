@@ -25,16 +25,6 @@ open LlamaChat.xcodeproj
 
 **NOTE:** model inference runs really slowly in Debug builds, so if building from source make sure that the `Build Configuration` in `LlamaChat > Edit Scheme... > Run` is set to `Release`.
 
-## 🔮 Models
-
-**NOTE:** LlamaChat doesn't ship with any model files and requires that you obtain these from the respective sources in accordance with their respective terms and conditions.
-
-- LlamaChat allows you to use the LLaMA family of models in either their raw Python checkpoint form (`.pth`) or pre-converted to `.ggml` files (the format used by [llama.cpp](https://github.com/ggerganov/llama.cpp), which powers LlamaChat).
-- **Troubleshooting:** If using `.ggml` files, make sure these are up-to-date. If you run into problems, you may need to use the conversion scripts from [llama.cpp](https://github.com/ggerganov/llama.cpp):
-  - For the GPT4All model, you may need to use [convert-gpt4all-to-ggml.py](https://github.com/ggerganov/llama.cpp/blob/master/convert-gpt4all-to-ggml.py)
-  - For the Alpaca model, you may need to use [convert-unversioned-ggml-to-ggml.py](https://github.com/ggerganov/llama.cpp/blob/master/convert-unversioned-ggml-to-ggml.py)
-  - You may also need to use [migrate-ggml-2023-03-30-pr613.py](https://github.com/ggerganov/llama.cpp/blob/master/migrate-ggml-2023-03-30-pr613.py) as well. For more information check out the [llama.cpp](https://github.com/ggerganov/llama.cpp) repo.
-
 ## ✨ Features
 
 - **Supported Models:** LlamaChat supports LLaMA, Alpaca and GPT4All models out of the box. Support for other models including [Vicuna](https://vicuna.lmsys.org/) and [Koala](https://bair.berkeley.edu/blog/2023/04/03/koala/) is coming soon. We are also looking for Chinese and French speakers to add support for [Chinese LLaMA/Alpaca](https://github.com/ymcui/Chinese-LLaMA-Alpaca) and [Vigogne](https://github.com/bofenghuang/vigogne).
@@ -44,6 +34,34 @@ open LlamaChat.xcodeproj
 - **Funky Avatars:** LlamaChat ships with [7 funky avatars](https://github.com/alexrozanski/LlamaChat/tree/main/LlamaChat/Assets.xcassets/avatars) that can be used with your chat sources.
 - **Advanced Source Naming:** LlamaChat uses Special Magic™ to generate playful names for your chat sources.
 - **Context Debugging:** For the keen ML enthusiasts, the current model context can be viewed for a chat in the info popover.
+
+
+## 🔮 Models
+
+**NOTE:** LlamaChat doesn't ship with any model files and requires that you obtain these from the respective sources in accordance with their respective terms and conditions.
+
+- **Model formats:** LlamaChat allows you to use the LLaMA family of models in either their raw Python checkpoint form (`.pth`) or pre-converted `.ggml` file (the format used by [llama.cpp](https://github.com/ggerganov/llama.cpp), which powers LlamaChat).
+- **Using LLaMA models:** When importing LLaMA models in the `.pth` format:
+  - You should select the appropriate parameter size directory (e.g. `7B`, `13B` etc) in the conversion flow, which includes the `consolidated.NN.pth` and `params.json` files.
+  - As per the LLaMA model release, the parent directory should contain `tokenizer.model`. E.g. to use the LLaMA-13B model, your model directory should look something like the below, and you should select the `13B` directory:
+
+```bash
+.
+│   ...
+├── 13B
+│   ├── checklist.chk.txt
+│   ├── consolidated.00.pth
+│   ├── consolidated.01.pth
+│   └── params.json
+│   ...
+└── tokenizer.model
+```
+
+- **Troubleshooting:** If using `.ggml` files, make sure these are up-to-date. If you run into problems, you may need to use the conversion scripts from [llama.cpp](https://github.com/ggerganov/llama.cpp):
+  - For the GPT4All model, you may need to use [convert-gpt4all-to-ggml.py](https://github.com/ggerganov/llama.cpp/blob/master/convert-gpt4all-to-ggml.py)
+  - For the Alpaca model, you may need to use [convert-unversioned-ggml-to-ggml.py](https://github.com/ggerganov/llama.cpp/blob/master/convert-unversioned-ggml-to-ggml.py)
+  - You may also need to use [migrate-ggml-2023-03-30-pr613.py](https://github.com/ggerganov/llama.cpp/blob/master/migrate-ggml-2023-03-30-pr613.py) as well. For more information check out the [llama.cpp](https://github.com/ggerganov/llama.cpp) repo.
+
 
 ## 👩‍💻 Contributing
 
