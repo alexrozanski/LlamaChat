@@ -92,6 +92,7 @@
 		82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */; };
 		82F14EA629E46454001E9C1E /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 82F14EA529E46454001E9C1E /* llama */; };
 		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
+		82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +182,7 @@
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
 		82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPickerView.swift; sourceTree = "<group>"; };
 		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+TextSelection.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 			children = (
 				821B253829DFA39600CF1001 /* NSApplication+Settings.swift */,
 				821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */,
+				82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -700,6 +703,7 @@
 				82718D0429D368EA00545C32 /* MessagesView.swift in Sources */,
 				82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */,
 				82A7B4EB29DE484600BCBB6B /* ConfigureLocalGgmlModelSettingsViewModel.swift in Sources */,
+				82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */,
 				82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */,
 				82E3F1DC29DF37DA003F0368 /* AddSourceViewModel.swift in Sources */,
 				82914CCA29D76A2F00858B2C /* Sender.swift in Sources */,

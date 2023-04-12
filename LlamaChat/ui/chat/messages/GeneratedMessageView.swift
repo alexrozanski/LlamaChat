@@ -34,6 +34,7 @@ struct GeneratedMessageView: View {
           TypingBubbleContentView()
         case .generating, .finished, .cancelled, .error:
           Text(viewModel.content)
+            .textSelectionEnabled(viewModel.canCopyContents.value)
         }
       }
     }

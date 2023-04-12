@@ -11,10 +11,11 @@ struct MessageView: View {
   @ObservedObject var viewModel: ObservableMessageViewModel
   let availableWidth: Double
 
-  @ViewBuilder var messageView: some View {
+  var body: some View {
     if let staticMessageViewModel: StaticMessageViewModel = viewModel.get() {
       MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular, isError: staticMessageViewModel.isError, availableWidth: availableWidth * 0.8) {
         Text(staticMessageViewModel.content)
+          .textSelectionEnabled(viewModel.canCopyContents)
       }
     } else if let generatedMessageViewModel: GeneratedMessageViewModel = viewModel.get() {
       GeneratedMessageView(viewModel: generatedMessageViewModel, availableWidth: availableWidth * 0.8)
@@ -28,17 +29,6 @@ struct MessageView: View {
       EmptyView()
       #endif
     }
-  }
-
-  var body: some View {
-    messageView
-      .contextMenu {
-        if viewModel.canCopyContents {
-          Button("Copy") {
-            viewModel.copyContents()
-          }
-        }
-      }
   }
 }
 
