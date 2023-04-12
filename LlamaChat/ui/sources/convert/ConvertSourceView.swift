@@ -186,10 +186,8 @@ struct ConvertSourceView: View {
             Text("LlamaChat will convert the PyTorch model weights to the .ggml format.\n\nAdditional disk space is required since the original file(s) are left untouched.")
           }
         case .converting, .failedToConvert, .finishedConverting:
-          if let steps = viewModel.conversionSteps {
-            ForEach(steps, id: \.id) { stepViewModel in
-              ConvertSourceStepView(viewModel: stepViewModel)
-            }
+          ForEach(viewModel.conversionSteps, id: \.id) { stepViewModel in
+            ConvertSourceStepView(viewModel: stepViewModel)
           }
         }
       }
