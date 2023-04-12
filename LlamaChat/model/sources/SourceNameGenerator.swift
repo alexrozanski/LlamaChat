@@ -14,12 +14,15 @@ fileprivate struct Names: Decodable {
 
 class SourceNameGenerator {
   private lazy var names: Names? = {
-    guard
-      let fileURL = Bundle.main.url(forResource: "names", withExtension: "json"),
-      let data = try? Data(contentsOf: fileURL)
-    else { return nil }
+    guard let fileURL = Bundle.main.url(forResource: "names", withExtension: "json") else { return nil }
 
-    return try? JSONDecoder().decode(Names.self, from: data)
+    do {
+      let data = try Data(contentsOf: fileURL)
+      return try JSONDecoder().decode(Names.self, from: data)
+    } catch {
+      print("Error loading source names:", error)
+      return nil
+    }
   }()
 
   var canGenerateNames: Bool {

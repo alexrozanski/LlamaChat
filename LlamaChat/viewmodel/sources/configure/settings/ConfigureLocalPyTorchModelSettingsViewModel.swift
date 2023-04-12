@@ -145,9 +145,13 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
 
     conversionState = .loading
     Task.init {
-      let canConvert = (try? await ModelConverter().canRunConversion()) ?? false
-      await MainActor.run {
-        conversionState = .canConvert(canConvert)
+      do {
+        let canConvert = (try await ModelConverter().canRunConversion())
+        await MainActor.run {
+          conversionState = .canConvert(canConvert)
+        }
+      } catch {
+        print("Error determining model conversion status", error)
       }
     }
   }

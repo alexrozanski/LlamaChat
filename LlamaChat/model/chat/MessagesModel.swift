@@ -14,7 +14,14 @@ class MessagesModel: ObservableObject {
   }()
 
   private lazy var db: Connection? = {
-    return databaseURL.flatMap { try? Connection($0.path) }
+    return databaseURL.flatMap {
+      do {
+        return try Connection($0.path)
+      } catch {
+        print("Error getting DB connection:", error)
+        return nil
+      }
+    }
   }()
 
   private let chatSourcesTable = Table("chat_sources")

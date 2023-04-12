@@ -119,7 +119,10 @@ class ChatSources: ObservableObject {
   }
 
   private func loadSources() {
-    guard let persistedURL else { return }
+    guard
+      let persistedURL,
+      FileManager.default.fileExists(atPath: persistedURL.path)
+    else { return }
 
     do {
       let jsonData = try Data(contentsOf: persistedURL)
@@ -138,7 +141,11 @@ class ChatSources: ObservableObject {
     guard let persistedURL else { return }
 
     let jsonEncoder = JSONEncoder()
-    let json = try? jsonEncoder.encode(Payload(sources: sources))
-    try? json?.write(to: persistedURL)
+    do {
+      let json = try jsonEncoder.encode(Payload(sources: sources))
+      try json.write(to: persistedURL)
+    } catch {
+      print("Error persisting sources:", error)
+    }
   }
 }
