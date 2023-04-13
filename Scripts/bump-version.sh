@@ -43,21 +43,19 @@ NEW_CURRENT_PROJECT_VERSION=$CURRENT_PROJECT_VERSION
 # Bump marketing version
 case "$1" in
   "major" )
-    ((VERSION_COMPONENTS[0]++))
+    NEW_MARKETING_VERSION="$((${VERSION_COMPONENTS[0]} + 1)).0.0"
     ;;
   "minor" )
-    ((VERSION_COMPONENTS[1]++))
+    NEW_MARKETING_VERSION="${VERSION_COMPONENTS[0]}.$((${VERSION_COMPONENTS[1]} + 1)).0"
     ;;
   "patch" )
-    ((VERSION_COMPONENTS[2]++))
+    NEW_MARKETING_VERSION="${VERSION_COMPONENTS[0]}.${VERSION_COMPONENTS[1]}.$((${VERSION_COMPONENTS[2]} + 1))"
     ;;
   * )
     echo "Error: Invalid component argument '$1' - must be 'major', 'minor' or 'patch'."
     exit 1
     ;;
 esac
-
-NEW_MARKETING_VERSION="${VERSION_COMPONENTS[0]}.${VERSION_COMPONENTS[1]}.${VERSION_COMPONENTS[2]}"
 
 # Write out
 echo "Bumping CURRENT_PROJECT_VERSION: $CURRENT_PROJECT_VERSION -> $NEW_CURRENT_PROJECT_VERSION"
