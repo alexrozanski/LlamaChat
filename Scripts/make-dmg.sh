@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-OUTPUT_DMG=LlamaChat.dmg
+REPO_ROOT=$(cd "$(dirname "$0")/.."; pwd)
+OUTPUT_DMG=$REPO_ROOT/Scripts/LlamaChat.dmg
 
 if [ "$#" -ne 1 ]; then
     SCRIPT=$(readlink -f "${BASH_SOURCE[0]}")
@@ -13,6 +14,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 if ! [ -d "$1/LlamaChat.app" ]; then
+    echo "Error: Missing LlamaChat.app in $1"
     exit 1
 fi
 
@@ -26,7 +28,7 @@ fi
 echo "Making AppIcon.icns..."
 rm -rf tmp
 mkdir -p tmp/AppIcon.iconset
-cp ../LlamaChat/Assets.xcassets/AppIcon.appiconset/*.png tmp/AppIcon.iconset
+cp $REPO_ROOT/LlamaChat/Assets.xcassets/AppIcon.appiconset/*.png tmp/AppIcon.iconset
 
 if ! iconutil -c icns tmp/AppIcon.iconset; then
     echo "Error: couldn't make AppIcon.icns"
@@ -42,7 +44,7 @@ test -f "$OUTPUT_DMG" && rm "$OUTPUT_DMG"
 create-dmg \
       --volname "LlamaChat" \
       --volicon "tmp/AppIcon.icns" \
-      --background "../Resources/dmg-background.png" \
+      --background "$REPO_ROOT/Resources/dmg-background.png" \
       --window-pos 200 120 \
       --window-size 650 440 \
       --icon-size 128 \
