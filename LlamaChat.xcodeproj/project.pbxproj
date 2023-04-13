@@ -85,6 +85,7 @@
 		82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */; };
 		82C686AC29DB344100B76BA6 /* ClearedContextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */; };
 		82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 82C68BEA29E77CC900A7A4AE /* Sparkle */; };
+		82C68BEE29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */; };
 		82E3F1D829DF2865003F0368 /* ConfigureSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */; };
 		82E3F1DC29DF37DA003F0368 /* AddSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */; };
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
@@ -176,6 +177,7 @@
 		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
 		82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextContentViewModel.swift; sourceTree = "<group>"; };
 		82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearedContextMessage.swift; sourceTree = "<group>"; };
+		82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesViewModel.swift; sourceTree = "<group>"; };
 		82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
 		82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				82C686A629DAF31800B76BA6 /* debug */,
 				82AE199629D831F7008189DF /* settings */,
 				8255EA5F29D5998B000B9F83 /* sources */,
+				82C68BEC29E77EFD00A7A4AE /* updates */,
 			);
 			path = viewmodel;
 			sourceTree = "<group>";
@@ -590,6 +593,14 @@
 				82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */,
 			);
 			path = debug;
+			sourceTree = "<group>";
+		};
+		82C68BEC29E77EFD00A7A4AE /* updates */ = {
+			isa = PBXGroup;
+			children = (
+				82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */,
+			);
+			path = updates;
 			sourceTree = "<group>";
 		};
 		82E7FFE129DE4C4C00BF0251 /* settings */ = {
@@ -779,6 +790,7 @@
 				8227DACC29DA53EA000E554D /* SourceNameGenerator.swift in Sources */,
 				820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */,
+				82C68BEE29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift in Sources */,
 				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				821B254829E0DD9200CF1001 /* ConvertSourceViewModel.swift in Sources */,
 				82AE198D29D7A803008189DF /* MessageGenerationState.swift in Sources */,

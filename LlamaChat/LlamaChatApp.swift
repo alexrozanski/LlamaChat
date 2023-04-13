@@ -22,6 +22,7 @@ struct LlamaChatApp: App {
 
   @StateObject var mainChatViewModel: MainChatViewModel
   @StateObject var settingsViewModel: SettingsViewModel
+  @StateObject var checkForUpdatesViewModel = CheckForUpdatesViewModel()
 
   init() {
     let chatSources = ChatSources()
@@ -51,6 +52,12 @@ struct LlamaChatApp: App {
 
     Window("Chat", id: WindowIdentifier.chat.rawValue) {
       MainChatView(viewModel: mainChatViewModel)
+    }
+    .commands {
+      CommandGroup(after: .appInfo) {
+        Button("Check for Updates…", action: { checkForUpdatesViewModel.checkForUpdates() })
+          .disabled(!checkForUpdatesViewModel.canCheckForUpdates)
+      }
     }
 
     WindowGroup("Model Context", id: WindowIdentifier.modelContext.rawValue, for: ChatSource.ID.self) { $chatId in
