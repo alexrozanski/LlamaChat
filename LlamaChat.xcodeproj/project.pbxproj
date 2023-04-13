@@ -178,6 +178,7 @@
 		82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextContentViewModel.swift; sourceTree = "<group>"; };
 		82C686AB29DB344100B76BA6 /* ClearedContextMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearedContextMessage.swift; sourceTree = "<group>"; };
 		82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesViewModel.swift; sourceTree = "<group>"; };
+		82C68BEF29E7FB8100A7A4AE /* LlamaChat.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LlamaChat.xcconfig; sourceTree = "<group>"; };
 		82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
 		82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
@@ -378,6 +379,7 @@
 				82718CF229D368C800545C32 /* viewmodel */,
 				82718CE129D3686300545C32 /* Assets.xcassets */,
 				82980F1B29E263E8000329E6 /* LlamaChat.entitlements */,
+				82C68BEF29E7FB8100A7A4AE /* LlamaChat.xcconfig */,
 				82718CE329D3686300545C32 /* Preview Content */,
 			);
 			path = LlamaChat;
@@ -916,13 +918,13 @@
 		};
 		82718CEA29D3686300545C32 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 82C68BEF29E7FB8100A7A4AE /* LlamaChat.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LlamaChat/LlamaChat.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"LlamaChat/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -934,7 +936,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexrozanski.LlamaChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -945,13 +946,13 @@
 		};
 		82718CEB29D3686300545C32 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 82C68BEF29E7FB8100A7A4AE /* LlamaChat.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LlamaChat/LlamaChat.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"LlamaChat/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -963,7 +964,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexrozanski.LlamaChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
