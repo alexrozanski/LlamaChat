@@ -90,6 +90,6 @@ struct ConfigureLocalModelSourceView: View {
         }
       }
     }
-    .formStyle(GroupedFormStyle())
+    .formStyle(.grouped)
   }
 }

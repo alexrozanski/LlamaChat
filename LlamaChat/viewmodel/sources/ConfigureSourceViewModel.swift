@@ -8,43 +8,10 @@
 import SwiftUI
 import Combine
 
-protocol ConfigureSourceNavigationViewModelDelegate: AnyObject {
-  func next()
-}
-
-class ConfigureSourceNavigationViewModel: ObservableObject {
-  @Published var showContinueButton: Bool = false
-  @Published var canContinue: Bool = false
-  @Published var nextButtonTitle: String = "Add"
-
-  weak var delegate: ConfigureSourceNavigationViewModelDelegate?
-
-  func next() {
-    delegate?.next()
-  }
-}
-
-struct ConfigureSourceNavigationView: View {
-  @ObservedObject var viewModel: ConfigureSourceNavigationViewModel
-
-  var body: some View {
-    HStack {
-      Spacer()
-      if viewModel.showContinueButton {
-        Button(viewModel.nextButtonTitle) {
-          viewModel.next()
-        }
-        .keyboardShortcut(.return)
-        .disabled(!viewModel.canContinue)
-      }
-    }
-  }
-}
-
 protocol ConfigureSourceViewModel {
   var chatSourceType: ChatSourceType { get }
 
-  var navigationViewModel: ConfigureSourceNavigationViewModel { get }
+  var primaryActionsViewModel: ConfigureSourcePrimaryActionsViewModel { get }
 }
 
 func makeConfigureLocalLlamaModelSourceViewModel(
@@ -81,14 +48,7 @@ func makeConfigureLocalGPT4AllModelSourceViewModel(
 }
 
 @ViewBuilder func makeConfigureSourceView(from viewModel: ConfigureSourceViewModel) -> some View {
-  VStack {
-    if let viewModel = viewModel as? ConfigureLocalModelSourceViewModel {
-      ConfigureLocalModelSourceView(viewModel: viewModel)
-    } else {
-      EmptyView()
-    }
-    Spacer()
-    ConfigureSourceNavigationView(viewModel: viewModel.navigationViewModel)
-      .padding()
+  if let viewModel = viewModel as? ConfigureLocalModelSourceViewModel {
+    ConfigureLocalModelSourceView(viewModel: viewModel)
   }
 }

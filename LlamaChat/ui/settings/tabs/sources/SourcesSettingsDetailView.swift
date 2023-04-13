@@ -82,6 +82,6 @@ struct SourcesSettingsDetailView: View {
         }
       }
     }
-    .formStyle(GroupedFormStyle())
+    .formStyle(.grouped)
   }
 }

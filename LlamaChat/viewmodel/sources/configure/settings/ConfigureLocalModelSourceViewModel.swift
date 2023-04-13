@@ -76,7 +76,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   // MARK: - Validation
 
-  let navigationViewModel: ConfigureSourceNavigationViewModel
+  let primaryActionsViewModel: ConfigureSourcePrimaryActionsViewModel
 
   let chatSourceType: ChatSourceType
   let exampleGgmlModelPath: String
@@ -94,8 +94,8 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
     self.chatSourceType = chatSourceType
     self.exampleGgmlModelPath = exampleGgmlModelPath
     self.nextHandler = nextHandler
-    navigationViewModel = ConfigureSourceNavigationViewModel()
-    navigationViewModel.delegate = self
+    primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
+    primaryActionsViewModel.delegate = self
 
     let configuredSource = $settingsViewModel
       .compactMap { $0 }
@@ -106,19 +106,19 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
       .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
       .combineLatest(configuredSource)
       .sink { [weak self] nameValid, configuredSource in
-        self?.navigationViewModel.canContinue = nameValid && configuredSource != nil
+        self?.primaryActionsViewModel.canContinue = nameValid && configuredSource != nil
       }.store(in: &subscriptions)
 
     $modelSourceType
       .sink { [weak self] newSourceType in
-        self?.navigationViewModel.showContinueButton = newSourceType != nil
+        self?.primaryActionsViewModel.showContinueButton = newSourceType != nil
 
         if let newSourceType {
           switch newSourceType {
           case .pyTorch:
-            self?.navigationViewModel.nextButtonTitle = "Continue"
+            self?.primaryActionsViewModel.nextButtonTitle = "Continue"
           case .ggml:
-            self?.navigationViewModel.nextButtonTitle = "Add"
+            self?.primaryActionsViewModel.nextButtonTitle = "Add"
           }
         }
       }.store(in: &subscriptions)
@@ -144,7 +144,7 @@ extension ConfigureLocalModelSourceType {
   }
 }
 
-extension ConfigureLocalModelSourceViewModel: ConfigureSourceNavigationViewModelDelegate {
+extension ConfigureLocalModelSourceViewModel: ConfigureSourcePrimaryActionsViewModelDelegate {
   func next() {
     guard let sourceSettings = settingsViewModel?.sourceSettings.value else { return }
     nextHandler(

@@ -11,16 +11,14 @@ struct SelectSourceTypeView: View {
   @ObservedObject var viewModel: SelectSourceTypeViewModel
 
   var body: some View {
-    VStack(alignment: .leading) {
+    VStack(alignment: .leading, spacing: 20) {
       VStack(alignment: .leading, spacing: 4) {
         Text("To start interacting with one of the models, choose a chat source based on your available model data.")
           .lineLimit(nil)
           .fixedSize(horizontal: false, vertical: true)
       }
-      .padding()
+      .padding(.horizontal)
       SourceTypeSelectionView(viewModel: viewModel)
-      Spacer()
     }
-    .padding(24)
   }
 }

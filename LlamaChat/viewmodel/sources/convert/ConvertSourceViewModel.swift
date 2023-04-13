@@ -167,11 +167,6 @@ class ConvertSourceViewModel: ObservableObject {
     hasFinished = true
   }
 
-  func cancel() {
-    cleanUp_DANGEROUS()
-    cancelHandler()
-  }
-
   // Cleans up the converted model files :)
   func cleanUp_DANGEROUS() {
     switch state {

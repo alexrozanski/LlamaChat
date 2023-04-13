@@ -44,6 +44,12 @@ class AddSourceViewModel: ObservableObject {
     }
   }
 
+  func cancel() {
+    closeHandler(nil)
+  }
+
+  // MARK: - Private
+
   private func makeConfigureSourceViewModel(for sourceType: ChatSourceType) -> ConfigureSourceViewModel {
     let nextHandler: ConfigureLocalModelSourceViewModel.NextHandler = { [weak self] configuredSource in
       switch configuredSource.settings {
