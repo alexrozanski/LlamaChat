@@ -13,7 +13,7 @@ LlamaChat requires macOS 13 Ventura, and either an Intel or Apple Silicon proces
 
 ### Direct Download
 
-Download a `.dmg` containing the latest version [👉 here 👈](https://github.com/alexrozanski/LlamaChat/releases/download/1.1.0/LlamaChat.dmg).
+Download a `.dmg` containing the latest version [👉 here 👈](https://llamachat.app/api/download).
 
 ### Building from Source
 
