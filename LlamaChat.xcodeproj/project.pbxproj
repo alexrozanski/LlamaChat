@@ -93,6 +93,7 @@
 		82E43CA429E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CA329E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift */; };
 		82E43CA929E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CA829E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift */; };
 		82E43CAC29E8D58F003E69D1 /* ConfigureDownloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CAB29E8D58F003E69D1 /* ConfigureDownloadable.swift */; };
+		82E43CB229E8D6F3003E69D1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 82E43CB129E8D6F3003E69D1 /* Alamofire */; };
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
 		82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */; };
 		82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */; };
@@ -205,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */,
+				82E43CB229E8D6F3003E69D1 /* Alamofire in Frameworks */,
 				82F14EA629E46454001E9C1E /* llama in Frameworks */,
 				8227DA9329D8F841000E554D /* SQLite in Frameworks */,
 			);
@@ -701,6 +703,7 @@
 				8227DA9229D8F841000E554D /* SQLite */,
 				82F14EA529E46454001E9C1E /* llama */,
 				82C68BEA29E77CC900A7A4AE /* Sparkle */,
+				82E43CB129E8D6F3003E69D1 /* Alamofire */,
 			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* LlamaChat.app */;
@@ -734,6 +737,7 @@
 				8227DA9129D8F841000E554D /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 				82F14EA429E46454001E9C1E /* XCRemoteSwiftPackageReference "llama" */,
 				82C68BE929E77CC900A7A4AE /* XCRemoteSwiftPackageReference "Sparkle" */,
+				82E43CB029E8D6F3003E69D1 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 82718CDB29D3686200545C32 /* Products */;
 			projectDirPath = "";
@@ -1064,6 +1068,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		82E43CB029E8D6F3003E69D1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		82F14EA429E46454001E9C1E /* XCRemoteSwiftPackageReference "llama" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/alexrozanski/llama.swift/";
@@ -1084,6 +1096,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 82C68BE929E77CC900A7A4AE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		82E43CB129E8D6F3003E69D1 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 82E43CB029E8D6F3003E69D1 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 		82F14EA529E46454001E9C1E /* llama */ = {
 			isa = XCSwiftPackageProductDependency;
