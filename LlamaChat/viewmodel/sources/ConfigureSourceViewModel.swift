@@ -36,13 +36,11 @@ func makeConfigureLocalAlpacaModelSourceViewModel(
   )
 }
 
-func makeConfigureLocalGPT4AllModelSourceViewModel(
+func makeConfigureDownloadableGPT4AllModelSourceViewModel(
   nextHandler: @escaping ConfigureLocalModelSourceViewModel.NextHandler
-) -> ConfigureLocalModelSourceViewModel {
-  return ConfigureLocalModelSourceViewModel(
-    defaultName: "GPT4All",
+) -> ConfigureDownloadableModelSourceViewModel {
+  return ConfigureDownloadableModelSourceViewModel(
     chatSourceType: .gpt4All,
-    exampleGgmlModelPath: "gpt4all-lora-quantized.bin",
     nextHandler: nextHandler
   )
 }
@@ -50,5 +48,7 @@ func makeConfigureLocalGPT4AllModelSourceViewModel(
 @ViewBuilder func makeConfigureSourceView(from viewModel: ConfigureSourceViewModel) -> some View {
   if let viewModel = viewModel as? ConfigureLocalModelSourceViewModel {
     ConfigureLocalModelSourceView(viewModel: viewModel)
+  } else if let viewModel = viewModel as? ConfigureDownloadableModelSourceViewModel {
+    ConfigureDownloadableModelSourceView(viewModel: viewModel)
   }
 }

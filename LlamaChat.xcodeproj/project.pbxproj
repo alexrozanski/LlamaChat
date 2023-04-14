@@ -72,7 +72,6 @@
 		82A7B4E929DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4E829DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift */; };
 		82A7B4EB29DE484600BCBB6B /* ConfigureLocalGgmlModelSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4EA29DE484600BCBB6B /* ConfigureLocalGgmlModelSettingsViewModel.swift */; };
 		82A7B4ED29DE48E900BCBB6B /* ConfigureLocalModelSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4EC29DE48E900BCBB6B /* ConfigureLocalModelSettingsViewModel.swift */; };
-		82A7B4EF29DE49C300BCBB6B /* ConfigureLocalPyTorchModelSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4EE29DE49C300BCBB6B /* ConfigureLocalPyTorchModelSettingsViewModel.swift */; };
 		82AE198B29D7A330008189DF /* GeneratedMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE198A29D7A330008189DF /* GeneratedMessageView.swift */; };
 		82AE198D29D7A803008189DF /* MessageGenerationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE198C29D7A803008189DF /* MessageGenerationState.swift */; };
 		82AE199029D7B07E008189DF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE198F29D7B07E008189DF /* SettingsView.swift */; };
@@ -91,6 +90,9 @@
 		82E43C9429E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9329E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift */; };
 		82E43C9629E8AF1E003E69D1 /* ConvertSourceStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9529E8AF1E003E69D1 /* ConvertSourceStepView.swift */; };
 		82E43C9829E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9729E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift */; };
+		82E43CA429E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CA329E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift */; };
+		82E43CA929E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CA829E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift */; };
+		82E43CAC29E8D58F003E69D1 /* ConfigureDownloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CAB29E8D58F003E69D1 /* ConfigureDownloadable.swift */; };
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
 		82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */; };
 		82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */; };
@@ -168,7 +170,6 @@
 		82A7B4E829DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalGgmlModelSettingsView.swift; sourceTree = "<group>"; };
 		82A7B4EA29DE484600BCBB6B /* ConfigureLocalGgmlModelSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalGgmlModelSettingsViewModel.swift; sourceTree = "<group>"; };
 		82A7B4EC29DE48E900BCBB6B /* ConfigureLocalModelSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSettingsViewModel.swift; sourceTree = "<group>"; };
-		82A7B4EE29DE49C300BCBB6B /* ConfigureLocalPyTorchModelSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalPyTorchModelSettingsViewModel.swift; sourceTree = "<group>"; };
 		82AE198A29D7A330008189DF /* GeneratedMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratedMessageView.swift; sourceTree = "<group>"; };
 		82AE198C29D7A803008189DF /* MessageGenerationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageGenerationState.swift; sourceTree = "<group>"; };
 		82AE198F29D7B07E008189DF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -187,6 +188,9 @@
 		82E43C9329E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourcePrimaryActionsView.swift; sourceTree = "<group>"; };
 		82E43C9529E8AF1E003E69D1 /* ConvertSourceStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourceStepView.swift; sourceTree = "<group>"; };
 		82E43C9729E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSourcePrimaryActionsView.swift; sourceTree = "<group>"; };
+		82E43CA329E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfigureLocalPyTorchModelSettingsViewModel copy.swift"; sourceTree = "<group>"; };
+		82E43CA829E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureDownloadableModelSourceViewModel.swift; sourceTree = "<group>"; };
+		82E43CAB29E8D58F003E69D1 /* ConfigureDownloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureDownloadable.swift; sourceTree = "<group>"; };
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerView.swift; sourceTree = "<group>"; };
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
@@ -519,11 +523,10 @@
 		82A7B4DC29DE424600BCBB6B /* configure */ = {
 			isa = PBXGroup;
 			children = (
-				8227DA8029D88228000E554D /* ConfigureLocalModelSourceView.swift */,
-				82A7B4E529DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift */,
-				82A7B4E829DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift */,
 				82E43C9729E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift */,
 				82A7B4E729DE470000BCBB6B /* components */,
+				82E43CAA29E8D581003E69D1 /* download */,
+				82E43CA629E8D3BE003E69D1 /* local */,
 			);
 			path = configure;
 			sourceTree = "<group>";
@@ -614,12 +617,46 @@
 			path = updates;
 			sourceTree = "<group>";
 		};
+		82E43CA529E8D3AB003E69D1 /* local */ = {
+			isa = PBXGroup;
+			children = (
+				8227DA7E29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift */,
+				82E7FFE129DE4C4C00BF0251 /* settings */,
+			);
+			path = local;
+			sourceTree = "<group>";
+		};
+		82E43CA629E8D3BE003E69D1 /* local */ = {
+			isa = PBXGroup;
+			children = (
+				8227DA8029D88228000E554D /* ConfigureLocalModelSourceView.swift */,
+				82A7B4E529DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift */,
+				82A7B4E829DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift */,
+			);
+			path = local;
+			sourceTree = "<group>";
+		};
+		82E43CA729E8D3DC003E69D1 /* download */ = {
+			isa = PBXGroup;
+			children = (
+				82E43CA829E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift */,
+			);
+			path = download;
+			sourceTree = "<group>";
+		};
+		82E43CAA29E8D581003E69D1 /* download */ = {
+			isa = PBXGroup;
+			children = (
+				82E43CAB29E8D58F003E69D1 /* ConfigureDownloadable.swift */,
+			);
+			path = download;
+			sourceTree = "<group>";
+		};
 		82E7FFE129DE4C4C00BF0251 /* settings */ = {
 			isa = PBXGroup;
 			children = (
 				82A7B4EC29DE48E900BCBB6B /* ConfigureLocalModelSettingsViewModel.swift */,
-				8227DA7E29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift */,
-				82A7B4EE29DE49C300BCBB6B /* ConfigureLocalPyTorchModelSettingsViewModel.swift */,
+				82E43CA329E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift */,
 				82A7B4EA29DE484600BCBB6B /* ConfigureLocalGgmlModelSettingsViewModel.swift */,
 			);
 			path = settings;
@@ -629,7 +666,8 @@
 			isa = PBXGroup;
 			children = (
 				82E7FFE529DE4CC500BF0251 /* components */,
-				82E7FFE129DE4C4C00BF0251 /* settings */,
+				82E43CA729E8D3DC003E69D1 /* download */,
+				82E43CA529E8D3AB003E69D1 /* local */,
 			);
 			path = configure;
 			sourceTree = "<group>";
@@ -733,6 +771,7 @@
 				82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */,
 				82E3F1DC29DF37DA003F0368 /* AddSourceViewModel.swift in Sources */,
 				82914CCA29D76A2F00858B2C /* Sender.swift in Sources */,
+				82E43CA929E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift in Sources */,
 				82718D0629D368EA00545C32 /* ChatView.swift in Sources */,
 				82718D0729D368EA00545C32 /* ComposeView.swift in Sources */,
 				82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */,
@@ -744,6 +783,7 @@
 				826F4C6D29DCFFFD0099A729 /* ClearedContextMessageViewModel.swift in Sources */,
 				82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */,
 				82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */,
+				82E43CAC29E8D58F003E69D1 /* ConfigureDownloadable.swift in Sources */,
 				8227DA9529D8F959000E554D /* MessagesModel.swift in Sources */,
 				82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */,
 				8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */,
@@ -790,6 +830,7 @@
 				82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */,
 				82914CE029D7A06C00858B2C /* Message.swift in Sources */,
 				82AE198B29D7A330008189DF /* GeneratedMessageView.swift in Sources */,
+				82E43CA429E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift in Sources */,
 				82E43C9829E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift in Sources */,
 				8227DA8129D88228000E554D /* ConfigureLocalModelSourceView.swift in Sources */,
 				8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */,
@@ -799,7 +840,6 @@
 				82A7B4ED29DE48E900BCBB6B /* ConfigureLocalModelSettingsViewModel.swift in Sources */,
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
 				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
-				82A7B4EF29DE49C300BCBB6B /* ConfigureLocalPyTorchModelSettingsViewModel.swift in Sources */,
 				821B254A29E0E86B00CF1001 /* NonEditableTextView.swift in Sources */,
 				8227DACC29DA53EA000E554D /* SourceNameGenerator.swift in Sources */,
 				820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */,

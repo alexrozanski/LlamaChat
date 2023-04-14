@@ -81,7 +81,7 @@ class AddSourceViewModel: ObservableObject {
     case .alpaca:
       return makeConfigureLocalAlpacaModelSourceViewModel(nextHandler:nextHandler)
     case .gpt4All:
-      return makeConfigureLocalGPT4AllModelSourceViewModel(nextHandler:nextHandler)
+      return makeConfigureDownloadableGPT4AllModelSourceViewModel(nextHandler:nextHandler)
     }
   }
 
