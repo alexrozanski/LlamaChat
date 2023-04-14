@@ -92,7 +92,8 @@
 		82E43C9829E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9729E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift */; };
 		82E43CA429E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CA329E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift */; };
 		82E43CA929E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CA829E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift */; };
-		82E43CAC29E8D58F003E69D1 /* ConfigureDownloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CAB29E8D58F003E69D1 /* ConfigureDownloadable.swift */; };
+		82E43CAC29E8D58F003E69D1 /* ConfigureDownloadableModelSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CAB29E8D58F003E69D1 /* ConfigureDownloadableModelSourceView.swift */; };
+		82E43CAF29E8D675003E69D1 /* DownloadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CAE29E8D675003E69D1 /* DownloadsManager.swift */; };
 		82E43CB229E8D6F3003E69D1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 82E43CB129E8D6F3003E69D1 /* Alamofire */; };
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
 		82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */; };
@@ -191,7 +192,8 @@
 		82E43C9729E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSourcePrimaryActionsView.swift; sourceTree = "<group>"; };
 		82E43CA329E8D399003E69D1 /* ConfigureLocalPyTorchModelSettingsViewModel copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfigureLocalPyTorchModelSettingsViewModel copy.swift"; sourceTree = "<group>"; };
 		82E43CA829E8D3FA003E69D1 /* ConfigureDownloadableModelSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureDownloadableModelSourceViewModel.swift; sourceTree = "<group>"; };
-		82E43CAB29E8D58F003E69D1 /* ConfigureDownloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureDownloadable.swift; sourceTree = "<group>"; };
+		82E43CAB29E8D58F003E69D1 /* ConfigureDownloadableModelSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureDownloadableModelSourceView.swift; sourceTree = "<group>"; };
+		82E43CAE29E8D675003E69D1 /* DownloadsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsManager.swift; sourceTree = "<group>"; };
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerView.swift; sourceTree = "<group>"; };
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 				82F14EA729E4D2DD001E9C1E /* Credits.rtf */,
 				8227DA9629D911A4000E554D /* LlamaChatApp.swift */,
 				8227DAC829DA5060000E554D /* data */,
+				82E43CAD29E8D669003E69D1 /* downloads */,
 				821B255329E1D97B00CF1001 /* error */,
 				821B253729DFA38700CF1001 /* extensions */,
 				82718CF029D368A000545C32 /* model */,
@@ -649,9 +652,17 @@
 		82E43CAA29E8D581003E69D1 /* download */ = {
 			isa = PBXGroup;
 			children = (
-				82E43CAB29E8D58F003E69D1 /* ConfigureDownloadable.swift */,
+				82E43CAB29E8D58F003E69D1 /* ConfigureDownloadableModelSourceView.swift */,
 			);
 			path = download;
+			sourceTree = "<group>";
+		};
+		82E43CAD29E8D669003E69D1 /* downloads */ = {
+			isa = PBXGroup;
+			children = (
+				82E43CAE29E8D675003E69D1 /* DownloadsManager.swift */,
+			);
+			path = downloads;
 			sourceTree = "<group>";
 		};
 		82E7FFE129DE4C4C00BF0251 /* settings */ = {
@@ -787,7 +798,7 @@
 				826F4C6D29DCFFFD0099A729 /* ClearedContextMessageViewModel.swift in Sources */,
 				82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */,
 				82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */,
-				82E43CAC29E8D58F003E69D1 /* ConfigureDownloadable.swift in Sources */,
+				82E43CAC29E8D58F003E69D1 /* ConfigureDownloadableModelSourceView.swift in Sources */,
 				8227DA9529D8F959000E554D /* MessagesModel.swift in Sources */,
 				82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */,
 				8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */,
@@ -810,6 +821,7 @@
 				8227DAA029D98577000E554D /* ChatListView.swift in Sources */,
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
 				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
+				82E43CAF29E8D675003E69D1 /* DownloadsManager.swift in Sources */,
 				821B253929DFA39600CF1001 /* NSApplication+Settings.swift in Sources */,
 				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				821B254329E0A46B00CF1001 /* ConvertSourceView.swift in Sources */,
