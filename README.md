@@ -3,7 +3,7 @@
 <h3 align="center">Chat with your favourite LLaMA models, right on your Mac</h2>
 <hr />
 
-**LlamaChat** is a macOS app that allows you to chat with [LLaMa](http://github.com/facebookresearch/llama), [Alpaca](https://github.com/tatsu-lab/stanford_alpaca) and [GPT4All](https://github.com/nomic-ai/gpt4all) models all running locally on your Mac.
+**LlamaChat** is a macOS app that allows you to chat with [LLaMA](http://github.com/facebookresearch/llama), [Alpaca](https://github.com/tatsu-lab/stanford_alpaca) and [GPT4All](https://github.com/nomic-ai/gpt4all) models all running locally on your Mac.
 
 <img src="https://github.com/alexrozanski/LlamaChat/raw/main/Resources/screenshot.png" width="100%">
 
