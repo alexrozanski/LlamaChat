@@ -72,7 +72,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   )
 
   let chatSourceType: ChatSourceType
-  let sourceSettings = CurrentValueSubject<SourceSettings?, Never>(nil)
+  let sourceSettings = CurrentValueSubject<ConfiguredSourceSettings?, Never>(nil)
 
   private var subscriptions = Set<AnyCancellable>()
 

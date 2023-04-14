@@ -13,8 +13,16 @@ enum WindowIdentifier: String {
   case modelContext
 }
 
+class AppDelegate: NSObject, NSApplicationDelegate {
+  func applicationDidFinishLaunching(_ notification: Notification) {
+    DownloadsManager.shared.cleanUp()
+  }
+}
+
 @main
 struct LlamaChatApp: App {
+  @NSApplicationDelegateAdaptor var appDelegate: AppDelegate
+
   @StateObject var chatSources: ChatSources
   @StateObject var chatModels: ChatModels
   @StateObject var messagesModel: MessagesModel

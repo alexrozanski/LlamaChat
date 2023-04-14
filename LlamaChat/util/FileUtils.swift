@@ -8,10 +8,18 @@
 import Foundation
 
 func applicationSupportDirectoryURL() -> URL? {
+  return appScopedPath(for: .applicationSupportDirectory)
+}
+
+func cachesDirectoryURL() -> URL? {
+  return appScopedPath(for: .cachesDirectory)
+}
+
+fileprivate func appScopedPath(for searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
   guard let bundleIdentifier = Bundle.main.bundleIdentifier else { return nil }
 
   do {
-    let url = try FileManager().url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    let url = try FileManager().url(for: searchPathDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     let appScopedDirectory = url.appendingPathComponent(bundleIdentifier, isDirectory: true)
 
     if !FileManager.default.fileExists(atPath: appScopedDirectory.path) {
@@ -19,7 +27,7 @@ func applicationSupportDirectoryURL() -> URL? {
     }
     return appScopedDirectory
   } catch {
-    print("Error getting application support directory:", error)
+    print("Error getting app scoped directory for \(searchPathDirectory):", error)
     return nil
   }
 }

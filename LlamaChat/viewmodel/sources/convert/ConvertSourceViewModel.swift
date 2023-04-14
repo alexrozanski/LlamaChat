@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import Coquille
 import llama
 
 class ConvertSourceViewModel: ObservableObject {
@@ -133,14 +132,14 @@ class ConvertSourceViewModel: ObservableObject {
     state = .converting
 
     do {
-      let modelDirectory = try ModelFileManager().makeNewModelDirectory()
+      let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
       self.modelDirectory = modelDirectory
 
       Task.init {
         try await pipeline.run(
           with: ConvertPyTorchToGgmlConversionPipelineInput(
             data: data,
-            conversionBehavior: modelDirectory.map { .inOtherDirectory($0.url) } ?? .alongsideInputFile
+            conversionBehavior: .inOtherDirectory(modelDirectory.url)
           )
         )
       }
@@ -184,17 +183,6 @@ class ConvertSourceViewModel: ObservableObject {
       try result.cleanUp()
     } catch {
       print("WARNING: Failed to clean up converted GGML model")
-    }
-  }
-}
-
-private extension Coquille.Process.Status {
-  func toExitCode() -> Int32 {
-    switch self {
-    case .success:
-      return 0
-    case .failure(let code):
-      return code
     }
   }
 }

@@ -49,7 +49,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     }
   }
 
-  let sourceSettings = CurrentValueSubject<SourceSettings?, Never>(nil)
+  let sourceSettings = CurrentValueSubject<ConfiguredSourceSettings?, Never>(nil)
 
   var sourceType: ConfigureLocalModelSourceType {
     return .ggml
