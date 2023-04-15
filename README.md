@@ -23,6 +23,8 @@ cd LlamaChat
 open LlamaChat.xcodeproj
 ```
 
+**NOTE:** LlamaChat includes [Sparkle](https://github.com/sparkle-project/Sparkle) for autoupdates, which will fail to load if LlamaChat is not signed. Ensure that you use a valid signing certificate when building and running LlamaChat.
+
 **NOTE:** model inference runs really slowly in Debug builds, so if building from source make sure that the `Build Configuration` in `LlamaChat > Edit Scheme... > Run` is set to `Release`.
 
 ## ✨ Features
