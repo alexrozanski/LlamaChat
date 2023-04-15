@@ -60,19 +60,12 @@ struct ConfigureDownloadableModelSourceView: View {
                   .progressViewStyle(.circular)
                   .controlSize(.small)
               }
-            case .deterministic(downloadedBytes: let downloadedBytes, totalBytes: let totalBytes, progress: let progress, estimatedTimeRemaining: let estimatedTimeRemaining):
+            case .deterministic(downloadedBytes: let downloadedBytes, totalBytes: let totalBytes, progress: let progress):
               title
               ProgressView("", value: progress)
                 .progressViewStyle(.linear)
-              Group {
-                if let estimatedTimeRemaining {
-                  Text("Downloading \(ByteCountFormatter().string(fromByteCount: downloadedBytes)) of \(ByteCountFormatter().string(fromByteCount: totalBytes)) (\(estimatedTimeRemaining) remaining)")
-                    .font(.footnote)
-                } else {
-                  Text("Downloading \(ByteCountFormatter().string(fromByteCount: downloadedBytes)) of \(ByteCountFormatter().string(fromByteCount: totalBytes))")
-                    .font(.footnote)
-                }
-              }
+              Text("Downloading \(ByteCountFormatter().string(fromByteCount: downloadedBytes)) of \(ByteCountFormatter().string(fromByteCount: totalBytes))")
+                .font(.footnote)
             }
           }
         }
