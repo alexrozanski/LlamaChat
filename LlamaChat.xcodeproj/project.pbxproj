@@ -45,7 +45,7 @@
 		826F4C6F29DD05110099A729 /* ClearedContextMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826F4C6E29DD05110099A729 /* ClearedContextMessageView.swift */; };
 		82718CE229D3686300545C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE129D3686300545C32 /* Assets.xcassets */; };
 		82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE429D3686300545C32 /* Preview Assets.xcassets */; };
-		82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CEC29D3689B00545C32 /* ChatModels.swift */; };
+		82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CEC29D3689B00545C32 /* ChatModel.swift */; };
 		82718CFC29D368E500545C32 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CF929D368E500545C32 /* MessagesViewModel.swift */; };
 		82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CFA29D368E500545C32 /* ComposeViewModel.swift */; };
 		82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718CFB29D368E500545C32 /* ChatViewModel.swift */; };
@@ -79,6 +79,7 @@
 		82AE199829D83206008189DF /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199729D83205008189DF /* SettingsViewModel.swift */; };
 		82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199A29D834AE008189DF /* SourcesSettingsView.swift */; };
 		82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */; };
+		82BCA19729EDCB51001D5CC0 /* ProcessInfo+Threads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */; };
 		82C6869A29DA627800B76BA6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869929DA627800B76BA6 /* AvatarView.swift */; };
 		82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */; };
 		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
@@ -91,6 +92,9 @@
 		82E43C9429E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9329E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift */; };
 		82E43C9629E8AF1E003E69D1 /* ConvertSourceStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9529E8AF1E003E69D1 /* ConvertSourceStepView.swift */; };
 		82E43C9829E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9729E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift */; };
+		82E43CBA29EA94EC003E69D1 /* GeneralSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CB929EA94EC003E69D1 /* GeneralSettingsViewModel.swift */; };
+		82E43CBD29EA951F003E69D1 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CBC29EA951F003E69D1 /* AppSettings.swift */; };
+		82E43CBF29EA96A4003E69D1 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CBE29EA96A4003E69D1 /* GeneralSettingsView.swift */; };
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
 		82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */; };
 		82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */; };
@@ -140,7 +144,7 @@
 		82718CDA29D3686200545C32 /* LlamaChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LlamaChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82718CE129D3686300545C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82718CE429D3686300545C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		82718CEC29D3689B00545C32 /* ChatModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
+		82718CEC29D3689B00545C32 /* ChatModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		82718CF929D368E500545C32 /* MessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		82718CFA29D368E500545C32 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		82718CFB29D368E500545C32 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -175,6 +179,7 @@
 		82AE199729D83205008189DF /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		82AE199A29D834AE008189DF /* SourcesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsView.swift; sourceTree = "<group>"; };
 		82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsViewModel.swift; sourceTree = "<group>"; };
+		82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Threads.swift"; sourceTree = "<group>"; };
 		82C6869929DA627800B76BA6 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
 		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
@@ -187,6 +192,9 @@
 		82E43C9329E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourcePrimaryActionsView.swift; sourceTree = "<group>"; };
 		82E43C9529E8AF1E003E69D1 /* ConvertSourceStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourceStepView.swift; sourceTree = "<group>"; };
 		82E43C9729E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSourcePrimaryActionsView.swift; sourceTree = "<group>"; };
+		82E43CB929EA94EC003E69D1 /* GeneralSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewModel.swift; sourceTree = "<group>"; };
+		82E43CBC29EA951F003E69D1 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		82E43CBE29EA96A4003E69D1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerView.swift; sourceTree = "<group>"; };
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
@@ -215,6 +223,7 @@
 				821B253829DFA39600CF1001 /* NSApplication+Settings.swift */,
 				821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */,
 				82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */,
+				82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -324,7 +333,7 @@
 			children = (
 				8227DA9429D8F959000E554D /* MessagesModel.swift */,
 				82914CC929D76A2F00858B2C /* Sender.swift */,
-				82718CEC29D3689B00545C32 /* ChatModels.swift */,
+				82718CEC29D3689B00545C32 /* ChatModel.swift */,
 				82914CC829D76A1C00858B2C /* messages */,
 			);
 			path = chat;
@@ -406,6 +415,7 @@
 			children = (
 				8255EA4E29D58B21000B9F83 /* chat */,
 				82980F1C29E37D09000329E6 /* models */,
+				82E43CBB29EA9516003E69D1 /* settings */,
 				8255EA4D29D58B1C000B9F83 /* sources */,
 			);
 			path = model;
@@ -560,6 +570,7 @@
 			isa = PBXGroup;
 			children = (
 				82AE199729D83205008189DF /* SettingsViewModel.swift */,
+				82E43CB929EA94EC003E69D1 /* GeneralSettingsViewModel.swift */,
 				8227DA7929D86638000E554D /* sources */,
 			);
 			path = settings;
@@ -569,6 +580,7 @@
 			isa = PBXGroup;
 			children = (
 				8227DA6F29D8624A000E554D /* sources */,
+				82E43CBE29EA96A4003E69D1 /* GeneralSettingsView.swift */,
 			);
 			path = tabs;
 			sourceTree = "<group>";
@@ -612,6 +624,14 @@
 				82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */,
 			);
 			path = updates;
+			sourceTree = "<group>";
+		};
+		82E43CBB29EA9516003E69D1 /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				82E43CBC29EA951F003E69D1 /* AppSettings.swift */,
+			);
+			path = settings;
 			sourceTree = "<group>";
 		};
 		82E7FFE129DE4C4C00BF0251 /* settings */ = {
@@ -730,7 +750,9 @@
 				82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */,
 				82A7B4EB29DE484600BCBB6B /* ConfigureLocalGgmlModelSettingsViewModel.swift in Sources */,
 				82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */,
+				82BCA19729EDCB51001D5CC0 /* ProcessInfo+Threads.swift in Sources */,
 				82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */,
+				82E43CBA29EA94EC003E69D1 /* GeneralSettingsViewModel.swift in Sources */,
 				82E3F1DC29DF37DA003F0368 /* AddSourceViewModel.swift in Sources */,
 				82914CCA29D76A2F00858B2C /* Sender.swift in Sources */,
 				82718D0629D368EA00545C32 /* ChatView.swift in Sources */,
@@ -738,6 +760,7 @@
 				82718CFE29D368E500545C32 /* ChatViewModel.swift in Sources */,
 				82E43C9429E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift in Sources */,
 				82AE199829D83206008189DF /* SettingsViewModel.swift in Sources */,
+				82E43CBF29EA96A4003E69D1 /* GeneralSettingsView.swift in Sources */,
 				82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */,
 				8227DA9729D911A4000E554D /* LlamaChatApp.swift in Sources */,
 				82980F1E29E37D15000329E6 /* ModelFileManager.swift in Sources */,
@@ -786,6 +809,7 @@
 				8227DA9929D919FD000E554D /* ChatInfoView.swift in Sources */,
 				82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */,
 				82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */,
+				82E43CBD29EA951F003E69D1 /* AppSettings.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,
 				82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */,
 				82914CE029D7A06C00858B2C /* Message.swift in Sources */,
@@ -803,7 +827,7 @@
 				821B254A29E0E86B00CF1001 /* NonEditableTextView.swift in Sources */,
 				8227DACC29DA53EA000E554D /* SourceNameGenerator.swift in Sources */,
 				820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */,
-				82718CEE29D3689B00545C32 /* ChatModels.swift in Sources */,
+				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
 				82C68BEE29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift in Sources */,
 				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				821B254829E0DD9200CF1001 /* ConvertSourceViewModel.swift in Sources */,

@@ -6,12 +6,12 @@
 //
 
 import AppKit
-import Combine
 
 class SettingsViewModel: ObservableObject {
   private let chatSources: ChatSources
 
-  lazy var sourcesSettingsViewModel = SourcesSettingsViewModel(chatSources: chatSources)
+  private(set) lazy var generalSettingsViewModel = GeneralSettingsViewModel()
+  private(set) lazy var sourcesSettingsViewModel = SourcesSettingsViewModel(chatSources: chatSources)
 
   init(chatSources: ChatSources) {
     self.chatSources = chatSources

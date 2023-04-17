@@ -30,6 +30,8 @@ class ChatModels: ObservableObject {
   }
 }
 
+// MARK: -
+
 class ChatModel: ObservableObject {
   class ChatContext {
     struct Token {
@@ -78,6 +80,7 @@ class ChatModel: ObservableObject {
   @Published private(set) var canClearContext: Bool = false
 
   private var currentPredictionCancellable: PredictionCancellable?
+  private var subscriptions = Set<AnyCancellable>()
 
   fileprivate init(source: ChatSource, messagesModel: MessagesModel) {
     self.source = source
@@ -85,11 +88,14 @@ class ChatModel: ObservableObject {
     messages = messagesModel.loadMessages(from: source)
 
     // By definition we clear the context on each launch because we don't persist session state.
-    if messages.count > 0 && !(messages.last?.messageType.isClearedContext ?? false) {
-      let clearedContextMessage = ClearedContextMessage(sendDate: Date())
-      messages.append(clearedContextMessage)
-      messagesModel.append(message: clearedContextMessage, in: source)
-    }
+    insertClearedContextMessageIfNeeded()
+
+    AppSettings.shared.$numThreads
+      .receive(on: DispatchQueue.main).sink { _ in
+        Task.init {
+          await self.clearContext(insertClearedContextMessage: true)
+        }
+      }.store(in: &subscriptions)
   }
 
   func send(message: StaticMessage) {
@@ -119,16 +125,27 @@ class ChatModel: ObservableObject {
     await clearContext(insertClearedContextMessage: true)
   }
 
-  private func clearContext(insertClearedContextMessage: Bool) async {
-    _ = await makeAndStoreNewSession()
+  // Creates a fresh session.
+  // Inserts a 'cleared context' message if needed (i.e. the last message also wasn't
+  // a 'cleared context' message).
 
-    await MainActor.run {
-      lastChatContext = nil
-      if insertClearedContextMessage {
-        let message = ClearedContextMessage(sendDate: Date())
-        messages.append(message)
-        messagesModel.append(message: message, in: source)
-      }
+  @MainActor
+  private func clearContext(insertClearedContextMessage: Bool) async {
+    if session != nil {
+      _ = makeAndStoreNewSession()
+    }
+
+    lastChatContext = nil
+    if insertClearedContextMessage {
+      insertClearedContextMessageIfNeeded()
+    }
+  }
+
+  private func insertClearedContextMessageIfNeeded() {
+    if messages.count > 0 && !(messages.last?.messageType.isClearedContext ?? false) {
+      let clearedContextMessage = ClearedContextMessage(sendDate: Date())
+      messages.append(clearedContextMessage)
+      messagesModel.append(message: clearedContextMessage, in: source)
     }
   }
 
@@ -146,21 +163,23 @@ class ChatModel: ObservableObject {
   @MainActor
   private func makeAndStoreNewSession() -> Session {
     var newSession: Session
+    let numThreads = UInt(AppSettings.shared.numThreads)
+
     switch source.type {
     case .llama:
       newSession = SessionManager().makeLlamaSession(
         with: source.modelURL,
-        config: LlamaSessionConfig(numTokens: 512)
+        config: LlamaSessionConfig(numThreads: numThreads, numTokens: 512)
       )
     case .alpaca:
       newSession = SessionManager().makeAlpacaSession(
         with: source.modelURL,
-        config: AlpacaSessionConfig(numTokens: 512)
+        config: AlpacaSessionConfig(numThreads: numThreads, numTokens: 512)
       )
     case .gpt4All:
       newSession = SessionManager().makeGPT4AllSession(
         with: source.modelURL,
-        config: GPT4AllSessionConfig.default
+        config: GPT4AllSessionConfig(numThreads: numThreads, numTokens: 512)
       )
     }
 

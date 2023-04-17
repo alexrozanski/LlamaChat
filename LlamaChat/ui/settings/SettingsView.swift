@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
   enum Tab {
+    case general
     case sources
   }
 
@@ -20,6 +21,11 @@ struct SettingsView: View {
 
   var body: some View {
     TabView {
+      GeneralSettingsView(viewModel: viewModel.generalSettingsViewModel)
+        .tabItem {
+          Label("General", systemImage: "gearshape")
+        }
+        .tag(Tab.general)
       SourcesSettingsView(viewModel: viewModel.sourcesSettingsViewModel)
         .tabItem {
           Label("Sources", systemImage: "ellipsis.bubble")
