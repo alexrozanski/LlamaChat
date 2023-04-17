@@ -72,7 +72,7 @@ struct SourcesSettingsListView: View {
     }
     .border(.separator)
     .onAppear {
-      viewModel.selectFirstSource()
+      viewModel.selectFirstSourceIfEmpty()
     }
   }
 }

@@ -83,8 +83,10 @@ class SourcesSettingsViewModel: ObservableObject {
     chatSources.remove(source: source)
   }
 
-  func selectFirstSource() {
-    selectedSourceId = sources.first?.id
+  func selectFirstSourceIfEmpty() {
+    if selectedSourceId == nil {
+      selectedSourceId = sources.first?.id
+    }
   }
 
   func showAddSourceSheet() {

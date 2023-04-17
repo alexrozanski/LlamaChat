@@ -70,7 +70,7 @@ struct ChatInfoView: View {
           })
           .disabled(!viewModel.canClearMessages)
           ActionButton(title: "info", imageName: "info.circle.fill", enabledTextColor: .blue, handler: {
-            print("clear")
+            SettingsWindowPresenter.shared.present(deeplinkingTo: .sources(sourceId: viewModel.sourceId))
           })
         }
         .frame(maxWidth: .infinity, alignment: .center)
