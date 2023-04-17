@@ -8,11 +8,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-  enum Tab {
-    case general
-    case sources
-  }
-
   @ObservedObject var viewModel: SettingsViewModel
 
   init(viewModel: SettingsViewModel) {
@@ -20,17 +15,21 @@ struct SettingsView: View {
   }
 
   var body: some View {
-    TabView {
+    let selectedTabBinding = Binding(
+      get: { viewModel.selectedTab },
+      set: { viewModel.selectedTab = $0 }
+    )
+    TabView(selection: selectedTabBinding) {
       GeneralSettingsView(viewModel: viewModel.generalSettingsViewModel)
         .tabItem {
           Label("General", systemImage: "gearshape")
         }
-        .tag(Tab.general)
+        .tag(SettingsTab.general)
       SourcesSettingsView(viewModel: viewModel.sourcesSettingsViewModel)
         .tabItem {
           Label("Sources", systemImage: "ellipsis.bubble")
         }
-        .tag(Tab.sources)
+        .tag(SettingsTab.sources)
     }
     .frame(idealWidth: 640, idealHeight: 380)
   }

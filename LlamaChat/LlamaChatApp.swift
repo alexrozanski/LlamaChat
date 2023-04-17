@@ -29,6 +29,7 @@ struct LlamaChatApp: App {
     let messagesModel = MessagesModel()
     let chatModels = ChatModels(messagesModel: messagesModel)
     let stateRestoration = StateRestoration()
+    let settingsViewModel = SettingsViewModel(chatSources: chatSources)
 
     _chatSources = StateObject(wrappedValue: chatSources)
     _chatModels = StateObject(wrappedValue: chatModels)
@@ -41,7 +42,10 @@ struct LlamaChatApp: App {
       messagesModel: messagesModel,
       stateRestoration: stateRestoration
     ))
-    _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(chatSources: chatSources))
+    _settingsViewModel = StateObject(wrappedValue: settingsViewModel)
+
+    // For deeplinking
+    SettingsWindowPresenter.shared.settingsViewModel = settingsViewModel
   }
 
   var body: some Scene {

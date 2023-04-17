@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820C795F29DEEA8F00F70723 /* DebouncedView.swift */; };
-		821B253929DFA39600CF1001 /* NSApplication+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B253829DFA39600CF1001 /* NSApplication+Settings.swift */; };
 		821B254329E0A46B00CF1001 /* ConvertSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B254229E0A46B00CF1001 /* ConvertSourceView.swift */; };
 		821B254829E0DD9200CF1001 /* ConvertSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B254729E0DD9200CF1001 /* ConvertSourceViewModel.swift */; };
 		821B254A29E0E86B00CF1001 /* NonEditableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821B254929E0E86B00CF1001 /* NonEditableTextView.swift */; };
@@ -80,6 +79,7 @@
 		82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199A29D834AE008189DF /* SourcesSettingsView.swift */; };
 		82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */; };
 		82BCA19729EDCB51001D5CC0 /* ProcessInfo+Threads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */; };
+		82BCA19929EDDBA7001D5CC0 /* SettingsWindowPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA19829EDDBA7001D5CC0 /* SettingsWindowPresenter.swift */; };
 		82C6869A29DA627800B76BA6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869929DA627800B76BA6 /* AvatarView.swift */; };
 		82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */; };
 		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
@@ -106,7 +106,6 @@
 
 /* Begin PBXFileReference section */
 		820C795F29DEEA8F00F70723 /* DebouncedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncedView.swift; sourceTree = "<group>"; };
-		821B253829DFA39600CF1001 /* NSApplication+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApplication+Settings.swift"; sourceTree = "<group>"; };
 		821B254229E0A46B00CF1001 /* ConvertSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourceView.swift; sourceTree = "<group>"; };
 		821B254729E0DD9200CF1001 /* ConvertSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourceViewModel.swift; sourceTree = "<group>"; };
 		821B254929E0E86B00CF1001 /* NonEditableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonEditableTextView.swift; sourceTree = "<group>"; };
@@ -180,6 +179,7 @@
 		82AE199A29D834AE008189DF /* SourcesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsView.swift; sourceTree = "<group>"; };
 		82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsViewModel.swift; sourceTree = "<group>"; };
 		82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Threads.swift"; sourceTree = "<group>"; };
+		82BCA19829EDDBA7001D5CC0 /* SettingsWindowPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowPresenter.swift; sourceTree = "<group>"; };
 		82C6869929DA627800B76BA6 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
 		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
@@ -220,7 +220,6 @@
 		821B253729DFA38700CF1001 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				821B253829DFA39600CF1001 /* NSApplication+Settings.swift */,
 				821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */,
 				82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */,
 				82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */,
@@ -561,6 +560,7 @@
 			isa = PBXGroup;
 			children = (
 				82AE198F29D7B07E008189DF /* SettingsView.swift */,
+				82BCA19829EDDBA7001D5CC0 /* SettingsWindowPresenter.swift */,
 				82AE199929D8349A008189DF /* tabs */,
 			);
 			path = settings;
@@ -763,6 +763,7 @@
 				82E43CBF29EA96A4003E69D1 /* GeneralSettingsView.swift in Sources */,
 				82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */,
 				8227DA9729D911A4000E554D /* LlamaChatApp.swift in Sources */,
+				82BCA19929EDDBA7001D5CC0 /* SettingsWindowPresenter.swift in Sources */,
 				82980F1E29E37D15000329E6 /* ModelFileManager.swift in Sources */,
 				826F4C6D29DCFFFD0099A729 /* ClearedContextMessageViewModel.swift in Sources */,
 				82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */,
@@ -789,7 +790,6 @@
 				8227DAA029D98577000E554D /* ChatListView.swift in Sources */,
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
 				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
-				821B253929DFA39600CF1001 /* NSApplication+Settings.swift in Sources */,
 				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				821B254329E0A46B00CF1001 /* ConvertSourceView.swift in Sources */,
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,
