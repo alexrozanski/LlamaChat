@@ -15,7 +15,7 @@
       "location" : "https://github.com/alexrozanski/llama.swift/",
       "state" : {
         "branch" : "v2",
-        "revision" : "977c0bc7fc4007802f3f84bc2e411e8efc75a48d"
+        "revision" : "b72e4b337f90bd71523fe84d20b3e2e5b2f054b8"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparkle-project/Sparkle",
       "state" : {
-        "revision" : "631846cc829f0f0cae327df9bafe5a32b7ddadce",
-        "version" : "2.4.0"
+        "revision" : "7907f058bcef1132c9b4af6c049cac598330a5f9",
+        "version" : "2.4.1"
       }
     },
     {

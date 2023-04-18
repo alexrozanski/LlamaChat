@@ -104,7 +104,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
           modelType: modelSize.toModelType(),
           directoryURL: directoryURL
         )
-        switch ModelConverter().validateConversionData(data, requiredFiles: &self.files) {
+        switch ModelConverter().validateConversionData(data, returning: &self.files) {
         case .success(let validatedData):
           self.modelState = .valid(data: validatedData)
         case .failure(let error):
