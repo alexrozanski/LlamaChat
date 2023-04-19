@@ -164,22 +164,27 @@ class ChatModel: ObservableObject {
   private func makeAndStoreNewSession() -> Session {
     var newSession: Session
     let numThreads = UInt(AppSettings.shared.numThreads)
-
     switch source.type {
     case .llama:
       newSession = SessionManager().makeLlamaSession(
         with: source.modelURL,
-        config: LlamaSessionConfig(numThreads: numThreads, numTokens: 512)
+        config: LlamaSessionConfig.default
+          .withNumThreads(numThreads)
+          .withNumTokens(512)
       )
     case .alpaca:
       newSession = SessionManager().makeAlpacaSession(
         with: source.modelURL,
-        config: AlpacaSessionConfig(numThreads: numThreads, numTokens: 512)
+        config: AlpacaSessionConfig.default
+          .withNumThreads(numThreads)
+          .withNumTokens(512)
       )
     case .gpt4All:
       newSession = SessionManager().makeGPT4AllSession(
         with: source.modelURL,
-        config: GPT4AllSessionConfig(numThreads: numThreads, numTokens: 512)
+        config: GPT4AllSessionConfig.default
+          .withNumThreads(numThreads)
+          .withNumTokens(512)
       )
     }
 

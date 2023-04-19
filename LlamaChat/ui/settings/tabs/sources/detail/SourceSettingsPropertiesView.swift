@@ -1,8 +1,8 @@
 //
-//  SourcesSettingsDetailView.swift
+//  SourceSettingsPropertiesView.swift
 //  LlamaChat
 //
-//  Created by Alex Rozanski on 01/04/2023.
+//  Created by Alex Rozanski on 19/04/2023.
 //
 
 import SwiftUI
@@ -47,7 +47,8 @@ fileprivate struct AvatarRowView: View {
   }
 }
 
-struct SourcesSettingsDetailView: View {
+
+struct SourceSettingsPropertiesView: View {
   var viewModel: SourcesSettingsDetailViewModel
 
   var body: some View {

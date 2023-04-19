@@ -35,6 +35,8 @@ class SourcesSettingsDetailViewModel: ObservableObject {
   @Published private(set) var name: String
   @Published var avatarImageName: String?
 
+  private(set) lazy var parametersViewModel = SourceSettingsParametersViewModel()
+
   private var subscriptions = Set<AnyCancellable>()
 
   init(source: ChatSource) {
