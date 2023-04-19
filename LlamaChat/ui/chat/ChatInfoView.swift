@@ -75,12 +75,14 @@ struct ChatInfoView: View {
         }
         .frame(maxWidth: .infinity, alignment: .center)
       }
-      Section(content: {
+      Section {
         LabeledContent(content: {
           Text(viewModel.modelSize)
         }, label: {
           Text("Model Size")
         })
+      }
+      Section(content: {
         LabeledContent(content: {
           VStack(alignment: .trailing) {
             modelStatText(modelStat: viewModel.contextTokenCount, unit: Unit(singular: "token", plural: "tokens"))
@@ -95,7 +97,7 @@ struct ChatInfoView: View {
           Text("Current Context")
         })
       }, header: {
-        Text("Model Stats")
+        Text("Model Parameters")
           .font(.system(.body).smallCaps())
       })
     }
