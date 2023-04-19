@@ -25,6 +25,7 @@ struct SourcesSettingsView: View {
         .padding([.top, .leading, .bottom])
         .frame(width: 200)
       detailView
+        .padding([.top])
         .frame(maxWidth: .infinity)
     }
     .sheet(isPresented: $viewModel.sheetPresented) {

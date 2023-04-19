@@ -80,6 +80,11 @@
 		82AE199D29D834D9008189DF /* SourcesSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */; };
 		82BCA19729EDCB51001D5CC0 /* ProcessInfo+Threads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */; };
 		82BCA19929EDDBA7001D5CC0 /* SettingsWindowPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA19829EDDBA7001D5CC0 /* SettingsWindowPresenter.swift */; };
+		82BCA19F29F029C1001D5CC0 /* SourceSettingsPropertiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA19E29F029C1001D5CC0 /* SourceSettingsPropertiesView.swift */; };
+		82BCA1A129F02C0D001D5CC0 /* SourceSettingsParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A029F02C0D001D5CC0 /* SourceSettingsParametersView.swift */; };
+		82BCA1A329F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A229F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift */; };
+		82BCA1A529F032EC001D5CC0 /* Sliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A429F032EC001D5CC0 /* Sliders.swift */; };
+		82BCA1A729F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A629F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift */; };
 		82C6869A29DA627800B76BA6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869929DA627800B76BA6 /* AvatarView.swift */; };
 		82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */; };
 		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
@@ -180,6 +185,11 @@
 		82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesSettingsViewModel.swift; sourceTree = "<group>"; };
 		82BCA19629EDCB51001D5CC0 /* ProcessInfo+Threads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Threads.swift"; sourceTree = "<group>"; };
 		82BCA19829EDDBA7001D5CC0 /* SettingsWindowPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowPresenter.swift; sourceTree = "<group>"; };
+		82BCA19E29F029C1001D5CC0 /* SourceSettingsPropertiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSettingsPropertiesView.swift; sourceTree = "<group>"; };
+		82BCA1A029F02C0D001D5CC0 /* SourceSettingsParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSettingsParametersView.swift; sourceTree = "<group>"; };
+		82BCA1A229F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSettingsParametersViewModel.swift; sourceTree = "<group>"; };
+		82BCA1A429F032EC001D5CC0 /* Sliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sliders.swift; sourceTree = "<group>"; };
+		82BCA1A629F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextFieldWithRandomSelector.swift; sourceTree = "<group>"; };
 		82C6869929DA627800B76BA6 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
 		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
@@ -272,7 +282,8 @@
 				8227DA6A29D8586E000E554D /* ConfirmSheetDeletionContentView.swift */,
 				82AE199A29D834AE008189DF /* SourcesSettingsView.swift */,
 				8227DA7029D86256000E554D /* SourcesSettingsListView.swift */,
-				8227DA7229D8626F000E554D /* SourcesSettingsDetailView.swift */,
+				82E43CBE29EA96A4003E69D1 /* GeneralSettingsView.swift */,
+				82BCA19D29F02991001D5CC0 /* detail */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -282,6 +293,7 @@
 			children = (
 				82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */,
 				8227DA7729D86633000E554D /* SourcesSettingsDetailViewModel.swift */,
+				82BCA1A229F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -461,6 +473,8 @@
 				820C795F29DEEA8F00F70723 /* DebouncedView.swift */,
 				8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */,
 				821B254929E0E86B00CF1001 /* NonEditableTextView.swift */,
+				82BCA1A429F032EC001D5CC0 /* Sliders.swift */,
+				82BCA1A629F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -580,9 +594,18 @@
 			isa = PBXGroup;
 			children = (
 				8227DA6F29D8624A000E554D /* sources */,
-				82E43CBE29EA96A4003E69D1 /* GeneralSettingsView.swift */,
 			);
 			path = tabs;
+			sourceTree = "<group>";
+		};
+		82BCA19D29F02991001D5CC0 /* detail */ = {
+			isa = PBXGroup;
+			children = (
+				8227DA7229D8626F000E554D /* SourcesSettingsDetailView.swift */,
+				82BCA19E29F029C1001D5CC0 /* SourceSettingsPropertiesView.swift */,
+				82BCA1A029F02C0D001D5CC0 /* SourceSettingsParametersView.swift */,
+			);
+			path = detail;
 			sourceTree = "<group>";
 		};
 		82C6869D29DA636A00B76BA6 /* avatar */ = {
@@ -794,12 +817,15 @@
 				821B254329E0A46B00CF1001 /* ConvertSourceView.swift in Sources */,
 				82914CC729D7646A00858B2C /* TypingBubbleContentView.swift in Sources */,
 				82914CCE29D76C0600858B2C /* GeneratedMessageViewModel.swift in Sources */,
+				82BCA1A329F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift in Sources */,
+				82BCA1A529F032EC001D5CC0 /* Sliders.swift in Sources */,
 				826F4C6F29DD05110099A729 /* ClearedContextMessageView.swift in Sources */,
 				82718D0529D368EA00545C32 /* MainChatView.swift in Sources */,
 				8227DA9B29D91A1C000E554D /* ChatInfoViewModel.swift in Sources */,
 				8227DA7329D8626F000E554D /* SourcesSettingsDetailView.swift in Sources */,
 				82914CDA29D79DFD00858B2C /* StaticMessageViewModel.swift in Sources */,
 				8227DA6B29D8586E000E554D /* ConfirmSheetDeletionContentView.swift in Sources */,
+				82BCA19F29F029C1001D5CC0 /* SourceSettingsPropertiesView.swift in Sources */,
 				82E43C9629E8AF1E003E69D1 /* ConvertSourceStepView.swift in Sources */,
 				821B255729E1F05000CF1001 /* NSScrollView+Bottom.swift in Sources */,
 				8227DA8D29D8D7E9000E554D /* ChatWindowContentViewModel.swift in Sources */,
@@ -810,6 +836,7 @@
 				82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */,
 				82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */,
 				82E43CBD29EA951F003E69D1 /* AppSettings.swift in Sources */,
+				82BCA1A729F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,
 				82914CCC29D76ABE00858B2C /* StaticMessage.swift in Sources */,
 				82914CE029D7A06C00858B2C /* Message.swift in Sources */,
@@ -829,6 +856,7 @@
 				820C796029DEEA8F00F70723 /* DebouncedView.swift in Sources */,
 				82718CEE29D3689B00545C32 /* ChatModel.swift in Sources */,
 				82C68BEE29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift in Sources */,
+				82BCA1A129F02C0D001D5CC0 /* SourceSettingsParametersView.swift in Sources */,
 				8227DAC429DA4915000E554D /* ModelSize.swift in Sources */,
 				821B254829E0DD9200CF1001 /* ConvertSourceViewModel.swift in Sources */,
 				82AE198D29D7A803008189DF /* MessageGenerationState.swift in Sources */,
