@@ -8,26 +8,12 @@
 import SwiftUI
 
 struct SourcesSettingsDetailView: View {
-  enum Tab: CaseIterable {
-    case properties
-    case parameters
-
-    var label: String {
-      switch self {
-      case .properties: return "Properties"
-      case .parameters: return "Parameters"
-      }
-    }
-  }
-
-  var viewModel: SourcesSettingsDetailViewModel
-
-  @State var selectedTab: Tab = .properties
+  @ObservedObject var viewModel: SourcesSettingsDetailViewModel
 
   @ViewBuilder var tabContent: some View {
-    switch selectedTab {
+    switch viewModel.selectedTab {
     case .properties:
-      SourceSettingsPropertiesView(viewModel: viewModel)
+      SourceSettingsPropertiesView(viewModel: viewModel.propertiesViewModel)
     case .parameters:
       SourceSettingsParametersView(viewModel: viewModel.parametersViewModel)
     }
@@ -35,8 +21,8 @@ struct SourcesSettingsDetailView: View {
 
   var body: some View {
     VStack {
-      Picker("", selection: $selectedTab) {
-        ForEach(Tab.allCases, id: \.self) { tab in
+      Picker("", selection: $viewModel.selectedTab) {
+        ForEach(SourcesSettingsDetailViewModel.Tab.allCases, id: \.self) { tab in
           Text(tab.label)
         }
       }
@@ -44,6 +30,15 @@ struct SourcesSettingsDetailView: View {
       .fixedSize()
       tabContent
       Spacer()
+    }
+  }
+}
+
+fileprivate extension SourcesSettingsDetailViewModel.Tab {
+  var label: String {
+    switch self {
+    case .properties: return "Properties"
+    case .parameters: return "Parameters"
     }
   }
 }

@@ -8,11 +8,11 @@
 import SwiftUI
 
 fileprivate struct NameRowView: View {
-  @ObservedObject var viewModel: SourcesSettingsDetailViewModel
+  @ObservedObject var viewModel: SourceSettingsPropertiesViewModel
 
   @State var name: String
 
-  init(viewModel: SourcesSettingsDetailViewModel) {
+  init(viewModel: SourceSettingsPropertiesViewModel) {
     self.viewModel = viewModel
     _name = State(wrappedValue: viewModel.name)
   }
@@ -23,15 +23,18 @@ fileprivate struct NameRowView: View {
         viewModel.updateName(newName)
       })
     }
+    .onChange(of: viewModel.name) { newName in
+      name = newName
+    }
   }
 }
 
 fileprivate struct AvatarRowView: View {
-  @ObservedObject var viewModel: SourcesSettingsDetailViewModel
+  @ObservedObject var viewModel: SourceSettingsPropertiesViewModel
 
   @State var name: String
 
-  init(viewModel: SourcesSettingsDetailViewModel) {
+  init(viewModel: SourceSettingsPropertiesViewModel) {
     self.viewModel = viewModel
     _name = State(wrappedValue: viewModel.name)
   }
@@ -49,7 +52,7 @@ fileprivate struct AvatarRowView: View {
 
 
 struct SourceSettingsPropertiesView: View {
-  var viewModel: SourcesSettingsDetailViewModel
+  var viewModel: SourceSettingsPropertiesViewModel
 
   var body: some View {
     Form {
