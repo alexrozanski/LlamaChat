@@ -53,6 +53,8 @@
 		82718D0629D368EA00545C32 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0129D368EA00545C32 /* ChatView.swift */; };
 		82718D0729D368EA00545C32 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0229D368EA00545C32 /* ComposeView.swift */; };
 		82718D0829D368EA00545C32 /* MessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0329D368EA00545C32 /* MessageBubbleView.swift */; };
+		8281037329F0B5CD00069AC0 /* ModelParameterUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8281037229F0B5CC00069AC0 /* ModelParameterUtils.swift */; };
+		8281037629F0C35100069AC0 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8281037529F0C35100069AC0 /* llama */; };
 		82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CBF29D5EB7A00858B2C /* FileUtils.swift */; };
 		82914CC229D5ED9200858B2C /* ChatListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC129D5ED9200858B2C /* ChatListViewModel.swift */; };
 		82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC429D6E69C00858B2C /* BorderlessTextField.swift */; };
@@ -85,6 +87,7 @@
 		82BCA1A329F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A229F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift */; };
 		82BCA1A529F032EC001D5CC0 /* Sliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A429F032EC001D5CC0 /* Sliders.swift */; };
 		82BCA1A729F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A629F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift */; };
+		82BCA1A929F0B391001D5CC0 /* ModelParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BCA1A829F0B391001D5CC0 /* ModelParameters.swift */; };
 		82C6869A29DA627800B76BA6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869929DA627800B76BA6 /* AvatarView.swift */; };
 		82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */; };
 		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
@@ -157,6 +160,7 @@
 		82718D0129D368EA00545C32 /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		82718D0229D368EA00545C32 /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		82718D0329D368EA00545C32 /* MessageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleView.swift; sourceTree = "<group>"; };
+		8281037229F0B5CC00069AC0 /* ModelParameterUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelParameterUtils.swift; sourceTree = "<group>"; };
 		82914CBF29D5EB7A00858B2C /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
 		82914CC129D5ED9200858B2C /* ChatListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewModel.swift; sourceTree = "<group>"; };
 		82914CC429D6E69C00858B2C /* BorderlessTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessTextField.swift; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 		82BCA1A229F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSettingsParametersViewModel.swift; sourceTree = "<group>"; };
 		82BCA1A429F032EC001D5CC0 /* Sliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sliders.swift; sourceTree = "<group>"; };
 		82BCA1A629F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextFieldWithRandomSelector.swift; sourceTree = "<group>"; };
+		82BCA1A829F0B391001D5CC0 /* ModelParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelParameters.swift; sourceTree = "<group>"; };
 		82C6869929DA627800B76BA6 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		82C6869B29DA636600B76BA6 /* AvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewModel.swift; sourceTree = "<group>"; };
 		82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextView.swift; sourceTree = "<group>"; };
@@ -461,6 +466,7 @@
 			isa = PBXGroup;
 			children = (
 				82914CBF29D5EB7A00858B2C /* FileUtils.swift */,
+				8281037229F0B5CC00069AC0 /* ModelParameterUtils.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -535,6 +541,7 @@
 			isa = PBXGroup;
 			children = (
 				82980F1D29E37D15000329E6 /* ModelFileManager.swift */,
+				82BCA1A829F0B391001D5CC0 /* ModelParameters.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -809,9 +816,11 @@
 				82E3F1D829DF2865003F0368 /* ConfigureSourceViewModel.swift in Sources */,
 				821B254C29E10C6500CF1001 /* ConvertSourceStepViewModel.swift in Sources */,
 				8255EA5029D58B2B000B9F83 /* ChatSources.swift in Sources */,
+				82BCA1A929F0B391001D5CC0 /* ModelParameters.swift in Sources */,
 				8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */,
 				8227DAA029D98577000E554D /* ChatListView.swift in Sources */,
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
+				8281037329F0B5CD00069AC0 /* ModelParameterUtils.swift in Sources */,
 				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
 				8227DA7D29D870D3000E554D /* DidEndEditingTextField.swift in Sources */,
 				821B254329E0A46B00CF1001 /* ConvertSourceView.swift in Sources */,

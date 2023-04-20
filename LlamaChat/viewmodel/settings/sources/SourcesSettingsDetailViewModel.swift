@@ -35,7 +35,7 @@ class SourcesSettingsDetailViewModel: ObservableObject {
   @Published private(set) var name: String
   @Published var avatarImageName: String?
 
-  private(set) lazy var parametersViewModel = SourceSettingsParametersViewModel()
+  private(set) lazy var parametersViewModel = SourceSettingsParametersViewModel(modelParameters: source.modelParameters)
 
   private var subscriptions = Set<AnyCancellable>()
 

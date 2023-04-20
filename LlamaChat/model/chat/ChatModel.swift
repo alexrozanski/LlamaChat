@@ -168,23 +168,26 @@ class ChatModel: ObservableObject {
     case .llama:
       newSession = SessionManager().makeLlamaSession(
         with: source.modelURL,
-        config: LlamaSessionConfig.default
+        config: LlamaSessionConfig.configurableDefaults
           .withNumThreads(numThreads)
           .withNumTokens(512)
+          .build()
       )
     case .alpaca:
       newSession = SessionManager().makeAlpacaSession(
         with: source.modelURL,
-        config: AlpacaSessionConfig.default
+        config: AlpacaSessionConfig.configurableDefaults
           .withNumThreads(numThreads)
           .withNumTokens(512)
+          .build()
       )
     case .gpt4All:
       newSession = SessionManager().makeGPT4AllSession(
         with: source.modelURL,
-        config: GPT4AllSessionConfig.default
+        config: GPT4AllSessionConfig.configurableDefaults
           .withNumThreads(numThreads)
           .withNumTokens(512)
+          .build()
       )
     }
 

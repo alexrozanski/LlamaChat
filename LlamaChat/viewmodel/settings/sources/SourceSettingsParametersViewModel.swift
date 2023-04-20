@@ -21,4 +21,23 @@ class SourceSettingsParametersViewModel: ObservableObject {
 
   @Published var lastNTokensToPenalize: Int = 1
   @Published var repeatPenalty: Double = 1
+
+  let modelParameters: ModelParameters
+  init(modelParameters: ModelParameters) {
+    self.modelParameters = modelParameters
+
+    modelParameters.$seedValue.map { $0 == nil }.assign(to: &$isSeedRandom)
+    modelParameters.$seedValue.assign(to: &$seedValue)
+
+    modelParameters.$contextSize.map { Int($0) }.assign(to: &$contextSize)
+    modelParameters.$numberOfTokens.map { Int($0) }.assign(to: &$numberOfTokens)
+
+    modelParameters.$topP.assign(to: &$topP)
+    modelParameters.$topK.map { Int($0) }.assign(to: &$topK)
+    modelParameters.$temperature.assign(to: &$temperature)
+    modelParameters.$batchSize.map { Int($0) }.assign(to: &$batchSize)
+
+    modelParameters.$lastNTokensToPenalize.map { Int($0) }.assign(to: &$lastNTokensToPenalize)
+    modelParameters.$repeatPenalty.assign(to: &$repeatPenalty)
+  }
 }
