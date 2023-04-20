@@ -17,7 +17,7 @@ struct ConfigureLocalPyTorchModelSettingsView: View {
     case .loading:
       LabeledContent { Text("") } label: { Text("") }
       .overlay(
-        DebouncedView(delay: 0.2) {
+        DebouncedView(isVisible: true, delay: 0.2) {
           ProgressView()
             .progressViewStyle(.circular)
             .controlSize(.small)

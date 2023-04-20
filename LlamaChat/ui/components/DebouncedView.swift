@@ -12,10 +12,15 @@ struct DebouncedView<Content>: View where Content: View {
 
   @State private var showView = false
 
+  let isVisible: Bool
   let delay: Double
+  var animation: Animation?
+
   let contentBuilder: ContentBuilder
-  init(delay: Double, contentBuilder: @escaping ContentBuilder) {
+  init(isVisible: Bool, delay: Double, animation: Animation? = nil, contentBuilder: @escaping ContentBuilder) {
+    self.isVisible = isVisible
     self.delay = delay
+    self.animation = animation
     self.contentBuilder = contentBuilder
   }
 
@@ -25,9 +30,21 @@ struct DebouncedView<Content>: View where Content: View {
         contentBuilder()
       }
     }
+    .animation(animation, value: showView)
+    .onChange(of: isVisible) { newIsVisible in
+      if newIsVisible {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+          self.showView = true
+        }
+      } else {
+        showView = false
+      }
+    }
     .onAppear {
-      DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-        self.showView = true
+      if isVisible {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+          self.showView = true
+        }
       }
     }
   }
