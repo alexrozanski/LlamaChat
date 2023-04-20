@@ -306,7 +306,8 @@ private func errorText(from error: Error) -> String {
 
 fileprivate extension SessionConfigBuilder {
   func withModelParameters(_ modelParameters: ModelParameters, numThreads: UInt) -> SessionConfigBuilder {
-    return withNumThreads(numThreads)
+    return withSeed(modelParameters.seedValue)
+      .withNumThreads(numThreads)
       .withNumTokens(modelParameters.numberOfTokens)
       .withHyperparameters { hyperparameters in
         hyperparameters

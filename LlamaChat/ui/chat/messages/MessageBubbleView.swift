@@ -47,6 +47,7 @@ struct MessageBubbleView<Content>: View where Content: View {
         .onChange(of: style) { newStyle in
           updateScaleAnimation(with: newStyle)
         }
+        .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: availableWidth.map { $0 * 0.8 } ?? .infinity, alignment: sender.isMe ? .trailing : .leading)
       if !sender.isMe {
         Spacer()

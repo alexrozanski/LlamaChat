@@ -44,3 +44,10 @@ class ObservableMessageViewModel: ObservableObject {
     return wrapped as? T
   }
 }
+
+extension ObservableMessageViewModel: Equatable {
+  static func == (lhs: ObservableMessageViewModel, rhs: ObservableMessageViewModel) -> Bool {
+    return lhs.id == rhs.id
+  }
+
+}
