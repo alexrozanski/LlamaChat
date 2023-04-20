@@ -239,8 +239,9 @@ struct SourceSettingsParametersView: View {
     }
   }
 
-  var body: some View {
+  @State var showResetDefaultsAlert = false
 
+  var body: some View {
     VStack {
       HStack {
         Toggle("Parameter Details", isOn: $viewModel.showDetails)
@@ -249,6 +250,15 @@ struct SourceSettingsParametersView: View {
           .padding(.leading, 8)
         Spacer()
         Button("Reset Defaults") {
+          showResetDefaultsAlert = true
+        }
+        .alert(isPresented: $showResetDefaultsAlert) {
+          Alert(
+            title: Text("Reset parameters to defaults?"),
+            message: Text("This cannot be undone"),
+            primaryButton: .destructive(Text("Reset"), action: { viewModel.resetDefaults() }),
+            secondaryButton: .cancel()
+          )
         }
         .controlSize(.small)
       }
