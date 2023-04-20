@@ -18,18 +18,16 @@ class AvatarViewModel: ObservableObject {
 
   private let chatSource: ChatSource
 
-  private var subscriptions = Set<AnyCancellable>()
-
   init(chatSource: ChatSource) {
     self.chatSource = chatSource
     avatar = makeAvatar(for: chatSource.avatarImageName, name: chatSource.name)
 
     chatSource.$avatarImageName
       .combineLatest(chatSource.$name)
-      .sink { [weak self] newAvatarImageName, newName in
-        self?.avatar = makeAvatar(for: newAvatarImageName, name: newName)
+      .map { newAvatarImageName, newName in
+        makeAvatar(for: newAvatarImageName, name: newName)
       }
-      .store(in: &subscriptions)
+      .assign(to: &$avatar)
   }
 }
 

@@ -68,7 +68,7 @@ class ChatInfoViewModel: ObservableObject {
   @Published private(set) var canClearMessages: Bool
 
   // Parameters
-  @Published var seedValue: Int32? = nil
+  @Published var seedValue: Int32?
   @Published var contextSize: UInt = 0
   @Published var numberOfTokens: UInt = 0
   @Published var topP: Double = 0
@@ -80,24 +80,52 @@ class ChatInfoViewModel: ObservableObject {
 
   private(set) lazy var avatarViewModel = AvatarViewModel(chatSource: chatModel.source)
 
-  private var subscriptions = Set<AnyCancellable>()
-
   init(chatModel: ChatModel) {
     self.chatModel = chatModel
-    canClearMessages = !chatModel.messages.isEmpty
-    chatModel.$messages.sink { [weak self] messages in
-      self?.canClearMessages = !messages.isEmpty
-    }.store(in: &subscriptions)
 
-    chatModel.source.modelParameters.$seedValue.assign(to: &$seedValue)
-    chatModel.source.modelParameters.$contextSize.assign(to: &$contextSize)
-    chatModel.source.modelParameters.$numberOfTokens.assign(to: &$numberOfTokens)
-    chatModel.source.modelParameters.$topP.assign(to: &$topP)
-    chatModel.source.modelParameters.$topK.assign(to: &$topK)
-    chatModel.source.modelParameters.$temperature.assign(to: &$temperature)
-    chatModel.source.modelParameters.$batchSize.assign(to: &$batchSize)
-    chatModel.source.modelParameters.$lastNTokensToPenalize.assign(to: &$lastNTokensToPenalize)
-    chatModel.source.modelParameters.$repeatPenalty.assign(to: &$repeatPenalty)
+    canClearMessages = !chatModel.messages.isEmpty
+
+    chatModel
+      .$messages
+      .map { !$0.isEmpty }
+      .assign(to: &$canClearMessages)
+
+    chatModel.source.$modelParameters
+      .map { $0.$seedValue }
+      .switchToLatest()
+      .assign(to: &$seedValue)
+    chatModel.source.$modelParameters
+      .map { $0.$contextSize }
+      .switchToLatest()
+      .assign(to: &$contextSize)
+    chatModel.source.$modelParameters
+      .map { $0.$numberOfTokens }
+      .switchToLatest()
+      .assign(to: &$numberOfTokens)
+    chatModel.source.$modelParameters
+      .map { $0.$topP }
+      .switchToLatest()
+      .assign(to: &$topP)
+    chatModel.source.$modelParameters
+      .map { $0.$topK }
+      .switchToLatest()
+      .assign(to: &$topK)
+    chatModel.source.$modelParameters
+      .map { $0.$temperature }
+      .switchToLatest()
+      .assign(to: &$temperature)
+    chatModel.source.$modelParameters
+      .map { $0.$batchSize }
+      .switchToLatest()
+      .assign(to: &$batchSize)
+    chatModel.source.$modelParameters
+      .map { $0.$lastNTokensToPenalize }
+      .switchToLatest()
+      .assign(to: &$lastNTokensToPenalize)
+    chatModel.source.$modelParameters
+      .map { $0.$repeatPenalty }
+      .switchToLatest()
+      .assign(to: &$repeatPenalty)
   }
 
   func clearMessages() {
@@ -107,7 +135,11 @@ class ChatInfoViewModel: ObservableObject {
   }
 
   func showInfo() {
-    
+    SettingsWindowPresenter.shared.present(deeplinkingTo: .sources(sourceId: chatModel.source.id, sourcesTab: .properties))
+  }
+
+  func configureParameters() {
+    SettingsWindowPresenter.shared.present(deeplinkingTo: .sources(sourceId: chatModel.source.id, sourcesTab: .parameters))
   }
 
   func loadModelStats() {
