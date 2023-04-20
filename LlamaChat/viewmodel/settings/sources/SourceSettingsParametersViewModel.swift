@@ -56,6 +56,9 @@ class SourceSettingsParametersViewModel: ObservableObject {
   // the infinite loop risk by using removeDuplicates() from one direction, but this is also made
   // more complicated by the fact that source.modelParameters can also change, so we can't use assign().
   //
+  // Finally we call dropFirst() on the chain going back the other way so that the initial connection from
+  // our @Published values back to the values on the ModelParameters doesn't trigger a change event.
+  //
   // If there is a better way of doing this, please open a PR!
   private func setUpDataBindings() {
     source.$modelParameters
@@ -65,6 +68,7 @@ class SourceSettingsParametersViewModel: ObservableObject {
       .assign(to: &$isSeedRandom)
     $isSeedRandom
       .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] newIsSeedRandom in
         if newIsSeedRandom {
           source?.modelParameters.seedValue = nil
@@ -78,6 +82,7 @@ class SourceSettingsParametersViewModel: ObservableObject {
       .assign(to: &$seedValue)
     $seedValue
       .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.seedValue = $0 }
       .store(in: &subscriptions)
 
@@ -88,77 +93,85 @@ class SourceSettingsParametersViewModel: ObservableObject {
       .assign(to: &$contextSize)
     $contextSize.map { UInt($0) }
       .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.contextSize = $0 }
       .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$numberOfTokens }
       .switchToLatest()
-      .removeDuplicates()
       .map { Int($0) }
       .assign(to: &$numberOfTokens)
     $numberOfTokens
       .map { UInt($0) }
+      .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.numberOfTokens = $0 }
       .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$topP }
       .switchToLatest()
-      .removeDuplicates()
       .assign(to: &$topP)
     $topP
+      .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.topP = $0 }
       .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$topK }
       .switchToLatest()
-      .removeDuplicates()
       .map { Int($0) }
       .assign(to: &$topK)
     $topK
       .map { UInt($0) }
+      .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.topK = $0 }
       .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$temperature }
       .switchToLatest()
-      .removeDuplicates()
       .assign(to: &$temperature)
     $temperature
+      .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.temperature = $0 }
       .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$batchSize }
       .switchToLatest()
-      .removeDuplicates()
       .map { Int($0) }
       .assign(to: &$batchSize)
     $batchSize
       .map { UInt($0) }
+      .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.batchSize = $0 }
       .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$lastNTokensToPenalize }
       .switchToLatest()
-      .removeDuplicates()
       .map { Int($0) }
       .assign(to: &$lastNTokensToPenalize)
     $lastNTokensToPenalize
       .map { UInt($0) }
+      .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.lastNTokensToPenalize = $0 }
       .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$repeatPenalty }
       .switchToLatest()
-      .removeDuplicates()
       .assign(to: &$repeatPenalty)
     $repeatPenalty
+      .removeDuplicates()
+      .dropFirst()
       .sink { [weak source] in source?.modelParameters.repeatPenalty = $0 }
       .store(in: &subscriptions)
   }
