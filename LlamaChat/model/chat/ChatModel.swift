@@ -96,6 +96,17 @@ class ChatModel: ObservableObject {
           await self.clearContext(insertClearedContextMessage: true)
         }
       }.store(in: &subscriptions)
+
+    source.$modelParameters
+      .map { $0.objectWillChange }
+      .switchToLatest()
+      .combineLatest(source.$modelParameters)
+      .debounce(for: .zero, scheduler: RunLoop.main)
+      .sink { _ in
+        Task.init {
+          await self.clearContext(insertClearedContextMessage: true)
+        }
+      }.store(in: &subscriptions)
   }
 
   func send(message: StaticMessage) {
@@ -121,8 +132,10 @@ class ChatModel: ObservableObject {
 
   // MARK: - Context
 
-  func clearContext() async {
-    await clearContext(insertClearedContextMessage: true)
+  func clearContext() {
+    Task.init {
+      await clearContext(insertClearedContextMessage: true)
+    }
   }
 
   // Creates a fresh session.
@@ -169,24 +182,21 @@ class ChatModel: ObservableObject {
       newSession = SessionManager().makeLlamaSession(
         with: source.modelURL,
         config: LlamaSessionConfig.configurableDefaults
-          .withNumThreads(numThreads)
-          .withNumTokens(512)
+          .withModelParameters(source.modelParameters, numThreads: numThreads)
           .build()
       )
     case .alpaca:
       newSession = SessionManager().makeAlpacaSession(
         with: source.modelURL,
         config: AlpacaSessionConfig.configurableDefaults
-          .withNumThreads(numThreads)
-          .withNumTokens(512)
+          .withModelParameters(source.modelParameters, numThreads: numThreads)
           .build()
       )
     case .gpt4All:
       newSession = SessionManager().makeGPT4AllSession(
         with: source.modelURL,
         config: GPT4AllSessionConfig.configurableDefaults
-          .withNumThreads(numThreads)
-          .withNumTokens(512)
+          .withModelParameters(source.modelParameters, numThreads: numThreads)
           .build()
       )
     }
@@ -292,4 +302,21 @@ private func errorText(from error: Error) -> String {
     }
   }
   return "Failed to generate response"
+}
+
+fileprivate extension SessionConfigBuilder {
+  func withModelParameters(_ modelParameters: ModelParameters, numThreads: UInt) -> SessionConfigBuilder {
+    return withNumThreads(numThreads)
+      .withNumTokens(modelParameters.numberOfTokens)
+      .withHyperparameters { hyperparameters in
+        hyperparameters
+          .withContextSize(modelParameters.contextSize)
+          .withBatchSize(modelParameters.batchSize)
+          .withLastNTokensToPenalize(modelParameters.lastNTokensToPenalize)
+          .withTopK(modelParameters.topK)
+          .withTopP(modelParameters.topP)
+          .withTemperature(modelParameters.temperature)
+          .withRepeatPenalty(modelParameters.repeatPenalty)
+      }
+  }
 }
