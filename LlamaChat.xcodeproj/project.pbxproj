@@ -54,7 +54,7 @@
 		82718D0729D368EA00545C32 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0229D368EA00545C32 /* ComposeView.swift */; };
 		82718D0829D368EA00545C32 /* MessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82718D0329D368EA00545C32 /* MessageBubbleView.swift */; };
 		8281037329F0B5CD00069AC0 /* ModelParameterUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8281037229F0B5CC00069AC0 /* ModelParameterUtils.swift */; };
-		8281037629F0C35100069AC0 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 8281037529F0C35100069AC0 /* llama */; };
+		8281037829F150BE00069AC0 /* SourceSettingsPropertiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8281037729F150BE00069AC0 /* SourceSettingsPropertiesViewModel.swift */; };
 		82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CBF29D5EB7A00858B2C /* FileUtils.swift */; };
 		82914CC229D5ED9200858B2C /* ChatListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC129D5ED9200858B2C /* ChatListViewModel.swift */; };
 		82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CC429D6E69C00858B2C /* BorderlessTextField.swift */; };
@@ -161,6 +161,7 @@
 		82718D0229D368EA00545C32 /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		82718D0329D368EA00545C32 /* MessageBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBubbleView.swift; sourceTree = "<group>"; };
 		8281037229F0B5CC00069AC0 /* ModelParameterUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelParameterUtils.swift; sourceTree = "<group>"; };
+		8281037729F150BE00069AC0 /* SourceSettingsPropertiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSettingsPropertiesViewModel.swift; sourceTree = "<group>"; };
 		82914CBF29D5EB7A00858B2C /* FileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
 		82914CC129D5ED9200858B2C /* ChatListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewModel.swift; sourceTree = "<group>"; };
 		82914CC429D6E69C00858B2C /* BorderlessTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessTextField.swift; sourceTree = "<group>"; };
@@ -299,6 +300,7 @@
 				82AE199C29D834D9008189DF /* SourcesSettingsViewModel.swift */,
 				8227DA7729D86633000E554D /* SourcesSettingsDetailViewModel.swift */,
 				82BCA1A229F02E50001D5CC0 /* SourceSettingsParametersViewModel.swift */,
+				8281037729F150BE00069AC0 /* SourceSettingsPropertiesViewModel.swift */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -804,6 +806,7 @@
 				82914CE429D7A13C00858B2C /* MessageViewModel.swift in Sources */,
 				82914CC029D5EB7A00858B2C /* FileUtils.swift in Sources */,
 				82718CFC29D368E500545C32 /* MessagesViewModel.swift in Sources */,
+				8281037829F150BE00069AC0 /* SourceSettingsPropertiesViewModel.swift in Sources */,
 				8227DA7F29D881D4000E554D /* ConfigureLocalModelSourceViewModel.swift in Sources */,
 				82A7B4E929DE472800BCBB6B /* ConfigureLocalGgmlModelSettingsView.swift in Sources */,
 				82A7B4E629DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift in Sources */,

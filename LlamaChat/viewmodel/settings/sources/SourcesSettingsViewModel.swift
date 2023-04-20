@@ -35,7 +35,9 @@ class SourcesSettingsViewModel: ObservableObject {
         detailViewModel = nil
         return
       }
-      detailViewModel = SourcesSettingsDetailViewModel(source: source)
+
+      let oldDetailViewModel = detailViewModel
+      detailViewModel = SourcesSettingsDetailViewModel(source: source, selectedTab: oldDetailViewModel?.selectedTab ?? .properties)
     }
   }
 
