@@ -58,8 +58,28 @@ class SourceSettingsParametersViewModel: ObservableObject {
   //
   // If there is a better way of doing this, please open a PR!
   private func setUpDataBindings() {
-    source.modelParameters.$seedValue.map { $0 == nil }.assign(to: &$isSeedRandom)
-    source.modelParameters.$seedValue.assign(to: &$seedValue)
+    source.$modelParameters
+      .map { $0.$seedValue }
+      .switchToLatest()
+      .map { $0 == nil }
+      .assign(to: &$isSeedRandom)
+    $isSeedRandom
+      .removeDuplicates()
+      .sink { [weak source] newIsSeedRandom in
+        if newIsSeedRandom {
+          source?.modelParameters.seedValue = nil
+        }
+      }
+      .store(in: &subscriptions)
+
+    source.$modelParameters
+      .map { $0.$seedValue }
+      .switchToLatest()
+      .assign(to: &$seedValue)
+    $seedValue
+      .removeDuplicates()
+      .sink { [weak source] in source?.modelParameters.seedValue = $0 }
+      .store(in: &subscriptions)
 
     source.$modelParameters
       .map { $0.$contextSize }
