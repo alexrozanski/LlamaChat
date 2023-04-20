@@ -27,6 +27,7 @@ class SourcesSettingsSourceItemViewModel: ObservableObject {
 
 class SourcesSettingsViewModel: ObservableObject {
   private let chatSources: ChatSources
+  private let stateRestoration: StateRestoration
 
   @Published var sources: [SourcesSettingsSourceItemViewModel]
   @Published var selectedSourceId: ChatSource.ID? {
@@ -37,7 +38,11 @@ class SourcesSettingsViewModel: ObservableObject {
       }
 
       let oldDetailViewModel = detailViewModel
-      detailViewModel = SourcesSettingsDetailViewModel(source: source, selectedTab: oldDetailViewModel?.selectedTab ?? .properties)
+      detailViewModel = SourcesSettingsDetailViewModel(
+        source: source,
+        selectedTab: oldDetailViewModel?.selectedTab ?? .properties,
+        stateRestoration: stateRestoration
+      )
     }
   }
 
@@ -48,9 +53,10 @@ class SourcesSettingsViewModel: ObservableObject {
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(chatSources: ChatSources) {
+  init(chatSources: ChatSources, stateRestoration: StateRestoration) {
     self.chatSources = chatSources
     self.sources = chatSources.sources.map { SourcesSettingsSourceItemViewModel(source: $0) }
+    self.stateRestoration = stateRestoration
 
     chatSources.$sources.sink(receiveValue: { sources in
       self.sources = sources.map { SourcesSettingsSourceItemViewModel(source: $0) }

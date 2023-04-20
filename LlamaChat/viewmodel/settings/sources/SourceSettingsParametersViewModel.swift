@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import Combine
 
 class SourceSettingsParametersViewModel: ObservableObject {
+  enum RestorableKey: String {
+    case showDetails
+  }
+
   @Published var isSeedRandom = false
   @Published var seedValue: Int32? = nil
 
@@ -22,9 +27,17 @@ class SourceSettingsParametersViewModel: ObservableObject {
   @Published var lastNTokensToPenalize: Int = 1
   @Published var repeatPenalty: Double = 1
 
+  @Published var showDetails: Bool
+
+  private let restorableData: any RestorableData<RestorableKey>
+  private var subscriptions = Set<AnyCancellable>()
+
   let modelParameters: ModelParameters
-  init(modelParameters: ModelParameters) {
+  init(modelParameters: ModelParameters, stateRestoration: StateRestoration) {
     self.modelParameters = modelParameters
+    self.restorableData = stateRestoration.restorableData(for: "SourceSettingsParametersViewModel")
+
+    _showDetails = Published(initialValue: restorableData.getValue(for: .showDetails) ?? false)
 
     modelParameters.$seedValue.map { $0 == nil }.assign(to: &$isSeedRandom)
     modelParameters.$seedValue.assign(to: &$seedValue)
@@ -39,5 +52,9 @@ class SourceSettingsParametersViewModel: ObservableObject {
 
     modelParameters.$lastNTokensToPenalize.map { Int($0) }.assign(to: &$lastNTokensToPenalize)
     modelParameters.$repeatPenalty.assign(to: &$repeatPenalty)
+
+    $showDetails.receive(on: DispatchQueue.main).sink { [weak self] in
+      self?.restorableData.set(value: $0, for: .showDetails)
+    }.store(in: &subscriptions)
   }
 }

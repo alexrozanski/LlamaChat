@@ -19,14 +19,16 @@ class SettingsViewModel: ObservableObject {
   }
 
   private let chatSources: ChatSources
+  private let stateRestoration: StateRestoration
 
   @Published var selectedTab: SettingsTab = .general
 
   private(set) lazy var generalSettingsViewModel = GeneralSettingsViewModel()
-  private(set) lazy var sourcesSettingsViewModel = SourcesSettingsViewModel(chatSources: chatSources)
+  private(set) lazy var sourcesSettingsViewModel = SourcesSettingsViewModel(chatSources: chatSources, stateRestoration: stateRestoration)
 
-  init(chatSources: ChatSources) {
+  init(chatSources: ChatSources, stateRestoration: StateRestoration) {
     self.chatSources = chatSources
+    self.stateRestoration = stateRestoration
   }
 
   func selectSourceInSourcesTab(forSourceWithId sourceId: ChatSource.ID?, initialTab: InitialSourcesTab) {
