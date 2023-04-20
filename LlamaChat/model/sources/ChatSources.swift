@@ -135,6 +135,7 @@ class ChatSources: ObservableObject {
       .flatMap { sources in
         Publishers.MergeMany(sources.map { $0.objectWillChange })
       }
+      .debounce(for: .zero, scheduler: RunLoop.main)
       .sink { [weak self] _ in
         self?.persistSources()
       }.store(in: &subscriptions)

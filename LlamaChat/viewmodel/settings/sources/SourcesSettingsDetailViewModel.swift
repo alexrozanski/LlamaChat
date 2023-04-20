@@ -22,7 +22,7 @@ class SourcesSettingsDetailViewModel: ObservableObject {
   @Published var selectedTab: Tab
 
   private(set) lazy var propertiesViewModel = SourceSettingsPropertiesViewModel(source: source)
-  private(set) lazy var parametersViewModel = SourceSettingsParametersViewModel(modelParameters: source.modelParameters, stateRestoration: stateRestoration)
+  private(set) lazy var parametersViewModel = SourceSettingsParametersViewModel(source: source, stateRestoration: stateRestoration)
 
   init(source: ChatSource, selectedTab: Tab?, stateRestoration: StateRestoration) {
     self.source = source
