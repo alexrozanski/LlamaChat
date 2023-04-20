@@ -14,8 +14,8 @@ struct GeneratedMessageView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      if showStopButton {
-        DebouncedView(delay: 0.5) {
+      HStack {
+        DebouncedView(isVisible: showStopButton, delay: 0.5, animation: .easeInOut(duration: 0.1)) {
           Button(action: {
             viewModel.stopGeneratingContent()
           }) {
@@ -24,6 +24,7 @@ struct GeneratedMessageView: View {
               .foregroundColor(.blue)
           }
           .buttonStyle(BorderlessButtonStyle())
+          .transition(.asymmetric(insertion: .scale(scale: 0.5), removal: .move(edge: .top)))
         }
       }
       MessageBubbleView(sender: viewModel.sender, style: viewModel.state.isWaiting ? .typing: .regular, isError: viewModel.isError, availableWidth: availableWidth) {
