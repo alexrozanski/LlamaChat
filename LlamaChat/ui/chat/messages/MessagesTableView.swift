@@ -164,13 +164,38 @@ struct MessagesTableView: NSViewRepresentable {
   }
 
   class Coordinator: NSObject, NSTableViewDataSource, NSTableViewDelegate {
-    var tableView: NSTableView?
+    private var frameDidChangeNotificationHandle: NSObjectProtocol?
+    private var lastTableViewFrame: NSRect?
+
+    var tableView: NSTableView? {
+      didSet {
+        if let tableView {
+          lastTableViewFrame = tableView.frame
+          tableView.postsBoundsChangedNotifications = true
+          frameDidChangeNotificationHandle = NotificationCenter.default.addObserver(forName: NSView.frameDidChangeNotification, object: tableView, queue: .main, using: { [weak self] _ in
+            self?.tableViewFrameDidChange()
+          })
+        }
+      }
+    }
     var parent: MessagesTableView
     var lastRows: [ObservableMessageViewModel] = []
 
     init(_ parent: MessagesTableView) {
       self.parent = parent
     }
+
+    func tableViewFrameDidChange() {
+      guard let tableView else { return }
+
+      // If we were scrolled to the end before the table frame change, scroll to the end now.
+      if lastTableViewFrame?.maxY == tableView.visibleRect.maxY {
+        tableView.scrollToEndOfDocument(nil)
+      }
+      lastTableViewFrame = tableView.frame
+    }
+
+    // MARK: - NSTableView Delegate/DataSource
 
     func numberOfRows(in tableView: NSTableView) -> Int {
       return parent.messages.count
