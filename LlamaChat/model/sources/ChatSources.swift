@@ -24,7 +24,7 @@ class ChatSource: Codable, ObservableObject {
   let modelURL: URL
   let modelDirectoryId: ModelDirectory.ID?
   let modelSize: ModelSize
-  let modelParameters: ModelParameters
+  @Published private(set) var modelParameters: ModelParameters
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -90,6 +90,10 @@ class ChatSource: Codable, ObservableObject {
     try container.encode(modelDirectoryId, forKey: .modelDirectoryId)
     try container.encode(modelSize, forKey: .modelSize)
     try container.encode(modelParameters, forKey: .modelParameters)
+  }
+
+  func resetDefaultParameters() {
+    self.modelParameters = defaultModelParameters(for: type)
   }
 
   // MARK: - Private

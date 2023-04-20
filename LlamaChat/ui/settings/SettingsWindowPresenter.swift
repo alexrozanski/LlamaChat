@@ -8,9 +8,14 @@
 import AppKit
 
 class SettingsWindowPresenter {
+  enum SourcesTab {
+    case properties
+    case parameters
+  }
+
   enum Deeplink {
     case general
-    case sources(sourceId: ChatSource.ID?)
+    case sources(sourceId: ChatSource.ID?, sourcesTab: SourcesTab)
   }
 
   static let shared = SettingsWindowPresenter()
@@ -38,8 +43,15 @@ class SettingsWindowPresenter {
       switch deeplink {
       case .general:
         settingsViewModel?.selectedTab = .general
-      case .sources(sourceId: let sourceId):
-        settingsViewModel?.selectSourceInSourcesTab(forSourceWithId: sourceId)
+      case .sources(sourceId: let sourceId, sourcesTab: let sourcesTab):
+        let initialTab: SettingsViewModel.InitialSourcesTab
+        switch sourcesTab {
+        case .properties:
+          initialTab = .properties
+        case .parameters:
+          initialTab = .parameters
+        }
+        settingsViewModel?.selectSourceInSourcesTab(forSourceWithId: sourceId, initialTab: initialTab)
       }
     }
   }

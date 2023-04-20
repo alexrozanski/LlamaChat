@@ -23,7 +23,7 @@ fileprivate struct ItemView: View {
     .padding(8)
     .contextMenu {
       Button("Configure...") {
-        SettingsWindowPresenter.shared.present(deeplinkingTo: .sources(sourceId: viewModel.id))
+        SettingsWindowPresenter.shared.present(deeplinkingTo: .sources(sourceId: viewModel.id, sourcesTab: .properties))
       }
       Divider()
       Button("Remove...") {

@@ -72,7 +72,7 @@ struct ChatInfoView: View {
         })
         .disabled(!viewModel.canClearMessages)
         ActionButton(title: "info", imageName: "info.circle.fill", enabledTextColor: .blue, handler: {
-          SettingsWindowPresenter.shared.present(deeplinkingTo: .sources(sourceId: viewModel.sourceId))
+          viewModel.showInfo()
         })
       }
       .frame(maxWidth: .infinity, alignment: .center)
@@ -124,9 +124,11 @@ struct ChatInfoView: View {
         Text("Model Parameters")
           .font(.system(.body).smallCaps())
         Spacer()
-        Button("Configure...") {}
-          .font(.system(size: 11))
-          .controlSize(.small)
+        Button("Configure...") {
+          viewModel.configureParameters()
+        }
+        .font(.system(size: 11))
+        .controlSize(.small)
       }
     })
 

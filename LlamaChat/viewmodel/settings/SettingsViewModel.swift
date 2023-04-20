@@ -13,6 +13,11 @@ enum SettingsTab {
 }
 
 class SettingsViewModel: ObservableObject {
+  enum InitialSourcesTab {
+    case properties
+    case parameters
+  }
+
   private let chatSources: ChatSources
 
   @Published var selectedTab: SettingsTab = .general
@@ -24,10 +29,18 @@ class SettingsViewModel: ObservableObject {
     self.chatSources = chatSources
   }
 
-  func selectSourceInSourcesTab(forSourceWithId sourceId: ChatSource.ID?) {
+  func selectSourceInSourcesTab(forSourceWithId sourceId: ChatSource.ID?, initialTab: InitialSourcesTab) {
     selectedTab = .sources
     if let sourceId {
       sourcesSettingsViewModel.selectedSourceId = sourceId
+      let tab: SourcesSettingsDetailViewModel.Tab
+      switch initialTab {
+      case .properties:
+        tab = .properties
+      case .parameters:
+        tab = .parameters
+      }
+      sourcesSettingsViewModel.detailViewModel?.selectedTab = tab
     }
   }
 }
