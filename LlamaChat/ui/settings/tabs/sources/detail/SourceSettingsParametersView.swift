@@ -239,13 +239,11 @@ struct SourceSettingsParametersView: View {
     }
   }
 
-  @State var showDetails = false
-
   var body: some View {
 
     VStack {
       HStack {
-        Toggle("Parameter Details", isOn: $showDetails)
+        Toggle("Parameter Details", isOn: $viewModel.showDetails)
           .toggleStyle(.switch)
           .controlSize(.small)
           .padding(.leading, 8)
@@ -261,7 +259,7 @@ struct SourceSettingsParametersView: View {
         penalizationParameters
       }
       .formStyle(.grouped)
-      .environment(\.showParameterDetails, showDetails)
+      .environment(\.showParameterDetails, viewModel.showDetails)
     }
   }
 }

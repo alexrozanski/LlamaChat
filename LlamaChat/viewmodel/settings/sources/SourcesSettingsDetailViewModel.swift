@@ -15,16 +15,18 @@ class SourcesSettingsDetailViewModel: ObservableObject {
   }
 
   private let source: ChatSource
+  private let stateRestoration: StateRestoration
 
   var id: ChatSource.ID { source.id }
 
   @Published var selectedTab: Tab
 
   private(set) lazy var propertiesViewModel = SourceSettingsPropertiesViewModel(source: source)
-  private(set) lazy var parametersViewModel = SourceSettingsParametersViewModel(modelParameters: source.modelParameters)
+  private(set) lazy var parametersViewModel = SourceSettingsParametersViewModel(modelParameters: source.modelParameters, stateRestoration: stateRestoration)
 
-  init(source: ChatSource, selectedTab: Tab?) {
+  init(source: ChatSource, selectedTab: Tab?, stateRestoration: StateRestoration) {
     self.source = source
     self.selectedTab = selectedTab ?? .properties
+    self.stateRestoration = stateRestoration
   }
 }

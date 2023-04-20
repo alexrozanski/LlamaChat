@@ -29,7 +29,7 @@ struct LlamaChatApp: App {
     let messagesModel = MessagesModel()
     let chatModels = ChatModels(messagesModel: messagesModel)
     let stateRestoration = StateRestoration()
-    let settingsViewModel = SettingsViewModel(chatSources: chatSources)
+    let settingsViewModel = SettingsViewModel(chatSources: chatSources, stateRestoration: stateRestoration)
 
     _chatSources = StateObject(wrappedValue: chatSources)
     _chatModels = StateObject(wrappedValue: chatModels)
