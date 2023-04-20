@@ -11,11 +11,13 @@ struct MessageView: View {
   @ObservedObject var viewModel: ObservableMessageViewModel
   let availableWidth: Double?
 
+  @State var text = ""
+
   var body: some View {
     if let staticMessageViewModel: StaticMessageViewModel = viewModel.get() {
       MessageBubbleView(sender: staticMessageViewModel.sender, style: .regular, isError: staticMessageViewModel.isError, availableWidth: availableWidth.map { $0 * 0.8 }) {
         Text(staticMessageViewModel.content)
-          .textSelectionEnabled(viewModel.canCopyContents)
+          .textSelection(.enabled)
       }
     } else if let generatedMessageViewModel: GeneratedMessageViewModel = viewModel.get() {
       GeneratedMessageView(viewModel: generatedMessageViewModel, availableWidth: availableWidth.map { $0 * 0.8 })
@@ -113,6 +115,7 @@ struct MessagesTableView: NSViewRepresentable {
     tableView.usesAutomaticRowHeights = true
     tableView.backgroundColor = .clear
     tableView.intercellSpacing = NSSize(width: 0, height: 12)
+    tableView.selectionHighlightStyle = .none
 
     let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "Messages"))
     column.title = ""
@@ -224,10 +227,6 @@ struct MessagesTableView: NSViewRepresentable {
 
     func tableView(_ tableView: NSTableView, didAdd rowView: NSTableRowView, forRow row: Int) {
       rowView.translatesAutoresizingMaskIntoConstraints = false
-    }
-
-    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-      return false
     }
   }
 }
