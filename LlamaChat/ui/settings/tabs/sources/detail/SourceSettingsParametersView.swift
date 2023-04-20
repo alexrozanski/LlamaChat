@@ -179,7 +179,7 @@ struct SourceSettingsParametersView: View {
         numberOfTickMarks: 11,
         label: {
           ParameterLabelWithDescription(
-            label: "Top-`k`",
+            label: "Top-k",
             description: "The value used in top-k sampling."
           )
         }
@@ -219,7 +219,7 @@ struct SourceSettingsParametersView: View {
         numberOfTickMarks: 10,
         label: {
           ParameterLabelWithDescription(
-            label: "Penalization Window",
+            label: "Repeat Penalty",
             description: "The penalization value for repeated sequences of tokens."
           )
         }

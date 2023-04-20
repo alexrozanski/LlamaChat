@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 fileprivate struct Payload: Codable {
   let sources: [ChatSource]
@@ -15,22 +16,40 @@ class ChatSource: Codable, ObservableObject {
   typealias ID = String
 
   let id: ID
-  @Published var name: String {
-    didSet {
-      chatSources?.didUpdate(self)
-    }
-  }
-  @Published var avatarImageName: String? {
-    didSet {
-      chatSources?.didUpdate(self)
-    }
-  }
+
+  @Published var name: String
+  @Published var avatarImageName: String?
+
   let type: ChatSourceType
   let modelURL: URL
   let modelDirectoryId: ModelDirectory.ID?
   let modelSize: ModelSize
+  let modelParameters: ModelParameters
 
-  fileprivate weak var chatSources: ChatSources?
+  private var subscriptions = Set<AnyCancellable>()
+
+  init(
+    name: String,
+    avatarImageName: String?,
+    type: ChatSourceType,
+    modelURL: URL,
+    modelDirectoryId: ModelDirectory.ID?,
+    modelSize: ModelSize,
+    modelParameters: ModelParameters
+  ) {
+    self.id = UUID().uuidString
+    self.name = name
+    self.avatarImageName = avatarImageName
+    self.type = type
+    self.modelURL = modelURL
+    self.modelDirectoryId = modelDirectoryId
+    self.modelSize = modelSize
+    self.modelParameters = modelParameters
+
+    setUpObservation()
+  }
+
+  // MARK: - Codable
 
   enum CodingKeys: CodingKey {
     case id
@@ -40,6 +59,7 @@ class ChatSource: Codable, ObservableObject {
     case modelURL
     case modelDirectoryId
     case modelSize
+    case modelParameters
   }
 
   required init(from decoder: Decoder) throws {
@@ -52,6 +72,12 @@ class ChatSource: Codable, ObservableObject {
     modelURL = try values.decode(URL.self, forKey: .modelURL)
     modelDirectoryId = try values.decode(ModelDirectory.ID?.self, forKey: .modelDirectoryId)
     modelSize = try values.decode(ModelSize.self, forKey: .modelSize)
+
+    // These were added after the initial release.
+    let modelParameters = try values.decodeIfPresent(ModelParameters.self, forKey: .modelParameters)
+    self.modelParameters = modelParameters ?? defaultModelParameters(for: type)
+
+    setUpObservation()
   }
 
   func encode(to encoder: Encoder) throws {
@@ -63,25 +89,27 @@ class ChatSource: Codable, ObservableObject {
     try container.encode(modelURL, forKey: .modelURL)
     try container.encode(modelDirectoryId, forKey: .modelDirectoryId)
     try container.encode(modelSize, forKey: .modelSize)
+    try container.encode(modelParameters, forKey: .modelParameters)
   }
 
-  init(
-    name: String,
-    avatarImageName: String?,
-    type: ChatSourceType,
-    modelURL: URL,
-    modelDirectoryId: ModelDirectory.ID?,
-    modelSize: ModelSize
-  ) {
-    self.id = UUID().uuidString
-    self.name = name
-    self.avatarImageName = avatarImageName
-    self.type = type
-    self.modelURL = modelURL
-    self.modelDirectoryId = modelDirectoryId
-    self.modelSize = modelSize
+  // MARK: - Private
+
+  private func setUpObservation() {
+    $name.receive(on: DispatchQueue.main).sink { [weak self] _ in
+      self?.objectWillChange.send()
+    }.store(in: &subscriptions)
+
+    $avatarImageName.receive(on: DispatchQueue.main).sink { [weak self] _ in
+      self?.objectWillChange.send()
+    }.store(in: &subscriptions)
+
+    modelParameters.objectWillChange.sink { [weak self] _ in
+      self?.objectWillChange.send()
+    }.store(in: &subscriptions)
   }
 }
+
+// MARK: -
 
 class ChatSources: ObservableObject {
   @Published private(set) var sources: [ChatSource] = [] {
@@ -94,8 +122,18 @@ class ChatSources: ObservableObject {
     return applicationSupportDirectoryURL()?.appending(path: "sources.json")
   }()
 
+  private var subscriptions = Set<AnyCancellable>()
+
   init() {
     loadSources()
+
+    $sources
+      .flatMap { sources in
+        Publishers.MergeMany(sources.map { $0.objectWillChange })
+      }
+      .sink { [weak self] _ in
+        self?.persistSources()
+      }.store(in: &subscriptions)
   }
 
   func add(source: ChatSource) {
@@ -113,11 +151,6 @@ class ChatSources: ObservableObject {
     return sources.first(where: { $0.id == id })
   }
 
-  fileprivate func didUpdate(_ source: ChatSource) {
-    persistSources()
-    objectWillChange.send()
-  }
-
   private func loadSources() {
     guard
       let persistedURL,
@@ -127,10 +160,6 @@ class ChatSources: ObservableObject {
     do {
       let jsonData = try Data(contentsOf: persistedURL)
       let payload = try JSONDecoder().decode(Payload.self, from: jsonData)
-
-      payload.sources.forEach { source in
-        source.chatSources = self
-      }
       sources = payload.sources
     } catch {
       print("Error loading sources:", error)
