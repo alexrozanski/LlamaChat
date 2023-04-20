@@ -67,6 +67,7 @@
 		82914CE029D7A06C00858B2C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CDF29D7A06C00858B2C /* Message.swift */; };
 		82914CE429D7A13C00858B2C /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82914CE329D7A13C00858B2C /* MessageViewModel.swift */; };
 		82980F1E29E37D15000329E6 /* ModelFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82980F1D29E37D15000329E6 /* ModelFileManager.swift */; };
+		82A4376F29F1E9DE0090FA33 /* MessagesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A4376E29F1E9DE0090FA33 /* MessagesTableView.swift */; };
 		82A7B4E029DE42B500BCBB6B /* ConfigureLocalModelSelectFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4DF29DE42B500BCBB6B /* ConfigureLocalModelSelectFormatView.swift */; };
 		82A7B4E429DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4E329DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift */; };
 		82A7B4E629DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A7B4E529DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift */; };
@@ -175,6 +176,7 @@
 		82914CE329D7A13C00858B2C /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		82980F1B29E263E8000329E6 /* LlamaChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LlamaChat.entitlements; sourceTree = "<group>"; };
 		82980F1D29E37D15000329E6 /* ModelFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFileManager.swift; sourceTree = "<group>"; };
+		82A4376E29F1E9DE0090FA33 /* MessagesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesTableView.swift; sourceTree = "<group>"; };
 		82A7B4DF29DE42B500BCBB6B /* ConfigureLocalModelSelectFormatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSelectFormatView.swift; sourceTree = "<group>"; };
 		82A7B4E329DE439F00BCBB6B /* ConfigureLocalModelPathSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorView.swift; sourceTree = "<group>"; };
 		82A7B4E529DE46F600BCBB6B /* ConfigureLocalPyTorchModelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalPyTorchModelSettingsView.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				82AE198A29D7A330008189DF /* GeneratedMessageView.swift */,
 				82718CFF29D368EA00545C32 /* MessagesView.swift */,
 				82718D0329D368EA00545C32 /* MessageBubbleView.swift */,
+				82A4376E29F1E9DE0090FA33 /* MessagesTableView.swift */,
 				82914CC629D7646A00858B2C /* TypingBubbleContentView.swift */,
 			);
 			path = messages;
@@ -857,6 +860,7 @@
 				8227DA8129D88228000E554D /* ConfigureLocalModelSourceView.swift in Sources */,
 				8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */,
 				8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */,
+				82A4376F29F1E9DE0090FA33 /* MessagesTableView.swift in Sources */,
 				82914CD029D76F6300858B2C /* GeneratedMessage.swift in Sources */,
 				8255EA5629D58C58000B9F83 /* ChatSourceType.swift in Sources */,
 				82A7B4ED29DE48E900BCBB6B /* ConfigureLocalModelSettingsViewModel.swift in Sources */,

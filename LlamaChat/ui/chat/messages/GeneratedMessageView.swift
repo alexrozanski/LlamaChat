@@ -10,7 +10,7 @@ import SwiftUI
 struct GeneratedMessageView: View {
   @ObservedObject var viewModel: GeneratedMessageViewModel
 
-  let availableWidth: Double
+  let availableWidth: Double?
 
   var body: some View {
     VStack(alignment: .leading) {
