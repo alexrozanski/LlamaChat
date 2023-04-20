@@ -126,6 +126,9 @@ struct MessagesTableView: NSViewRepresentable {
     context.coordinator.tableView = tableView
     context.coordinator.lastRows = messages
 
+    tableView.reloadData()
+    tableView.scrollToEndOfDocument(nil)
+
     return scrollView
   }
 
@@ -135,16 +138,22 @@ struct MessagesTableView: NSViewRepresentable {
     if let tableView = context.coordinator.tableView {
       let diff = messages.difference(from: context.coordinator.lastRows)
 
+      var rowsInserted = false
       tableView.beginUpdates()
       for change in diff {
         switch change {
         case let .insert(offset, _, _):
           tableView.insertRows(at: IndexSet(integer: offset), withAnimation: .slideDown)
+          rowsInserted = true
         case let .remove(offset, _, _):
           tableView.removeRows(at: IndexSet(integer: offset))
         }
       }
       tableView.endUpdates()
+
+      if rowsInserted {
+        tableView.scrollToEndOfDocument(nil)
+      }
     }
 
     context.coordinator.lastRows = messages
