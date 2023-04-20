@@ -67,6 +67,17 @@ class ChatInfoViewModel: ObservableObject {
   @Published private(set) var contextTokenCount: ModelStat<Int> = .none
   @Published private(set) var canClearMessages: Bool
 
+  // Parameters
+  @Published var seedValue: Int32? = nil
+  @Published var contextSize: UInt = 0
+  @Published var numberOfTokens: UInt = 0
+  @Published var topP: Double = 0
+  @Published var topK: UInt = 0
+  @Published var temperature: Double = 0
+  @Published var batchSize: UInt = 0
+  @Published var lastNTokensToPenalize: UInt = 0
+  @Published var repeatPenalty: Double = 0
+
   private(set) lazy var avatarViewModel = AvatarViewModel(chatSource: chatModel.source)
 
   private var subscriptions = Set<AnyCancellable>()
@@ -77,6 +88,16 @@ class ChatInfoViewModel: ObservableObject {
     chatModel.$messages.sink { [weak self] messages in
       self?.canClearMessages = !messages.isEmpty
     }.store(in: &subscriptions)
+
+    chatModel.source.modelParameters.$seedValue.assign(to: &$seedValue)
+    chatModel.source.modelParameters.$contextSize.assign(to: &$contextSize)
+    chatModel.source.modelParameters.$numberOfTokens.assign(to: &$numberOfTokens)
+    chatModel.source.modelParameters.$topP.assign(to: &$topP)
+    chatModel.source.modelParameters.$topK.assign(to: &$topK)
+    chatModel.source.modelParameters.$temperature.assign(to: &$temperature)
+    chatModel.source.modelParameters.$batchSize.assign(to: &$batchSize)
+    chatModel.source.modelParameters.$lastNTokensToPenalize.assign(to: &$lastNTokensToPenalize)
+    chatModel.source.modelParameters.$repeatPenalty.assign(to: &$repeatPenalty)
   }
 
   func clearMessages() {
