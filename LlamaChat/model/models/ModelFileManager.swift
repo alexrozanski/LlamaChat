@@ -13,6 +13,8 @@ class ModelDirectory {
   let id: ID
   let url: URL
 
+  private var hasCleanedUp = false
+
   fileprivate init(id: ID, url: URL) {
     self.id = id
     self.url = url
@@ -20,7 +22,10 @@ class ModelDirectory {
 
   func cleanUp() {
     do {
+      guard !hasCleanedUp else { return }
+
       try FileManager.default.removeItem(at: url)
+      hasCleanedUp = true
     } catch {
       print("WARNING: failed to clean up model directory")
     }

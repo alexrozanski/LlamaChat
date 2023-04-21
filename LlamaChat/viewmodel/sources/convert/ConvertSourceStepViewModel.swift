@@ -78,57 +78,60 @@ class ConvertSourceStepViewModel: Identifiable, ObservableObject {
     self.id = UUID().uuidString
     self.conversionStep = conversionStep
 
-    conversionStep.$state.receive(on: DispatchQueue.main).sink { [weak self] newState in
-      guard let self else { return }
+    conversionStep.$state
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] newState in
+        guard let self else { return }
 
-      switch newState {
-      case .notStarted:
-        self.state = .notStarted
-        self.exitCode = nil
-      case .skipped:
-        self.state = .skipped
-        self.exitCode = nil
-      case .running:
-        self.state = .running
-        self.exitCode = nil
-      case .cancelled:
-        self.state = .cancelled
-        self.exitCode = nil
-      case .finished(result: let result):
-        if let status = try? result.get(), status.exitCode == 0 {
-          self.state = .finished(result: .success(status.exitCode))
-          self.exitCode = status.exitCode
-        } else {
-          self.state = .finished(result: .success(1))
-          self.exitCode = Int32(1)
-        }
-      }
-    }.store(in: &subscriptions)
-
-    $state.sink { newState in
-      switch newState {
-      case .notStarted, .skipped, .running, .cancelled:
-        self.exitCode = nil
-      case .finished(result: let result):
-        switch result {
-        case .success(let exitCode):
-          self.exitCode = exitCode
-        case .failure:
+        switch newState {
+        case .notStarted:
+          self.state = .notStarted
           self.exitCode = nil
+        case .skipped:
+          self.state = .skipped
+          self.exitCode = nil
+        case .running:
+          self.state = .running
+          self.exitCode = nil
+        case .cancelled:
+          self.state = .cancelled
+          self.exitCode = nil
+        case .finished(result: let result):
+          if let status = try? result.get(), status.exitCode == 0 {
+            self.state = .finished(result: .success(status.exitCode))
+            self.exitCode = status.exitCode
+          } else {
+            self.state = .finished(result: .success(1))
+            self.exitCode = Int32(1)
+          }
+        }
+      }.store(in: &subscriptions)
+
+    $state
+      .receive(on: DispatchQueue.main)
+      .map { newState in
+        switch newState {
+        case .notStarted, .skipped, .running, .cancelled:
+          return nil
+        case .finished(result: let result):
+          switch result {
+          case .success(let exitCode):
+            return exitCode
+          case .failure:
+            return nil
+          }
         }
       }
-    }.store(in: &subscriptions)
+      .assign(to: &$exitCode)
 
     conversionStep.$startDate
       .combineLatest(conversionStep.$runUntilDate)
       .receive(on: DispatchQueue.main)
-      .sink { [weak self] startDate, endDate in
-        if let startDate, let endDate {
-          self?.runTime = endDate.timeIntervalSince(startDate)
-        } else {
-          self?.runTime = nil
-        }
-      }.store(in: &subscriptions)
+      .map { startDate, endDate in
+        guard let startDate, let endDate else { return nil }
+        return endDate.timeIntervalSince(startDate)
+      }
+      .assign(to: &$runTime)
 
     conversionStep.commandOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .command) }.store(in: &subscriptions)
     conversionStep.stdoutOutput.sink { [weak self] output in self?.appendOutput(string: output, outputType: .stdout) }.store(in: &subscriptions)

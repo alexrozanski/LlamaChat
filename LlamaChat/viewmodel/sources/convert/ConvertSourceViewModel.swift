@@ -81,10 +81,11 @@ class ConvertSourceViewModel: ObservableObject {
     self.cancelHandler = cancelHandler
     self.conversionSteps = []
 
-    $pipeline.sink { [weak self] newPipeline in
-      guard let self else { return }
-      self.conversionSteps = newPipeline.steps.map { ConvertSourceStepViewModel(conversionStep: $0) }
-    }.store(in: &subscriptions)
+    $pipeline
+      .map { newPipeline in
+        newPipeline.steps.map { ConvertSourceStepViewModel(conversionStep: $0) }
+      }
+      .assign(to: &$conversionSteps)
 
     $pipeline
       .map { $0.$state }
@@ -94,8 +95,11 @@ class ConvertSourceViewModel: ObservableObject {
         case .notRunning, .running, .cancelled, .failed:
           switch oldState {
           case .finished(result: let result):
-            // Capture self explicitly so that we clean up even if we have been deallocated.
-            self.cleanUp(with: result)
+            do {
+              try result.cleanUp()
+            } catch {
+              print("WARNING: Failed to clean up converted GGML model")
+            }
           case .notRunning, .running, .cancelled, .failed:
             break
           }
@@ -104,23 +108,23 @@ class ConvertSourceViewModel: ObservableObject {
         }
         return newState
       })
-      .sink { [weak self] newState in
+      .map { newState in
         switch newState {
         case .notRunning:
-          self?.state = .notStarted
+          return State.notStarted
         case .running:
-          self?.state = .converting
+          return State.converting
         case .failed, .cancelled:
-          self?.state = .failedToConvert
+          return State.failedToConvert
         case .finished(result: let result):
-          self?.state = .finishedConverting(result: result)
+          return State.finishedConverting(result: result)
         }
-      }.store(in: &subscriptions)
+      }.assign(to: &$state)
 
     $modelDirectory
-      .scan(ModelDirectory?.none) { oldModelDirectory, newModelDirectory in
+      .scan(ModelDirectory?.none) { [weak self] oldModelDirectory, newModelDirectory in
         // Make sure we don't accidentally delete the directory if we have already finished.
-        if !self.hasFinished {
+        if !(self?.hasFinished ?? false) {
           oldModelDirectory?.cleanUp()
         }
         return newModelDirectory
@@ -173,18 +177,14 @@ class ConvertSourceViewModel: ObservableObject {
     case .notStarted, .converting, .failedToConvert:
       break
     case .finishedConverting(result: let result):
-      cleanUp(with: result)
+      do {
+        try result.cleanUp()
+      } catch {
+        print("WARNING: Failed to clean up converted GGML model")
+      }
     }
     modelDirectory?.cleanUp()
     modelDirectory = nil
-  }
-
-  private func cleanUp(with result: ConvertPyTorchToGgmlConversionResult) {
-    do {
-      try result.cleanUp()
-    } catch {
-      print("WARNING: Failed to clean up converted GGML model")
-    }
   }
 }
 
