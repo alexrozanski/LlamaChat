@@ -137,7 +137,7 @@ class ConvertSourceViewModel: ObservableObject {
     state = .converting
 
     do {
-      let modelDirectory = try ModelFileManager().makeNewModelDirectory()
+      let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
       self.modelDirectory = modelDirectory
 
       Task.init {
