@@ -52,7 +52,7 @@ fileprivate struct AvatarRowView: View {
 
 
 struct SourceSettingsPropertiesView: View {
-  var viewModel: SourceSettingsPropertiesViewModel
+  @ObservedObject var viewModel: SourceSettingsPropertiesViewModel
 
   var body: some View {
     Form {
@@ -83,6 +83,16 @@ struct SourceSettingsPropertiesView: View {
         }
         LabeledContent("Model Size") {
           Text(viewModel.modelSize)
+        }
+      }
+      Section("Prediction") {
+        Toggle(isOn: $viewModel.useMlock) {
+          VStack(alignment: .leading, spacing: 4) {
+            Text("Keep Model in Memory")
+            Text("Keeping the entire model in memory may lead to better performance for smaller models.")
+              .font(.footnote)
+              .foregroundColor(.gray)
+          }
         }
       }
     }

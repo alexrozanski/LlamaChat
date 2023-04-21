@@ -62,7 +62,8 @@ class AddSourceViewModel: ObservableObject {
             modelURL: modelURL,
             modelDirectoryId: nil,
             modelSize: modelSize,
-            modelParameters: defaultModelParameters(for: sourceType)
+            modelParameters: defaultModelParameters(for: sourceType),
+            useMlock: false
           )
         )
       case .pyTorchCheckpoints(data: let validatedData, let modelSize):
@@ -103,7 +104,8 @@ class AddSourceViewModel: ObservableObject {
             modelURL: modelURL,
             modelDirectoryId: modelDirectory.id,
             modelSize: modelSize,
-            modelParameters: defaultModelParameters(for: sourceType)
+            modelParameters: defaultModelParameters(for: sourceType),
+            useMlock: false
           )
         )
       },

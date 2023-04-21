@@ -25,7 +25,9 @@ class ChatSource: Codable, ObservableObject {
   let modelDirectoryId: ModelDirectory.ID?
   let modelSize: ModelSize
   @Published private(set) var modelParameters: ModelParameters
+  @Published var useMlock: Bool
 
+  let modelParametersDidChange = PassthroughSubject<Void, Never>()
   private var subscriptions = Set<AnyCancellable>()
 
   init(
@@ -35,7 +37,8 @@ class ChatSource: Codable, ObservableObject {
     modelURL: URL,
     modelDirectoryId: ModelDirectory.ID?,
     modelSize: ModelSize,
-    modelParameters: ModelParameters
+    modelParameters: ModelParameters,
+    useMlock: Bool
   ) {
     self.id = UUID().uuidString
     self.name = name
@@ -45,8 +48,9 @@ class ChatSource: Codable, ObservableObject {
     self.modelDirectoryId = modelDirectoryId
     self.modelSize = modelSize
     self.modelParameters = modelParameters
+    self.useMlock = useMlock
 
-    setUpObservation()
+    setUpPublishers()
   }
 
   // MARK: - Codable
@@ -60,6 +64,7 @@ class ChatSource: Codable, ObservableObject {
     case modelDirectoryId
     case modelSize
     case modelParameters
+    case useMlock
   }
 
   required init(from decoder: Decoder) throws {
@@ -76,8 +81,10 @@ class ChatSource: Codable, ObservableObject {
     // These were added after the initial release.
     let modelParameters = try values.decodeIfPresent(ModelParameters.self, forKey: .modelParameters)
     self.modelParameters = modelParameters ?? defaultModelParameters(for: type)
+    let useMlock = try values.decodeIfPresent(Bool.self, forKey: .useMlock)
+    self.useMlock = useMlock ?? false
 
-    setUpObservation()
+    setUpPublishers()
   }
 
   func encode(to encoder: Encoder) throws {
@@ -90,6 +97,7 @@ class ChatSource: Codable, ObservableObject {
     try container.encode(modelDirectoryId, forKey: .modelDirectoryId)
     try container.encode(modelSize, forKey: .modelSize)
     try container.encode(modelParameters, forKey: .modelParameters)
+    try container.encode(useMlock, forKey: .useMlock)
   }
 
   func resetDefaultParameters() {
@@ -98,18 +106,24 @@ class ChatSource: Codable, ObservableObject {
 
   // MARK: - Private
 
-  private func setUpObservation() {
-    $name.receive(on: DispatchQueue.main).sink { [weak self] _ in
-      self?.objectWillChange.send()
-    }.store(in: &subscriptions)
+  private func setUpPublishers() {
+    $useMlock
+      .sink { newValue in
+        self.modelParametersDidChange.send()
+      }.store(in: &subscriptions)
 
-    $avatarImageName.receive(on: DispatchQueue.main).sink { [weak self] _ in
-      self?.objectWillChange.send()
-    }.store(in: &subscriptions)
+    $modelParameters
+      .dropFirst()
+      .sink { [weak modelParametersDidChange] _ in
+        modelParametersDidChange?.send()
+      }.store(in: &subscriptions)
 
-    modelParameters.objectWillChange.sink { [weak self] _ in
-      self?.objectWillChange.send()
-    }.store(in: &subscriptions)
+    $modelParameters
+      .map { $0.objectWillChange }
+      .switchToLatest()
+      .sink { [weak modelParametersDidChange] p in
+        modelParametersDidChange?.send()
+      }.store(in: &subscriptions)
   }
 }
 
