@@ -91,17 +91,8 @@ class ChatModel: ObservableObject {
     insertClearedContextMessageIfNeeded()
 
     AppSettings.shared.$numThreads
-      .receive(on: DispatchQueue.main).sink { _ in
-        Task.init {
-          await self.clearContext(insertClearedContextMessage: true)
-        }
-      }.store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.objectWillChange }
-      .switchToLatest()
-      .combineLatest(source.$modelParameters)
-      .debounce(for: .zero, scheduler: RunLoop.main)
+      .combineLatest(source.modelParametersDidChange)
+      .debounce(for: .zero, scheduler: RunLoop.current)
       .sink { _ in
         Task.init {
           await self.clearContext(insertClearedContextMessage: true)
@@ -182,21 +173,33 @@ class ChatModel: ObservableObject {
       newSession = SessionManager().makeLlamaSession(
         with: source.modelURL,
         config: LlamaSessionConfig.configurableDefaults
-          .withModelParameters(source.modelParameters, numThreads: numThreads)
+          .withModelParameters(
+            source.modelParameters,
+            numThreads: numThreads,
+            keepModelInMemory: source.useMlock
+          )
           .build()
       )
     case .alpaca:
       newSession = SessionManager().makeAlpacaSession(
         with: source.modelURL,
         config: AlpacaSessionConfig.configurableDefaults
-          .withModelParameters(source.modelParameters, numThreads: numThreads)
+          .withModelParameters(
+            source.modelParameters,
+            numThreads: numThreads,
+            keepModelInMemory: source.useMlock
+          )
           .build()
       )
     case .gpt4All:
       newSession = SessionManager().makeGPT4AllSession(
         with: source.modelURL,
         config: GPT4AllSessionConfig.configurableDefaults
-          .withModelParameters(source.modelParameters, numThreads: numThreads)
+          .withModelParameters(
+            source.modelParameters,
+            numThreads: numThreads,
+            keepModelInMemory: source.useMlock
+          )
           .build()
       )
     }
@@ -305,10 +308,15 @@ private func errorText(from error: Error) -> String {
 }
 
 fileprivate extension SessionConfigBuilder {
-  func withModelParameters(_ modelParameters: ModelParameters, numThreads: UInt) -> SessionConfigBuilder {
+  func withModelParameters(
+    _ modelParameters: ModelParameters,
+    numThreads: UInt,
+    keepModelInMemory: Bool
+  ) -> SessionConfigBuilder {
     return withSeed(modelParameters.seedValue)
       .withNumThreads(numThreads)
       .withNumTokens(modelParameters.numberOfTokens)
+      .withKeepModelInMemory(keepModelInMemory)
       .withHyperparameters { hyperparameters in
         hyperparameters
           .withContextSize(modelParameters.contextSize)

@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Combine
 
 class SourceSettingsPropertiesViewModel: ObservableObject {
   private let source: ChatSource
@@ -33,15 +34,29 @@ class SourceSettingsPropertiesViewModel: ObservableObject {
   @Published private(set) var name: String
   @Published var avatarImageName: String?
 
+  @Published var useMlock: Bool
+
+  private var subscriptions = Set<AnyCancellable>()
+
   init(source: ChatSource) {
     self.source = source
 
     modelPath = source.modelURL.path
     name = source.name
     avatarImageName = source.avatarImageName
+    useMlock = source.useMlock
 
     source.$name.assign(to: &$name)
     $avatarImageName.assign(to: &source.$avatarImageName)
+
+    source.$useMlock.assign(to: &$useMlock)
+    $useMlock
+      .removeDuplicates()
+      .dropFirst()
+      .sink { [weak source] in
+        source?.useMlock = $0
+      }
+      .store(in: &subscriptions)
   }
 
   func updateName(_ newName: String) {
