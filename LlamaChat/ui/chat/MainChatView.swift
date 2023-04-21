@@ -57,6 +57,7 @@ struct MainChatView: View {
         ConfirmDeleteSourceSheetContentView(viewModel: viewModel)
       } else if let viewModel = viewModel.sheetViewModel as? AddSourceViewModel {
         AddSourceContentView(viewModel: viewModel)
+          .interactiveDismissDisabled()
       }
     }
     .onAppear {
