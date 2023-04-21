@@ -58,6 +58,12 @@ struct LlamaChatApp: App {
       MainChatView(viewModel: mainChatViewModel)
     }
     .commands {
+      CommandGroup(after: .newItem) {
+        Button("New Chat Source", action: {
+          mainChatViewModel.presentAddSourceSheet()
+        })
+        .keyboardShortcut(KeyboardShortcut(KeyEquivalent("n")))
+      }
       CommandGroup(after: .appInfo) {
         Button("Check for Updates…", action: { checkForUpdatesViewModel.checkForUpdates() })
           .disabled(!checkForUpdatesViewModel.canCheckForUpdates)
@@ -69,5 +75,7 @@ struct LlamaChatApp: App {
         .environmentObject(chatSources)
         .environmentObject(chatModels)
     }
+    // Remove the File > New menu item as this should be opened programmatically.
+    .commandsRemoved()
   }
 }
