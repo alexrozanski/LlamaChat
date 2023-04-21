@@ -33,6 +33,10 @@ class ModelDirectory {
 }
 
 class ModelFileManager {
+  static let shared = ModelFileManager()
+
+  private init() {}
+
   private var modelsDirectoryURL: URL? {
     return applicationSupportDirectoryURL()?.appendingPathComponent("models")
   }
@@ -53,5 +57,26 @@ class ModelFileManager {
   private func modelDirectoryURL(for id: ModelDirectory.ID) -> URL? {
     guard let modelsDirectory = modelsDirectoryURL else { return nil }
     return modelsDirectory.appendingPathComponent(id, isDirectory: true)
+  }
+
+  // Fixes any issues caused by https://github.com/alexrozanski/LlamaChat/issues/10
+  func cleanUpUnquantizedModelFiles() {
+    guard let modelsDirectoryURL else { return }
+
+    let enumerator = FileManager.default.enumerator(at: modelsDirectoryURL, includingPropertiesForKeys: nil, options: [])
+    enumerator?.forEach { itemURL in
+      guard let itemURL = itemURL as? URL else { return }
+
+      // This is hardcoded by the conversion script
+      let unquantizedModelName = "ggml-model-f16.bin"
+
+      if itemURL.lastPathComponent == unquantizedModelName {
+        do {
+          try FileManager.default.removeItem(at: itemURL)
+        } catch {
+          print("WARNING: Couldn't clean up unquantized model at", itemURL)
+        }
+      }
+    }
   }
 }
