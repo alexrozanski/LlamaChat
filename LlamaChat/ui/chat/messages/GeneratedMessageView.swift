@@ -27,13 +27,13 @@ struct GeneratedMessageView: View {
           .transition(.asymmetric(insertion: .scale(scale: 0.5), removal: .move(edge: .top)))
         }
       }
-      MessageBubbleView(sender: viewModel.sender, style: viewModel.state.isWaiting ? .typing: .regular, isError: viewModel.isError, availableWidth: availableWidth) {
-        switch viewModel.state {
-        case .none:
-          EmptyView()
-        case .waiting:
-          TypingBubbleContentView()
-        case .generating, .finished, .cancelled, .error:
+      switch viewModel.state {
+      case .none:
+        EmptyView()
+      case .waiting:
+        TypingBubbleView()
+      case .generating, .finished, .cancelled, .error:
+        MessageBubbleView(sender: viewModel.sender, style: viewModel.state.isWaiting ? .typing: .regular, isError: viewModel.isError, availableWidth: availableWidth) {
           Text(viewModel.content)
             .textSelectionEnabled(viewModel.canCopyContents.value)
         }
