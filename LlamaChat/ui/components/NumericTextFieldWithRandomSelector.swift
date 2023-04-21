@@ -257,6 +257,7 @@ class ToggleButton: NSButton {
     cell.isBezeled = false
     cell.isBordered = false
     cell.setButtonType(.toggle)
+    cell.font = .systemFont(ofSize: 11)
     self.cell = cell
   }
 

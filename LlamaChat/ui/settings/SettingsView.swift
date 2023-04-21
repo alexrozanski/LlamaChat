@@ -31,6 +31,6 @@ struct SettingsView: View {
         }
         .tag(SettingsTab.sources)
     }
-    .frame(idealWidth: 640, idealHeight: 380)
+    .frame(minWidth: 800, idealWidth: 800, minHeight: 500, idealHeight: 500)
   }
 }

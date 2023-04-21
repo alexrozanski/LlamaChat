@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-private let sliderLabelWidth = Double(30)
+private let sliderLabelWidth = Double(40)
 
 fileprivate struct WrappedNSSlider: NSViewRepresentable {
   var value: Binding<Double>

@@ -29,7 +29,7 @@ fileprivate struct DiscreteSliderRowView<Label>: View where Label: View {
         DiscreteSliderView(value: value, range: range, isExponential: isExponential, numberOfTickMarks: numberOfTickMarks)
           .frame(maxWidth: .infinity)
         TextField("", value: value, formatter: formatter)
-          .frame(width: 50)
+          .frame(width: 55)
           .controlSize(.small)
           .multilineTextAlignment(.center)
           .textFieldStyle(.roundedBorder)
@@ -79,7 +79,7 @@ fileprivate struct ContinuousSliderRowView<Label>: View where Label: View {
         ContinuousSliderView(value: value, range: range, numberOfTickMarks: numberOfTickMarks)
           .frame(maxWidth: .infinity)
         TextField("", value: value, formatter: formatter)
-          .frame(width: 50)
+          .frame(width: 55)
           .controlSize(.small)
           .multilineTextAlignment(.center)
           .textFieldStyle(.roundedBorder)
@@ -123,7 +123,8 @@ struct SourceSettingsParametersView: View {
               numberFormatter.minimumFractionDigits = 0
               return numberFormatter
             }())
-            .padding(.leading, 10)
+            .padding(.leading, 20)
+            .padding(.trailing, 4)
           )
       } label: {
         ParameterLabelWithDescription(
@@ -175,7 +176,7 @@ struct SourceSettingsParametersView: View {
       )
       DiscreteSliderRowView(
         value: $viewModel.topK,
-        range: 1...100,
+        range: 1...10000,
         numberOfTickMarks: 11,
         label: {
           ParameterLabelWithDescription(
