@@ -8,10 +8,6 @@
 import Foundation
 import Combine
 
-fileprivate struct Payload: Codable {
-  let sources: [ChatSource]
-}
-
 class ChatSource: Codable, ObservableObject {
   typealias ID = String
 
@@ -129,6 +125,11 @@ class ChatSource: Codable, ObservableObject {
 
 // MARK: -
 
+fileprivate class SerializedChatSourcesPayload: SerializedPayload<[ChatSource]> {
+  override class var valueKey: String? { return "sources" }
+  override class var currentPayloadVersion: Int { return 2 }
+}
+
 class ChatSources: ObservableObject {
   @Published private(set) var sources: [ChatSource] = [] {
     didSet {
@@ -178,8 +179,8 @@ class ChatSources: ObservableObject {
 
     do {
       let jsonData = try Data(contentsOf: persistedURL)
-      let payload = try JSONDecoder().decode(Payload.self, from: jsonData)
-      sources = payload.sources
+      let payload = try JSONDecoder().decode(SerializedChatSourcesPayload.self, from: jsonData)
+      sources = payload.value
     } catch {
       print("Error loading sources:", error)
     }
@@ -190,7 +191,7 @@ class ChatSources: ObservableObject {
 
     let jsonEncoder = JSONEncoder()
     do {
-      let json = try jsonEncoder.encode(Payload(sources: sources))
+      let json = try jsonEncoder.encode(SerializedChatSourcesPayload(value: sources))
       try json.write(to: persistedURL)
     } catch {
       print("Error persisting sources:", error)
