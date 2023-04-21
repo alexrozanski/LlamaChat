@@ -7,9 +7,9 @@
 
 import Foundation
 
-fileprivate struct Payload: Codable {
-  let settings: AppSettings
-  var version = 1
+fileprivate class SerializedAppSettingsPayload: SerializedPayload<AppSettings> {
+  override class var valueKey: String? { return "settings" }
+  override class var currentPayloadVersion: Int { return 1 }
 }
 
 class AppSettings: ObservableObject, Codable {
@@ -34,8 +34,8 @@ class AppSettings: ObservableObject, Codable {
 
     do {
       let jsonData = try Data(contentsOf: settingsFileURL)
-      let payload = try JSONDecoder().decode(Payload.self, from: jsonData)
-      return payload.settings
+      let payload = try JSONDecoder().decode(SerializedAppSettingsPayload.self, from: jsonData)
+      return payload.value
     } catch {
       print("Error loading sources:", error)
       return makeDefaultSettings()
@@ -67,7 +67,7 @@ class AppSettings: ObservableObject, Codable {
 
     let jsonEncoder = JSONEncoder()
     do {
-      let json = try jsonEncoder.encode(Payload(settings: self))
+      let json = try jsonEncoder.encode(SerializedAppSettingsPayload(value: self))
       try json.write(to: persistedFileURL)
     } catch {
       print("Error persisting settings:", error)
