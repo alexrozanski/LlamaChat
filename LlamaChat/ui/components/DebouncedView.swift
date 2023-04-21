@@ -12,7 +12,7 @@ struct DebouncedView<Content>: View where Content: View {
 
   @State private var showView = false
 
-  let isVisible: Bool
+  var isVisible: Bool
   let delay: Double
   var animation: Animation?
 
@@ -26,7 +26,9 @@ struct DebouncedView<Content>: View where Content: View {
 
   var body: some View {
     VStack {
-      if showView {
+      // Do a sanity `isVisible` check for race conditions between setting `showView` to trye in the asyncAfter() and
+      // `isVisible` becoming false.
+      if showView && isVisible {
         contentBuilder()
       }
     }
