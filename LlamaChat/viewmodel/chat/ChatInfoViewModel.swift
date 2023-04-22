@@ -150,8 +150,8 @@ class ChatInfoViewModel: ObservableObject {
       do {
         let context = try await chatModel.loadContext()
         await MainActor.run {
-          self.context = context.contextString.map { .value($0) } ?? .none
-          let tokenCount = context.tokens?.count
+          self.context = context?.contextString.flatMap { .value($0) } ?? .none
+          let tokenCount = context?.tokens?.count
           self.contextTokenCount = tokenCount.map { .value($0) } ?? .none
         }
       } catch {

@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import llama
+import CameLLM
+import CameLLMLlama
 
 private let minimumContextSize = UInt(512)
 

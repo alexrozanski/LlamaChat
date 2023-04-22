@@ -7,7 +7,8 @@
 
 import Foundation
 import Combine
-import llama
+import CameLLM
+import CameLLMLlama
 
 enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
   case pyTorch

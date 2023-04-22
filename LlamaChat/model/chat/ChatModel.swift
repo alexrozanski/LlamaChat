@@ -7,7 +7,8 @@
 
 import Foundation
 import Combine
-import llama
+import CameLLM
+import CameLLMLlama
 import SQLite
 
 class ChatModels: ObservableObject {
@@ -63,7 +64,7 @@ class ChatModel: ObservableObject {
     case responding
   }
 
-  private var session: Session?
+  private var session: (any Session<LlamaSessionState, LlamaPredictionState>)?
 
   @Published private(set) var messages: [Message]
   @Published private(set) var replyState: ReplyState = .none
@@ -153,9 +154,9 @@ class ChatModel: ObservableObject {
     }
   }
 
-  func loadContext() async throws -> ChatContext {
-    let sessionContext = try await getReadySession().currentContext()
-    let context = ChatModel.ChatContext(sessionContext: sessionContext)
+  func loadContext() async throws -> ChatContext? {
+    let sessionContext = try await getReadySession().sessionContextProviding.provider?.currentContext()
+    let context = sessionContext.map { ChatModel.ChatContext(sessionContext: $0) }
     await MainActor.run {
       self.lastChatContext = context
     }
@@ -165,12 +166,12 @@ class ChatModel: ObservableObject {
   // MARK: - Private
 
   @MainActor
-  private func makeAndStoreNewSession() -> Session {
-    var newSession: Session
+  private func makeAndStoreNewSession() -> any Session<LlamaSessionState, LlamaPredictionState> {
+    var newSession: any Session<LlamaSessionState, LlamaPredictionState>
     let numThreads = UInt(AppSettings.shared.numThreads)
     switch source.type {
     case .llama:
-      newSession = SessionManager().makeLlamaSession(
+      newSession = SessionManager.llamaFamily.makeLlamaSession(
         with: source.modelURL,
         config: LlamaSessionConfig.configurableDefaults
           .withModelParameters(
@@ -181,7 +182,7 @@ class ChatModel: ObservableObject {
           .build()
       )
     case .alpaca:
-      newSession = SessionManager().makeAlpacaSession(
+      newSession = SessionManager.llamaFamily.makeAlpacaSession(
         with: source.modelURL,
         config: AlpacaSessionConfig.configurableDefaults
           .withModelParameters(
@@ -192,7 +193,7 @@ class ChatModel: ObservableObject {
           .build()
       )
     case .gpt4All:
-      newSession = SessionManager().makeGPT4AllSession(
+      newSession = SessionManager.llamaFamily.makeGPT4AllSession(
         with: source.modelURL,
         config: GPT4AllSessionConfig.configurableDefaults
           .withModelParameters(
@@ -204,7 +205,8 @@ class ChatModel: ObservableObject {
       )
     }
 
-    newSession.updatedContextHandler = { [weak self] newSessionContext in
+    
+    newSession.sessionContextProviding.provider?.updatedContextHandler = { [weak self] newSessionContext in
       self?.lastChatContext = ChatModel.ChatContext(sessionContext: newSessionContext)
     }
 
@@ -214,7 +216,7 @@ class ChatModel: ObservableObject {
     return newSession
   }
 
-  private func getReadySession() async -> Session {
+  private func getReadySession() async -> any Session<LlamaSessionState, LlamaPredictionState> {
     guard let session = session else {
       return await makeAndStoreNewSession()
     }
@@ -277,7 +279,7 @@ class ChatModel: ObservableObject {
   }
 }
 
-fileprivate extension SessionState {
+fileprivate extension LlamaSessionState {
   var isError: Bool {
     switch self {
     case .notStarted, .loadingModel, .predicting, .readyToPredict:
@@ -292,8 +294,8 @@ private func errorText(from error: Error) -> String {
   print(error)
 
   let nsError = error as NSError
-  if nsError.domain == LlamaError.Domain {
-    if let code = LlamaError.Code(rawValue: nsError.code) {
+  if nsError.domain == CameLLMError.Domain {
+    if let code = CameLLMError.Code(rawValue: nsError.code) {
       switch code {
       case .failedToLoadModel:
         return "Failed to load model"

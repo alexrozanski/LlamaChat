@@ -7,7 +7,8 @@
 
 import Foundation
 import Combine
-import llama
+import CameLLM
+import CameLLMLlama
 
 class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLocalModelSettingsViewModel {
   var sourceType: ConfigureLocalModelSourceType {
@@ -104,7 +105,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
           modelType: modelSize.toModelType(),
           directoryURL: directoryURL
         )
-        switch ModelConverter().validateConversionData(data, returning: &self.files) {
+        switch ModelConverter.llamaFamily.validateConversionData(data, returning: &self.files) {
         case .success(let validatedData):
           self.modelState = .valid(data: validatedData)
         case .failure(let error):
@@ -146,7 +147,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
     conversionState = .loading
     Task.init {
       do {
-        let canConvert = (try await ModelConverter().canRunConversion())
+        let canConvert = (try await ModelConverter.llamaFamily.canRunConversion())
         await MainActor.run {
           conversionState = .canConvert(canConvert)
         }

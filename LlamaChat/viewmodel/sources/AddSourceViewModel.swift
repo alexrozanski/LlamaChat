@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import llama
+import CameLLM
+import CameLLMLlama
 
 enum AddSourceStep: Hashable {
   case configureSource

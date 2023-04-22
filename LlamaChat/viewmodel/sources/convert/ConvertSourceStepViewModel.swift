@@ -8,7 +8,8 @@
 import AppKit
 import Foundation
 import Combine
-import llama
+import CameLLM
+import CameLLMLlama
 
 class ConvertSourceStepViewModel: Identifiable, ObservableObject {
   enum State {

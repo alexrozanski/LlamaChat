@@ -8,7 +8,8 @@
 import Foundation
 import Combine
 import Coquille
-import llama
+import CameLLM
+import CameLLMLlama
 
 class ConvertSourceViewModel: ObservableObject {
   private typealias ConvertPyTorchModelConversionPipeline = ModelConversionPipeline<
@@ -76,7 +77,7 @@ class ConvertSourceViewModel: ObservableObject {
     cancelHandler: @escaping CancelHandler
   ) {
     self.data = data
-    self.pipeline = ModelConverter().makeConversionPipeline()
+    self.pipeline = ModelConverter.llamaFamily.makeConversionPipeline()
     self.completionHandler = completionHandler
     self.cancelHandler = cancelHandler
     self.conversionSteps = []
@@ -159,7 +160,7 @@ class ConvertSourceViewModel: ObservableObject {
   }
 
   func retryConversion() {
-    pipeline = ModelConverter().makeConversionPipeline()
+    pipeline = ModelConverter.llamaFamily.makeConversionPipeline()
     state = .notStarted
     startConversion()
   }

@@ -7,19 +7,20 @@
 
 import Foundation
 import Combine
-import llama
+import CameLLM
+import CameLLMLlama
 
 private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalGgmlModelSettingsViewModel.InvalidModelTypeReason {
   // Reason is always stored in the underlying error
-  guard let underlyingError = ((error as NSError).underlyingErrors as [NSError]).first(where: { $0.domain == LlamaError.Domain }) else {
+  guard let underlyingError = ((error as NSError).underlyingErrors as [NSError]).first(where: { $0.domain == CameLLMError.Domain }) else {
     return .unknown
   }
 
-  if underlyingError.code == LlamaError.Code.invalidModelBadMagic.rawValue {
+  if underlyingError.code == CameLLMError.Code.invalidModelBadMagic.rawValue {
     return .invalidFileType
   }
 
-  if underlyingError.code == LlamaError.Code.invalidModelUnversioned.rawValue || underlyingError.code == LlamaError.Code.invalidModelUnsupportedFileVersion.rawValue {
+  if underlyingError.code == CameLLMError.Code.invalidModelUnversioned.rawValue || underlyingError.code == CameLLMError.Code.invalidModelUnsupportedFileVersion.rawValue {
     return .unsupportedModelVersion
   }
 
@@ -92,7 +93,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
 
       let modelURL = URL(fileURLWithPath: modelPath)
       do {
-        try ModelUtils.validateModel(fileURL: modelURL)
+        try ModelUtils.llamaFamily.validateModel(at: modelURL)
       } catch {
         print(error)
         self.modelState = .invalidModel(getInvalidModelTypeReason(from: error))
@@ -102,7 +103,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
       self.modelState = .valid(modelURL: modelURL)
 
       do {
-        self.modelSizePickerViewModel.modelSize = (try ModelUtils.getModelType(forFileAt: URL(fileURLWithPath: modelPath))).toModelSize()
+        self.modelSizePickerViewModel.modelSize = (try ModelUtils.llamaFamily.getModelCard(forFileAt: URL(fileURLWithPath: modelPath)))?.modelType.toModelSize() ?? .unknown
       } catch {
         print(error)
       }
