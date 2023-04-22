@@ -167,6 +167,10 @@ class ChatSources: ObservableObject {
     }
   }
 
+  func moveSources(fromOffsets offsets: IndexSet, toOffset destination: Int) {
+    sources.move(fromOffsets: offsets, toOffset: destination)
+  }
+
   func source(for id: ChatSource.ID) -> ChatSource? {
     return sources.first(where: { $0.id == id })
   }

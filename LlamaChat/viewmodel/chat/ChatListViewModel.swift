@@ -60,14 +60,16 @@ class ChatListViewModel: ObservableObject {
     self.mainChatViewModel = mainChatViewModel
 
     items = []
-    items = chatSources.sources.map { ChatListItemViewModel(chatSource: $0, chatListViewModel: self) }
+    items = makeViewModels(from: chatSources.sources, in: self)
 
-    chatSources.$sources.sink(receiveValue: { newSources in
-      self.items = newSources.map { ChatListItemViewModel(chatSource: $0, chatListViewModel: self) }
-    }).store(in: &subscriptions)
-    mainChatViewModel.$selectedSourceId.sink(receiveValue: { newSelectedSourceId in
-      self.selectedSourceId = newSelectedSourceId
-    }).store(in: &subscriptions)
+    chatSources.$sources
+      .map { [weak self] newSources in
+        guard let self else { return [] }
+        return makeViewModels(from: newSources, in: self)
+      }
+      .assign(to: &$items)
+    mainChatViewModel.$selectedSourceId
+      .assign(to: &$selectedSourceId)
   }
 
   func selectSource(with id: String?) {
@@ -82,4 +84,12 @@ class ChatListViewModel: ObservableObject {
     guard let sourceId else { return nil }
     return items.first(where: { $0.id == sourceId })
   }
+
+  func moveItems(fromOffsets offsets: IndexSet, toOffset destination: Int) {
+    chatSources.moveSources(fromOffsets: offsets, toOffset: destination)
+  }
+}
+
+private func makeViewModels(from sources: [ChatSource], in viewModel: ChatListViewModel) -> [ChatListItemViewModel] {
+  return sources.map { ChatListItemViewModel(chatSource: $0, chatListViewModel: viewModel) }
 }

@@ -58,9 +58,12 @@ struct SourcesSettingsListView: View {
     )
     ZStack {
       List(selection: selectionBinding) {
-        Section(header: Text("Sources").frame(maxWidth: .infinity), content: {
+        Section(header: Text("Source").frame(maxWidth: .infinity), content: {
           ForEach(viewModel.sources, id: \.id) { source in
             SourcesSettingsSourceItemView(viewModel: source)
+          }
+          .onMove { from, to in
+            viewModel.moveSources(fromOffsets: from, toOffset: to)
           }
         })
       }

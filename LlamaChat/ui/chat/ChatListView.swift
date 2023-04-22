@@ -38,13 +38,18 @@ struct ChatListView: View {
   @ObservedObject var viewModel: ChatListViewModel
   
   var body: some View {
-    let selectionBinding = Binding<String?>(
-      get: { viewModel.selectedSourceId },
+    let selectionBinding = Binding<String>(
+      get: { viewModel.selectedSourceId ?? "" },
       set: { viewModel.selectSource(with: $0) }
     )
     HStack {
-      List(viewModel.items, id: \.id, selection: selectionBinding) { source in
-        ItemView(viewModel: source)
+      List(selection: selectionBinding) {
+        ForEach(viewModel.items, id: \.id) { item in
+          ItemView(viewModel: item)
+        }
+        .onMove { from, to in
+          viewModel.moveItems(fromOffsets: from, toOffset: to)
+        }
       }
     }
   }

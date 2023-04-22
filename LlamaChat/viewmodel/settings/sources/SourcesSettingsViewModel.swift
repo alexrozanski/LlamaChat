@@ -55,12 +55,12 @@ class SourcesSettingsViewModel: ObservableObject {
 
   init(chatSources: ChatSources, stateRestoration: StateRestoration) {
     self.chatSources = chatSources
-    self.sources = chatSources.sources.map { SourcesSettingsSourceItemViewModel(source: $0) }
+    self.sources = makeSourceItemViewModels(from: chatSources.sources)
     self.stateRestoration = stateRestoration
 
-    chatSources.$sources.sink(receiveValue: { sources in
-      self.sources = sources.map { SourcesSettingsSourceItemViewModel(source: $0) }
-    }).store(in: &subscriptions)
+    chatSources.$sources
+      .map { makeSourceItemViewModels(from: $0) }
+      .assign(to: &$sources)
 
     // bit hacky but use receive(on:) to ensure chatSources.sources has been updated to its new value
     // to ensure consistent state (otherwise in the `sink()` chatSources.sources will not have been updated yet.
@@ -82,9 +82,15 @@ class SourcesSettingsViewModel: ObservableObject {
         }
       }).store(in: &subscriptions)
 
-    $sheetViewModel.sink { [weak self] newSheetViewModel in
-      self?.sheetPresented = newSheetViewModel != nil
-    }.store(in: &subscriptions)
+    $sheetViewModel
+      .map { newSheetViewModel in
+        return newSheetViewModel != nil
+      }
+      .assign(to: &$sheetPresented)
+  }
+
+  func moveSources(fromOffsets offsets: IndexSet, toOffset destination: Int) {
+    chatSources.moveSources(fromOffsets: offsets, toOffset: destination)
   }
 
   func remove(_ source: ChatSource) {
@@ -117,4 +123,8 @@ class SourcesSettingsViewModel: ObservableObject {
       }
     )
   }
+}
+
+fileprivate func makeSourceItemViewModels(from sources: [ChatSource]) -> [SourcesSettingsSourceItemViewModel] {
+  return sources.map { SourcesSettingsSourceItemViewModel(source: $0) }
 }
