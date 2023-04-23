@@ -51,11 +51,13 @@ class AddSourceViewModel: ObservableObject {
 
   // MARK: - Private
 
-  private func makeConfigureSourceViewModel(for sourceType: ChatSourceType) -> ConfigureSourceViewModel {
-    let nextHandler: ConfigureLocalModelSourceViewModel.NextHandler = { [weak self] configuredSource in
+  private func makeConfigureSourceViewModel(for sourceType: ChatSourceType) -> ConfigureSourceViewModel? {
+    let nextHandler: ConfigureSourceNextHandler = { [weak self] configuredSource in
+      guard let self else { return }
+
       switch configuredSource.settings {
       case .ggmlModel(modelURL: let modelURL, modelSize: let modelSize):
-        self?.add(
+        self.add(
           source: ChatSource(
             name: configuredSource.name,
             avatarImageName: configuredSource.avatarImageName,
@@ -68,23 +70,59 @@ class AddSourceViewModel: ObservableObject {
           )
         )
       case .pyTorchCheckpoints(data: let validatedData, let modelSize):
-        self?.convertSourceViewModel = self?.makeConvertSourceViewModel(
+        self.convertSourceViewModel = self.makeConvertSourceViewModel(
           with: sourceType,
           configuredSource: configuredSource,
           modelSize: modelSize,
           validatedData: validatedData
         )
-        self?.navigationPath.append(.convertPyTorchSource)
+        self.navigationPath.append(.convertPyTorchSource)
+      case .downloadedFile(fileURL: let fileURL, modelSize: let modelSize):
+        do {
+          let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
+          let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
+          self.add(
+            source: ChatSource(
+              name: configuredSource.name,
+              avatarImageName: configuredSource.avatarImageName,
+              type: sourceType,
+              modelURL: modelFileURL,
+              modelDirectoryId: modelDirectory.id,
+              modelSize: modelSize,
+              modelParameters: defaultModelParameters(for: sourceType),
+              useMlock: false
+            )
+          )
+        } catch {
+          print(error)
+        }
       }
     }
 
     switch sourceType {
     case .llama:
-      return makeConfigureLocalLlamaModelSourceViewModel(nextHandler: nextHandler)
+      return ConfigureLocalModelSourceViewModel(
+        defaultName: "LLaMA",
+        chatSourceType: ChatSourceType.llama,
+        exampleGgmlModelPath: "ggml-model-q4_0.bin",
+        nextHandler: nextHandler
+      )
     case .alpaca:
-      return makeConfigureLocalAlpacaModelSourceViewModel(nextHandler:nextHandler)
+      return ConfigureLocalModelSourceViewModel(
+        defaultName: "Alpaca",
+        chatSourceType: ChatSourceType.alpaca,
+        exampleGgmlModelPath: "ggml-alpaca-7b-q4.bin",
+        nextHandler: nextHandler
+      )
     case .gpt4All:
-      return makeConfigureLocalGPT4AllModelSourceViewModel(nextHandler:nextHandler)
+      guard let url = URL(string: "https://gpt4all.io/ggml-gpt4all-j.bin") else { return nil }
+      return ConfigureDownloadableModelSourceViewModel(
+        defaultName: "GPT4All",
+        chatSourceType: ChatSourceType.gpt4All,
+        modelSize: .size7B,
+        downloadURL: url,
+        nextHandler: nextHandler
+      )
     }
   }
 

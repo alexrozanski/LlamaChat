@@ -16,6 +16,7 @@ enum WindowIdentifier: String {
 class LlamaChatAppDelegate: NSObject, NSApplicationDelegate {
   func applicationDidFinishLaunching(_ notification: Notification) {
     ModelFileManager.shared.cleanUpUnquantizedModelFiles()
+    DownloadsManager.shared.cleanUp()
   }
 }
 

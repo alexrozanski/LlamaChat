@@ -7,20 +7,23 @@
 
 import SwiftUI
 
-protocol ConfigureSourcePrimaryActionsViewModelDelegate: AnyObject {
-  func next()
+class PrimaryActionsButton {
+  typealias Action = () -> Void
+
+  let title: String
+  let disabled: Bool
+  let action: () -> Void
+
+  init(title: String, disabled: Bool = false, action: @escaping Action) {
+    self.title = title
+    self.disabled = disabled
+    self.action = action
+  }
 }
 
 class ConfigureSourcePrimaryActionsViewModel: ObservableObject {
-  @Published var showContinueButton: Bool = false
-  @Published var canContinue: Bool = false
-  @Published var nextButtonTitle: String = "Add"
-
-  weak var delegate: ConfigureSourcePrimaryActionsViewModelDelegate?
-
-  func next() {
-    delegate?.next()
-  }
+  @Published var continueButton: PrimaryActionsButton? = nil
+  @Published var otherButtons: [PrimaryActionsButton] = []
 }
 
 struct ConfigureSourcePrimaryActionsView: View {
@@ -29,12 +32,12 @@ struct ConfigureSourcePrimaryActionsView: View {
   var body: some View {
     HStack {
       Spacer()
-      if viewModel.showContinueButton {
-        Button(viewModel.nextButtonTitle) {
-          viewModel.next()
+      if let continueButton = viewModel.continueButton {
+        Button(continueButton.title) {
+          continueButton.action()
         }
         .keyboardShortcut(.return)
-        .disabled(!viewModel.canContinue)
+        .disabled(continueButton.disabled)
       }
     }
   }

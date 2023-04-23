@@ -1,5 +1,5 @@
 //
-//  ConfigureLocalGgmlModelSettingsViewModel.swift
+//  ConfigureLocalPyTorchModelSettingsViewModel.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 06/04/2023.
@@ -73,7 +73,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   )
 
   let chatSourceType: ChatSourceType
-  let sourceSettings = CurrentValueSubject<SourceSettings?, Never>(nil)
+  let sourceSettings = CurrentValueSubject<ConfiguredSourceSettings?, Never>(nil)
 
   private var subscriptions = Set<AnyCancellable>()
 

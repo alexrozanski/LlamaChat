@@ -1,14 +1,14 @@
 //
-//  ConfigureLocalModelSourceView.swift
+//  ConfigureSourceDetailsView.swift
 //  LlamaChat
 //
-//  Created by Alex Rozanski on 01/04/2023.
+//  Created by Alex Rozanski on 14/04/2023.
 //
 
 import SwiftUI
 
 fileprivate struct DisplayNameRowView: View {
-  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
+  @ObservedObject var viewModel: ConfigureSourceDetailsViewModel
 
   @FocusState var isNameFocused: Bool
 
@@ -32,7 +32,7 @@ fileprivate struct DisplayNameRowView: View {
 }
 
 fileprivate struct AvatarRowView: View {
-  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
+  @ObservedObject var viewModel: ConfigureSourceDetailsViewModel
 
   @State var pickerPresented = false
 
@@ -67,29 +67,14 @@ fileprivate struct AvatarRowView: View {
   }
 }
 
-struct ConfigureLocalModelSourceView: View {
-  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
 
-  @State var selectedModelType: String = ""
+struct ConfigureSourceDetailsView: View {
+  var viewModel: ConfigureSourceDetailsViewModel
 
   var body: some View {
-    Form {
-      Section {
-        DisplayNameRowView(viewModel: viewModel)
-        AvatarRowView(viewModel: viewModel)
-      }
-      ConfigureLocalModelSelectFormatView(viewModel: viewModel)
-
-      if let settingsViewModel = viewModel.settingsViewModel {
-        Section {
-          if let settingsViewModel = settingsViewModel as? ConfigureLocalGgmlModelSettingsViewModel {
-            ConfigureLocalGgmlModelSettingsView(viewModel: settingsViewModel)
-          } else if let settingsViewModel = settingsViewModel as? ConfigureLocalPyTorchModelSettingsViewModel {
-            ConfigureLocalPyTorchModelSettingsView(viewModel: settingsViewModel)
-          }
-        }
-      }
+    Section {
+      DisplayNameRowView(viewModel: viewModel)
+      AvatarRowView(viewModel: viewModel)
     }
-    .formStyle(.grouped)
   }
 }

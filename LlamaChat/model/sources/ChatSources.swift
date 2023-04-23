@@ -162,8 +162,14 @@ class ChatSources: ObservableObject {
 
   func remove(source: ChatSource) {
     _ = sources.firstIndex(where: { $0 === source }).map { sources.remove(at: $0) }
-    if let modelDirectoryId = source.modelDirectoryId, let modelDirectory = ModelFileManager.shared.modelDirectory(with: modelDirectoryId) {
-      modelDirectory.cleanUp()
+
+    if let modelDirectoryId = source.modelDirectoryId {
+      do {
+        let modelDirectory = try ModelFileManager.shared.modelDirectory(with: modelDirectoryId)
+        modelDirectory.cleanUp()
+      } catch {
+        print("WARNING: Failed to clean up model directory on remove")
+      }
     }
   }
 

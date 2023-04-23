@@ -9,21 +9,8 @@ import Foundation
 import Combine
 import SwiftUI
 
-struct ConfiguredSource {
-  let name: String
-  let avatarImageName: String?
-  let settings: SourceSettings
-}
-
 class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
-  typealias NextHandler = (ConfiguredSource) -> Void
-
-  private lazy var nameGenerator = SourceNameGenerator()
-
-  // MARK: - Info
-
-  @Published var name: String
-  @Published var avatarImageName: String?
+  // MARK: - Info  
 
   var modelType: String {
     return chatSourceType.readableName
@@ -74,13 +61,15 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
 
   @Published private(set) var settingsViewModel: ConfigureLocalModelSettingsViewModel?
 
+  let detailsViewModel: ConfigureSourceDetailsViewModel
+
   // MARK: - Validation
 
-  let primaryActionsViewModel: ConfigureSourcePrimaryActionsViewModel
+  let primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
 
   let chatSourceType: ChatSourceType
   let exampleGgmlModelPath: String
-  private let nextHandler: NextHandler
+  private let nextHandler: ConfigureSourceNextHandler
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -88,50 +77,51 @@ class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewM
     defaultName: String? = nil,
     chatSourceType: ChatSourceType,
     exampleGgmlModelPath: String,
-    nextHandler: @escaping NextHandler
+    nextHandler: @escaping ConfigureSourceNextHandler
   ) {
-    self.name = defaultName ?? ""
+    detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, chatSourceType: chatSourceType)
     self.chatSourceType = chatSourceType
     self.exampleGgmlModelPath = exampleGgmlModelPath
     self.nextHandler = nextHandler
-    primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
-    primaryActionsViewModel.delegate = self
 
     let configuredSource = $settingsViewModel
       .compactMap { $0 }
       .map { $0.sourceSettings }
       .switchToLatest()
 
-    $name
+    let canContinue = detailsViewModel.$name
       .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
       .combineLatest(configuredSource)
-      .sink { [weak self] nameValid, configuredSource in
-        self?.primaryActionsViewModel.canContinue = nameValid && configuredSource != nil
-      }.store(in: &subscriptions)
+      .map { nameValid, configuredSource in
+        return nameValid && configuredSource != nil
+      }
 
     $modelSourceType
-      .sink { [weak self] newSourceType in
-        self?.primaryActionsViewModel.showContinueButton = newSourceType != nil
-
-        if let newSourceType {
-          switch newSourceType {
-          case .pyTorch:
-            self?.primaryActionsViewModel.nextButtonTitle = "Continue"
-          case .ggml:
-            self?.primaryActionsViewModel.nextButtonTitle = "Add"
+      .combineLatest(canContinue)
+      .map { newSourceType, canContinue in
+        guard let newSourceType else { return nil }
+        switch newSourceType {
+        case .pyTorch:
+          return PrimaryActionsButton(title: "Continue", disabled: !canContinue) {
+            [weak self] in self?.next()
+          }
+        case .ggml:
+          return PrimaryActionsButton(title: "Add", disabled: !canContinue) {
+            [weak self] in self?.next()
           }
         }
-      }.store(in: &subscriptions)
-  }
-
-  func generateName() {
-    if let generatedName = nameGenerator.generateName(for: chatSourceType) {
-      name = generatedName
-    }
-  }
+      }.assign(to: &primaryActionsViewModel.$continueButton)
+  }  
 
   func select(modelSourceType: ConfigureLocalModelSourceType?) {
     self.modelSourceType = modelSourceType
+  }
+
+  func next() {
+    guard let sourceSettings = settingsViewModel?.sourceSettings.value else { return }
+    nextHandler(
+      ConfiguredSource(name: detailsViewModel.name, avatarImageName: detailsViewModel.avatarImageName, settings: sourceSettings)
+    )
   }
 }
 
@@ -141,14 +131,5 @@ extension ConfigureLocalModelSourceType {
     case .pyTorch: return "PyTorch Checkpoint (.pth)"
     case .ggml: return "GGML (.ggml)"
     }
-  }
-}
-
-extension ConfigureLocalModelSourceViewModel: ConfigureSourcePrimaryActionsViewModelDelegate {
-  func next() {
-    guard let sourceSettings = settingsViewModel?.sourceSettings.value else { return }
-    nextHandler(
-      ConfiguredSource(name: name, avatarImageName: avatarImageName, settings: sourceSettings)
-    )
   }
 }

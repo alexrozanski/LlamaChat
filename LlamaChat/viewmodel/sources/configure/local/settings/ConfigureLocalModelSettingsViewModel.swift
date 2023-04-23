@@ -17,14 +17,9 @@ enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
   var id: String { return rawValue }  
 }
 
-enum SourceSettings {
-  case ggmlModel(modelURL: URL, modelSize: ModelSize)
-  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>, modelSize: ModelSize)
-}
-
 protocol ConfigureLocalModelSettingsViewModel {
   var sourceType: ConfigureLocalModelSourceType { get }
   var modelSize: ModelSize? { get }
 
-  var sourceSettings: CurrentValueSubject<SourceSettings?, Never> { get }
+  var sourceSettings: CurrentValueSubject<ConfiguredSourceSettings?, Never> { get }
 }

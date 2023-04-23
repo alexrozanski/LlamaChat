@@ -145,7 +145,7 @@ class ConvertSourceViewModel: ObservableObject {
         try await pipeline.run(
           with: ConvertPyTorchToGgmlConversionPipelineInput(
             data: data,
-            conversionBehavior: modelDirectory.map { .inOtherDirectory($0.url) } ?? .alongsideInputFile
+            conversionBehavior: .inOtherDirectory(modelDirectory.url)
           )
         )
       }
@@ -186,16 +186,5 @@ class ConvertSourceViewModel: ObservableObject {
     }
     modelDirectory?.cleanUp()
     modelDirectory = nil
-  }
-}
-
-private extension Coquille.Process.Status {
-  func toExitCode() -> Int32 {
-    switch self {
-    case .success:
-      return 0
-    case .failure(let code):
-      return code
-    }
   }
 }
