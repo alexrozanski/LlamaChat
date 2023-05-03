@@ -138,8 +138,7 @@ private func updateTextView(_ textView: NSTextView, with tokens: [ChatModel.Chat
 struct ModelContextView: View {
   var chatSourceId: ChatSource.ID?
 
-  @EnvironmentObject var chatSourcesModel: ChatSourcesModel
-  @EnvironmentObject var chatModels: ChatModels
+  @EnvironmentObject var dependencies: Dependencies
 
   @StateObject var viewModel: ModelContextContentViewModel
 
@@ -152,8 +151,8 @@ struct ModelContextView: View {
     VStack {
       ModelContextContentView(viewModel: viewModel)
         .onAppear {
-          viewModel.chatSourcesModel = chatSourcesModel
-          viewModel.chatModels = chatModels
+          viewModel.chatSourcesModel = dependencies.chatSourcesModel
+          viewModel.chatModels = dependencies.chatModels
         }
     }
   }

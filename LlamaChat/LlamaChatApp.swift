@@ -9,6 +9,7 @@ import SwiftUI
 import AppModel
 import DataModel
 import ModelDirectory
+import RemoteModels
 
 enum WindowIdentifier: String {
   case chat
@@ -27,33 +28,18 @@ class LlamaChatAppDelegate: NSObject, NSApplicationDelegate {
 struct LlamaChatApp: App {
   @NSApplicationDelegateAdaptor var appDelegate: LlamaChatAppDelegate
 
-  @StateObject var chatSourcesModel: ChatSourcesModel
-  @StateObject var chatModels: ChatModels
-  @StateObject var messagesModel: MessagesModel
-  @StateObject var stateRestoration: StateRestoration
+  @StateObject var dependencies: Dependencies
 
   @StateObject var mainChatViewModel: MainChatViewModel
   @StateObject var settingsViewModel: SettingsViewModel
   @StateObject var checkForUpdatesViewModel = CheckForUpdatesViewModel()
 
   init() {
-    let chatSourcesModel = ChatSourcesModel()
-    let messagesModel = MessagesModel()
-    let chatModels = ChatModels(messagesModel: messagesModel)
-    let stateRestoration = StateRestoration()
-    let settingsViewModel = SettingsViewModel(chatSourcesModel: chatSourcesModel, stateRestoration: stateRestoration)
+    let dependencies = Dependencies()
+    let settingsViewModel = SettingsViewModel(dependencies: dependencies)
 
-    _chatSourcesModel = StateObject(wrappedValue: chatSourcesModel)
-    _chatModels = StateObject(wrappedValue: chatModels)
-    _messagesModel = StateObject(wrappedValue: messagesModel)
-    _stateRestoration = StateObject(wrappedValue: stateRestoration)
-
-    _mainChatViewModel = StateObject(wrappedValue: MainChatViewModel(
-      chatSourcesModel: chatSourcesModel,
-      chatModels: chatModels,
-      messagesModel: messagesModel,
-      stateRestoration: stateRestoration
-    ))
+    _dependencies = StateObject(wrappedValue: dependencies)
+    _mainChatViewModel = StateObject(wrappedValue: MainChatViewModel(dependencies: dependencies))
     _settingsViewModel = StateObject(wrappedValue: settingsViewModel)
 
     // For deeplinking
@@ -84,8 +70,7 @@ struct LlamaChatApp: App {
 
     WindowGroup("Model Context", id: WindowIdentifier.modelContext.rawValue, for: ChatSource.ID.self) { $chatId in
       ModelContextView(chatSourceId: chatId)
-        .environmentObject(chatSourcesModel)
-        .environmentObject(chatModels)
+        .environmentObject(dependencies)
     }
     // Remove the File > New menu item as this should be opened programmatically.
     .commandsRemoved()

@@ -21,13 +21,13 @@ enum AddSourceStep: Hashable {
 class AddSourceViewModel: ObservableObject {
   typealias CloseHandler = (_ newChatSource: ChatSource?) -> Void
 
-  private let chatSourcesModel: ChatSourcesModel
+  private let dependencies: Dependencies
   private let closeHandler: CloseHandler
 
   @Published var navigationPath = [AddSourceStep]()
 
   private(set) lazy var selectSourceTypeViewModel: SelectSourceTypeViewModel = {
-    return SelectSourceTypeViewModel(chatSourcesModel: chatSourcesModel) { [weak self] sourceType in
+    return SelectSourceTypeViewModel(chatSourcesModel: dependencies.chatSourcesModel) { [weak self] sourceType in
       self?.configureSourceViewModel = self?.makeConfigureSourceViewModel(for: sourceType)
       self?.navigationPath.append(.configureSource)
     }
@@ -38,8 +38,8 @@ class AddSourceViewModel: ObservableObject {
 
   private var addedModel = false
 
-  init(chatSourcesModel: ChatSourcesModel, closeHandler: @escaping CloseHandler) {
-    self.chatSourcesModel = chatSourcesModel
+  init(dependencies: Dependencies, closeHandler: @escaping CloseHandler) {
+    self.dependencies = dependencies
     self.closeHandler = closeHandler
   }
 
@@ -159,7 +159,7 @@ class AddSourceViewModel: ObservableObject {
   private func add(source: ChatSource) {
     guard !addedModel else { return }
 
-    chatSourcesModel.add(source: source)
+    dependencies.chatSourcesModel.add(source: source)
     addedModel = true
     closeHandler(source)
   }

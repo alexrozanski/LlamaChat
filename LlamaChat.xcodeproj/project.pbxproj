@@ -86,6 +86,8 @@
 		82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */; };
 		82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 82C68BEA29E77CC900A7A4AE /* Sparkle */; };
 		82C68BEE29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */; };
+		82DCBD572A02B7F2009FED10 /* RemoteModels in Frameworks */ = {isa = PBXBuildFile; productRef = 82DCBD562A02B7F2009FED10 /* RemoteModels */; };
+		82DCBD592A02C1A1009FED10 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DCBD582A02C1A1009FED10 /* Dependencies.swift */; };
 		82E3F1D829DF2865003F0368 /* ConfigureSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */; };
 		82E3F1DC29DF37DA003F0368 /* AddSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */; };
 		82E43C9429E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43C9329E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift */; };
@@ -187,6 +189,8 @@
 		82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextContentViewModel.swift; sourceTree = "<group>"; };
 		82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesViewModel.swift; sourceTree = "<group>"; };
 		82C68BEF29E7FB8100A7A4AE /* LlamaChat.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LlamaChat.xcconfig; sourceTree = "<group>"; };
+		82DCBD532A02B775009FED10 /* RemoteModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RemoteModels; sourceTree = "<group>"; };
+		82DCBD582A02C1A1009FED10 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureSourceViewModel.swift; sourceTree = "<group>"; };
 		82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSourceViewModel.swift; sourceTree = "<group>"; };
 		82E43C9329E8AE6E003E69D1 /* ConvertSourcePrimaryActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertSourcePrimaryActionsView.swift; sourceTree = "<group>"; };
@@ -213,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8241612529F58C3F007149B9 /* CameLLM in Frameworks */,
+				82DCBD572A02B7F2009FED10 /* RemoteModels in Frameworks */,
 				82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */,
 				82615BBB2A02524600B0D4FB /* DataModel in Frameworks */,
 				8241612829F58C5A007149B9 /* CameLLMLlama in Frameworks */,
@@ -371,6 +376,7 @@
 				82615BC62A0254EF00B0D4FB /* FileManager */,
 				82615BD52A02556F00B0D4FB /* ModelDirectory */,
 				82615BD62A0256F200B0D4FB /* ModelUtils */,
+				82DCBD532A02B775009FED10 /* RemoteModels */,
 			);
 			path = Packages;
 			sourceTree = "<group>";
@@ -399,6 +405,7 @@
 				8227DA9C29D91F33000E554D /* Info.plist */,
 				82F14EA729E4D2DD001E9C1E /* Credits.rtf */,
 				8227DA9629D911A4000E554D /* LlamaChatApp.swift */,
+				82DCBD582A02C1A1009FED10 /* Dependencies.swift */,
 				8227DAC829DA5060000E554D /* data */,
 				82E43CAD29E8D669003E69D1 /* downloads */,
 				821B255329E1D97B00CF1001 /* error */,
@@ -718,6 +725,7 @@
 				82615BD02A02551F00B0D4FB /* PBXTargetDependency */,
 				82615BD82A025DC800B0D4FB /* PBXTargetDependency */,
 				82615BDA2A025DCB00B0D4FB /* PBXTargetDependency */,
+				82DCBD552A02B7E8009FED10 /* PBXTargetDependency */,
 			);
 			name = LlamaChat;
 			packageProductDependencies = (
@@ -731,6 +739,7 @@
 				82615BD32A02552600B0D4FB /* FileManager */,
 				82615BDB2A025DD800B0D4FB /* ModelDirectory */,
 				82615BDD2A025DD800B0D4FB /* ModelUtils */,
+				82DCBD562A02B7F2009FED10 /* RemoteModels */,
 			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* LlamaChat.app */;
@@ -798,6 +807,7 @@
 				82718D0829D368EA00545C32 /* MessageBubbleView.swift in Sources */,
 				82718D0429D368EA00545C32 /* MessagesView.swift in Sources */,
 				82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */,
+				82DCBD592A02C1A1009FED10 /* Dependencies.swift in Sources */,
 				82A7B4EB29DE484600BCBB6B /* ConfigureLocalGgmlModelSettingsViewModel.swift in Sources */,
 				82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */,
 				82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */,
@@ -904,6 +914,10 @@
 		82615BDA2A025DCB00B0D4FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 82615BD92A025DCB00B0D4FB /* ModelUtils */;
+		};
+		82DCBD552A02B7E8009FED10 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 82DCBD542A02B7E8009FED10 /* RemoteModels */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1205,6 +1219,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 82C68BE929E77CC900A7A4AE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		82DCBD542A02B7E8009FED10 /* RemoteModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteModels;
+		};
+		82DCBD562A02B7F2009FED10 /* RemoteModels */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RemoteModels;
 		};
 		82E43CB129E8D6F3003E69D1 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
