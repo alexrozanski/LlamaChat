@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DataModel
 
 class AvatarViewModel: ObservableObject {
   enum Avatar {

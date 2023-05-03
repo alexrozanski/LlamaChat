@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import AppModel
+import DataModel
+import ModelDirectory
 
 enum WindowIdentifier: String {
   case chat

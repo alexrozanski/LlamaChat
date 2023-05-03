@@ -8,6 +8,9 @@
 import Foundation
 import CameLLM
 import CameLLMLlama
+import DataModel
+import ModelUtils
+import ModelDirectory
 
 enum AddSourceStep: Hashable {
   case configureSource

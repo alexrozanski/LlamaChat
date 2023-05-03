@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import DataModel
 
 enum SettingsTab {
   case general

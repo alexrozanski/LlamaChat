@@ -6,10 +6,9 @@
 //
 
 import Foundation
+import DataModel
 
 class ConfigureSourceDetailsViewModel: ObservableObject {
-  private lazy var nameGenerator = SourceNameGenerator()
-
   @Published var name: String
   @Published var avatarImageName: String?
 
@@ -21,7 +20,7 @@ class ConfigureSourceDetailsViewModel: ObservableObject {
   }
 
   func generateName() {
-    if let generatedName = nameGenerator.generateName(for: chatSourceType) {
+    if let generatedName = SourceNameGenerator.default.generateName(for: chatSourceType) {
       name = generatedName
     }
   }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DataModel
 
 class ChatListItemViewModel: ObservableObject {
   private let chatSource: ChatSource

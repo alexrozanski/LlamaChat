@@ -8,6 +8,7 @@
 import AppKit
 import Foundation
 import Combine
+import DataModel
 
 class GeneratedMessageViewModel: ObservableObject, MessageViewModel {
   var id: UUID { message.id }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DataModel
 
 class SourcesSettingsSourceItemViewModel: ObservableObject {
   fileprivate let source: ChatSource

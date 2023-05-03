@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 
 class GeneralSettingsViewModel: ObservableObject {
   @Published var numThreads: Int {

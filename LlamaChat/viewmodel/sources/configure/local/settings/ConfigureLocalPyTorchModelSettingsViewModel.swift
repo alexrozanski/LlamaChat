@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CameLLM
 import CameLLMLlama
+import DataModel
 
 class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLocalModelSettingsViewModel {
   var sourceType: ConfigureLocalModelSourceType {

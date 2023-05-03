@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import CameLLM
 import CameLLMLlama
+import DataModel
 
 struct ConfiguredSource {
   let name: String

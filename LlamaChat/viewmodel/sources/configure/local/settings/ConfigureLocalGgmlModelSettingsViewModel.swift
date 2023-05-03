@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CameLLM
 import CameLLMLlama
+import DataModel
 
 private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalGgmlModelSettingsViewModel.InvalidModelTypeReason {
   // Reason is always stored in the underlying error

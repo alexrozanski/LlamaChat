@@ -8,6 +8,7 @@
 import AppKit
 import Foundation
 import Combine
+import DataModel
 
 class StaticMessageViewModel: MessageViewModel {
   private let message: StaticMessage

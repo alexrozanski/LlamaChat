@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import AppModel
+import DataModel
 
 class ComposeViewModel: ObservableObject {
   private let chatModel: ChatModel

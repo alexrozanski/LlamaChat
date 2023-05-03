@@ -7,6 +7,7 @@
 
 import AppKit
 import Combine
+import DataModel
 
 class SourcesSettingsDetailViewModel: ObservableObject {
   enum Tab: CaseIterable {

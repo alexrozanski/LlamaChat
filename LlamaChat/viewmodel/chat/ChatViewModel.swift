@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import AppModel
+import DataModel
 
 class ChatViewModel: ObservableObject {
   private let chatSource: ChatSource

@@ -7,6 +7,7 @@
 
 import AppKit
 import Combine
+import DataModel
 
 class SourceSettingsPropertiesViewModel: ObservableObject {
   private let source: ChatSource

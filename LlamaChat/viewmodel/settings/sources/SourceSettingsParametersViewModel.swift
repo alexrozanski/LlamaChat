@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import DataModel
+import ModelUtils
 
 class SourceSettingsParametersViewModel: ObservableObject {
   enum RestorableKey: String {
@@ -47,7 +49,7 @@ class SourceSettingsParametersViewModel: ObservableObject {
   }
 
   func resetDefaults() {
-    source.resetDefaultParameters()
+    source.modelParameters = defaultModelParameters(for: source.type)
   }
 
   // The values in source.modelParameters remain the source of truth here, but we want to assign their

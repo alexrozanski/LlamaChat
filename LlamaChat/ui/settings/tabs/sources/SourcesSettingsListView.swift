@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DataModel
 
 struct SourcesSettingsSourceItemView: View {
   @ObservedObject var viewModel: SourcesSettingsSourceItemViewModel

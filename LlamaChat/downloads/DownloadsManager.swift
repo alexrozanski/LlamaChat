@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import FileManager
 
 protocol DownloadHandle {
   func cancel()

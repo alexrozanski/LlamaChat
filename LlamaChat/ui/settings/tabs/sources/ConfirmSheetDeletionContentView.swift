@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DataModel
 
 class ConfirmDeleteSourceSheetViewModel: ObservableObject {
   let chatSource: ChatSource

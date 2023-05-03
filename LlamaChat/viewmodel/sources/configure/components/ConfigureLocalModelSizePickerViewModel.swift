@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 
 class ConfigureLocalModelSizePickerViewModel: ObservableObject {
   typealias LabelProvider = (_ modelSize: ModelSize, _ defaultProvider: (ModelSize) -> String) -> String

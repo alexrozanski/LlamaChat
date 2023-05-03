@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 
 class SelectSourceTypeViewModel: ObservableObject {
   typealias SelectSourceHandler = (ChatSourceType) -> Void

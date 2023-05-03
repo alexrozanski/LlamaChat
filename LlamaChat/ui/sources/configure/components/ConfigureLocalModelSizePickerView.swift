@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DataModel
 
 struct ConfigureLocalModelSizePickerView: View {
   @ObservedObject var viewModel: ConfigureLocalModelSizePickerViewModel

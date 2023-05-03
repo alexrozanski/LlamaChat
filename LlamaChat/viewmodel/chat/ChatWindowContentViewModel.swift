@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import AppModel
+import DataModel
 
 class MainChatViewModel: ObservableObject {
   enum RestorableKey: String {

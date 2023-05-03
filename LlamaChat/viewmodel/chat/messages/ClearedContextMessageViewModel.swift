@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DataModel
 
 class ClearedContextMessageViewModel: MessageViewModel {
   var id: UUID { message.id }

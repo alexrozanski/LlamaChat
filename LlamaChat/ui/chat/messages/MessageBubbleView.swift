@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DataModel
 
 private let horizontalBubblePaddingForFlick = 5.0
 

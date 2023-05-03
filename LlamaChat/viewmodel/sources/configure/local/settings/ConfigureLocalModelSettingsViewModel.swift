@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CameLLM
 import CameLLMLlama
+import DataModel
 
 enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
   case pyTorch

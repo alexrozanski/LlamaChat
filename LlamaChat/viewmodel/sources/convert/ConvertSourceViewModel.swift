@@ -10,6 +10,7 @@ import Combine
 import Coquille
 import CameLLM
 import CameLLMLlama
+import ModelDirectory
 
 class ConvertSourceViewModel: ObservableObject {
   private typealias ConvertPyTorchModelConversionPipeline = ModelConversionPipeline<

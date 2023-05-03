@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import DataModel
 
 class ConfigureDownloadableModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
   enum State {

@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import DataModel
 
 class SettingsWindowPresenter {
   enum SourcesTab {
