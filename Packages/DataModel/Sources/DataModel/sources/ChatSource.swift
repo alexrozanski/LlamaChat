@@ -7,9 +7,13 @@
 
 import Foundation
 import Combine
+public extension CodingUserInfoKey {
+  static let defaultModelParametersProvider = CodingUserInfoKey(rawValue: "defaultModelParametersProvider")!
+}
 
 public class ChatSource: Codable, ObservableObject {
   public typealias ID = String
+  public typealias DefaultModelParametersProvider = (_ type: ChatSourceType) -> ModelParameters
 
   public let id: ID
 
@@ -75,7 +79,16 @@ public class ChatSource: Codable, ObservableObject {
     modelSize = try values.decode(ModelSize.self, forKey: .modelSize)
 
     // These were added after the initial release.
-    self.modelParameters = try values.decode(ModelParameters.self, forKey: .modelParameters)
+    var modelParametersValue: ModelParameters?
+    modelParametersValue = try values.decodeIfPresent(ModelParameters.self, forKey: .modelParameters)
+    if modelParametersValue == nil {
+      let defaultParametersProvider = decoder.userInfo[.defaultModelParametersProvider] as? DefaultModelParametersProvider
+      modelParametersValue = defaultParametersProvider?(type)
+    }
+    guard let modelParametersValue else {
+      throw DecodingError.keyNotFound(CodingKeys.modelParameters, .init(codingPath: [], debugDescription: "Model parameters key is missing"))
+    }
+    self.modelParameters = modelParametersValue
     let useMlock = try values.decodeIfPresent(Bool.self, forKey: .useMlock)
     self.useMlock = useMlock ?? false
 

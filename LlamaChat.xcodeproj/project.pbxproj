@@ -363,13 +363,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		82615BBE2A02530100B0D4FB /* model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = model;
-			sourceTree = "<group>";
-		};
 		82615BC32A02540600B0D4FB /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -410,7 +403,6 @@
 				82E43CAD29E8D669003E69D1 /* downloads */,
 				821B255329E1D97B00CF1001 /* error */,
 				821B253729DFA38700CF1001 /* extensions */,
-				82615BBE2A02530100B0D4FB /* model */,
 				82718CF129D368C200545C32 /* ui */,
 				82718CF229D368C800545C32 /* viewmodel */,
 				82718CE129D3686300545C32 /* Assets.xcassets */,

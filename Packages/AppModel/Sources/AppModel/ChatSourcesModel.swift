@@ -11,7 +11,7 @@ import SwiftUI
 import DataModel
 import FileManager
 import ModelDirectory
-
+import ModelUtils
 
 fileprivate class SerializedChatSourcesPayload: SerializedPayload<[ChatSource]> {
   override class var valueKey: String? { return "sources" }
@@ -77,7 +77,11 @@ public class ChatSourcesModel: ObservableObject {
 
     do {
       let jsonData = try Data(contentsOf: persistedURL)
-      let payload = try JSONDecoder().decode(SerializedChatSourcesPayload.self, from: jsonData)
+      let decoder = JSONDecoder()
+      decoder.userInfo = [
+        .defaultModelParametersProvider: { defaultModelParameters(for: $0) }
+      ]
+      let payload = try decoder.decode(SerializedChatSourcesPayload.self, from: jsonData)
       sources = payload.value
     } catch {
       print("Error loading sources:", error)
