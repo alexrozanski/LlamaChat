@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 
 fileprivate struct Names: Decodable {
   let llamaNames: [String]

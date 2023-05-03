@@ -6,12 +6,12 @@
 //
 
 import Foundation
-import DataModel
+import AppModel
 
 class GeneralSettingsViewModel: ObservableObject {
   @Published var numThreads: Int {
     didSet {
-      AppSettings.shared.numThreads = numThreads
+      AppSettingsModel.shared.numThreads = numThreads
     }
   }
 
@@ -20,8 +20,8 @@ class GeneralSettingsViewModel: ObservableObject {
   }
 
   init() {
-    numThreads = AppSettings.shared.numThreads
+    numThreads = AppSettingsModel.shared.numThreads
 
-    AppSettings.shared.$numThreads.receive(on: DispatchQueue.main).assign(to: &$numThreads)
+    AppSettingsModel.shared.$numThreads.receive(on: DispatchQueue.main).assign(to: &$numThreads)
   }
 }

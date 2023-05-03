@@ -70,7 +70,7 @@ public class ChatModel: ObservableObject {
     // By definition we clear the context on each launch because we don't persist session state.
     insertClearedContextMessageIfNeeded()
 
-    AppSettings.shared.$numThreads
+    AppSettingsModel.shared.$numThreads
       .combineLatest(source.modelParametersDidChange)
       .debounce(for: .zero, scheduler: RunLoop.current)
       .sink { _ in
@@ -147,7 +147,7 @@ public class ChatModel: ObservableObject {
   @MainActor
   private func makeAndStoreNewSession() -> any Session<LlamaSessionState, LlamaPredictionState> {
     var newSession: any Session<LlamaSessionState, LlamaPredictionState>
-    let numThreads = UInt(AppSettings.shared.numThreads)
+    let numThreads = UInt(AppSettingsModel.shared.numThreads)
     switch source.type {
     case .llama:
       newSession = SessionManager.llamaFamily.makeLlamaSession(

@@ -1,5 +1,5 @@
 //
-//  AppSettings.swift
+//  AppSettingsModel.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 15/04/2023.
@@ -8,13 +8,13 @@
 import Foundation
 import FileManager
 
-fileprivate class SerializedAppSettingsPayload: SerializedPayload<AppSettings> {
+fileprivate class SerializedAppSettingsPayload: SerializedPayload<AppSettingsModel> {
   override class var valueKey: String? { return "settings" }
   override class var currentPayloadVersion: Int { return 1 }
 }
 
-public class AppSettings: ObservableObject, Codable {
-  // Number of threads to run prediction on.
+public class AppSettingsModel: ObservableObject, Codable {
+  // Number of thrmeads to run prediction on.
   @Published public var numThreads: Int {
     didSet {
       persistSettings()
@@ -25,7 +25,7 @@ public class AppSettings: ObservableObject, Codable {
     case numThreads
   }
 
-  public static let shared: AppSettings = {
+  public static let shared: AppSettingsModel = {
     guard
       let settingsFileURL = persistedFileURL,
       FileManager.default.fileExists(atPath: settingsFileURL.path)
@@ -76,6 +76,6 @@ public class AppSettings: ObservableObject, Codable {
   }
 }
 
-private func makeDefaultSettings() -> AppSettings {
-  return AppSettings(numThreads: ProcessInfo.processInfo.defaultThreadCount)
+private func makeDefaultSettings() -> AppSettingsModel {
+  return AppSettingsModel(numThreads: ProcessInfo.processInfo.defaultThreadCount)
 }
