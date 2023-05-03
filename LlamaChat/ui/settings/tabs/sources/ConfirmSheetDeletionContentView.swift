@@ -6,20 +6,21 @@
 //
 
 import SwiftUI
+import AppModel
 import DataModel
 
 class ConfirmDeleteSourceSheetViewModel: ObservableObject {
   let chatSource: ChatSource
-  let chatSources: ChatSources
+  let chatSourcesModel: ChatSourcesModel
   private let closeHandler: () -> Void
 
   init(
     chatSource: ChatSource,
-    chatSources: ChatSources,
+    chatSourcesModel: ChatSourcesModel,
     closeHandler: @escaping () -> Void
   ) {
     self.chatSource = chatSource
-    self.chatSources = chatSources
+    self.chatSourcesModel = chatSourcesModel
     self.closeHandler = closeHandler
   }
 
@@ -28,7 +29,7 @@ class ConfirmDeleteSourceSheetViewModel: ObservableObject {
   }
 
   func delete() {
-    chatSources.remove(source: chatSource)
+    chatSourcesModel.remove(source: chatSource)
     closeHandler()
   }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import AppModel
 import DataModel
 
 class ChatListItemViewModel: ObservableObject {
@@ -48,7 +49,7 @@ class ChatListItemViewModel: ObservableObject {
 }
 
 class ChatListViewModel: ObservableObject {
-  private let chatSources: ChatSources
+  private let chatSourcesModel: ChatSourcesModel
   private weak var mainChatViewModel: MainChatViewModel?
 
   @Published private(set) var items: [ChatListItemViewModel]
@@ -56,14 +57,14 @@ class ChatListViewModel: ObservableObject {
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(chatSources: ChatSources, mainChatViewModel: MainChatViewModel) {
-    self.chatSources = chatSources
+  init(chatSourcesModel: ChatSourcesModel, mainChatViewModel: MainChatViewModel) {
+    self.chatSourcesModel = chatSourcesModel
     self.mainChatViewModel = mainChatViewModel
 
     items = []
-    items = makeViewModels(from: chatSources.sources, in: self)
+    items = makeViewModels(from: chatSourcesModel.sources, in: self)
 
-    chatSources.$sources
+    chatSourcesModel.$sources
       .map { [weak self] newSources in
         guard let self else { return [] }
         return makeViewModels(from: newSources, in: self)
@@ -87,7 +88,7 @@ class ChatListViewModel: ObservableObject {
   }
 
   func moveItems(fromOffsets offsets: IndexSet, toOffset destination: Int) {
-    chatSources.moveSources(fromOffsets: offsets, toOffset: destination)
+    chatSourcesModel.moveSources(fromOffsets: offsets, toOffset: destination)
   }
 }
 

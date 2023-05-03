@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import AppModel
 import DataModel
 
 enum SettingsTab {
@@ -19,16 +20,16 @@ class SettingsViewModel: ObservableObject {
     case parameters
   }
 
-  private let chatSources: ChatSources
+  private let chatSourcesModel: ChatSourcesModel
   private let stateRestoration: StateRestoration
 
   @Published var selectedTab: SettingsTab = .general
 
   private(set) lazy var generalSettingsViewModel = GeneralSettingsViewModel()
-  private(set) lazy var sourcesSettingsViewModel = SourcesSettingsViewModel(chatSources: chatSources, stateRestoration: stateRestoration)
+  private(set) lazy var sourcesSettingsViewModel = SourcesSettingsViewModel(chatSourcesModel: chatSourcesModel, stateRestoration: stateRestoration)
 
-  init(chatSources: ChatSources, stateRestoration: StateRestoration) {
-    self.chatSources = chatSources
+  init(chatSourcesModel: ChatSourcesModel, stateRestoration: StateRestoration) {
+    self.chatSourcesModel = chatSourcesModel
     self.stateRestoration = stateRestoration
   }
 

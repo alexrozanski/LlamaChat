@@ -27,7 +27,7 @@ class LlamaChatAppDelegate: NSObject, NSApplicationDelegate {
 struct LlamaChatApp: App {
   @NSApplicationDelegateAdaptor var appDelegate: LlamaChatAppDelegate
 
-  @StateObject var chatSources: ChatSources
+  @StateObject var chatSourcesModel: ChatSourcesModel
   @StateObject var chatModels: ChatModels
   @StateObject var messagesModel: MessagesModel
   @StateObject var stateRestoration: StateRestoration
@@ -37,19 +37,19 @@ struct LlamaChatApp: App {
   @StateObject var checkForUpdatesViewModel = CheckForUpdatesViewModel()
 
   init() {
-    let chatSources = ChatSources()
+    let chatSourcesModel = ChatSourcesModel()
     let messagesModel = MessagesModel()
     let chatModels = ChatModels(messagesModel: messagesModel)
     let stateRestoration = StateRestoration()
-    let settingsViewModel = SettingsViewModel(chatSources: chatSources, stateRestoration: stateRestoration)
+    let settingsViewModel = SettingsViewModel(chatSourcesModel: chatSourcesModel, stateRestoration: stateRestoration)
 
-    _chatSources = StateObject(wrappedValue: chatSources)
+    _chatSourcesModel = StateObject(wrappedValue: chatSourcesModel)
     _chatModels = StateObject(wrappedValue: chatModels)
     _messagesModel = StateObject(wrappedValue: messagesModel)
     _stateRestoration = StateObject(wrappedValue: stateRestoration)
 
     _mainChatViewModel = StateObject(wrappedValue: MainChatViewModel(
-      chatSources: chatSources,
+      chatSourcesModel: chatSourcesModel,
       chatModels: chatModels,
       messagesModel: messagesModel,
       stateRestoration: stateRestoration
@@ -84,7 +84,7 @@ struct LlamaChatApp: App {
 
     WindowGroup("Model Context", id: WindowIdentifier.modelContext.rawValue, for: ChatSource.ID.self) { $chatId in
       ModelContextView(chatSourceId: chatId)
-        .environmentObject(chatSources)
+        .environmentObject(chatSourcesModel)
         .environmentObject(chatModels)
     }
     // Remove the File > New menu item as this should be opened programmatically.

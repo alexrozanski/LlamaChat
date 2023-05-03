@@ -16,7 +16,7 @@ class MainChatViewModel: ObservableObject {
     case selectedSourceId
   }
 
-  private let chatSources: ChatSources
+  private let chatSourcesModel: ChatSourcesModel
   private let chatModels: ChatModels
   private let messagesModel: MessagesModel
   private let restorableData: any RestorableData<RestorableKey>
@@ -35,28 +35,28 @@ class MainChatViewModel: ObservableObject {
   @Published var sheetViewModel: (any ObservableObject)?
   @Published var sheetPresented = false
 
-  lazy private(set) var chatListViewModel = ChatListViewModel(chatSources: chatSources, mainChatViewModel: self)
+  lazy private(set) var chatListViewModel = ChatListViewModel(chatSourcesModel: chatSourcesModel, mainChatViewModel: self)
 
   private var subscriptions = Set<AnyCancellable>()
 
   init(
-    chatSources: ChatSources,
+    chatSourcesModel: ChatSourcesModel,
     chatModels: ChatModels,
     messagesModel: MessagesModel,
     stateRestoration: StateRestoration
   ) {
-    self.chatSources = chatSources
+    self.chatSourcesModel = chatSourcesModel
     self.chatModels = chatModels
     self.messagesModel = messagesModel
     self.restorableData = stateRestoration.restorableData(for: "ChatWindow")
     _sidebarWidth = Published(initialValue: restorableData.getValue(for: .sidebarWidth) ?? 200)
-    _selectedSourceId = Published(initialValue: restorableData.getValue(for: .selectedSourceId) ?? chatSources.sources.first?.id)
+    _selectedSourceId = Published(initialValue: restorableData.getValue(for: .selectedSourceId) ?? chatSourcesModel.sources.first?.id)
 
-    // bit hacky but use receive(on:) to ensure chatSources.sources has been updated to its new value
-    // to ensure consistent state (otherwise in the `sink()` chatSources.sources will not have been updated yet.
-    chatSources.$sources
+    // bit hacky but use receive(on:) to ensure chatSourcesModel.sources has been updated to its new value
+    // to ensure consistent state (otherwise in the `sink()` chatSourcesModel.sources will not have been updated yet.
+    chatSourcesModel.$sources
       .receive(on: DispatchQueue.main)
-      .scan((nil as [ChatSource]?, chatSources.sources)) { (previous, current) in
+      .scan((nil as [ChatSource]?, chatSourcesModel.sources)) { (previous, current) in
         let lastCurrent = previous.1
         return (lastCurrent, current)
       }
@@ -83,14 +83,14 @@ class MainChatViewModel: ObservableObject {
   }  
 
   func makeChatViewModel(for sourceId: String) -> ChatViewModel? {
-    guard let chatSource = chatSources.sources.first(where: { $0.id == sourceId }) else { return nil }
+    guard let chatSource = chatSourcesModel.sources.first(where: { $0.id == sourceId }) else { return nil }
     return ChatViewModel(chatSource: chatSource, chatModels: chatModels, messagesModel: messagesModel)
   }
 
   func removeChatSource(_ chatSource: ChatSource) {
     sheetViewModel = ConfirmDeleteSourceSheetViewModel(
       chatSource: chatSource,
-      chatSources: chatSources,
+      chatSourcesModel: chatSourcesModel,
       closeHandler: { [weak self] in
         self?.sheetViewModel = nil
       }
@@ -98,13 +98,13 @@ class MainChatViewModel: ObservableObject {
   }
 
   func presentAddSourceSheet() {
-    sheetViewModel = AddSourceViewModel(chatSources: chatSources, closeHandler: { [weak self] _ in
+    sheetViewModel = AddSourceViewModel(chatSourcesModel: chatSourcesModel, closeHandler: { [weak self] _ in
       self?.sheetViewModel = nil
     })
   }
 
   func presentAddSourceSheetIfNeeded() {
-    if chatSources.sources.isEmpty {
+    if chatSourcesModel.sources.isEmpty {
       presentAddSourceSheet()
     }
   }

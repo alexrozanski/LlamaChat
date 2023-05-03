@@ -42,7 +42,7 @@ class ModelContextContentViewModel: ObservableObject {
   }
   private var chatModel: ChatModel?
 
-  var chatSources: ChatSources? {
+  var chatSourcesModel: ChatSourcesModel? {
     didSet {
       updateState()
     }
@@ -79,13 +79,13 @@ class ModelContextContentViewModel: ObservableObject {
   }
 
   private func updateState() {
-    guard let chatSources, let chatModels else {
+    guard let chatSourcesModel, let chatModels else {
       contextCancellable = nil
       chatContext = nil
       return
     }
 
-    guard let chatSource = chatSourceId.flatMap({ chatSources.source(for: $0) }) else {
+    guard let chatSource = chatSourceId.flatMap({ chatSourcesModel.source(for: $0) }) else {
       contextCancellable = nil
       chatContext = nil
       return

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import AppModel
 import DataModel
 
 class SourcesSettingsSourceItemViewModel: ObservableObject {
@@ -27,13 +28,13 @@ class SourcesSettingsSourceItemViewModel: ObservableObject {
 }
 
 class SourcesSettingsViewModel: ObservableObject {
-  private let chatSources: ChatSources
+  private let chatSourcesModel: ChatSourcesModel
   private let stateRestoration: StateRestoration
 
   @Published var sources: [SourcesSettingsSourceItemViewModel]
   @Published var selectedSourceId: ChatSource.ID? {
     didSet {
-      guard let selectedSourceId, let source = chatSources.source(for: selectedSourceId) else {
+      guard let selectedSourceId, let source = chatSourcesModel.source(for: selectedSourceId) else {
         detailViewModel = nil
         return
       }
@@ -54,20 +55,20 @@ class SourcesSettingsViewModel: ObservableObject {
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(chatSources: ChatSources, stateRestoration: StateRestoration) {
-    self.chatSources = chatSources
-    self.sources = makeSourceItemViewModels(from: chatSources.sources)
+  init(chatSourcesModel: ChatSourcesModel, stateRestoration: StateRestoration) {
+    self.chatSourcesModel = chatSourcesModel
+    self.sources = makeSourceItemViewModels(from: chatSourcesModel.sources)
     self.stateRestoration = stateRestoration
 
-    chatSources.$sources
+    chatSourcesModel.$sources
       .map { makeSourceItemViewModels(from: $0) }
       .assign(to: &$sources)
 
-    // bit hacky but use receive(on:) to ensure chatSources.sources has been updated to its new value
-    // to ensure consistent state (otherwise in the `sink()` chatSources.sources will not have been updated yet.
-    chatSources.$sources
+    // bit hacky but use receive(on:) to ensure chatSourcesModel.sources has been updated to its new value
+    // to ensure consistent state (otherwise in the `sink()` chatSourcesModel.sources will not have been updated yet.
+    chatSourcesModel.$sources
       .receive(on: DispatchQueue.main)
-      .scan((nil as [ChatSource]?, chatSources.sources)) { (previous, current) in
+      .scan((nil as [ChatSource]?, chatSourcesModel.sources)) { (previous, current) in
         let lastCurrent = previous.1
         return (lastCurrent, current)
       }
@@ -91,11 +92,11 @@ class SourcesSettingsViewModel: ObservableObject {
   }
 
   func moveSources(fromOffsets offsets: IndexSet, toOffset destination: Int) {
-    chatSources.moveSources(fromOffsets: offsets, toOffset: destination)
+    chatSourcesModel.moveSources(fromOffsets: offsets, toOffset: destination)
   }
 
   func remove(_ source: ChatSource) {
-    chatSources.remove(source: source)
+    chatSourcesModel.remove(source: source)
   }
 
   func selectFirstSourceIfEmpty() {
@@ -105,7 +106,7 @@ class SourcesSettingsViewModel: ObservableObject {
   }
 
   func showAddSourceSheet() {
-    sheetViewModel = AddSourceViewModel(chatSources: chatSources, closeHandler: { [weak self] newSource in
+    sheetViewModel = AddSourceViewModel(chatSourcesModel: chatSourcesModel, closeHandler: { [weak self] newSource in
       self?.sheetViewModel = nil
       if let newSource {
         self?.selectedSourceId = newSource.id
@@ -114,11 +115,11 @@ class SourcesSettingsViewModel: ObservableObject {
   }
 
   func showConfirmDeleteSourceSheet(forSourceWithId sourceId: ChatSource.ID) {
-    guard let source = chatSources.source(for: sourceId) else { return }
+    guard let source = chatSourcesModel.source(for: sourceId) else { return }
 
     sheetViewModel = ConfirmDeleteSourceSheetViewModel(
       chatSource: source,
-      chatSources: chatSources,
+      chatSourcesModel: chatSourcesModel,
       closeHandler: { [weak self] in
         self?.sheetViewModel = nil
       }

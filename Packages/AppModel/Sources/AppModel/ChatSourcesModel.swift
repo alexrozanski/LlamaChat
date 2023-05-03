@@ -7,15 +7,18 @@
 
 import Foundation
 import Combine
-import FileManager
 import SwiftUI
+import DataModel
+import FileManager
+import ModelDirectory
+
 
 fileprivate class SerializedChatSourcesPayload: SerializedPayload<[ChatSource]> {
   override class var valueKey: String? { return "sources" }
   override class var currentPayloadVersion: Int { return 2 }
 }
 
-public class ChatSources: ObservableObject {
+public class ChatSourcesModel: ObservableObject {
   @Published public private(set) var sources: [ChatSource] = [] {
     didSet {
       persistSources()
@@ -47,6 +50,15 @@ public class ChatSources: ObservableObject {
 
   public func remove(source: ChatSource) {
     _ = sources.firstIndex(where: { $0 === source }).map { sources.remove(at: $0) }
+
+    if let modelDirectoryId = source.modelDirectoryId {
+      do {
+        let modelDirectory = try ModelFileManager.shared.modelDirectory(with: modelDirectoryId)
+        modelDirectory.cleanUp()
+      } catch {
+        print("WARNING: Failed to clean up model directory on remove")
+      }
+    }
   }
 
   public func moveSources(fromOffsets offsets: IndexSet, toOffset destination: Int) {

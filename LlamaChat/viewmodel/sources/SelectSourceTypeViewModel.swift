@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppModel
 import DataModel
 
 class SelectSourceTypeViewModel: ObservableObject {
@@ -21,11 +22,11 @@ class SelectSourceTypeViewModel: ObservableObject {
 
   @Published var sources: [Source]
 
-  private let chatSources: ChatSources
+  private let chatSourcesModel: ChatSourcesModel
   private let selectSourceHandler: SelectSourceHandler
 
-  init(chatSources: ChatSources, selectSourceHandler: @escaping SelectSourceHandler) {
-    self.chatSources = chatSources
+  init(chatSourcesModel: ChatSourcesModel, selectSourceHandler: @escaping SelectSourceHandler) {
+    self.chatSourcesModel = chatSourcesModel
     self.selectSourceHandler = selectSourceHandler
 
     sources = [ChatSourceType.alpaca, ChatSourceType.gpt4All, ChatSourceType.llama].map { type in

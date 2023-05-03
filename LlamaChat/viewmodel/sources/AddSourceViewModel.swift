@@ -8,6 +8,7 @@
 import Foundation
 import CameLLM
 import CameLLMLlama
+import AppModel
 import DataModel
 import ModelUtils
 import ModelDirectory
@@ -20,13 +21,13 @@ enum AddSourceStep: Hashable {
 class AddSourceViewModel: ObservableObject {
   typealias CloseHandler = (_ newChatSource: ChatSource?) -> Void
 
-  private let chatSources: ChatSources
+  private let chatSourcesModel: ChatSourcesModel
   private let closeHandler: CloseHandler
 
   @Published var navigationPath = [AddSourceStep]()
 
   private(set) lazy var selectSourceTypeViewModel: SelectSourceTypeViewModel = {
-    return SelectSourceTypeViewModel(chatSources: chatSources) { [weak self] sourceType in
+    return SelectSourceTypeViewModel(chatSourcesModel: chatSourcesModel) { [weak self] sourceType in
       self?.configureSourceViewModel = self?.makeConfigureSourceViewModel(for: sourceType)
       self?.navigationPath.append(.configureSource)
     }
@@ -37,8 +38,8 @@ class AddSourceViewModel: ObservableObject {
 
   private var addedModel = false
 
-  init(chatSources: ChatSources, closeHandler: @escaping CloseHandler) {
-    self.chatSources = chatSources
+  init(chatSourcesModel: ChatSourcesModel, closeHandler: @escaping CloseHandler) {
+    self.chatSourcesModel = chatSourcesModel
     self.closeHandler = closeHandler
   }
 
@@ -158,7 +159,7 @@ class AddSourceViewModel: ObservableObject {
   private func add(source: ChatSource) {
     guard !addedModel else { return }
 
-    chatSources.add(source: source)
+    chatSourcesModel.add(source: source)
     addedModel = true
     closeHandler(source)
   }
