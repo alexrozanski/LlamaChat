@@ -104,6 +104,7 @@
 		82E7FFE329DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */; };
 		82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */; };
 		82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */; };
+		82E8193F2A0408E100D76B57 /* LlamaChat-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 82E8193E2A0408E100D76B57 /* LlamaChat-Local.xcconfig */; };
 		82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */; };
 		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
 		82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */; };
@@ -206,6 +207,7 @@
 		82E7FFE229DE4CA800BF0251 /* ConfigureLocalModelPathSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelPathSelectorViewModel.swift; sourceTree = "<group>"; };
 		82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerView.swift; sourceTree = "<group>"; };
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
+		82E8193E2A0408E100D76B57 /* LlamaChat-Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "LlamaChat-Local.xcconfig"; sourceTree = "<group>"; };
 		82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPickerView.swift; sourceTree = "<group>"; };
 		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+TextSelection.swift"; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				82718CE129D3686300545C32 /* Assets.xcassets */,
 				82980F1B29E263E8000329E6 /* LlamaChat.entitlements */,
 				82C68BEF29E7FB8100A7A4AE /* LlamaChat.xcconfig */,
+				82E8193E2A0408E100D76B57 /* LlamaChat-Local.xcconfig */,
 				82718CE329D3686300545C32 /* Preview Content */,
 			);
 			path = LlamaChat;
@@ -793,6 +796,7 @@
 				82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */,
 				8227DACA29DA5080000E554D /* names.json in Resources */,
 				82718CE229D3686300545C32 /* Assets.xcassets in Resources */,
+				82E8193F2A0408E100D76B57 /* LlamaChat-Local.xcconfig in Resources */,
 				82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1042,11 +1046,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LlamaChat/LlamaChat.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"LlamaChat/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1071,11 +1072,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LlamaChat/LlamaChat.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"LlamaChat/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

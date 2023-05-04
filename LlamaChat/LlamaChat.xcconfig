@@ -1,3 +1,5 @@
+#include "LlamaChat-Local.xcconfig"
+
 CURRENT_PROJECT_VERSION = 5
 MARKETING_VERSION = 1.2.0
 SPARKLE_FEED_URL = https:/$()/llamachat.app/api/appcast-prerelease.xml
