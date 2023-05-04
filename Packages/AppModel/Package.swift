@@ -17,7 +17,8 @@ let package = Package(
     .package(url: "https://github.com/CameLLM/CameLLM-Llama.git", branch: "main"),
     .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: Version(stringLiteral: "0.9.2")),
     .package(path: "../DataModel"),
-    .package(path: "../FileManager")
+    .package(path: "../FileManager"),
+    .package(path: "../ModelUtils")
   ],
   targets: [
     .target(
@@ -27,7 +28,8 @@ let package = Package(
         .product(name: "CameLLMLlama", package: "CameLLM-Llama"),
         .product(name: "SQLite", package: "SQLite.swift"),
         "DataModel",
-        "FileManager"
+        "FileManager",
+        "ModelUtils"
       ]
     )
   ]
