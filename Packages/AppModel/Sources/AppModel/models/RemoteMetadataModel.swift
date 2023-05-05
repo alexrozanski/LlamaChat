@@ -12,7 +12,7 @@ import RemoteModels
 public class RemoteMetadataModel: ObservableObject {
   let apiBaseURL: URL
 
-  @Published var allModels: [Model] = []
+  @Published public var allModels: [Model] = []
 
   private lazy var fetcher = RemoteModelMetadataFetcher(apiBaseURL: apiBaseURL)
 
@@ -20,11 +20,23 @@ public class RemoteMetadataModel: ObservableObject {
     self.apiBaseURL = apiBaseURL
 
     fetcher.$allModels
-      .map { $0.map { remoteModel in Model(name: remoteModel.name) } }
+      .map { $0.map { remoteModel in Model(remote: remoteModel) } }
       .assign(to: &$allModels)
   }
 
-  func fetchMetadata() {
+  public func fetchMetadata() {
     fetcher.updateMetadata()
+  }
+}
+
+fileprivate extension Model {
+  convenience init(remote: RemoteModel) {
+    self.init(name: remote.name, publisher: .init(remote: remote.publisher))
+  }
+}
+
+fileprivate extension ModelPublisher {
+  convenience init(remote: RemoteModelPublisher) {
+    self.init(name: remote.name)
   }
 }

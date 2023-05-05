@@ -232,7 +232,8 @@ fileprivate class ClickThroughDisabledTextField: NSTextField {
 fileprivate class ToggleButtonCell: NSButtonCell {
   override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
     if isHighlighted {
-      let path = NSBezierPath.bezierPathWithTrailingRoundedCorners(for: cellFrame.insetBy(dx: 0.5, dy: 0.5), in: controlView, cornerRadius: 5.5)
+      let highlightRect = NSRect(x: cellFrame.minX, y: cellFrame.minY + 1, width: cellFrame.width - 0.5, height: cellFrame.height - 1)
+      let path = NSBezierPath(roundedRect: highlightRect, corners: [.topRight, .bottomRight], cornerRadius: 4)
       NSColor.black.withAlphaComponent(0.05).set()
       path.fill()
     }
@@ -263,26 +264,5 @@ class ToggleButton: NSButton {
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-}
-
-// MARK: - Drawing
-
-fileprivate extension NSBezierPath {
-  static func bezierPathWithTrailingRoundedCorners(for rect: NSRect, in view: NSView, cornerRadius: CGFloat) -> NSBezierPath {
-    let path = NSBezierPath()
-    let scaledCornerRadius = cornerRadius * (view.window?.backingScaleFactor ?? 1.0)
-
-    let bottomRightCorner = NSPoint(x: rect.maxX, y: rect.maxY)
-    let topRightCorner = NSPoint(x: rect.maxX, y: rect.minY)
-    path.move(to: NSPoint(x: rect.minX, y: rect.minY))
-    path.line(to: NSPoint(x: rect.minX, y: rect.maxY))
-    path.line(to: NSPoint(x: rect.maxX - scaledCornerRadius, y: rect.maxY))
-    path.curve(to: NSPoint(x: rect.maxX, y: rect.maxY - scaledCornerRadius), controlPoint1: bottomRightCorner, controlPoint2: bottomRightCorner)
-    path.line(to: NSPoint(x: rect.maxX, y: rect.minY + scaledCornerRadius))
-    path.curve(to: NSPoint(x: rect.maxX - scaledCornerRadius, y: rect.minY), controlPoint1: topRightCorner, controlPoint2: topRightCorner)
-    path.line(to: NSPoint(x: rect.minX, y: rect.minY))
-    path.close()
-    return path
   }
 }

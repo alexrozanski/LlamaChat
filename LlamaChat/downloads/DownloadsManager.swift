@@ -91,7 +91,6 @@ class DownloadsManager {
 
       let destination: DownloadRequest.Destination = { _, _ in
         let fileURL = downloadDirectoryURL.appending(path: url.lastPathComponent, directoryHint: .notDirectory)
-        print(fileURL)
         return (fileURL, [.createIntermediateDirectories])
       }
 

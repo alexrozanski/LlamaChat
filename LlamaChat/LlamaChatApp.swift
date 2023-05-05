@@ -18,9 +18,13 @@ enum WindowIdentifier: String {
 }
 
 class LlamaChatAppDelegate: NSObject, NSApplicationDelegate {
+  var dependencies: Dependencies?
+
   func applicationDidFinishLaunching(_ notification: Notification) {
     ModelFileManager.shared.cleanUpUnquantizedModelFiles()
     DownloadsManager.shared.cleanUp()
+
+    dependencies?.remoteMetadataModel.fetchMetadata()
   }
 }
 
@@ -44,6 +48,8 @@ struct LlamaChatApp: App {
 
     // For deeplinking
     SettingsWindowPresenter.shared.settingsViewModel = settingsViewModel
+
+    appDelegate.dependencies = dependencies
   }
 
   var body: some Scene {

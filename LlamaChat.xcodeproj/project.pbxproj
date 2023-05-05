@@ -34,7 +34,6 @@
 		8241612529F58C3F007149B9 /* CameLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 8241612429F58C3F007149B9 /* CameLLM */; };
 		8241612829F58C5A007149B9 /* CameLLMLlama in Frameworks */ = {isa = PBXBuildFile; productRef = 8241612729F58C5A007149B9 /* CameLLMLlama */; };
 		8241612D29F5CC2C007149B9 /* ConfigureLocalPyTorchModelSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8241612C29F5CC2C007149B9 /* ConfigureLocalPyTorchModelSettingsViewModel.swift */; };
-		8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */; };
 		8255EA5A29D58CF1000B9F83 /* SelectSourceTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */; };
 		8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */; };
 		82615BBB2A02524600B0D4FB /* DataModel in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BBA2A02524600B0D4FB /* DataModel */; };
@@ -105,6 +104,10 @@
 		82E7FFE729DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */; };
 		82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */; };
 		82E8193F2A0408E100D76B57 /* LlamaChat-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 82E8193E2A0408E100D76B57 /* LlamaChat-Local.xcconfig */; };
+		82E819422A0414B400D76B57 /* SelectSourceTypeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E819412A0414B400D76B57 /* SelectSourceTypeFilterView.swift */; };
+		82E819442A0480DE00D76B57 /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E819432A0480DE00D76B57 /* BubblePickerView.swift */; };
+		82E819462A050BA700D76B57 /* NSBezierPath+Corners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E819452A050BA700D76B57 /* NSBezierPath+Corners.swift */; };
+		82E819482A0516E300D76B57 /* RoundedRectangleWithCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E819472A0516E300D76B57 /* RoundedRectangleWithCorners.swift */; };
 		82F14EA329E45C5D001E9C1E /* AvatarPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */; };
 		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
 		82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */; };
@@ -136,7 +139,6 @@
 		8227DA9F29D98577000E554D /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		8227DAC929DA5080000E554D /* names.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = names.json; sourceTree = "<group>"; };
 		8241612C29F5CC2C007149B9 /* ConfigureLocalPyTorchModelSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigureLocalPyTorchModelSettingsViewModel.swift; path = LlamaChat/viewmodel/sources/configure/local/settings/ConfigureLocalPyTorchModelSettingsViewModel.swift; sourceTree = SOURCE_ROOT; };
-		8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceTypeSelectionView.swift; sourceTree = "<group>"; };
 		8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeViewModel.swift; sourceTree = "<group>"; };
 		8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeView.swift; sourceTree = "<group>"; };
 		82615BC42A02541C00B0D4FB /* AppModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppModel; sourceTree = "<group>"; };
@@ -208,6 +210,10 @@
 		82E7FFE629DE5B1F00BF0251 /* ConfigureLocalModelSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerView.swift; sourceTree = "<group>"; };
 		82E7FFE829DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocalModelSizePickerViewModel.swift; sourceTree = "<group>"; };
 		82E8193E2A0408E100D76B57 /* LlamaChat-Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "LlamaChat-Local.xcconfig"; sourceTree = "<group>"; };
+		82E819412A0414B400D76B57 /* SelectSourceTypeFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSourceTypeFilterView.swift; sourceTree = "<group>"; };
+		82E819432A0480DE00D76B57 /* BubblePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePickerView.swift; sourceTree = "<group>"; };
+		82E819452A050BA700D76B57 /* NSBezierPath+Corners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+Corners.swift"; sourceTree = "<group>"; };
+		82E819472A0516E300D76B57 /* RoundedRectangleWithCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectangleWithCorners.swift; sourceTree = "<group>"; };
 		82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPickerView.swift; sourceTree = "<group>"; };
 		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+TextSelection.swift"; sourceTree = "<group>"; };
@@ -240,6 +246,7 @@
 			children = (
 				821B255629E1F05000CF1001 /* NSScrollView+Bottom.swift */,
 				82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */,
+				82E819452A050BA700D76B57 /* NSBezierPath+Corners.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -279,7 +286,7 @@
 				8227DA9D29D9812F000E554D /* AddSourceFlowPresentationStyle.swift */,
 				82A7B4DC29DE424600BCBB6B /* configure */,
 				821B254129E0A45A00CF1001 /* convert */,
-				82A7B4DE29DE426100BCBB6B /* type */,
+				82A7B4DE29DE426100BCBB6B /* select */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -355,10 +362,10 @@
 			isa = PBXGroup;
 			children = (
 				82E3F1DB29DF37DA003F0368 /* AddSourceViewModel.swift */,
-				8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */,
 				82E3F1D729DF2865003F0368 /* ConfigureSourceViewModel.swift */,
 				82E7FFE429DE4CB900BF0251 /* configure */,
 				821B253F29E0A37400CF1001 /* convert */,
+				82E819402A04149700D76B57 /* select */,
 			);
 			path = sources;
 			sourceTree = "<group>";
@@ -461,11 +468,13 @@
 			children = (
 				82F14EA229E45C5D001E9C1E /* AvatarPickerView.swift */,
 				82914CC429D6E69C00858B2C /* BorderlessTextField.swift */,
+				82E819432A0480DE00D76B57 /* BubblePickerView.swift */,
 				820C795F29DEEA8F00F70723 /* DebouncedView.swift */,
 				8227DA7C29D870D3000E554D /* DidEndEditingTextField.swift */,
 				821B254929E0E86B00CF1001 /* NonEditableTextView.swift */,
-				82BCA1A429F032EC001D5CC0 /* Sliders.swift */,
 				82BCA1A629F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift */,
+				82E819472A0516E300D76B57 /* RoundedRectangleWithCorners.swift */,
+				82BCA1A429F032EC001D5CC0 /* Sliders.swift */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -523,13 +532,13 @@
 			path = configure;
 			sourceTree = "<group>";
 		};
-		82A7B4DE29DE426100BCBB6B /* type */ = {
+		82A7B4DE29DE426100BCBB6B /* select */ = {
 			isa = PBXGroup;
 			children = (
-				8255EA5729D58CE2000B9F83 /* SourceTypeSelectionView.swift */,
 				8255EA5B29D59690000B9F83 /* SelectSourceTypeView.swift */,
+				82E819412A0414B400D76B57 /* SelectSourceTypeFilterView.swift */,
 			);
-			path = type;
+			path = select;
 			sourceTree = "<group>";
 		};
 		82A7B4E729DE470000BCBB6B /* components */ = {
@@ -709,6 +718,14 @@
 			path = components;
 			sourceTree = "<group>";
 		};
+		82E819402A04149700D76B57 /* select */ = {
+			isa = PBXGroup;
+			children = (
+				8255EA5929D58CF1000B9F83 /* SelectSourceTypeViewModel.swift */,
+			);
+			path = select;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -848,7 +865,6 @@
 				82914CC229D5ED9200858B2C /* ChatListViewModel.swift in Sources */,
 				82E3F1D829DF2865003F0368 /* ConfigureSourceViewModel.swift in Sources */,
 				821B254C29E10C6500CF1001 /* ConvertSourceStepViewModel.swift in Sources */,
-				8255EA5829D58CE2000B9F83 /* SourceTypeSelectionView.swift in Sources */,
 				8227DAA029D98577000E554D /* ChatListView.swift in Sources */,
 				8227DA9029D8D8D9000E554D /* StateRestoration.swift in Sources */,
 				826F4C6B29DCFBB90099A729 /* DebugBuildBannerView.swift in Sources */,
@@ -874,16 +890,20 @@
 				8227DA9929D919FD000E554D /* ChatInfoView.swift in Sources */,
 				82C6869C29DA636600B76BA6 /* AvatarViewModel.swift in Sources */,
 				82E7FFE929DE5B7100BF0251 /* ConfigureLocalModelSizePickerViewModel.swift in Sources */,
+				82E819482A0516E300D76B57 /* RoundedRectangleWithCorners.swift in Sources */,
 				82BCA1A729F05DB4001D5CC0 /* NumericTextFieldWithRandomSelector.swift in Sources */,
+				82E819422A0414B400D76B57 /* SelectSourceTypeFilterView.swift in Sources */,
 				82AE199B29D834AE008189DF /* SourcesSettingsView.swift in Sources */,
 				82AE198B29D7A330008189DF /* GeneratedMessageView.swift in Sources */,
 				82E43C9829E8B099003E69D1 /* ConfigureSourcePrimaryActionsView.swift in Sources */,
 				8227DA8129D88228000E554D /* ConfigureLocalModelSourceView.swift in Sources */,
+				82E819462A050BA700D76B57 /* NSBezierPath+Corners.swift in Sources */,
 				8227DA9E29D9812F000E554D /* AddSourceFlowPresentationStyle.swift in Sources */,
 				8255EA5C29D59690000B9F83 /* SelectSourceTypeView.swift in Sources */,
 				82A4376F29F1E9DE0090FA33 /* MessagesTableView.swift in Sources */,
 				82E43CB829E98B7D003E69D1 /* ConfigureSourceDetailsViewModel.swift in Sources */,
 				82A7B4ED29DE48E900BCBB6B /* ConfigureLocalModelSettingsViewModel.swift in Sources */,
+				82E819442A0480DE00D76B57 /* BubblePickerView.swift in Sources */,
 				82718CFD29D368E500545C32 /* ComposeViewModel.swift in Sources */,
 				8227DA7129D86256000E554D /* SourcesSettingsListView.swift in Sources */,
 				821B254A29E0E86B00CF1001 /* NonEditableTextView.swift in Sources */,

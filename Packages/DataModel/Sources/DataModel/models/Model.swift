@@ -9,8 +9,10 @@ import Foundation
 
 public class Model: ObservableObject {
   public let name: String
+  public let publisher: ModelPublisher
 
-  public init(name: String) {
+  public init(name: String, publisher: ModelPublisher) {
     self.name = name
+    self.publisher = publisher
   }
 }
