@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SelectSourceTypeFilterView: View {
-  @State var location: String?
-  @State var languages: String?
+  @ObservedObject var viewModel: SelectSourceTypeFilterViewModel
 
   var body: some View {
     HStack {
@@ -18,10 +17,19 @@ struct SelectSourceTypeFilterView: View {
       BubblePickerView(label: "Location", items: [
         BubblePickerView.Item(id: "local", label: "Bring Your Own"),
         BubblePickerView.Item(id: "remote", label: "Downloadable")
-      ], clearItemLabel: "All Locations", selection: $location)
+      ], clearItemLabel: "All Locations", selection: $viewModel.location)
       BubblePickerView(label: "Languages", items: [
         BubblePickerView.Item(id: "en", label: "English")
-      ], clearItemLabel: "All Languages", selection: $languages)
+      ], clearItemLabel: "All Languages", selection: $viewModel.languages)
+      if viewModel.hasFilters {
+        Button {
+          viewModel.resetFilters()
+        } label: {
+          Text("Reset")
+        }
+      }
+
+      Spacer()
     }
   }
 }

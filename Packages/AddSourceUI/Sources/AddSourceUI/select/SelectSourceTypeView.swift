@@ -44,7 +44,7 @@ struct SelectSourceTypeView: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
-      SelectSourceTypeFilterView()
+      SelectSourceTypeFilterView(viewModel: viewModel.filterViewModel)
         .zIndex(10)
       ForEach(viewModel.sources, id: \.name) { source in
         SourceTypeView(source: source)
