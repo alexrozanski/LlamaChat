@@ -8,6 +8,7 @@
 import SwiftUI
 import AppModel
 import DataModel
+import SharedUI
 
 private let tokenTextAttributes: [NSAttributedString.Key: Any] = [
   .font: NSFont.systemFont(ofSize: 12),

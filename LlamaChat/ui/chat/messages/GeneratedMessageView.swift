@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SharedUI
 
 struct GeneratedMessageView: View {
   @ObservedObject var viewModel: GeneratedMessageViewModel

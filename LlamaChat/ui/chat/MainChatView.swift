@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AddSourceUI
 
 struct MainChatView: View {
   @ObservedObject var viewModel: MainChatViewModel

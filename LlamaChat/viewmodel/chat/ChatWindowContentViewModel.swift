@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import AddSourceUI
 import AppModel
 import DataModel
 

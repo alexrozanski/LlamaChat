@@ -8,6 +8,7 @@
 import SwiftUI
 import AppModel
 import DataModel
+import Downloads
 import ModelDirectory
 import RemoteModels
 

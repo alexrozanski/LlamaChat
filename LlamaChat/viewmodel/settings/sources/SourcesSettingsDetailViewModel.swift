@@ -7,6 +7,7 @@
 
 import AppKit
 import Combine
+import AppModel
 import DataModel
 
 class SourcesSettingsDetailViewModel: ObservableObject {

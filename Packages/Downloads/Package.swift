@@ -2,14 +2,14 @@
 import PackageDescription
 
 let package = Package(
-  name: "RemoteModels",
+  name: "Downloads",
   platforms: [
     .macOS(.v13)
   ],
   products: [
     .library(
-      name: "RemoteModels",
-      targets: ["RemoteModels"]
+      name: "Downloads",
+      targets: ["Downloads"]
     )
   ],
   dependencies: [
@@ -18,7 +18,7 @@ let package = Package(
   ],
   targets: [
     .target(
-      name: "RemoteModels",
+      name: "Downloads",
       dependencies: ["Alamofire", "FileManager"]
     )
   ]

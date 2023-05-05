@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SharedUI
 
 fileprivate struct NameRowView: View {
   @ObservedObject var viewModel: SourceSettingsPropertiesViewModel
