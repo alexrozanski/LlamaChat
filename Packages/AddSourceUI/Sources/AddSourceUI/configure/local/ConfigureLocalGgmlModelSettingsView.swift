@@ -12,12 +12,12 @@ struct ConfigureLocalGgmlModelSettingsView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      ConfigureLocalModelPathSelectorView(viewModel: viewModel.pathSelectorViewModel)
+      PathSelectorView(viewModel: viewModel.pathSelectorViewModel)
       Text("Select the quantized \(viewModel.chatSourceType.readableName) model path. This should be called something like '\(viewModel.exampleModelPath)'")
         .font(.footnote)
         .padding(.top, 8)
     }
-    ConfigureLocalModelSizePickerView(
+    SizePickerView(
       viewModel: viewModel.modelSizePickerViewModel,
       enabled: viewModel.modelState.isValid,
       unknownModelSizeAppearance: .regular

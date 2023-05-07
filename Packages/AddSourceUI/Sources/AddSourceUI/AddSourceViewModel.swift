@@ -14,11 +14,6 @@ import DataModel
 import ModelUtils
 import ModelDirectory
 
-public enum AddSourceStep: Hashable {
-  case configureSource
-  case convertPyTorchSource
-}
-
 public class AddSourceViewModel: ObservableObject {
   public typealias CloseHandler = (_ newChatSource: ChatSource?) -> Void
 
@@ -29,12 +24,34 @@ public class AddSourceViewModel: ObservableObject {
 
   private(set) lazy var selectSourceTypeViewModel: SelectSourceTypeViewModel = {
     return SelectSourceTypeViewModel(dependencies: dependencies) { [weak self] model, variant in
-      print("selected ", model.id, "/", variant?.id)
+      let step: AddSourceStep
+      switch model.source {
+      case .local:
+        step = .configureLocal(
+          ConfigureLocalModelSourceViewModel(
+            defaultName: model.name,
+            chatSourceType: ChatSourceType.llama,
+            exampleGgmlModelPath: "ggml-model-q4_0.bin",
+            nextHandler: { _ in }
+          )
+        )
+      case .remote:
+        guard let variant, let downloadURL = variant.downloadUrl else { return }
+
+        step = .configureRemote(
+          ConfigureDownloadableModelSourceViewModel(
+            defaultName: model.name,
+            chatSourceType: ChatSourceType.gpt4All,
+            modelSize: .size7B,
+            downloadURL: downloadURL,
+            nextHandler: { _ in }
+          )
+        )
+      }
+
+      self?.navigationPath.append(step)
     }
   }()
-
-  private(set) var configureSourceViewModel: ConfigureSourceViewModel?
-  private(set) var convertSourceViewModel: ConvertSourceViewModel?
 
   private var addedModel = false
 
@@ -43,92 +60,11 @@ public class AddSourceViewModel: ObservableObject {
     self.closeHandler = closeHandler
   }
 
-  deinit {
-    if !addedModel {
-      convertSourceViewModel?.cleanUp_DANGEROUS()
-    }
-  }
-
   func cancel() {
     closeHandler(nil)
   }
 
   // MARK: - Private
-
-  private func makeConfigureSourceViewModel(for sourceType: ChatSourceType) -> ConfigureSourceViewModel? {
-    let nextHandler: ConfigureSourceNextHandler = { [weak self] configuredSource in
-      guard let self else { return }
-
-      switch configuredSource.settings {
-      case .ggmlModel(modelURL: let modelURL, modelSize: let modelSize):
-        self.add(
-          source: ChatSource(
-            name: configuredSource.name,
-            avatarImageName: configuredSource.avatarImageName,
-            type: sourceType,
-            modelURL: modelURL,
-            modelDirectoryId: nil,
-            modelSize: modelSize,
-            modelParameters: defaultModelParameters(for: sourceType),
-            useMlock: false
-          )
-        )
-      case .pyTorchCheckpoints(data: let validatedData, let modelSize):
-        self.convertSourceViewModel = self.makeConvertSourceViewModel(
-          with: sourceType,
-          configuredSource: configuredSource,
-          modelSize: modelSize,
-          validatedData: validatedData
-        )
-        self.navigationPath.append(.convertPyTorchSource)
-      case .downloadedFile(fileURL: let fileURL, modelSize: let modelSize):
-        do {
-          let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
-          let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
-          self.add(
-            source: ChatSource(
-              name: configuredSource.name,
-              avatarImageName: configuredSource.avatarImageName,
-              type: sourceType,
-              modelURL: modelFileURL,
-              modelDirectoryId: modelDirectory.id,
-              modelSize: modelSize,
-              modelParameters: defaultModelParameters(for: sourceType),
-              useMlock: false
-            )
-          )
-        } catch {
-          print(error)
-        }
-      }
-    }
-
-    switch sourceType {
-    case .llama:
-      return ConfigureLocalModelSourceViewModel(
-        defaultName: "LLaMA",
-        chatSourceType: ChatSourceType.llama,
-        exampleGgmlModelPath: "ggml-model-q4_0.bin",
-        nextHandler: nextHandler
-      )
-    case .alpaca:
-      return ConfigureLocalModelSourceViewModel(
-        defaultName: "Alpaca",
-        chatSourceType: ChatSourceType.alpaca,
-        exampleGgmlModelPath: "ggml-alpaca-7b-q4.bin",
-        nextHandler: nextHandler
-      )
-    case .gpt4All:
-      guard let url = URL(string: "https://gpt4all.io/ggml-gpt4all-j.bin") else { return nil }
-      return ConfigureDownloadableModelSourceViewModel(
-        defaultName: "GPT4All",
-        chatSourceType: ChatSourceType.gpt4All,
-        modelSize: .size7B,
-        downloadURL: url,
-        nextHandler: nextHandler
-      )
-    }
-  }
 
   private func makeConvertSourceViewModel(
     with sourceType: ChatSourceType,
@@ -156,10 +92,62 @@ public class AddSourceViewModel: ObservableObject {
     )
   }
 
+  private func handleConfiguredSource(source: ConfiguredSource, sourceType: ChatSourceType) {
+    switch source.settings {
+    case .ggmlModel(modelURL: let modelURL, modelSize: let modelSize):
+      self.add(
+        source: ChatSource(
+          name: source.name,
+          avatarImageName: source.avatarImageName,
+          type: sourceType,
+          modelURL: modelURL,
+          modelDirectoryId: nil,
+          modelSize: modelSize,
+          modelParameters: defaultModelParameters(for: sourceType),
+          useMlock: false
+        )
+      )
+    case .pyTorchCheckpoints(data: let validatedData, let modelSize):
+      self.navigationPath.append(
+        .convertPyTorchSource(
+          self.makeConvertSourceViewModel(
+            with: sourceType,
+            configuredSource: source,
+            modelSize: modelSize,
+            validatedData: validatedData
+          )
+        )
+      )
+    case .downloadedFile(fileURL: let fileURL, modelSize: let modelSize):
+      do {
+        let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
+        let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
+        self.add(
+          source: ChatSource(
+            name: source.name,
+            avatarImageName: source.avatarImageName,
+            type: sourceType,
+            modelURL: modelFileURL,
+            modelDirectoryId: modelDirectory.id,
+            modelSize: modelSize,
+            modelParameters: defaultModelParameters(for: sourceType),
+            useMlock: false
+          )
+        )
+      } catch {
+        print(error)
+      }
+    }
+  }
+
   private func add(source: ChatSource) {
     guard !addedModel else { return }
 
     dependencies.chatSourcesModel.add(source: source)
+
+    // This is important -- otherwise we will delete the model. Refactor this to not be
+    // as dangerous.
+    navigationPath.convertViewModel?.markModelKept()
     addedModel = true
     closeHandler(source)
   }

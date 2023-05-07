@@ -1,5 +1,5 @@
 //
-//  ConfigureLocalModelSelectFormatView.swift
+//  SelectFormatView.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 06/04/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ConfigureLocalModelSelectFormatView: View {
+struct SelectFormatView: View {
   @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
 
   var body: some View {

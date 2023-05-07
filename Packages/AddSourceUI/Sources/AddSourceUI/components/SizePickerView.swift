@@ -1,5 +1,5 @@
 //
-//  ConfigureLocalModelSizePickerView.swift
+//  SizePickerView.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 06/04/2023.
@@ -8,8 +8,8 @@
 import SwiftUI
 import DataModel
 
-struct ConfigureLocalModelSizePickerView: View {
-  @ObservedObject var viewModel: ConfigureLocalModelSizePickerViewModel
+struct SizePickerView: View {
+  @ObservedObject var viewModel: SizePickerViewModel
 
   enum UnknownModelSizeAppearance {
     case regular
@@ -27,7 +27,7 @@ struct ConfigureLocalModelSizePickerView: View {
   let unknownModelSizeAppearance: UnknownModelSizeAppearance
 
   init(
-    viewModel: ConfigureLocalModelSizePickerViewModel,
+    viewModel: SizePickerViewModel,
     enabled: Bool = true,
     unknownModelSizeAppearance: UnknownModelSizeAppearance
   ) {

@@ -15,7 +15,7 @@ struct ConfigureLocalModelSourceView: View {
   var body: some View {
     Form {
       ConfigureSourceDetailsView(viewModel: viewModel.detailsViewModel)
-      ConfigureLocalModelSelectFormatView(viewModel: viewModel)
+      SelectFormatView(viewModel: viewModel)
 
       if let settingsViewModel = viewModel.settingsViewModel {
         Section {

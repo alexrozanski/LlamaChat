@@ -1,5 +1,5 @@
 //
-//  ConfigureLocalModelPathSelectorView.swift
+//  PathSelectorView.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 06/04/2023.
@@ -21,8 +21,8 @@ fileprivate extension Alignment {
   static let label = Alignment(horizontal: .leading, vertical: .label)
 }
 
-struct ConfigureLocalModelPathSelectorView: View {
-  @ObservedObject var viewModel: ConfigureLocalModelPathSelectorViewModel
+struct PathSelectorView: View {
+  @ObservedObject var viewModel: PathSelectorViewModel
 
   @ViewBuilder var label: some View {
     Text(viewModel.label)
@@ -110,7 +110,7 @@ struct ConfigureLocalModelPathSelectorView: View {
   }
 }
 
-fileprivate extension ConfigureLocalModelPathSelectorViewModel.SelectionMode {
+fileprivate extension PathSelectorViewModel.SelectionMode {
   var canSelectFiles: Bool {
     switch self {
     case .files: return true

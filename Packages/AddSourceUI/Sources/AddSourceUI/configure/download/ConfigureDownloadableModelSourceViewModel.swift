@@ -11,7 +11,7 @@ import SwiftUI
 import DataModel
 import Downloads
 
-class ConfigureDownloadableModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
+class ConfigureDownloadableModelSourceViewModel: ObservableObject {
   enum State {
     case none
     case checkingReachability

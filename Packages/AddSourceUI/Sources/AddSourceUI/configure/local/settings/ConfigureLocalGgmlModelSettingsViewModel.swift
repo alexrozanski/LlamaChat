@@ -57,8 +57,8 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     return .ggml
   }
 
-  private(set) lazy var pathSelectorViewModel = ConfigureLocalModelPathSelectorViewModel()
-  private(set) lazy var modelSizePickerViewModel = ConfigureLocalModelSizePickerViewModel(labelProvider: { modelSize, defaultProvider in
+  private(set) lazy var pathSelectorViewModel = PathSelectorViewModel()
+  private(set) lazy var modelSizePickerViewModel = SizePickerViewModel(labelProvider: { modelSize, defaultProvider in
     switch modelSize {
     case .unknown:
       return "Not Specified"

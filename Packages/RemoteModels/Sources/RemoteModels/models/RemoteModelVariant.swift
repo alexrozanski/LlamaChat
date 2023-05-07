@@ -13,4 +13,5 @@ public struct RemoteModelVariant: Decodable {
   public let description: String?
   public let parameters: String
   public let engine: String
+  public let downloadUrl: URL?
 }

@@ -26,7 +26,7 @@ struct ConfigureLocalPyTorchModelSettingsView: View {
       )
     case .canConvert(let canConvert):
       if canConvert {
-        ConfigureLocalModelSizePickerView(
+        SizePickerView(
           viewModel: viewModel.modelSizePickerViewModel,
           unknownModelSizeAppearance: .disabled
         )
@@ -41,7 +41,7 @@ struct ConfigureLocalPyTorchModelSettingsView: View {
     }
     if viewModel.showPathSelector {
       VStack(alignment: .leading) {
-        ConfigureLocalModelPathSelectorView(viewModel: viewModel.pathSelectorViewModel)
+        PathSelectorView(viewModel: viewModel.pathSelectorViewModel)
         if let files = viewModel.files {
           VStack(alignment: .leading, spacing: 4) {
             ForEach(files, id: \.url) { file in

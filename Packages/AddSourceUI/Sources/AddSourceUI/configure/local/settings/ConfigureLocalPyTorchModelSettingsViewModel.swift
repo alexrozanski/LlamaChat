@@ -59,7 +59,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   @Published var conversionState: ConversionState = .unknown
   @Published var files: [ModelConversionFile]? = nil
 
-  private(set) lazy var modelSizePickerViewModel = ConfigureLocalModelSizePickerViewModel(labelProvider: { modelSize, defaultProvider in
+  private(set) lazy var modelSizePickerViewModel = SizePickerViewModel(labelProvider: { modelSize, defaultProvider in
     switch modelSize {
     case .unknown:
       return "Select Model Size"
@@ -68,7 +68,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
       return "\(defaultProvider(modelSize)) (\(numFiles) \(numFiles == 1 ? "file" : "files"))"
     }
   })
-  private(set) lazy var pathSelectorViewModel = ConfigureLocalModelPathSelectorViewModel(
+  private(set) lazy var pathSelectorViewModel = PathSelectorViewModel(
     customLabel: "Model Directory",
     selectionMode: .directories
   )

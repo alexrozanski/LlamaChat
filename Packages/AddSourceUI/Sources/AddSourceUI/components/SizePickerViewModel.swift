@@ -1,5 +1,5 @@
 //
-//  ConfigureLocalModelSizePickerViewModel.swift
+//  SizePickerViewModel.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 06/04/2023.
@@ -8,7 +8,7 @@
 import Foundation
 import DataModel
 
-class ConfigureLocalModelSizePickerViewModel: ObservableObject {
+class SizePickerViewModel: ObservableObject {
   typealias LabelProvider = (_ modelSize: ModelSize, _ defaultProvider: (ModelSize) -> String) -> String
 
   @Published var modelSize: ModelSize = .unknown

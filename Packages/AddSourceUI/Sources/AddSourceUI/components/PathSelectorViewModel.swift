@@ -1,5 +1,5 @@
 //
-//  ConfigureLocalModelPathSelectorView.swift
+//  PathSelectorView.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 06/04/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ConfigureLocalModelPathSelectorViewModel: ObservableObject {
+class PathSelectorViewModel: ObservableObject {
   enum SelectionMode {
     case files
     case directories

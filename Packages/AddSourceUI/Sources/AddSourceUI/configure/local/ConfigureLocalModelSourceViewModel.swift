@@ -10,7 +10,7 @@ import Combine
 import DataModel
 import SwiftUI
 
-class ConfigureLocalModelSourceViewModel: ObservableObject, ConfigureSourceViewModel {
+class ConfigureLocalModelSourceViewModel: ObservableObject {
   // MARK: - Info  
 
   var modelType: String {

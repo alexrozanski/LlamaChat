@@ -24,16 +24,3 @@ enum ConfiguredSourceSettings {
 }
 
 typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
-
-protocol ConfigureSourceViewModel {
-  var chatSourceType: ChatSourceType { get }
-  var primaryActionsViewModel: ConfigureSourcePrimaryActionsViewModel { get }
-}
-
-@ViewBuilder func makeConfigureSourceView(from viewModel: any ConfigureSourceViewModel) -> some View {
-  if let viewModel = viewModel as? ConfigureLocalModelSourceViewModel {
-    ConfigureLocalModelSourceView(viewModel: viewModel)
-  } else if let viewModel = viewModel as? ConfigureDownloadableModelSourceViewModel {
-    ConfigureDownloadableModelSourceView(viewModel: viewModel)
-  }
-}

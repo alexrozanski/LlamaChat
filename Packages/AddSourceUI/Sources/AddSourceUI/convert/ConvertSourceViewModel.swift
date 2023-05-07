@@ -72,6 +72,9 @@ class ConvertSourceViewModel: ObservableObject {
 
   private var hasFinished = false
 
+  // TODO: We should find a more elegant way to handle this.
+  private var keepModel = false
+
   init(
     data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>,
     completionHandler: @escaping CompletionHandler,
@@ -133,6 +136,10 @@ class ConvertSourceViewModel: ObservableObject {
       }.sink { _ in }.store(in: &subscriptions)
   }
 
+  deinit {
+    cleanUp()
+  }
+
   func startConversion() {
     guard !state.startedConverting else { return }
 
@@ -173,8 +180,13 @@ class ConvertSourceViewModel: ObservableObject {
     hasFinished = true
   }
 
-  // Cleans up the converted model files :)
-  func cleanUp_DANGEROUS() {
+  func markModelKept() {
+    keepModel = true
+  }
+
+  func cleanUp() {
+    guard !keepModel else { return }
+
     switch state {
     case .notStarted, .converting, .failedToConvert:
       break

@@ -46,24 +46,27 @@ public struct AddSourceContentView: View {
       .navigationTitle("Add Chat Source")
       .navigationDestination(for: AddSourceStep.self) { step in
         switch step {
-        case .configureSource:
-          if let configureSourceViewModel = viewModel.configureSourceViewModel {
-            StepView(viewModel: viewModel, content: {
-              makeConfigureSourceView(from: configureSourceViewModel)
-                .navigationTitle("Set up \(configureSourceViewModel.chatSourceType.readableName) model")
-            }, primaryActions: {
-              ConfigureSourcePrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
-            })
-          }
-        case .convertPyTorchSource:
-          if let convertSourceViewModel = viewModel.convertSourceViewModel {
-            StepView(viewModel: viewModel, content: {
-              ConvertSourceView(viewModel: convertSourceViewModel)
-                .navigationTitle("Convert PyTorch model files")
-            }, primaryActions: {
-              ConvertSourcePrimaryActionsView(viewModel: convertSourceViewModel)
-            })
-          }
+        case .configureLocal(let configureSourceViewModel):
+          StepView(viewModel: viewModel, content: {
+            ConfigureLocalModelSourceView(viewModel: configureSourceViewModel)
+              .navigationTitle("Set up \(configureSourceViewModel.chatSourceType.readableName) model")
+          }, primaryActions: {
+            ConfigureSourcePrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
+          })
+        case .configureRemote(let configureSourceViewModel):
+          StepView(viewModel: viewModel, content: {
+            ConfigureDownloadableModelSourceView(viewModel: configureSourceViewModel)
+              .navigationTitle("Set up \(configureSourceViewModel.chatSourceType.readableName) model")
+          }, primaryActions: {
+            ConfigureSourcePrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
+          })
+        case .convertPyTorchSource(let convertSourceViewModel):
+          StepView(viewModel: viewModel, content: {
+            ConvertSourceView(viewModel: convertSourceViewModel)
+              .navigationTitle("Convert PyTorch model files")
+          }, primaryActions: {
+            ConvertSourcePrimaryActionsView(viewModel: convertSourceViewModel)
+          })
         }
       }
     }
