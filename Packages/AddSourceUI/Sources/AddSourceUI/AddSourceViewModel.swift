@@ -28,9 +28,8 @@ public class AddSourceViewModel: ObservableObject {
   @Published var navigationPath = [AddSourceStep]()
 
   private(set) lazy var selectSourceTypeViewModel: SelectSourceTypeViewModel = {
-    return SelectSourceTypeViewModel(dependencies: dependencies) { [weak self] sourceType in
-      self?.configureSourceViewModel = self?.makeConfigureSourceViewModel(for: sourceType)
-      self?.navigationPath.append(.configureSource)
+    return SelectSourceTypeViewModel(dependencies: dependencies) { [weak self] model, variant in
+      print("selected ", model.id, "/", variant?.id)
     }
   }()
 

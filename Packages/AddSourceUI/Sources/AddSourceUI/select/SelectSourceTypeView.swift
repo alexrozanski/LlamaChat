@@ -7,14 +7,17 @@
 
 import SwiftUI
 import SharedUI
+import RemoteModels
 
 fileprivate struct Colors {
   static let border = Color(light: Color(hex: "#DEDEDE"), dark: Color(hex: "#DEDEDE"))
   static let hoverBackground = Color.black.opacity(0.02)
 }
 
+typealias SelectHandler = (RemoteModel, RemoteModelVariant) -> Void
+
 struct SourceTypeVariantView: View {
-  let variant: Variant
+  let variant: VariantViewModel
   let hasBottomBorder: Bool
 
   @State var hovered = false
@@ -52,6 +55,9 @@ struct SourceTypeVariantView: View {
       .onHover { hovered in
         self.hovered = hovered
       }
+      .onTapGesture {
+        variant.select()
+      }
       if hasBottomBorder {
         Rectangle()
           .fill(Colors.border)
@@ -64,7 +70,8 @@ struct SourceTypeVariantView: View {
 struct SourceTypeView: View {
   @State var hovered = false
 
-  let source: Source
+  let source: SourceViewModel
+  let selectHandler: SelectHandler
 
   @ViewBuilder var header: some View {
     VStack {
@@ -92,7 +99,7 @@ struct SourceTypeView: View {
         HStack {
           Text(source.description)
           Spacer()
-          if source.isSourceSelectable {
+          if source.isModelSelectable {
             Image(systemName: "chevron.right")
           }
         }
@@ -136,9 +143,12 @@ struct SourceTypeView: View {
     )
     .cornerRadius(4)
     .onHover { hovered in
-      if source.isSourceSelectable {
+      if source.isModelSelectable {
         self.hovered = hovered
       }
+    }
+    .onTapGesture {
+      source.select()
     }
   }
 }
@@ -168,7 +178,9 @@ struct SelectSourceTypeView: View {
           ScrollView {
             VStack {
               ForEach(viewModel.sources, id: \.id) { source in
-                SourceTypeView(source: source)
+                SourceTypeView(source: source) { model, variant in
+                  viewModel.selectModel(model, variant: variant)
+                }
               }
             }
           }

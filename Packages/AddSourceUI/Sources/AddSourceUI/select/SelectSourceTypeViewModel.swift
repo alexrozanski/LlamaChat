@@ -12,30 +12,37 @@ import DataModel
 import RemoteModels
 
 class SelectSourceTypeViewModel: ObservableObject {
-  typealias SelectSourceHandler = (ChatSourceType) -> Void
+  typealias SelectModelHandler = (RemoteModel, RemoteModelVariant?) -> Void
 
-  @Published private(set) var sources: [Source] = []
+  @Published private(set) var sources: [SourceViewModel] = []
   @Published private(set) var matches: [SourceFilterMatch] = []
   @Published private(set) var showLoadingSpinner = false
 
   private let dependencies: Dependencies
-  private let selectSourceHandler: SelectSourceHandler
+  private let selectModelHandler: SelectModelHandler
 
   let filterViewModel: SelectSourceTypeFilterViewModel
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(dependencies: Dependencies, selectSourceHandler: @escaping SelectSourceHandler) {
+  init(dependencies: Dependencies, selectModelHandler: @escaping SelectModelHandler) {
     let filterViewModel = SelectSourceTypeFilterViewModel()
 
     self.dependencies = dependencies
-    self.selectSourceHandler = selectSourceHandler
+    self.selectModelHandler = selectModelHandler
     self.filterViewModel = filterViewModel
 
     dependencies.remoteMetadataModel.$allModels
       .combineLatest(filterViewModel.$location, filterViewModel.$searchFieldText)
-      .map { remoteModels, location, searchFieldText in
-        return filterSources(models: remoteModels, location: location, searchFieldText: searchFieldText)
+      .map { [weak self] remoteModels, location, searchFieldText in
+        return filterSources(
+          models: remoteModels,
+          location: location,
+          searchFieldText: searchFieldText,
+          selectionHandler: { model, variant in
+            self?.selectModel(model, variant: variant)
+          }
+        )
       }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] (sources, matches) in
@@ -60,19 +67,28 @@ class SelectSourceTypeViewModel: ObservableObject {
       .assign(to: &$showLoadingSpinner)
   }
 
-  func select(sourceType: ChatSourceType) {
-    selectSourceHandler(sourceType)
+  func selectModel(_ model: RemoteModel, variant: RemoteModelVariant?) {
+    selectModelHandler(model, variant)
   }
 }
 
 private func filterSources(
   models: [RemoteModel],
   location: SelectSourceTypeFilterViewModel.Location?,
-  searchFieldText: String
-) -> (sources: [Source], matches: [SourceFilterMatch]) {
+  searchFieldText: String,
+  selectionHandler: @escaping (RemoteModel, RemoteModelVariant?) -> Void
+) -> (sources: [SourceViewModel], matches: [SourceFilterMatch]) {
   let trimmedSearchText = searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines)
+
   guard location != nil || !trimmedSearchText.isEmpty else {
-    return (models.map { Source(remoteModel: $0, matches: nil)}, [])
+    return (
+      models.map { model in
+        SourceViewModel(remoteModel: model, matches: nil, selectionHandler: { variant in
+          selectionHandler(model, variant)
+        })
+      },
+      []
+    )
   }
 
   return models
@@ -90,7 +106,7 @@ private func filterSources(
       return (remoteModel, sourceMatches)
     }
     .filter { (remoteModel, matches) in !matches.isEmpty }
-    .reduce((sources: [Source](), matches: [SourceFilterMatch]())) { acc, result in
+    .reduce((sources: [SourceViewModel](), matches: [SourceFilterMatch]())) { acc, result in
       let (lastSources, lastMatches) = acc
       let (remoteModel, matches) = result
 
@@ -98,7 +114,17 @@ private func filterSources(
         return acc
       } else {
         // It's okay to only pass the current matches to Source() as they relate to the current source.
-        return (lastSources + [Source(remoteModel: remoteModel, matches: matches)], lastMatches + matches)
+        return (
+          lastSources + [
+            SourceViewModel(
+              remoteModel: remoteModel,
+              matches: matches,
+              selectionHandler: { variant in
+                selectionHandler(remoteModel, variant)
+              }
+            )
+          ],
+          lastMatches + matches)
       }
     }
 }
