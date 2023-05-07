@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 import DataModel
 import Downloads
+import RemoteModels
 
 class ConfigureRemoteModelSourceViewModel: ObservableObject {
   typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
@@ -38,6 +39,8 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
   @Published var downloadProgress: DownloadProgress?
 
   let chatSourceType: ChatSourceType
+  let model: RemoteModel
+  let modelVariant: RemoteModelVariant
   let modelSize: ModelSize
   let downloadURL: URL
 
@@ -51,14 +54,18 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
   init(
     defaultName: String? = nil,
     chatSourceType: ChatSourceType,
+    model: RemoteModel,
+    modelVariant: RemoteModelVariant,
     modelSize: ModelSize,
     downloadURL: URL,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {
     self.chatSourceType = chatSourceType
+    self.model = model
+    self.modelVariant = modelVariant
     self.modelSize = modelSize
     self.downloadURL = downloadURL
-    self.detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, chatSourceType: chatSourceType)
+    self.detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, model: model)
     self.nextHandler = nextHandler
   }
 

@@ -7,21 +7,21 @@
 
 import Foundation
 import AppModel
-import DataModel
+import RemoteModels
 
 class ConfigureSourceDetailsViewModel: ObservableObject {
   @Published var name: String
   @Published var avatarImageName: String?
 
-  private let chatSourceType: ChatSourceType
+  let model: RemoteModel
 
-  init(defaultName: String? = nil, chatSourceType: ChatSourceType) {
+  init(defaultName: String? = nil, model: RemoteModel) {
     self.name = defaultName ?? ""
-    self.chatSourceType = chatSourceType
+    self.model = model
   }
 
   func generateName() {
-    if let generatedName = SourceNameGenerator.default.generateName(for: chatSourceType) {
+    if let generatedName = SourceNameGenerator.default.generateName(for: model) {
       name = generatedName
     }
   }

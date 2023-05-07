@@ -30,8 +30,7 @@ public class AddSourceViewModel: ObservableObject {
         step = .configureLocal(
           ConfigureLocalModelSourceViewModel(
             defaultName: model.name,
-            chatSourceType: ChatSourceType.llama,
-            remoteModel: model,
+            model: model,
             exampleGgmlModelPath: "ggml-model-q4_0.bin",
             nextHandler: { _ in }
           )
@@ -43,6 +42,8 @@ public class AddSourceViewModel: ObservableObject {
           ConfigureRemoteModelSourceViewModel(
             defaultName: model.name,
             chatSourceType: ChatSourceType.gpt4All,
+            model: model,
+            modelVariant: variant,
             modelSize: .size7B,
             downloadURL: downloadURL,
             nextHandler: { _ in }

@@ -73,23 +73,22 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
     selectionMode: .directories
   )
 
-  let chatSourceType: ChatSourceType
   let sourceSettings = CurrentValueSubject<ConfiguredSourceSettings?, Never>(nil)
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(chatSourceType: ChatSourceType) {
-    self.chatSourceType = chatSourceType
+  init() {
+    modelSizePickerViewModel
+      .$modelSize
+      .map { $0.requiredNumberOfModelFiles }
+      .assign(to: &$requiredNumberOfModelFiles)
 
-    modelSizePickerViewModel.$modelSize.sink { [weak self] newModelSize in
-      guard let self else { return }
-      self.requiredNumberOfModelFiles = newModelSize.requiredNumberOfModelFiles
-    }.store(in: &subscriptions)
     modelSizePickerViewModel.$modelSize
       .combineLatest($conversionState)
-      .sink { [weak self] modelSize, conversionState in
-        self?.showPathSelector = !modelSize.isUnknown && conversionState.canConvert
-      }.store(in: &subscriptions)
+      .map { modelSize, conversionState in
+        return !modelSize.isUnknown && conversionState.canConvert
+      }
+      .assign(to: &$showPathSelector)
 
     pathSelectorViewModel.$modelPaths
       .combineLatest(modelSizePickerViewModel.$modelSize)

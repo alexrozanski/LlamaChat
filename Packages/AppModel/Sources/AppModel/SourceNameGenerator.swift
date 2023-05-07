@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import DataModel
+import RemoteModels
 
 fileprivate struct Names: Decodable {
   let llamaNames: [String]
@@ -33,15 +33,15 @@ public class SourceNameGenerator {
     return names != nil
   }
 
-  public func generateName(for sourceType: ChatSourceType) -> String? {
+  public func generateName(for model: RemoteModel) -> String? {
     guard let names else { return nil }
 
-    switch sourceType {
-    case .llama:
+    switch model.id {
+    case "llama":
       return names.llamaNames.randomElement()
-    case .alpaca:
+    case "alpaca":
       return names.alpacaNames.randomElement()
-    case .gpt4All:
+    default:
       var all = names.alpacaNames
       all.append(contentsOf: names.llamaNames)
       return all.randomElement()

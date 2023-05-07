@@ -17,11 +17,11 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
   // MARK: - Info
 
   var modelName: String {
-    return remoteModel.name
+    return model.name
   }
 
   lazy var modelSourcingDescription: AttributedString? = {
-    return remoteModel.sourcingDescription.flatMap { try? AttributedString(markdown: $0) }
+    return model.sourcingDescription.flatMap { try? AttributedString(markdown: $0) }
   }()
 
   // MARK: - Model Settings
@@ -40,13 +40,13 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
       } else {
         switch modelSourceType {
         case .pyTorch:
-          let viewModel = ConfigureLocalPyTorchModelSettingsViewModel(chatSourceType: chatSourceType)
+          let viewModel = ConfigureLocalPyTorchModelSettingsViewModel()
           viewModel.determineConversionStateIfNeeded()
           settingsViewModels[.pyTorch] = viewModel
           settingsViewModel = viewModel
         case .ggml:
           let viewModel = ConfigureLocalGgmlModelSettingsViewModel(
-            chatSourceType: chatSourceType,
+            model: model,
             exampleModelPath: exampleGgmlModelPath
           )
           settingsViewModels[.ggml] = viewModel
@@ -64,8 +64,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
 
   let primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
 
-  let chatSourceType: ChatSourceType
-  let remoteModel: RemoteModel
+  let model: RemoteModel
   let exampleGgmlModelPath: String
   private let nextHandler: ConfigureSourceNextHandler
 
@@ -73,14 +72,12 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
 
   init(
     defaultName: String? = nil,
-    chatSourceType: ChatSourceType,
-    remoteModel: RemoteModel,
+    model: RemoteModel,
     exampleGgmlModelPath: String,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {
-    detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, chatSourceType: chatSourceType)
-    self.chatSourceType = chatSourceType
-    self.remoteModel = remoteModel
+    detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, model: model)
+    self.model = model
     self.exampleGgmlModelPath = exampleGgmlModelPath
     self.nextHandler = nextHandler
 

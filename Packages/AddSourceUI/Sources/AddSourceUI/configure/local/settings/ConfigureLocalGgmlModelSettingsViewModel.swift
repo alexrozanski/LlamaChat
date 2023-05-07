@@ -10,6 +10,7 @@ import Combine
 import CameLLM
 import CameLLMLlama
 import DataModel
+import RemoteModels
 
 private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalGgmlModelSettingsViewModel.InvalidModelTypeReason {
   // Reason is always stored in the underlying error
@@ -53,6 +54,10 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
 
   let sourceSettings = CurrentValueSubject<ConfiguredSourceSettings?, Never>(nil)
 
+  var modelName: String {
+    return model.name
+  }
+
   var sourceType: ConfigureLocalModelSourceType {
     return .ggml
   }
@@ -72,13 +77,13 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
   var modelPath: String? { return pathSelectorViewModel.modelPaths.first }
   var modelSize: ModelSize? { return modelSizePickerViewModel.modelSize }
 
-  let chatSourceType: ChatSourceType
+  let model: RemoteModel
   let exampleModelPath: String
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(chatSourceType: ChatSourceType, exampleModelPath: String) {
-    self.chatSourceType = chatSourceType
+  init(model: RemoteModel, exampleModelPath: String) {
+    self.model = model
     self.exampleModelPath = exampleModelPath
 
     pathSelectorViewModel.$modelPaths.sink { [weak self] newPaths in
