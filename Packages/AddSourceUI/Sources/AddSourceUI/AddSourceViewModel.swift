@@ -41,7 +41,6 @@ public class AddSourceViewModel: ObservableObject {
         step = .configureRemote(
           ConfigureRemoteModelSourceViewModel(
             defaultName: model.name,
-            chatSourceType: ChatSourceType.gpt4All,
             model: model,
             modelVariant: variant,
             modelSize: .size7B,

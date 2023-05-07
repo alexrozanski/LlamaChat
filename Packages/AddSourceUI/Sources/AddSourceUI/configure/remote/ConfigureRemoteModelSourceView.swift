@@ -32,24 +32,39 @@ struct ConfigureRemoteModelSourceView: View {
     case .readyToDownload(let contentLength):
       Section {
         Group {
-          if let contentLength, let availableSpace = viewModel.availableSpace {
-            Text("The GPT4All model can be downloaded automatically, and will take up **\(ByteCountFormatter().string(fromByteCount: contentLength))** of disk space.\n\nYou have **\(ByteCountFormatter().string(fromByteCount: availableSpace))** available.")
-              .lineLimit(nil)
-              .fixedSize(horizontal: false, vertical: true)
-              .frame(alignment: .leading)
-          } else {
-            Text("The GPT4All model can be downloaded automatically.")
+          Text("This model can be downloaded automatically.")
+        }
+      }
+      Section {
+        LabeledContent {
+          Text(viewModel.variantName)
+        } label: {
+          Text("Model Variant")
+        }
+        LabeledContent {
+          Text(viewModel.downloadURL.absoluteString)
+        } label: {
+          Text("Download URL")
+        }
+        if let contentLength {
+          LabeledContent {
+            Text(ByteCountFormatter().string(fromByteCount: contentLength))
+          } label: {
+            Text("Download Size")
+          }
+        }
+        if let availableSpace = viewModel.availableSpace {
+          LabeledContent {
+            Text(ByteCountFormatter().string(fromByteCount: availableSpace))
+          } label: {
+            Text("Available Space")
           }
         }
       }
     case .downloadingModel:
       Section {
         VStack(alignment: .leading) {
-          let title = HStack(spacing: 4) {
-            Text("Downloading model from")
-            Text(viewModel.downloadURL.absoluteString)
-              .font(.system(size: 12, weight: .regular, design: .monospaced))
-          }
+          let title = Text((try? AttributedString(markdown: "Downloading model from `\(viewModel.downloadURL.absoluteString)`")) ?? AttributedString())
           if let downloadProgress = viewModel.downloadProgress {
             switch downloadProgress {
             case .nonDeterministic:

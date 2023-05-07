@@ -27,6 +27,14 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
 
   @Published var state: State = .none
 
+  var modelName: String {
+    return model.name
+  }
+
+  var variantName: String {
+    return modelVariant.name
+  }
+
   private(set) lazy var availableSpace: Int64? = {
     return DownloadsManager.availableCapacity
   }()
@@ -38,7 +46,6 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
 
   @Published var downloadProgress: DownloadProgress?
 
-  let chatSourceType: ChatSourceType
   let model: RemoteModel
   let modelVariant: RemoteModelVariant
   let modelSize: ModelSize
@@ -53,14 +60,12 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
 
   init(
     defaultName: String? = nil,
-    chatSourceType: ChatSourceType,
     model: RemoteModel,
     modelVariant: RemoteModelVariant,
     modelSize: ModelSize,
     downloadURL: URL,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {
-    self.chatSourceType = chatSourceType
     self.model = model
     self.modelVariant = modelVariant
     self.modelSize = modelSize
