@@ -52,6 +52,11 @@ class SelectSourceTypeViewModel: ObservableObject {
           return true
         }
       }
+      .combineLatest(dependencies.remoteMetadataModel.$allModels)
+      .map { isLoading, allModels in
+        return isLoading && allModels.isEmpty
+      }
+      .receive(on: DispatchQueue.main)
       .assign(to: &$showLoadingSpinner)
   }
 

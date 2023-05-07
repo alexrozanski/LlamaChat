@@ -22,15 +22,15 @@ public class RemoteMetadataModel: ObservableObject {
   @Published private(set) public var allModels: [RemoteModel] = []
   @Published private(set) public var loadState: LoadState = .none
 
-  private lazy var fetcher = RemoteModelMetadataFetcher()
+  private lazy var store = RemoteModelMetadataStore()
 
   public init(apiBaseURL: URL) {
     self.apiBaseURL = apiBaseURL
 
-    fetcher.$allModels
+    store.$allModels
       .assign(to: &$allModels)
 
-    fetcher.$fetchState
+    store.$fetchState
       .map { fetchState -> LoadState in
         switch fetchState {
         case .none: return .none
@@ -43,6 +43,6 @@ public class RemoteMetadataModel: ObservableObject {
   }
 
   public func fetchMetadata() {
-    fetcher.updateMetadata()
+    store.updateMetadata()
   }
 }
