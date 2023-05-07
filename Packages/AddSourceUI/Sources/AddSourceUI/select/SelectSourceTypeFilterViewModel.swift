@@ -8,8 +8,14 @@
 import Foundation
 
 class SelectSourceTypeFilterViewModel: ObservableObject {
-  @Published var location: String?
+  enum Location: String {
+    case local
+    case remote
+  }
+
+  @Published var location: Location?
   @Published var languages: String?
+  @Published var searchFieldText = ""
 
   @Published private(set) var hasFilters: Bool
 

@@ -6,33 +6,64 @@
 //
 
 import Foundation
-import Alamofire
-
-struct ResponsePayload: Decodable {
-  let models: [RemoteModel]
-}
 
 public class RemoteModelMetadataFetcher {
-  let apiBaseURL: URL
+  public enum FetchState {
+    case none
+    case fetching
+    case succeeded
+    case failed
 
-  @Published public private(set) var allModels: [RemoteModel] = []
-  
-  public init(apiBaseURL: URL) {
-    self.apiBaseURL = apiBaseURL
+    var isFetching: Bool {
+      switch self {
+      case .none, .succeeded, .failed:
+        return false
+      case .fetching:
+        return true
+      }
+    }
   }
 
-  private var fetchURL: URL {
-    return apiBaseURL.appending(components: "v1", "models")
+  @Published public private(set) var allModels: [RemoteModel] = []
+
+  @Published private(set) public var fetchState: FetchState = .none
+
+  private let _fetcher: MetadataFetcher
+
+  public init() {
+    _fetcher = GitBasedMetadataFetcher(repositoryURL: URL(string: "git@github.com:alexrozanski/llamachat-models.git")!)
   }
 
   public func updateMetadata() {
-    AF.request(fetchURL).responseDecodable(of: ResponsePayload.self) { [weak self] response in
+    guard !fetchState.isFetching else { return }
+
+    fetchState = .fetching
+
+    Task.init {
       do {
-        let payload = try response.result.get()
-        self?.allModels = payload.models
+        let models = try await _fetcher.updateMetadata()
+        allModels = models
+        await MainActor.run {
+          fetchState = .succeeded
+        }
       } catch {
-        print("Error downloading metadata", error)
+        do {
+          allModels = try await updateMetadataWithFallbackFetcher()
+          await MainActor.run {
+            fetchState = .succeeded
+          }
+        } catch {
+          print(error)
+          await MainActor.run {
+            fetchState = .failed
+          }
+        }
       }
     }
+  }
+
+  private func updateMetadataWithFallbackFetcher() async throws -> [RemoteModel] {
+    let fileBasedFetcher = FileBasedMetadataFetcher(url: URL(string: "https://github.com/alexrozanski/llamachat-models/archive/refs/heads/main.zip")!)
+    return try await fileBasedFetcher.updateMetadata()
   }
 }

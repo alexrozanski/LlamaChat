@@ -7,6 +7,6 @@
 
 import Foundation
 
-public struct RemoteModelPublisher: Codable {
+public struct RemoteModelPublisher: Decodable {
   public let name: String
 }

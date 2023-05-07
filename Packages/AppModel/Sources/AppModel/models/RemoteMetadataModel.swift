@@ -10,33 +10,39 @@ import DataModel
 import RemoteModels
 
 public class RemoteMetadataModel: ObservableObject {
+  public enum LoadState {
+    case none
+    case loading
+    case loaded
+    case failed
+  }
+
   let apiBaseURL: URL
 
-  @Published public var allModels: [Model] = []
+  @Published private(set) public var allModels: [RemoteModel] = []
+  @Published private(set) public var loadState: LoadState = .none
 
-  private lazy var fetcher = RemoteModelMetadataFetcher(apiBaseURL: apiBaseURL)
+  private lazy var fetcher = RemoteModelMetadataFetcher()
 
   public init(apiBaseURL: URL) {
     self.apiBaseURL = apiBaseURL
 
     fetcher.$allModels
-      .map { $0.map { remoteModel in Model(remote: remoteModel) } }
       .assign(to: &$allModels)
+
+    fetcher.$fetchState
+      .map { fetchState -> LoadState in
+        switch fetchState {
+        case .none: return .none
+        case .fetching: return .loading
+        case .succeeded: return .loaded
+        case .failed: return .failed
+        }
+      }
+      .assign(to: &$loadState)
   }
 
   public func fetchMetadata() {
     fetcher.updateMetadata()
-  }
-}
-
-fileprivate extension Model {
-  convenience init(remote: RemoteModel) {
-    self.init(name: remote.name, publisher: .init(remote: remote.publisher))
-  }
-}
-
-fileprivate extension ModelPublisher {
-  convenience init(remote: RemoteModelPublisher) {
-    self.init(name: remote.name)
   }
 }

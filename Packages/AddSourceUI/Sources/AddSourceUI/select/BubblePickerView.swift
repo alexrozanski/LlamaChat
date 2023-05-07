@@ -97,14 +97,14 @@ fileprivate struct ItemButtonStyle: ButtonStyle {
     configuration.label
       .padding(EdgeInsets(top: 4, leading: 12, bottom: 6, trailing: selected ? 8 : 20))
       .frame(maxWidth: .infinity, alignment: .leading)
-      .background(hovered ? Color("FilterPickerBackground") : .clear)
+      .background(hovered ? Color(light: .init(hex: "#EEEEEE"), dark: .init(hex: "#EEEEEE")) : .clear)
   }
 }
 
-fileprivate struct ItemView: View {
+fileprivate struct ItemView<Value>: View where Value: Equatable, Value: Hashable {
   @State var hovered = false
 
-  let item: BubblePickerView.Item
+  let item: BubblePickerView<Value>.Item
   let selected: Bool
   let onSelect: () -> Void
 
@@ -130,20 +130,20 @@ fileprivate struct ItemView: View {
   }
 }
 
-fileprivate struct ItemsView: View {
-  let items: [BubblePickerView.Item]
-  let selectedId: String?
+fileprivate struct ItemsView<Value>: View where Value: Equatable, Value: Hashable {
+  let items: [BubblePickerView<Value>.Item]
+  let selectedValue: Value?
   let topMargin: CGFloat
   let width: CGFloat?
   let cornerRadius: Double
-  let onSelectItem: (BubblePickerView.Item) -> Void
+  let onSelectItem: (BubblePickerView<Value>.Item) -> Void
 
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
-      ForEach(items, id: \.id) { item in
+      ForEach(items, id: \.value) { item in
         ItemView(
           item: item,
-          selected: item.id == selectedId || item.id == clearItemId && selectedId == nil,
+          selected: item.value == selectedValue,
           onSelect: {
             onSelectItem(item)
           }
@@ -154,7 +154,7 @@ fileprivate struct ItemsView: View {
     .padding(.top, topMargin)
     .fixedSize(horizontal: true, vertical: false)
     .background(
-      Color("FilterPickerItemBackground")
+      Color(light: .init(hex: "#F5F5F5"), dark: .init(hex: "#F5F5F5"))
     )
     .clipShape(
       RoundedRectangleWithCorners(radius: cornerRadius, corners: [.bottomLeft, .bottomRight])
@@ -167,19 +167,17 @@ fileprivate struct ItemsView: View {
   }
 }
 
-fileprivate let clearItemId = "_clear"
-
 // Doesn't handle frontmost z-indexing; must be positioned over all other views manually.
-struct BubblePickerView: View {
+struct BubblePickerView<Value>: View where Value: Equatable, Value: Hashable {
   struct Item {
-    let id: String
+    let value: Value?
     let label: String
   }
 
   let label: String
   let items: [Item]
   let clearItemLabel: String
-  let selection: Binding<String?>
+  let selection: Binding<Value?>
 
   @State var showingPopup = false
   @State var width: CGFloat?
@@ -187,8 +185,8 @@ struct BubblePickerView: View {
 
   var title: String {
     guard
-      let selectedId = selection.wrappedValue,
-      let selectedItem = items.first(where: { $0.id == selectedId })
+      let selectedValue = selection.wrappedValue,
+      let selectedItem = items.first(where: { $0.value == selectedValue })
     else {
       return label
     }
@@ -214,7 +212,11 @@ struct BubblePickerView: View {
       .frame(width: width)
       .background(
         RoundedRectangle(cornerRadius: height / 2)
-          .fill(hasSelection ? .blue : Color("FilterPickerBackground"))
+          .fill(
+            hasSelection
+            ? Color(nsColor: NSColor.controlAccentColor)
+            : Color(light: .init(hex: "#EEEEEE"), dark: .init(hex: "#EEEEEE"))
+          )
       )
       .background(
         GeometryReader { geometry in
@@ -231,17 +233,13 @@ struct BubblePickerView: View {
       }
       .background(alignment: .top) {
         ItemsView(
-          items: [Item(id: clearItemId, label: clearItemLabel)] + items,
-          selectedId: selection.wrappedValue,
+          items: [Item(value: nil, label: clearItemLabel)] + items,
+          selectedValue: selection.wrappedValue,
           topMargin: height / 2 + 4,
           width: width,
           cornerRadius: height / 2,
           onSelectItem: { item in
-            if item.id == clearItemId {
-              selection.wrappedValue = nil
-            } else {
-              selection.wrappedValue = item.id
-            }
+            selection.wrappedValue = item.value
             showingPopup = false
           }
         )

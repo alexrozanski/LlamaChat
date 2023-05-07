@@ -17,7 +17,7 @@ public struct DebouncedView<Content>: View where Content: View {
   var animation: Animation?
 
   public let contentBuilder: ContentBuilder
-  public init(isVisible: Bool, delay: Double, animation: Animation? = nil, contentBuilder: @escaping ContentBuilder) {
+  public init(isVisible: Bool = true, delay: Double = 0.2, animation: Animation? = nil, contentBuilder: @escaping ContentBuilder) {
     self.isVisible = isVisible
     self.delay = delay
     self.animation = animation

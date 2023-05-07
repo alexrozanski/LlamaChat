@@ -6,35 +6,139 @@
 //
 
 import SwiftUI
+import SharedUI
+
+fileprivate struct Colors {
+  static let border = Color(light: Color(hex: "#DEDEDE"), dark: Color(hex: "#DEDEDE"))
+  static let hoverBackground = Color.black.opacity(0.02)
+}
+
+struct SourceTypeVariantView: View {
+  let variant: Variant
+  let hasBottomBorder: Bool
+
+  @State var hovered = false
+  @State var infoPopoverPresented = false
+
+  var body: some View {
+    VStack(spacing: 0) {
+      HStack(alignment: .firstTextBaseline) {
+        Image(systemName: "point.3.connected.trianglepath.dotted")
+        Text(variant.name)
+          .fontWeight(.medium)
+        if let description = variant.description {
+          Button {
+            infoPopoverPresented = true
+          } label: {
+            Image(systemName: "info.circle.fill")
+              .foregroundColor(.gray)
+          }
+          .buttonStyle(.plain)
+          .popover(isPresented: $infoPopoverPresented) {
+            Text(description)
+              .fixedSize(horizontal: false, vertical: true)
+              .frame(width: 200)
+              .padding()
+          }
+        }
+        Spacer()
+        Image(systemName: "chevron.right")
+      }
+      .padding(.horizontal, 10)
+      .padding(.vertical, 8)
+      .background(
+        hovered ? Colors.hoverBackground : .clear
+      )
+      .onHover { hovered in
+        self.hovered = hovered
+      }
+      if hasBottomBorder {
+        Rectangle()
+          .fill(Colors.border)
+          .frame(height: 0.5)
+      }
+    }
+  }
+}
 
 struct SourceTypeView: View {
   @State var hovered = false
 
-  let source: SelectSourceTypeViewModel.Source
+  let source: Source
 
-  var body: some View {
-    return HStack {
-      VStack(alignment: .leading, spacing: 2) {
+  @ViewBuilder var header: some View {
+    VStack {
+      HStack {
         Text(source.name)
+          .fontWeight(.semibold)
           .frame(maxWidth: .infinity, alignment: .leading)
+        Spacer()
+        if source.isRemote {
+          SelectTypePillView(
+            label: "Downloadable", style: .outlined(
+              borderColor: Color(light: .init(hex: "#F9B9D8"), dark: .init(hex: "#F9B9D8")),
+              textColor: Color(light: .init(hex: "#D33984"), dark: .init(hex: "#D33984"))
+            )
+          )
+        }
+        if !source.isRemote {
+          ForEach(source.variants, id: \.id) { variant in
+            SelectTypePillView(label: variant.name, style: .filled())
+          }
+        }
+        SelectTypePillView(label: "English", iconName: "globe.desk")
+      }
+      VStack(alignment: .leading, spacing: 4) {
+        HStack {
+          Text(source.description)
+          Spacer()
+          if source.isSourceSelectable {
+            Image(systemName: "chevron.right")
+          }
+        }
         Text(source.publisher)
           .foregroundColor(.gray)
           .font(.footnote)
       }
     }
-    .padding()
+  }
+
+  @ViewBuilder var selectableSources: some View {
+    VStack(spacing: 0) {
+      ForEach(source.variants, id: \.id) { variant in
+        SourceTypeVariantView(variant: variant, hasBottomBorder: variant.id != source.variants.last?.id)
+      }
+    }
+  }
+
+  var body: some View {
+    return VStack(spacing: 0) {
+      header
+        .padding(12)
+      if source.hasSelectableVariants {
+        Rectangle()
+          .fill(Colors.border)
+          .frame(height: 0.5)
+        selectableSources
+      }
+    }
+    .background(
+      RoundedRectangle(cornerRadius: 4)
+        .stroke(Colors.border, lineWidth: 1)
+    )
     .background(
       Color(nsColor: .controlBackgroundColor)
         .overlay {
           if hovered {
-            Color.black.opacity(0.02)
+            Colors.hoverBackground
           }
         }
     )
-    .cornerRadius(8)
-    .shadow(color: .black.opacity(0.1), radius: 2)
+    .cornerRadius(4)
     .onHover { hovered in
-      self.hovered = hovered
+      if source.isSourceSelectable {
+        self.hovered = hovered
+      }
     }
   }
 }
@@ -43,13 +147,33 @@ struct SelectSourceTypeView: View {
   @ObservedObject var viewModel: SelectSourceTypeViewModel
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 20) {
-      SelectSourceTypeFilterView(viewModel: viewModel.filterViewModel)
-        .zIndex(10)
-      ForEach(viewModel.sources, id: \.name) { source in
-        SourceTypeView(source: source)
+      VStack(alignment: .leading, spacing: 20) {
+        SelectSourceTypeFilterView(viewModel: viewModel.filterViewModel)
+          .zIndex(10)
+        if viewModel.showLoadingSpinner {
+          VStack {
+            Spacer()
+            HStack {
+              Spacer()
+              DebouncedView {
+                ProgressView()
+                  .progressViewStyle(.circular)
+                  .controlSize(.small)
+              }
+              Spacer()
+            }
+            Spacer()
+          }
+        } else {
+          ScrollView {
+            VStack {
+              ForEach(viewModel.sources, id: \.id) { source in
+                SourceTypeView(source: source)
+              }
+            }
+          }
+          .zIndex(0)
+        }
       }
-      .zIndex(0)
-    }
   }
 }
