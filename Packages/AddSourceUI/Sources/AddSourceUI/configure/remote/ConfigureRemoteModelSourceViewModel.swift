@@ -11,7 +11,9 @@ import SwiftUI
 import DataModel
 import Downloads
 
-class ConfigureDownloadableModelSourceViewModel: ObservableObject {
+class ConfigureRemoteModelSourceViewModel: ObservableObject {
+  typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
+
   enum State {
     case none
     case checkingReachability
@@ -153,7 +155,7 @@ class ConfigureDownloadableModelSourceViewModel: ObservableObject {
   }
 }
 
-extension ConfigureDownloadableModelSourceViewModel.State {
+extension ConfigureRemoteModelSourceViewModel.State {
   var canStart: Bool {
     switch self {
     case .none:

@@ -31,6 +31,7 @@ public class AddSourceViewModel: ObservableObject {
           ConfigureLocalModelSourceViewModel(
             defaultName: model.name,
             chatSourceType: ChatSourceType.llama,
+            remoteModel: model,
             exampleGgmlModelPath: "ggml-model-q4_0.bin",
             nextHandler: { _ in }
           )
@@ -39,7 +40,7 @@ public class AddSourceViewModel: ObservableObject {
         guard let variant, let downloadURL = variant.downloadUrl else { return }
 
         step = .configureRemote(
-          ConfigureDownloadableModelSourceViewModel(
+          ConfigureRemoteModelSourceViewModel(
             defaultName: model.name,
             chatSourceType: ChatSourceType.gpt4All,
             modelSize: .size7B,

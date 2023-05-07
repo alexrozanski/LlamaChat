@@ -7,26 +7,22 @@
 
 import Foundation
 import Combine
-import DataModel
 import SwiftUI
+import DataModel
+import RemoteModels
 
 class ConfigureLocalModelSourceViewModel: ObservableObject {
-  // MARK: - Info  
+  typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
 
-  var modelType: String {
-    return chatSourceType.readableName
+  // MARK: - Info
+
+  var modelName: String {
+    return remoteModel.name
   }
 
-  var modelSourcingDescription: LocalizedStringKey {
-    switch chatSourceType {
-    case .llama:
-      return "The LLaMA model checkpoints and tokenizer are required to add this chat source. Learn more and request access to these on the [LLaMA GitHub repo](https://github.com/facebookresearch/llama)."
-    case .alpaca:
-      return "The Alpaca model checkpoints and tokenizer are required to add this chat source. Learn more on the [Alpaca GitHub repo](https://github.com/tatsu-lab/stanford_alpaca)."
-    case .gpt4All:
-      return "The GPT4All .ggml model file is required to add this chat source. Learn more on the [llama.cpp GitHub repo](https://github.com/ggerganov/llama.cpp/blob/a0caa34/README.md#using-gpt4all)."
-    }
-  }
+  lazy var modelSourcingDescription: AttributedString? = {
+    return remoteModel.sourcingDescription.flatMap { try? AttributedString(markdown: $0) }
+  }()
 
   // MARK: - Model Settings
 
@@ -69,6 +65,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
   let primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
 
   let chatSourceType: ChatSourceType
+  let remoteModel: RemoteModel
   let exampleGgmlModelPath: String
   private let nextHandler: ConfigureSourceNextHandler
 
@@ -77,11 +74,13 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
   init(
     defaultName: String? = nil,
     chatSourceType: ChatSourceType,
+    remoteModel: RemoteModel,
     exampleGgmlModelPath: String,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {
     detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, chatSourceType: chatSourceType)
     self.chatSourceType = chatSourceType
+    self.remoteModel = remoteModel
     self.exampleGgmlModelPath = exampleGgmlModelPath
     self.nextHandler = nextHandler
 

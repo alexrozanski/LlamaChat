@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ConfigureDownloadableModelSourceView: View {
-  @ObservedObject var viewModel: ConfigureDownloadableModelSourceViewModel
+struct ConfigureRemoteModelSourceView: View {
+  @ObservedObject var viewModel: ConfigureRemoteModelSourceViewModel
 
   @ViewBuilder var reachabilityProgress: some View {
     if viewModel.state.isCheckingReachability {

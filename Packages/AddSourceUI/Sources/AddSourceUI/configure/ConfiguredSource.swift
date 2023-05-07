@@ -22,5 +22,3 @@ enum ConfiguredSourceSettings {
   case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>, modelSize: ModelSize)
   case downloadedFile(fileURL: URL, modelSize: ModelSize)
 }
-
-typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void

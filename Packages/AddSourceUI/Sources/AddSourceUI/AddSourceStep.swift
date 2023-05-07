@@ -9,7 +9,7 @@ import Foundation
 
 enum AddSourceStep: Hashable, Equatable {
   case configureLocal(ConfigureLocalModelSourceViewModel)
-  case configureRemote(ConfigureDownloadableModelSourceViewModel)
+  case configureRemote(ConfigureRemoteModelSourceViewModel)
   case convertPyTorchSource(ConvertSourceViewModel)
 
   static func == (lhs: AddSourceStep, rhs: AddSourceStep) -> Bool {

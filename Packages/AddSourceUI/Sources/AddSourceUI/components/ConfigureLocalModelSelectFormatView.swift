@@ -29,8 +29,10 @@ struct SelectFormatView: View {
     } header: {
       VStack(alignment: .leading, spacing: 6) {
         Text("Model Settings")
-        Text(viewModel.modelSourcingDescription)
-          .font(.system(size: 12, weight: .regular))
+        if let sourcingDescription = viewModel.modelSourcingDescription {
+          Text(sourcingDescription)
+            .font(.system(size: 12, weight: .regular))
+        }
       }
       .padding(.bottom, 12)
     }

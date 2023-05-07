@@ -17,6 +17,7 @@ public struct RemoteModel: Decodable {
   public let name: String
   public let description: String
   public let source: Source
+  public let sourcingDescription: String?
   public let format: [String]
   public let languages: [String]
   public let publisher: RemoteModelPublisher
@@ -27,6 +28,7 @@ public struct RemoteModel: Decodable {
     case name
     case description
     case source
+    case sourcingDescription
     case format
     case languages
     case publisher
@@ -48,6 +50,7 @@ public struct RemoteModel: Decodable {
     default:
       throw DecodingError.typeMismatch(Source.self, DecodingError.Context(codingPath: [CodingKeys.source], debugDescription: "unsupported source '\(source)'"))
     }
+    sourcingDescription = try values.decodeIfPresent(String.self, forKey: .sourcingDescription)
 
     format = try values.decode([String].self, forKey: .format)
     languages = try values.decode([String].self, forKey: .languages)
