@@ -76,7 +76,7 @@ fileprivate struct ItemButtonStyle: ButtonStyle {
     configuration.label
       .padding(EdgeInsets(top: 4, leading: 12, bottom: 6, trailing: selected ? 8 : 20))
       .frame(maxWidth: .infinity, alignment: .leading)
-      .background(hovered ? Color(light: .init(hex: "#EEEEEE"), dark: .init(hex: "#EEEEEE")) : .clear)
+      .background(hovered ? Color(light: .init(hex: "#EEEEEE"), dark: .init(hex: "#FFFFFF", opacity: 0.1)) : .clear)
   }
 }
 
@@ -109,11 +109,38 @@ fileprivate struct ItemView<Value>: View where Value: Equatable, Value: Hashable
   }
 }
 
+fileprivate struct ItemsBackgroundShape: Shape {
+  let bubbleHeight: Double
+  let cornerRadius: Double
+  init(bubbleHeight: Double, cornerRadius: Double) {
+    self.bubbleHeight = bubbleHeight
+    self.cornerRadius = cornerRadius
+  }
+
+  func path(in rect: CGRect) -> Path {
+    var background = Path(
+      // Offset the y value to make use of the nonzero winding rule to cut the bubble out of the path
+      NSBezierPath(
+        roundedRect: CGRect(x: 0, y: cornerRadius, width: rect.width, height: rect.height - cornerRadius),
+        corners: [.bottomLeft, .bottomRight], cornerRadius: cornerRadius
+      )
+    )
+    background.addPath(
+      Path(
+        roundedRect: CGRect(x: 0, y: 0, width: rect.width, height: bubbleHeight),
+        cornerRadius: cornerRadius
+      )
+    )
+    return background
+  }
+}
+
 fileprivate struct ItemsView<Value>: View where Value: Equatable, Value: Hashable {
   let items: [BubblePickerView<Value>.Item]
   let selectedValue: Value?
   let topMargin: CGFloat
   let width: CGFloat?
+  let bubbleHeight: Double
   let cornerRadius: Double
   let onSelectItem: (BubblePickerView<Value>.Item) -> Void
 
@@ -133,10 +160,10 @@ fileprivate struct ItemsView<Value>: View where Value: Equatable, Value: Hashabl
     .padding(.top, topMargin)
     .fixedSize(horizontal: true, vertical: false)
     .background(
-      Color(light: .init(hex: "#F5F5F5"), dark: .init(hex: "#F5F5F5"))
+      Color(lightNsColor: .init(hex: "#F5F5F5"), darkNsColor: .windowBackgroundColor)
     )
     .clipShape(
-      RoundedRectangleWithCorners(radius: cornerRadius, corners: [.bottomLeft, .bottomRight])
+      ItemsBackgroundShape(bubbleHeight: bubbleHeight, cornerRadius: cornerRadius)
     )
     .background(
       GeometryReader { geometry in
@@ -181,11 +208,11 @@ struct BubblePickerView<Value>: View where Value: Equatable, Value: Hashable {
     ZStack(alignment: .top) {
       HStack(spacing: 4) {
         Text(title)
-          .foregroundColor(hasSelection ? .white : .black)
+          .foregroundColor(hasSelection ? .white : Color(light: .black, dark: .white))
           .frame(maxWidth: width != nil ? .infinity : nil, alignment: .leading)
         Image(systemName: "chevron.down")
           .font(.system(size: 10, weight: .bold))
-          .foregroundColor(hasSelection ? .white : .black)
+          .foregroundColor(hasSelection ? .white : Color(light: .black, dark: .white))
       }
       .padding(EdgeInsets(top: 1, leading: 12, bottom: 3, trailing: 8))
       .frame(width: width)
@@ -194,7 +221,7 @@ struct BubblePickerView<Value>: View where Value: Equatable, Value: Hashable {
           .fill(
             hasSelection
             ? Color(nsColor: NSColor.controlAccentColor)
-            : Color(light: .init(hex: "#EEEEEE"), dark: .init(hex: "#EEEEEE"))
+            : Color(light: .init(hex: "#EEEEEE"), dark: .init(hex: "#FFFFFF", opacity: 0.3))
           )
       )
       .background(
@@ -214,8 +241,9 @@ struct BubblePickerView<Value>: View where Value: Equatable, Value: Hashable {
         ItemsView(
           items: [Item(value: nil, label: clearItemLabel)] + items,
           selectedValue: selection.wrappedValue,
-          topMargin: height / 2 + 4,
+          topMargin: height + 4,
           width: width,
+          bubbleHeight: height,
           cornerRadius: height / 2,
           onSelectItem: { item in
             selection.wrappedValue = item.value
@@ -223,7 +251,6 @@ struct BubblePickerView<Value>: View where Value: Equatable, Value: Hashable {
           }
         )
         .frame(width: width)
-        .offset(y: height / 2)
         .opacity(showingPopup ? 1 : 0)
       }
     }

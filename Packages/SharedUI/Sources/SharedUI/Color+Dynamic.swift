@@ -19,4 +19,15 @@ public extension Color {
       }
     }))
   }
+
+  init(lightNsColor: @autoclosure @escaping () -> NSColor, darkNsColor: @autoclosure @escaping () -> NSColor) {
+    self.init(nsColor: NSColor(name: nil, dynamicProvider: { appearance in
+      switch appearance.bestMatch(from: [.aqua, .darkAqua]) {
+      case .some(.darkAqua):
+        return darkNsColor()
+      default:
+        return lightNsColor()
+      }
+    }))
+  }
 }

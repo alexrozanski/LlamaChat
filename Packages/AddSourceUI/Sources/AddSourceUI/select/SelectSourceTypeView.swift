@@ -10,8 +10,8 @@ import SharedUI
 import RemoteModels
 
 fileprivate struct Colors {
-  static let border = Color(light: Color(hex: "#DEDEDE"), dark: Color(hex: "#DEDEDE"))
-  static let hoverBackground = Color.black.opacity(0.02)
+  static let border = Color(light: Color(hex: "#DEDEDE"), dark: Color(hex: "#FFFFFF", opacity: 0.2))
+  static let hoverBackground = Color(light: .black.opacity(0.02), dark: .black.opacity(0.2))
 }
 
 typealias SelectHandler = (RemoteModel, RemoteModelVariant) -> Void
@@ -83,7 +83,7 @@ struct SourceTypeView: View {
         if source.isRemote {
           SelectTypePillView(
             label: "Downloadable", style: .outlined(
-              borderColor: Color(light: .init(hex: "#F9B9D8"), dark: .init(hex: "#F9B9D8")),
+              borderColor: Color(light: .init(hex: "#F9B9D8"), dark: .init(hex: "#FF2B91", opacity: 0.3)),
               textColor: Color(light: .init(hex: "#D33984"), dark: .init(hex: "#D33984"))
             )
           )
@@ -134,7 +134,7 @@ struct SourceTypeView: View {
         .stroke(Colors.border, lineWidth: 1)
     )
     .background(
-      Color(nsColor: .controlBackgroundColor)
+      Color(light: .white, dark: .clear)
         .overlay {
           if hovered {
             Colors.hoverBackground
