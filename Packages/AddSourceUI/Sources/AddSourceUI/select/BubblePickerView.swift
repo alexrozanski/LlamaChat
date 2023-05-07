@@ -8,27 +8,6 @@
 import SwiftUI
 import SharedUI
 
-struct ChevronShape: Shape {
-  func path(in rect: CGRect) -> Path {
-    var path = Path()
-    let width = rect.size.width
-    let height = rect.size.height
-    path.move(to: CGPoint(x: 0.76311*width, y: 0.36279*height))
-    path.addCurve(to: CGPoint(x: 0.70418*width, y: 0.36279*height), control1: CGPoint(x: 0.74684*width, y: 0.34652*height), control2: CGPoint(x: 0.72046*width, y: 0.34652*height))
-    path.addLine(to: CGPoint(x: 0.47851*width, y: 0.58847*height))
-    path.addLine(to: CGPoint(x: 0.25284*width, y: 0.36279*height))
-    path.addCurve(to: CGPoint(x: 0.19391*width, y: 0.36279*height), control1: CGPoint(x: 0.23656*width, y: 0.34652*height), control2: CGPoint(x: 0.21018*width, y: 0.34652*height))
-    path.addCurve(to: CGPoint(x: 0.19391*width, y: 0.42172*height), control1: CGPoint(x: 0.17764*width, y: 0.37907*height), control2: CGPoint(x: 0.17764*width, y: 0.40545*height))
-    path.addLine(to: CGPoint(x: 0.44835*width, y: 0.67616*height))
-    path.addCurve(to: CGPoint(x: 0.47851*width, y: 0.68836*height), control1: CGPoint(x: 0.45666*width, y: 0.68447*height), control2: CGPoint(x: 0.46762*width, y: 0.68854*height))
-    path.addCurve(to: CGPoint(x: 0.50867*width, y: 0.67616*height), control1: CGPoint(x: 0.48941*width, y: 0.68854*height), control2: CGPoint(x: 0.50036*width, y: 0.68447*height))
-    path.addLine(to: CGPoint(x: 0.76311*width, y: 0.42172*height))
-    path.addCurve(to: CGPoint(x: 0.76311*width, y: 0.36279*height), control1: CGPoint(x: 0.77938*width, y: 0.40545*height), control2: CGPoint(x: 0.77938*width, y: 0.37907*height))
-    path.closeSubpath()
-    return path
-  }
-}
-
 struct EventMonitorView: NSViewRepresentable {
   let active: Bool
   let onClickedOutside: () -> Void
@@ -204,8 +183,8 @@ struct BubblePickerView<Value>: View where Value: Equatable, Value: Hashable {
         Text(title)
           .foregroundColor(hasSelection ? .white : .black)
           .frame(maxWidth: width != nil ? .infinity : nil, alignment: .leading)
-        ChevronShape()
-          .frame(width: 12, height: 12)
+        Image(systemName: "chevron.down")
+          .font(.system(size: 10, weight: .bold))
           .foregroundColor(hasSelection ? .white : .black)
       }
       .padding(EdgeInsets(top: 1, leading: 12, bottom: 3, trailing: 8))
