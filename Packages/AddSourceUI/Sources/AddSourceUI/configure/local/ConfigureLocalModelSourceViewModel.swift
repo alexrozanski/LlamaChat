@@ -117,7 +117,13 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
   func next() {
     guard let sourceSettings = settingsViewModel?.sourceSettings.value else { return }
     nextHandler(
-      ConfiguredSource(name: detailsViewModel.name, avatarImageName: detailsViewModel.avatarImageName, settings: sourceSettings)
+      ConfiguredSource(
+        name: detailsViewModel.name,
+        avatarImageName: detailsViewModel.avatarImageName,
+        model: model,
+        modelVariant: nil,
+        settings: sourceSettings
+      )
     )
   }
 }

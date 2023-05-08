@@ -77,8 +77,8 @@ public class AddSourceViewModel: ObservableObject {
           source: ChatSource(
             name: configuredSource.name,
             avatarImageName: configuredSource.avatarImageName,
-            model: nil,
-            modelVariant: nil,
+            model: configuredSource.model,
+            modelVariant: configuredSource.modelVariant,
             modelURL: modelURL,
             modelDirectoryId: modelDirectory.id,
             modelParameters: defaultModelParameters(),
@@ -97,8 +97,8 @@ public class AddSourceViewModel: ObservableObject {
         source: ChatSource(
           name: source.name,
           avatarImageName: source.avatarImageName,
-          model: nil,
-          modelVariant: nil,
+          model: source.model,
+          modelVariant: source.modelVariant,
           modelURL: modelURL,
           modelDirectoryId: nil,
           modelParameters: defaultModelParameters(),
@@ -122,8 +122,8 @@ public class AddSourceViewModel: ObservableObject {
           source: ChatSource(
             name: source.name,
             avatarImageName: source.avatarImageName,
-            model: nil,
-            modelVariant: nil,
+            model: source.model,
+            modelVariant: source.modelVariant,
             modelURL: modelFileURL,
             modelDirectoryId: modelDirectory.id,
             modelParameters: defaultModelParameters(),

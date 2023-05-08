@@ -41,7 +41,7 @@ public class ChatSource: Codable, ObservableObject {
   public init(
     name: String,
     avatarImageName: String?,
-    model: Model?,
+    model: Model,
     modelVariant: ModelVariant?,
     modelURL: URL,
     modelDirectoryId: ModelDirectoryId?,
@@ -51,7 +51,7 @@ public class ChatSource: Codable, ObservableObject {
     self.id = UUID().uuidString
     self.name = name
     self.avatarImageName = avatarImageName
-    self.modelId = model?.id ?? ""
+    self.modelId = model.id
     self.model = model
     self.modelVariantId = modelVariant?.id
     self.modelVariant = modelVariant

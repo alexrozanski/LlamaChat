@@ -14,6 +14,8 @@ import DataModel
 struct ConfiguredSource {
   let name: String
   let avatarImageName: String?
+  let model: Model
+  let modelVariant: ModelVariant?
   let settings: ConfiguredSourceSettings
 }
 

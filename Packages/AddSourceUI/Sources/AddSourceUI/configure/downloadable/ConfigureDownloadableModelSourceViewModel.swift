@@ -102,6 +102,8 @@ class ConfigureDownloadableModelSourceViewModel: ObservableObject {
           let configuredSource = ConfiguredSource(
             name: self.detailsViewModel.name,
             avatarImageName: self.detailsViewModel.avatarImageName,
+            model: self.model,
+            modelVariant: self.modelVariant,
             settings: .downloadedFile(fileURL: url)
           )
           self.nextHandler(configuredSource)
