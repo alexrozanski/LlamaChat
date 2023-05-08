@@ -14,9 +14,17 @@ import RemoteModels
 class SelectSourceTypeViewModel: ObservableObject {
   typealias SelectModelHandler = (RemoteModel, RemoteModelVariant?) -> Void
 
+  enum Content {
+    case none
+    case loading
+    case emptyFilter
+    case sources
+  }
+
   @Published private(set) var sources: [SourceViewModel] = []
   @Published private(set) var matches: [SourceFilterMatch] = []
-  @Published private(set) var showLoadingSpinner = false
+
+  @Published private(set) var content: Content = .none
 
   private let dependencies: Dependencies
   private let selectModelHandler: SelectModelHandler
@@ -59,12 +67,19 @@ class SelectSourceTypeViewModel: ObservableObject {
           return true
         }
       }
-      .combineLatest(dependencies.remoteMetadataModel.$allModels)
-      .map { isLoading, allModels in
-        return isLoading && allModels.isEmpty
+      .combineLatest($sources, filterViewModel.$hasFilters, filterViewModel.$searchFieldText)
+      .map { isLoading, sources, hasFilters, searchFieldText in
+        if isLoading && sources.isEmpty {
+          return .loading
+        }
+        
+        if (hasFilters || !searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && sources.isEmpty {
+          return .emptyFilter
+        }
+
+        return .sources
       }
-      .receive(on: DispatchQueue.main)
-      .assign(to: &$showLoadingSpinner)
+      .assign(to: &$content)
   }
 
   func selectModel(_ model: RemoteModel, variant: RemoteModelVariant?) {

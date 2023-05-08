@@ -153,39 +153,118 @@ struct SourceTypeView: View {
   }
 }
 
+struct CenteredContent<Content>: View where Content: View {
+  typealias ContentBuilder = () -> Content
+
+  private let contentBuilder: ContentBuilder
+  init(contentBuilder: @escaping ContentBuilder) {
+    self.contentBuilder = contentBuilder
+  }
+
+  var body: some View {
+    VStack {
+      Spacer()
+      contentBuilder()
+      Spacer()
+    }
+  }
+}
+
 struct SelectSourceTypeView: View {
   @ObservedObject var viewModel: SelectSourceTypeViewModel
 
-  var body: some View {
-      VStack(alignment: .leading, spacing: 20) {
-        SelectSourceTypeFilterView(viewModel: viewModel.filterViewModel)
-          .zIndex(10)
-        if viewModel.showLoadingSpinner {
-          VStack {
-            Spacer()
-            HStack {
-              Spacer()
-              DebouncedView {
-                ProgressView()
-                  .progressViewStyle(.circular)
-                  .controlSize(.small)
-              }
-              Spacer()
-            }
-            Spacer()
-          }
-        } else {
-          ScrollView {
-            VStack {
-              ForEach(viewModel.sources, id: \.id) { source in
-                SourceTypeView(source: source) { model, variant in
-                  viewModel.selectModel(model, variant: variant)
-                }
-              }
-            }
-          }
-          .zIndex(0)
+  @State private var contentHeight: CGFloat = 0
+  @State private var scrollViewOffset: CGFloat = 0
+  @State private var showTopContentSeparator = false
+
+  @ViewBuilder var content: some View {
+    switch viewModel.content {
+    case .none:
+      EmptyView()
+    case .loading:
+      CenteredContent {
+        DebouncedView {
+          ProgressView()
+            .progressViewStyle(.circular)
+            .controlSize(.small)
         }
       }
+    case .emptyFilter:
+      CenteredContent {
+        Text("No sources match your current filters")
+          .foregroundColor(.gray)
+      }
+    case .sources:
+      ScrollView {
+        VStack {
+          ForEach(viewModel.sources, id: \.id) { source in
+            SourceTypeView(source: source) { model, variant in
+              viewModel.selectModel(model, variant: variant)
+            }
+          }
+          GeometryReader { geometry in
+            Color.clear
+              .preference(
+                key: ScrollViewOffsetPreferenceKey.self,
+                value: geometry.frame(in: .named("scroll")).minY
+              )
+              .preference(
+                key: ContentHeightPreferenceKey.self,
+                value: geometry.frame(in: .named("content")).minY
+              )
+          }
+        }
+        .padding(.horizontal, 20)
+        .coordinateSpace(name: "content")
+      }
+      .coordinateSpace(name: "scroll")
+      .onPreferenceChange(ScrollViewOffsetPreferenceKey.self) { value in
+        scrollViewOffset = value
+      }
+      .onPreferenceChange(ContentHeightPreferenceKey.self) { value in
+        contentHeight = value
+      }
+      .onChange(of: contentHeight) { newContentHeight in
+        updateSeparatorVisibility(scrollViewOffset: scrollViewOffset, contentHeight: newContentHeight)
+      }
+      .onChange(of: scrollViewOffset) { newScrollViewOffset in
+        updateSeparatorVisibility(scrollViewOffset: newScrollViewOffset, contentHeight: contentHeight)
+      }
+    }
+  }
+
+  var body: some View {
+    VStack(spacing: 0) {
+      SelectSourceTypeFilterView(viewModel: viewModel.filterViewModel)
+        .padding(20)
+        .zIndex(10)
+      Rectangle()
+        .fill(.separator)
+        .opacity(showTopContentSeparator ? 1 : 0)
+        .frame(height: 1)
+      content
+        .zIndex(0)
+      Rectangle()
+        .fill(.separator)
+        .frame(height: 1)
+    }
+  }
+
+  private func updateSeparatorVisibility(scrollViewOffset: CGFloat, contentHeight: CGFloat) {
+    showTopContentSeparator = scrollViewOffset < contentHeight
+  }
+}
+
+fileprivate struct ContentHeightPreferenceKey: PreferenceKey {
+  static var defaultValue: CGFloat { 0 }
+  static func reduce(value: inout Value, nextValue: () -> Value) {
+    value = nextValue()
+  }
+}
+
+fileprivate struct ScrollViewOffsetPreferenceKey: PreferenceKey {
+  static var defaultValue: CGFloat { 0 }
+  static func reduce(value: inout Value, nextValue: () -> Value) {
+    value = nextValue()
   }
 }

@@ -41,7 +41,6 @@ public struct AddSourceContentView: View {
     NavigationStack(path: $viewModel.navigationPath) {
       StepView(viewModel: viewModel, content: {
         SelectSourceTypeView(viewModel: viewModel.selectSourceTypeViewModel)
-          .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
       }, primaryActions: {})
       .navigationTitle("Add Chat Source")
       .navigationDestination(for: AddSourceStep.self) { step in

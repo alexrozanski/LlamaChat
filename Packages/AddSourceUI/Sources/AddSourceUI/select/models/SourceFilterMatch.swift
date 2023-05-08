@@ -1,5 +1,5 @@
 //
-//  SourceMatch.swift
+//  SourceFilterMatch.swift
 //  
 //
 //  Created by Alex Rozanski on 07/05/2023.
@@ -19,7 +19,10 @@ extension Array where Element == SourceFilterMatch {
       switch match {
       case .modelName(id: let modelId):
         return modelId == id
-      case .variantName, .modelLocation:
+      case .modelLocation:
+        // A match on the location matches the whole model, not just a variant of it.
+        return true
+      case .variantName:
         return false
       }
     } != nil
