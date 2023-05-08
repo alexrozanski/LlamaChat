@@ -21,7 +21,7 @@ struct DisabledTextSelection: ViewModifier {
   }
 }
 
-extension View {
+public extension View {
   @ViewBuilder func textSelectionEnabled(_ flag: Bool) -> some View {
     if flag {
       modifier(EnabledTextSelection())

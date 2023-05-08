@@ -73,7 +73,6 @@
 		82F077592A05B2AD00772633 /* AddSourceUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077582A05B2AD00772633 /* AddSourceUI */; };
 		82F0775F2A05B70B00772633 /* SharedUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F0775E2A05B70B00772633 /* SharedUI */; };
 		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
-		82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -143,7 +142,6 @@
 		82F0775A2A05B4EE00772633 /* Downloads */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Downloads; sourceTree = "<group>"; };
 		82F0775B2A05B63300772633 /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SharedUI; sourceTree = "<group>"; };
 		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
-		82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+TextSelection.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,14 +168,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		821B253729DFA38700CF1001 /* extensions */ = {
-			isa = PBXGroup;
-			children = (
-				82F76A0429E6B6E0007B8A2D /* Text+TextSelection.swift */,
-			);
-			path = extensions;
-			sourceTree = "<group>";
-		};
 		821B255329E1D97B00CF1001 /* error */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,7 +299,6 @@
 				8227DA9629D911A4000E554D /* LlamaChatApp.swift */,
 				8227DAC829DA5060000E554D /* data */,
 				821B255329E1D97B00CF1001 /* error */,
-				821B253729DFA38700CF1001 /* extensions */,
 				82718CF129D368C200545C32 /* ui */,
 				82718CF229D368C800545C32 /* viewmodel */,
 				82718CE129D3686300545C32 /* Assets.xcassets */,
@@ -597,7 +586,6 @@
 				82718D0829D368EA00545C32 /* MessageBubbleView.swift in Sources */,
 				82718D0429D368EA00545C32 /* MessagesView.swift in Sources */,
 				82914CC529D6E69C00858B2C /* BorderlessTextField.swift in Sources */,
-				82F76A0529E6B6E0007B8A2D /* Text+TextSelection.swift in Sources */,
 				82E43CBA29EA94EC003E69D1 /* GeneralSettingsViewModel.swift in Sources */,
 				82718D0629D368EA00545C32 /* ChatView.swift in Sources */,
 				82718D0729D368EA00545C32 /* ComposeView.swift in Sources */,
