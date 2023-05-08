@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import DataModel
 
 public extension CodingUserInfoKey {
   static let modelProvider = CodingUserInfoKey(rawValue: "modelProvider")!

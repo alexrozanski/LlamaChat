@@ -2,26 +2,28 @@
 import PackageDescription
 
 let package = Package(
-  name: "SharedUI",
+  name: "ChatUI",
   platforms: [
     .macOS(.v13)
   ],
   products: [
     .library(
-      name: "SharedUI",
-      targets: ["SharedUI"]
+      name: "ChatUI",
+      targets: ["ChatUI"]
     )
   ],
   dependencies: [
+    .package(path: "../AddSourceUI"),
     .package(path: "../AppModel"),
-    .package(path: "../DataModel")
+    .package(path: "../SettingsUI")
   ],
   targets: [
     .target(
-      name: "SharedUI",
+      name: "ChatUI",
       dependencies: [
+        "AddSourceUI",
         "AppModel",
-        "DataModel"
+        "SettingsUI"
       ]
     )
   ]

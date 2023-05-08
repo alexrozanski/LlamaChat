@@ -7,15 +7,12 @@
 
 import SwiftUI
 import AppModel
+import ChatUI
 import DataModel
 import Downloads
 import ModelDirectory
-
-enum WindowIdentifier: String {
-  case chat
-  case setup
-  case modelContext
-}
+import SettingsUI
+import SharedUI
 
 class LlamaChatAppDelegate: NSObject, NSApplicationDelegate {
   var dependencies: Dependencies?

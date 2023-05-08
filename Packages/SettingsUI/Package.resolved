@@ -1,0 +1,104 @@
+{
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "78424be314842833c04bc3bef5b72e85fff99204",
+        "version" : "5.6.4"
+      }
+    },
+    {
+      "identity" : "camellm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2bad0b848825cb251ed30012d3d7d55aa54317dc"
+      }
+    },
+    {
+      "identity" : "camellm-common",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM-Common",
+      "state" : {
+        "branch" : "main",
+        "revision" : "d64bf265c74c92e9984cb191063ffa03cbe40eb9"
+      }
+    },
+    {
+      "identity" : "camellm-llama",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM-Llama.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8abceb9391eb701f0cd65f39826ba8fd2744e294"
+      }
+    },
+    {
+      "identity" : "camellm-plugin-harness",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM-Plugin-Harness",
+      "state" : {
+        "branch" : "main",
+        "revision" : "63d8f7241b9921c8103bc832d1edd8fdd1c2c59f"
+      }
+    },
+    {
+      "identity" : "coquille",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alexrozanski/Coquille.git",
+      "state" : {
+        "branch" : "v0.3",
+        "revision" : "4250068ef7d259e0023c099be58459e5d7dbcedd"
+      }
+    },
+    {
+      "identity" : "git-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/binarybirds/git-kit",
+      "state" : {
+        "revision" : "39a9357dd22ee189022c5db4cd82c6f438b02e1f",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "shell-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/binarybirds/shell-kit",
+      "state" : {
+        "revision" : "8507fc5a1d4c9b4aca71fa69bf6030fb94229d37",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift.git",
+      "state" : {
+        "revision" : "7a2e3cd27de56f6d396e84f63beefd0267b55ccb",
+        "version" : "0.14.1"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams.git",
+      "state" : {
+        "revision" : "f47ba4838c30dbd59998a4e4c87ab620ff959e8a",
+        "version" : "5.0.5"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation.git",
+      "state" : {
+        "revision" : "43ec568034b3731101dbf7670765d671c30f54f3",
+        "version" : "0.9.16"
+      }
+    }
+  ],
+  "version" : 2
+}
