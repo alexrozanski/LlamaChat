@@ -20,6 +20,7 @@ public struct RemoteModel: Decodable {
   public let sourcingDescription: String?
   public let format: [String]
   public let languages: [String]
+  public let legacy: Bool
   public let publisher: RemoteModelPublisher
   public let variants: [RemoteModelVariant]
 
@@ -30,6 +31,7 @@ public struct RemoteModel: Decodable {
     case source
     case sourcingDescription
     case format
+    case legacy
     case languages
     case publisher
     case variants
@@ -53,8 +55,33 @@ public struct RemoteModel: Decodable {
     sourcingDescription = try values.decodeIfPresent(String.self, forKey: .sourcingDescription)
 
     format = try values.decode([String].self, forKey: .format)
+    legacy = try values.decodeIfPresent(Bool.self, forKey: .legacy) ?? false
     languages = try values.decode([String].self, forKey: .languages)
     publisher = try values.decode(RemoteModelPublisher.self, forKey: .publisher)
     variants = try values.decode([RemoteModelVariant].self, forKey: .variants)
+  }
+
+  public init(
+    id: String,
+    name: String,
+    description: String,
+    source: Source,
+    sourcingDescription: String?,
+    format: [String],
+    legacy: Bool,
+    languages: [String],
+    publisher: RemoteModelPublisher,
+    variants: [RemoteModelVariant]
+  ) {
+    self.id = id
+    self.name = name
+    self.description = description
+    self.source = source
+    self.sourcingDescription = sourcingDescription
+    self.format = format
+    self.legacy = legacy
+    self.languages = languages
+    self.publisher = publisher
+    self.variants = variants
   }
 }

@@ -78,11 +78,12 @@ private func filterSources(
   searchFieldText: String,
   selectionHandler: @escaping (RemoteModel, RemoteModelVariant?) -> Void
 ) -> (sources: [SourceViewModel], matches: [SourceFilterMatch]) {
+  let availableModels = models.filter { !$0.legacy }
   let trimmedSearchText = searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines)
 
   guard location != nil || !trimmedSearchText.isEmpty else {
     return (
-      models.map { model in
+      availableModels.map { model in
         SourceViewModel(remoteModel: model, matches: nil, selectionHandler: { variant in
           selectionHandler(model, variant)
         })
@@ -91,7 +92,7 @@ private func filterSources(
     )
   }
 
-  return models
+  return availableModels
     .map { remoteModel -> (RemoteModel, [SourceFilterMatch]) in
       var sourceMatches = [SourceFilterMatch]()
 
