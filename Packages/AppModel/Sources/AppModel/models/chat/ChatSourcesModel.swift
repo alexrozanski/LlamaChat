@@ -20,7 +20,13 @@ fileprivate class SerializedChatSourcesPayload: SerializedPayload<[ChatSource]> 
   override class var currentPayloadVersion: Int { return 2 }
 }
 
+fileprivate class SerializedChatModelsPayload: SerializedPayload<[Model]> {
+  override class var valueKey: String? { return "models" }
+  override class var currentPayloadVersion: Int { return 1 }
+}
+
 public class ChatSourcesModel: ObservableObject {
+  @Published private var initialModels = BuiltinMetadataModels.all
   @Published public private(set) var sources: [ChatSource] = [] {
     didSet {
       persistSources()
@@ -29,6 +35,10 @@ public class ChatSourcesModel: ObservableObject {
 
   private lazy var persistedSourcesURL: URL? = {
     return applicationSupportDirectoryURL()?.appending(path: "sources.json")
+  }()
+
+  private lazy var persistedModelsURL: URL? = {
+    return applicationSupportDirectoryURL()?.appending(path: "models.json")
   }()
 
   private var subscriptions = Set<AnyCancellable>()
@@ -73,18 +83,49 @@ public class ChatSourcesModel: ObservableObject {
 
   // MARK: - Persistence
 
-  private func loadSources() {
+  private func loadInitialModels() {
     guard
-      let persistedURL = persistedSourcesURL,
+      let persistedURL = persistedModelsURL,
       FileManager.default.fileExists(atPath: persistedURL.path)
     else { return }
 
     do {
       let jsonData = try Data(contentsOf: persistedURL)
       let decoder = JSONDecoder()
+      let payload = try decoder.decode(SerializedChatModelsPayload.self, from: jsonData)
+      initialModels = payload.value
+    } catch {
+      print("Error loading sources:", error)
+    }
+  }
+
+  private func persistModels() {
+    guard let persistedURL = persistedModelsURL else { return }
+
+    let encoder = JSONEncoder()
+    do {
+      let json = try encoder.encode(SerializedChatModelsPayload(value: sources.compactMap { $0.model }))
+      try json.write(to: persistedURL)
+    } catch {
+      print("Error persisting sources:", error)
+    }
+  }
+
+  private func loadSources() {
+    guard
+      let persistedURL = persistedSourcesURL,
+      FileManager.default.fileExists(atPath: persistedURL.path)
+    else { return }
+
+    loadInitialModels()
+
+    do {
+      let jsonData = try Data(contentsOf: persistedURL)
+      let decoder = JSONDecoder()
       decoder.userInfo = [
+        .modelProvider: self,
         .modelParametersCoder: LlamaFamilyModelParametersCoder(),
-        .chatSourceUpgrader: self
+        .chatSourceUpgrader: self,
       ]
       let payload = try decoder.decode(SerializedChatSourcesPayload.self, from: jsonData)
       sources = payload.value
@@ -96,14 +137,15 @@ public class ChatSourcesModel: ObservableObject {
   private func persistSources() {
     guard let persistedURL = persistedSourcesURL else { return }
 
+    persistModels()
+
     let encoder = JSONEncoder()
     encoder.userInfo = [
       .modelParametersCoder: LlamaFamilyModelParametersCoder()
     ]
     do {
       let json = try encoder.encode(SerializedChatSourcesPayload(value: sources))
-      print(try String(data: json, encoding: .utf8))
-//      try json.write(to: persistedURL)
+      try json.write(to: persistedURL)
     } catch {
       print("Error persisting sources:", error)
     }
@@ -137,5 +179,11 @@ extension ChatSourcesModel: ChatSourceUpgrader {
     default:
       throw ChatSourceUpgradeError.invalidChatSourceType
     }
+  }
+}
+
+extension ChatSourcesModel: ModelProvider {
+  public func provideModels(modelId: String, variantId: String?) -> (model: Model?, variant: ModelVariant?) {
+    return (initialModels.first { $0.id == modelId }, nil)
   }
 }

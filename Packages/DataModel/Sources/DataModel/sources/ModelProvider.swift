@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+public protocol ModelProvider {
+  func provideModels(modelId: String, variantId: String?) -> (model: Model?, variant: ModelVariant?)
+}

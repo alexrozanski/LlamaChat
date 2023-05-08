@@ -7,13 +7,17 @@
 
 import Foundation
 import Combine
+import DataModel
 
 public extension CodingUserInfoKey {
+  static let modelProvider = CodingUserInfoKey(rawValue: "modelProvider")!
   static let modelParametersCoder = CodingUserInfoKey(rawValue: "modelParametersCoder")!
   static let chatSourceUpgrader = CodingUserInfoKey(rawValue: "chatSourceUpgrader")!
 }
 
 enum ChatSourceCodingError: Error {
+  case missingModelProvider
+  case missingModel
   case missingModelParametersCoder
   case missingChatSourceUpgrader
 }
@@ -26,7 +30,7 @@ public class ChatSource: Codable, ObservableObject {
   @Published public var avatarImageName: String?
 
   public let modelId: String
-  @Published public var model: Model?
+  @Published public var model: Model
   public let modelVariantId: String?
   @Published public var modelVariant: ModelVariant?
 
@@ -103,9 +107,6 @@ public class ChatSource: Codable, ObservableObject {
     let modelId = try values.decodeIfPresent(String.self, forKey: .modelId)
     let modelVariantId = try values.decodeIfPresent(String.self, forKey: .modelVariantId)
 
-    model = nil
-    modelVariant = nil
-
     if let modelId {
       self.modelId = modelId
       self.modelVariantId = modelVariantId
@@ -121,6 +122,19 @@ public class ChatSource: Codable, ObservableObject {
       self.modelId = upgradedModelMetadata.modelId
       self.modelVariantId = upgradedModelMetadata.modelVariantId
     }
+
+    guard let modelProvider = decoder.userInfo[.modelProvider] as? ModelProvider else {
+      throw ChatSourceCodingError.missingModelProvider
+    }
+
+    let (model, modelVariant) = modelProvider.provideModels(modelId: self.modelId, variantId: self.modelVariantId)
+
+    guard let model else {
+      throw ChatSourceCodingError.missingModel
+    }
+
+    self.model = model
+    self.modelVariant = modelVariant
 
     let useMlock = try values.decodeIfPresent(Bool.self, forKey: .useMlock)
     self.useMlock = useMlock ?? false
