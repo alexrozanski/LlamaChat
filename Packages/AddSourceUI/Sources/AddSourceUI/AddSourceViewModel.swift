@@ -39,7 +39,7 @@ public class AddSourceViewModel: ObservableObject {
         guard let variant, let downloadURL = variant.downloadUrl else { return }
 
         step = .configureRemote(
-          ConfigureRemoteModelSourceViewModel(
+          ConfigureDownloadableModelSourceViewModel(
             defaultName: model.name,
             model: model,
             modelVariant: variant,

@@ -7,15 +7,15 @@
 
 import Foundation
 import AppModel
-import RemoteModels
+import ModelMetadata
 
 class ConfigureSourceDetailsViewModel: ObservableObject {
   @Published var name: String
   @Published var avatarImageName: String?
 
-  let model: RemoteModel
+  let model: Model
 
-  init(defaultName: String? = nil, model: RemoteModel) {
+  init(defaultName: String? = nil, model: Model) {
     self.name = defaultName ?? ""
     self.model = model
   }

@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 import DataModel
-import RemoteModels
+import ModelMetadata
 
 class ConfigureLocalModelSourceViewModel: ObservableObject {
   typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
@@ -64,7 +64,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
 
   let primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
 
-  let model: RemoteModel
+  let model: Model
   let exampleGgmlModelPath: String
   private let nextHandler: ConfigureSourceNextHandler
 
@@ -72,7 +72,7 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
 
   init(
     defaultName: String? = nil,
-    model: RemoteModel,
+    model: Model,
     exampleGgmlModelPath: String,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {

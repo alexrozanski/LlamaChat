@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import RemoteModels
+import ModelMetadata
 
-func remoteFallbackModels() -> [RemoteModel] {
+func remoteFallbackModels() -> [Model] {
   return [
     llamaModel(),
     alpacaModel(),
@@ -16,8 +16,8 @@ func remoteFallbackModels() -> [RemoteModel] {
   ]
 }
 
-fileprivate func llamaModel() -> RemoteModel {
-  return RemoteModel(
+fileprivate func llamaModel() -> Model {
+  return Model(
     id: "llama",
     name: "LLaMA",
     description: "The original LLaMA Large Language Model from Meta",
@@ -26,18 +26,18 @@ fileprivate func llamaModel() -> RemoteModel {
     format: ["ggml", "pth"],
     legacy: false,
     languages: ["en"],
-    publisher: RemoteModelPublisher(name: "Meta, Inc."),
+    publisher: ModelPublisher(name: "Meta, Inc."),
     variants: [
-      RemoteModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil),
-      RemoteModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil),
-      RemoteModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil),
-      RemoteModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil)
+      ModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil),
+      ModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil),
+      ModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil),
+      ModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil)
     ]
   )
 }
 
-fileprivate func alpacaModel() -> RemoteModel {
-  return RemoteModel(
+fileprivate func alpacaModel() -> Model {
+  return Model(
     id: "alpaca",
     name: "Alpaca",
     description: "A fine-tuned instruction-following LLaMA model",
@@ -46,15 +46,15 @@ fileprivate func alpacaModel() -> RemoteModel {
     format: ["ggml", "pth"],
     legacy: false,
     languages: ["en"],
-    publisher: RemoteModelPublisher(name: "Stanford"),
+    publisher: ModelPublisher(name: "Stanford"),
     variants: [
-      RemoteModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil)
+      ModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil)
     ]
   )
 }
 
-fileprivate func legacyGPT4AllModel() -> RemoteModel {
-  return RemoteModel(
+fileprivate func legacyGPT4AllModel() -> Model {
+  return Model(
     id: "gpt4all-legacy",
     name: "GPT4All",
     description: "Nomic AI's assistant-style LLM based on LLaMA",
@@ -63,9 +63,9 @@ fileprivate func legacyGPT4AllModel() -> RemoteModel {
     format: ["ggml", "pth"],
     legacy: true,
     languages: ["en"],
-    publisher: RemoteModelPublisher(name: "Nomic AI"),
+    publisher: ModelPublisher(name: "Nomic AI"),
     variants: [
-      RemoteModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil)
+      ModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil)
     ]
   )
 }

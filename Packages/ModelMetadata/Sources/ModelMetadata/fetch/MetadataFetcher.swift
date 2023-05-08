@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MetadataFetcher {
-  func updateMetadata() async throws -> [RemoteModel]
+  func updateMetadata() async throws -> [Model]
 }

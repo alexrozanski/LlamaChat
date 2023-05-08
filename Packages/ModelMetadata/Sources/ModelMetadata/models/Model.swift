@@ -1,5 +1,5 @@
 //
-//  RemoteModel.swift
+//  Model.swift
 //  
 //
 //  Created by Alex Rozanski on 03/05/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct RemoteModel: Decodable {
+public struct Model: Decodable {
   public enum Source {
     case local
     case remote
@@ -21,8 +21,8 @@ public struct RemoteModel: Decodable {
   public let format: [String]
   public let languages: [String]
   public let legacy: Bool
-  public let publisher: RemoteModelPublisher
-  public let variants: [RemoteModelVariant]
+  public let publisher: ModelPublisher
+  public let variants: [ModelVariant]
 
   public enum CodingKeys: CodingKey {
     case id
@@ -57,8 +57,8 @@ public struct RemoteModel: Decodable {
     format = try values.decode([String].self, forKey: .format)
     legacy = try values.decodeIfPresent(Bool.self, forKey: .legacy) ?? false
     languages = try values.decode([String].self, forKey: .languages)
-    publisher = try values.decode(RemoteModelPublisher.self, forKey: .publisher)
-    variants = try values.decode([RemoteModelVariant].self, forKey: .variants)
+    publisher = try values.decode(ModelPublisher.self, forKey: .publisher)
+    variants = try values.decode([ModelVariant].self, forKey: .variants)
   }
 
   public init(
@@ -70,8 +70,8 @@ public struct RemoteModel: Decodable {
     format: [String],
     legacy: Bool,
     languages: [String],
-    publisher: RemoteModelPublisher,
-    variants: [RemoteModelVariant]
+    publisher: ModelPublisher,
+    variants: [ModelVariant]
   ) {
     self.id = id
     self.name = name

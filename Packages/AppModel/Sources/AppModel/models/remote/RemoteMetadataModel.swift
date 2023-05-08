@@ -7,7 +7,7 @@
 
 import Foundation
 import DataModel
-import RemoteModels
+import ModelMetadata
 
 public class RemoteMetadataModel: ObservableObject {
   public enum LoadState {
@@ -19,10 +19,10 @@ public class RemoteMetadataModel: ObservableObject {
 
   let apiBaseURL: URL
 
-  @Published private(set) public var allModels: [RemoteModel] = []
+  @Published private(set) public var allModels: [Model] = []
   @Published private(set) public var loadState: LoadState = .none
 
-  private lazy var store = RemoteModelMetadataStore()
+  private lazy var store = RemoteModelMetadataMetadataStore()
 
   public init(apiBaseURL: URL) {
     self.apiBaseURL = apiBaseURL

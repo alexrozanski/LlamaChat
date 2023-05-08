@@ -18,7 +18,7 @@ let package = Package(
     .package(path: "../AppModel"),
     .package(path: "../Downloads"),
     .package(path: "../ModelDirectory"),
-    .package(path: "../RemoteModels"),
+    .package(path: "../ModelMetadata"),
     .package(path: "../SharedUI")
   ],
   targets: [
@@ -30,7 +30,7 @@ let package = Package(
         "AppModel",
         "Downloads",
         "ModelDirectory",
-        "RemoteModels",
+        "ModelMetadata",
         "SharedUI"
       ]
     )

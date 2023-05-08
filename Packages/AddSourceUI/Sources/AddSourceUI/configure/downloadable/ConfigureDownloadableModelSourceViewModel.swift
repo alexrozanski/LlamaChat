@@ -10,9 +10,9 @@ import Combine
 import SwiftUI
 import DataModel
 import Downloads
-import RemoteModels
+import ModelMetadata
 
-class ConfigureRemoteModelSourceViewModel: ObservableObject {
+class ConfigureDownloadableModelSourceViewModel: ObservableObject {
   typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
 
   enum State {
@@ -46,8 +46,8 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
 
   @Published var downloadProgress: DownloadProgress?
 
-  let model: RemoteModel
-  let modelVariant: RemoteModelVariant
+  let model: Model
+  let modelVariant: ModelVariant
   let modelSize: ModelSize
   let downloadURL: URL
 
@@ -60,8 +60,8 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
 
   init(
     defaultName: String? = nil,
-    model: RemoteModel,
-    modelVariant: RemoteModelVariant,
+    model: Model,
+    modelVariant: ModelVariant,
     modelSize: ModelSize,
     downloadURL: URL,
     nextHandler: @escaping ConfigureSourceNextHandler
@@ -167,7 +167,7 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
   }
 }
 
-extension ConfigureRemoteModelSourceViewModel.State {
+extension ConfigureDownloadableModelSourceViewModel.State {
   var canStart: Bool {
     switch self {
     case .none:

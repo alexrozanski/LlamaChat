@@ -10,7 +10,6 @@ import AppModel
 import DataModel
 import Downloads
 import ModelDirectory
-import RemoteModels
 
 enum WindowIdentifier: String {
   case chat

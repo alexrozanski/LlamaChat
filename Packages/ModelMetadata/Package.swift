@@ -2,14 +2,14 @@
 import PackageDescription
 
 let package = Package(
-  name: "RemoteModels",
+  name: "ModelMetadata",
   platforms: [
     .macOS(.v13)
   ],
   products: [
     .library(
-      name: "RemoteModels",
-      targets: ["RemoteModels"]
+      name: "ModelMetadata",
+      targets: ["ModelMetadata"]
     )
   ],
   dependencies: [
@@ -17,16 +17,18 @@ let package = Package(
     .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.5"),
     .package(url: "https://github.com/weichsel/ZIPFoundation.git", .upToNextMajor(from: "0.9.0")),
     .package(url: "https://github.com/binarybirds/git-kit", from: "1.0.0"),
+    .package(path: "../Downloads"),
     .package(path: "../FileManager")
   ],
   targets: [
     .target(
-      name: "RemoteModels",
+      name: "ModelMetadata",
       dependencies: [
         .product(name: "GitKit", package: "git-kit"),
         "Alamofire",
         "Yams",
         "ZIPFoundation",
+        "Downloads",
         "FileManager"
       ]
     )

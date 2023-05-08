@@ -65,13 +65,13 @@
 		82C686A829DAF32300B76BA6 /* ModelContextContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */; };
 		82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 82C68BEA29E77CC900A7A4AE /* Sparkle */; };
 		82C68BEE29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */; };
-		82DCBD572A02B7F2009FED10 /* RemoteModels in Frameworks */ = {isa = PBXBuildFile; productRef = 82DCBD562A02B7F2009FED10 /* RemoteModels */; };
 		82E43CB229E8D6F3003E69D1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 82E43CB129E8D6F3003E69D1 /* Alamofire */; };
 		82E43CBA29EA94EC003E69D1 /* GeneralSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CB929EA94EC003E69D1 /* GeneralSettingsViewModel.swift */; };
 		82E43CBF29EA96A4003E69D1 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E43CBE29EA96A4003E69D1 /* GeneralSettingsView.swift */; };
 		82E8193F2A0408E100D76B57 /* LlamaChat-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 82E8193E2A0408E100D76B57 /* LlamaChat-Local.xcconfig */; };
 		82F077592A05B2AD00772633 /* AddSourceUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077582A05B2AD00772633 /* AddSourceUI */; };
 		82F0775F2A05B70B00772633 /* SharedUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F0775E2A05B70B00772633 /* SharedUI */; };
+		82F077642A09011800772633 /* ModelMetadata in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077632A09011800772633 /* ModelMetadata */; };
 		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
@@ -134,13 +134,13 @@
 		82C686A729DAF32300B76BA6 /* ModelContextContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContextContentViewModel.swift; sourceTree = "<group>"; };
 		82C68BED29E77F3700A7A4AE /* CheckForUpdatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesViewModel.swift; sourceTree = "<group>"; };
 		82C68BEF29E7FB8100A7A4AE /* LlamaChat.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LlamaChat.xcconfig; sourceTree = "<group>"; };
-		82DCBD532A02B775009FED10 /* RemoteModels */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RemoteModels; sourceTree = "<group>"; };
 		82E43CB929EA94EC003E69D1 /* GeneralSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewModel.swift; sourceTree = "<group>"; };
 		82E43CBE29EA96A4003E69D1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		82E8193E2A0408E100D76B57 /* LlamaChat-Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "LlamaChat-Local.xcconfig"; sourceTree = "<group>"; };
 		82F077552A05B14200772633 /* AddSourceUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AddSourceUI; sourceTree = "<group>"; };
 		82F0775A2A05B4EE00772633 /* Downloads */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Downloads; sourceTree = "<group>"; };
 		82F0775B2A05B63300772633 /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SharedUI; sourceTree = "<group>"; };
+		82F077602A09007E00772633 /* ModelMetadata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ModelMetadata; sourceTree = "<group>"; };
 		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,10 +150,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8241612529F58C3F007149B9 /* CameLLM in Frameworks */,
-				82DCBD572A02B7F2009FED10 /* RemoteModels in Frameworks */,
 				82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */,
 				82615BBB2A02524600B0D4FB /* DataModel in Frameworks */,
 				8241612829F58C5A007149B9 /* CameLLMLlama in Frameworks */,
+				82F077642A09011800772633 /* ModelMetadata in Frameworks */,
 				82E43CB229E8D6F3003E69D1 /* Alamofire in Frameworks */,
 				82615BDC2A025DD800B0D4FB /* ModelDirectory in Frameworks */,
 				82615BDE2A025DD800B0D4FB /* ModelUtils in Frameworks */,
@@ -266,8 +266,8 @@
 				82F0775A2A05B4EE00772633 /* Downloads */,
 				82615BC62A0254EF00B0D4FB /* FileManager */,
 				82615BD52A02556F00B0D4FB /* ModelDirectory */,
+				82F077602A09007E00772633 /* ModelMetadata */,
 				82615BD62A0256F200B0D4FB /* ModelUtils */,
-				82DCBD532A02B775009FED10 /* RemoteModels */,
 				82F0775B2A05B63300772633 /* SharedUI */,
 			);
 			path = Packages;
@@ -494,14 +494,14 @@
 			buildRules = (
 			);
 			dependencies = (
-				82F0775D2A05B70400772633 /* PBXTargetDependency */,
 				82F077572A05B2A500772633 /* PBXTargetDependency */,
 				82615BCC2A02551F00B0D4FB /* PBXTargetDependency */,
 				82615BCE2A02551F00B0D4FB /* PBXTargetDependency */,
 				82615BD02A02551F00B0D4FB /* PBXTargetDependency */,
 				82615BD82A025DC800B0D4FB /* PBXTargetDependency */,
+				82F077622A09010900772633 /* PBXTargetDependency */,
 				82615BDA2A025DCB00B0D4FB /* PBXTargetDependency */,
-				82DCBD552A02B7E8009FED10 /* PBXTargetDependency */,
+				82F0775D2A05B70400772633 /* PBXTargetDependency */,
 			);
 			name = LlamaChat;
 			packageProductDependencies = (
@@ -515,9 +515,9 @@
 				82615BD32A02552600B0D4FB /* FileManager */,
 				82615BDB2A025DD800B0D4FB /* ModelDirectory */,
 				82615BDD2A025DD800B0D4FB /* ModelUtils */,
-				82DCBD562A02B7F2009FED10 /* RemoteModels */,
 				82F077582A05B2AD00772633 /* AddSourceUI */,
 				82F0775E2A05B70B00772633 /* SharedUI */,
+				82F077632A09011800772633 /* ModelMetadata */,
 			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* LlamaChat.app */;
@@ -657,10 +657,6 @@
 			isa = PBXTargetDependency;
 			productRef = 82615BD92A025DCB00B0D4FB /* ModelUtils */;
 		};
-		82DCBD552A02B7E8009FED10 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 82DCBD542A02B7E8009FED10 /* RemoteModels */;
-		};
 		82F077572A05B2A500772633 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 82F077562A05B2A500772633 /* AddSourceUI */;
@@ -668,6 +664,10 @@
 		82F0775D2A05B70400772633 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 82F0775C2A05B70400772633 /* SharedUI */;
+		};
+		82F077622A09010900772633 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 82F077612A09010900772633 /* ModelMetadata */;
 		};
 /* End PBXTargetDependency section */
 
@@ -964,14 +964,6 @@
 			package = 82C68BE929E77CC900A7A4AE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
 		};
-		82DCBD542A02B7E8009FED10 /* RemoteModels */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = RemoteModels;
-		};
-		82DCBD562A02B7F2009FED10 /* RemoteModels */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = RemoteModels;
-		};
 		82E43CB129E8D6F3003E69D1 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 82E43CB029E8D6F3003E69D1 /* XCRemoteSwiftPackageReference "Alamofire" */;
@@ -992,6 +984,14 @@
 		82F0775E2A05B70B00772633 /* SharedUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SharedUI;
+		};
+		82F077612A09010900772633 /* ModelMetadata */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModelMetadata;
+		};
+		82F077632A09011800772633 /* ModelMetadata */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModelMetadata;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

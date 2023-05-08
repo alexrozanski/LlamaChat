@@ -1,5 +1,5 @@
 //
-//  RemoteMetadataParser.swift
+//  MetadataParser.swift
 //  
 //
 //  Created by Alex Rozanski on 07/05/2023.
@@ -8,18 +8,18 @@
 import Foundation
 import Yams
 
-fileprivate struct RemoteModelFile: Decodable {
-  let model: RemoteModel
+fileprivate struct ModelMetadataFile: Decodable {
+  let model: Model
 }
 
-class RemoteMetadataParser {
+class MetadataParser {
   enum Error: Swift.Error {
     case invalidDirectory
     case invalidModelFile
   }
 
   // URL should be the directory containing the metadata files
-  func parseMetadata(at url: URL) throws -> [RemoteModel] {
+  func parseMetadata(at url: URL) throws -> [Model] {
     let fileManager = FileManager()
     let modelsDirectory = url.appending(component: "models", directoryHint: .isDirectory)
     if !fileManager.fileExists(atPath: modelsDirectory.path) {
@@ -30,9 +30,9 @@ class RemoteMetadataParser {
     return try modelFileURLs.map { try decodeModel(from: $0) }
   }
 
-  private func decodeModel(from fileURL: URL) throws -> RemoteModel {
+  private func decodeModel(from fileURL: URL) throws -> Model {
     let data = try Data(contentsOf: fileURL)
-    return try YAMLDecoder().decode(RemoteModelFile.self, from: data).model
+    return try YAMLDecoder().decode(ModelMetadataFile.self, from: data).model
   }
 
   private func modelFileURLs(in directory: URL) throws -> [URL] {

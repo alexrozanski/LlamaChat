@@ -10,7 +10,7 @@ import Downloads
 import ZIPFoundation
 
 struct ResponsePayload: Decodable {
-  let models: [RemoteModel]
+  let models: [Model]
 }
 
 class FileBasedMetadataFetcher: MetadataFetcher {
@@ -22,7 +22,7 @@ class FileBasedMetadataFetcher: MetadataFetcher {
     self.url = url
   }
 
-  func updateMetadata() async throws -> [RemoteModel] {
+  func updateMetadata() async throws -> [Model] {
     return try await withCheckedThrowingContinuation { continuation in
       downloadHandle = DownloadsManager.shared.downloadFile(
         from: URL(string: "https://camellm.org/llamachat-models-main.zip")!,
@@ -45,7 +45,7 @@ class FileBasedMetadataFetcher: MetadataFetcher {
                 return
               }
 
-              let parser = RemoteMetadataParser()
+              let parser = MetadataParser()
               let models = try parser.parseMetadata(at: directory)
               continuation.resume(returning: models)
             } catch {

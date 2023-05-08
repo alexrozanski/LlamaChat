@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RemoteModels
+import ModelMetadata
 
 fileprivate struct Names: Decodable {
   let llamaNames: [String]
@@ -33,7 +33,7 @@ public class SourceNameGenerator {
     return names != nil
   }
 
-  public func generateName(for model: RemoteModel) -> String? {
+  public func generateName(for model: Model) -> String? {
     guard let names else { return nil }
 
     switch model.id {

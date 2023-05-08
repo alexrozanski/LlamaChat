@@ -19,7 +19,7 @@ let package = Package(
     .package(path: "../DataModel"),
     .package(path: "../FileManager"),
     .package(path: "../ModelUtils"),
-    .package(path: "../RemoteModels")
+    .package(path: "../ModelMetadata")
   ],
   targets: [
     .target(
@@ -31,7 +31,7 @@ let package = Package(
         "DataModel",
         "FileManager",
         "ModelUtils",
-        "RemoteModels"
+        "ModelMetadata"
       ]
     )
   ]

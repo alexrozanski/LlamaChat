@@ -15,7 +15,7 @@ class GitBasedMetadataFetcher: MetadataFetcher {
     self.repositoryURL = repositoryURL
   }
 
-  func updateMetadata() async throws -> [RemoteModel] {
+  func updateMetadata() async throws -> [Model] {
     guard let repositoryDirectory else {
       return []
     }
@@ -25,7 +25,7 @@ class GitBasedMetadataFetcher: MetadataFetcher {
     let git = Git(path: repositoryDirectory.path)
     try git.run(.pull())
 
-    let metadataParser = RemoteMetadataParser()
+    let metadataParser = MetadataParser()
     return try metadataParser.parseMetadata(at: repositoryDirectory)
   }
 

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RemoteModels
+import ModelMetadata
 
 class SourceViewModel {
   enum SelectionType {
@@ -14,37 +14,37 @@ class SourceViewModel {
     case variant
   }
 
-  var id: String { return remoteModel.id }
-  var name: String { return remoteModel.name }
-  var description: String { return remoteModel.description }
-  var publisher: String { return remoteModel.publisher.name }
+  var id: String { return model.id }
+  var name: String { return model.name }
+  var description: String { return model.description }
+  var publisher: String { return model.publisher.name }
   let variants: [VariantViewModel]
 
-  private let remoteModel: RemoteModel
-  private let selectionHandler: (RemoteModelVariant?) -> Void
+  private let model: Model
+  private let selectionHandler: (ModelVariant?) -> Void
 
   init(
-    remoteModel: RemoteModel,
+    model: Model,
     matches: [SourceFilterMatch]?,
-    selectionHandler: @escaping (RemoteModelVariant?) -> Void
+    selectionHandler: @escaping (ModelVariant?) -> Void
   ) {
-    self.remoteModel = remoteModel
+    self.model = model
     self.selectionHandler = selectionHandler
 
     // Default to true because nil matches means we're not filtering by anything.
-    let matchesModel = matches?.matchesModel(id: remoteModel.id) ?? true
-    self.variants = remoteModel
+    let matchesModel = matches?.matchesModel(id: model.id) ?? true
+    self.variants = model
       .variants
       .filter { variant in
-        matchesModel ? true : (matches?.matchesVariant(variantId: variant.id, modelId: remoteModel.id) ?? false)
+        matchesModel ? true : (matches?.matchesVariant(variantId: variant.id, modelId: model.id) ?? false)
       }
       .map { variant in
-        VariantViewModel(remoteModel: variant, selectionHandler: { selectionHandler(variant) })
+        VariantViewModel(model: variant, selectionHandler: { selectionHandler(variant) })
       }
   }
 
   var isRemote: Bool {
-    switch remoteModel.source {
+    switch model.source {
     case .local:
       return false
     case .remote:
@@ -81,15 +81,15 @@ class SourceViewModel {
 }
 
 class VariantViewModel {
-  var id: String { return remoteModel.id }
-  var name: String { return remoteModel.name }
-  var description: String? { return remoteModel.description }
+  var id: String { return model.id }
+  var name: String { return model.name }
+  var description: String? { return model.description }
 
-  private let remoteModel: RemoteModelVariant
+  private let model: ModelVariant
   private let selectionHandler: () -> Void
 
-  init(remoteModel: RemoteModelVariant, selectionHandler: @escaping () -> Void) {
-    self.remoteModel = remoteModel
+  init(model: ModelVariant, selectionHandler: @escaping () -> Void) {
+    self.model = model
     self.selectionHandler = selectionHandler
   }
 

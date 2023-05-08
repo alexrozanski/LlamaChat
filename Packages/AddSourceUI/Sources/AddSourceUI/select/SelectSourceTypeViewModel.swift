@@ -9,10 +9,10 @@ import Foundation
 import Combine
 import AppModel
 import DataModel
-import RemoteModels
+import ModelMetadata
 
 class SelectSourceTypeViewModel: ObservableObject {
-  typealias SelectModelHandler = (RemoteModel, RemoteModelVariant?) -> Void
+  typealias SelectModelHandler = (Model, ModelVariant?) -> Void
 
   enum Content {
     case none
@@ -42,9 +42,9 @@ class SelectSourceTypeViewModel: ObservableObject {
 
     dependencies.remoteMetadataModel.$allModels
       .combineLatest(filterViewModel.$location, filterViewModel.$searchFieldText)
-      .map { [weak self] remoteModels, location, searchFieldText in
+      .map { [weak self] models, location, searchFieldText in
         return filterSources(
-          models: remoteModels,
+          models: models,
           location: location,
           searchFieldText: searchFieldText,
           selectionHandler: { model, variant in
@@ -82,16 +82,16 @@ class SelectSourceTypeViewModel: ObservableObject {
       .assign(to: &$content)
   }
 
-  func selectModel(_ model: RemoteModel, variant: RemoteModelVariant?) {
+  func selectModel(_ model: Model, variant: ModelVariant?) {
     selectModelHandler(model, variant)
   }
 }
 
 private func filterSources(
-  models: [RemoteModel],
+  models: [Model],
   location: SelectSourceTypeFilterViewModel.Location?,
   searchFieldText: String,
-  selectionHandler: @escaping (RemoteModel, RemoteModelVariant?) -> Void
+  selectionHandler: @escaping (Model, ModelVariant?) -> Void
 ) -> (sources: [SourceViewModel], matches: [SourceFilterMatch]) {
   let availableModels = models.filter { !$0.legacy }
   let trimmedSearchText = searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -99,7 +99,7 @@ private func filterSources(
   guard location != nil || !trimmedSearchText.isEmpty else {
     return (
       availableModels.map { model in
-        SourceViewModel(remoteModel: model, matches: nil, selectionHandler: { variant in
+        SourceViewModel(model: model, matches: nil, selectionHandler: { variant in
           selectionHandler(model, variant)
         })
       },
@@ -108,23 +108,23 @@ private func filterSources(
   }
 
   return availableModels
-    .map { remoteModel -> (RemoteModel, [SourceFilterMatch]) in
+    .map { model -> (Model, [SourceFilterMatch]) in
       var sourceMatches = [SourceFilterMatch]()
 
       if !trimmedSearchText.isEmpty {
-        sourceMatches.append(contentsOf: sourceFilterMatches(in: remoteModel, trimmedSearchText: trimmedSearchText))
+        sourceMatches.append(contentsOf: sourceFilterMatches(in: model, trimmedSearchText: trimmedSearchText))
       }
 
-      if let location, location.matches(source: remoteModel.source) {
+      if let location, location.matches(source: model.source) {
         sourceMatches.append(.modelLocation)
       }
 
-      return (remoteModel, sourceMatches)
+      return (model, sourceMatches)
     }
-    .filter { (remoteModel, matches) in !matches.isEmpty }
+    .filter { (model, matches) in !matches.isEmpty }
     .reduce((sources: [SourceViewModel](), matches: [SourceFilterMatch]())) { acc, result in
       let (lastSources, lastMatches) = acc
-      let (remoteModel, matches) = result
+      let (model, matches) = result
 
       if matches.isEmpty {
         return acc
@@ -133,10 +133,10 @@ private func filterSources(
         return (
           lastSources + [
             SourceViewModel(
-              remoteModel: remoteModel,
+              model: model,
               matches: matches,
               selectionHandler: { variant in
-                selectionHandler(remoteModel, variant)
+                selectionHandler(model, variant)
               }
             )
           ],
@@ -146,7 +146,7 @@ private func filterSources(
 }
 
 fileprivate extension SelectSourceTypeFilterViewModel.Location {
-  func matches(source: RemoteModel.Source) -> Bool {
+  func matches(source: Model.Source) -> Bool {
     switch source {
     case .remote:
       return self == .remote
@@ -156,7 +156,7 @@ fileprivate extension SelectSourceTypeFilterViewModel.Location {
   }
 }
 
-fileprivate func sourceFilterMatches(in model: RemoteModel, trimmedSearchText: String) -> [SourceFilterMatch] {
+fileprivate func sourceFilterMatches(in model: Model, trimmedSearchText: String) -> [SourceFilterMatch] {
   var matches = [SourceFilterMatch]()
   if model.name.range(of: trimmedSearchText, options: .caseInsensitive) != nil {
     matches.append(.modelName(id: model.id))

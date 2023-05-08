@@ -7,14 +7,14 @@
 
 import SwiftUI
 import SharedUI
-import RemoteModels
+import ModelMetadata
 
 fileprivate struct Colors {
   static let border = Color(light: Color(hex: "#DEDEDE"), dark: Color(hex: "#FFFFFF", opacity: 0.2))
   static let hoverBackground = Color(light: .black.opacity(0.02), dark: .black.opacity(0.2))
 }
 
-typealias SelectHandler = (RemoteModel, RemoteModelVariant) -> Void
+typealias SelectHandler = (Model, ModelVariant) -> Void
 
 struct SourceTypeVariantView: View {
   let variant: VariantViewModel

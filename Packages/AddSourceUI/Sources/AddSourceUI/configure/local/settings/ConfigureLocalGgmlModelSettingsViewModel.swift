@@ -10,7 +10,7 @@ import Combine
 import CameLLM
 import CameLLMLlama
 import DataModel
-import RemoteModels
+import ModelMetadata
 
 private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalGgmlModelSettingsViewModel.InvalidModelTypeReason {
   // Reason is always stored in the underlying error
@@ -77,12 +77,12 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
   var modelPath: String? { return pathSelectorViewModel.modelPaths.first }
   var modelSize: ModelSize? { return modelSizePickerViewModel.modelSize }
 
-  let model: RemoteModel
+  let model: Model
   let exampleModelPath: String
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(model: RemoteModel, exampleModelPath: String) {
+  init(model: Model, exampleModelPath: String) {
     self.model = model
     self.exampleModelPath = exampleModelPath
 

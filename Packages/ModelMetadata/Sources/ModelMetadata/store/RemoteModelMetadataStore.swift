@@ -1,5 +1,5 @@
 //
-//  RemoteModelMetadataStore.swift
+//  RemoteModelMetadataMetadataStore.swift
 //  
 //
 //  Created by Alex Rozanski on 03/05/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class RemoteModelMetadataStore {
+public class RemoteModelMetadataMetadataStore {
   public enum FetchState {
     case none
     case fetching
@@ -24,7 +24,7 @@ public class RemoteModelMetadataStore {
     }
   }
 
-  @Published public private(set) var allModels: [RemoteModel] = []
+  @Published public private(set) var allModels: [Model] = []
 
   @Published private(set) public var fetchState: FetchState = .none
 
