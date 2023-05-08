@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 
 protocol MetadataFetcher {
   func updateMetadata() async throws -> [Model]

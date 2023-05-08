@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ModelVariant: Decodable {
+public struct ModelVariant: Codable {
   public let id: String
   public let name: String
   public let description: String?

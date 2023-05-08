@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ModelPublisher: Decodable {
+public struct ModelPublisher: Codable {
   public let name: String
 
   public init(name: String) {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 
 public class RemoteModelMetadataMetadataStore {
   public enum FetchState {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 import ModelMetadata
 
 fileprivate struct Names: Decodable {
@@ -37,9 +38,9 @@ public class SourceNameGenerator {
     guard let names else { return nil }
 
     switch model.id {
-    case "llama":
+    case BuiltinMetadataModels.llama.id:
       return names.llamaNames.randomElement()
-    case "alpaca":
+    case BuiltinMetadataModels.alpaca.id:
       return names.alpacaNames.randomElement()
     default:
       var all = names.alpacaNames

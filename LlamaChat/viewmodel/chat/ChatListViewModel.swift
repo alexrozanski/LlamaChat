@@ -15,16 +15,18 @@ class ChatListItemViewModel: ObservableObject {
 
   var id: String { chatSource.id }
   var modelDescription: String {
-    var suffix: String
-    switch chatSource.modelSize {
-    case .unknown: suffix = ""
-    case .size7B: suffix = " (7B)"
-    case .size13B: suffix = " (13B)"
-    case .size30B: suffix = " (30B)"
-    case .size65B: suffix = " (65B)"
-    }
+//    var suffix: String
+//    switch chatSource.modelSize {
+//    case .unknown: suffix = ""
+//    case .size7B: suffix = " (7B)"
+//    case .size13B: suffix = " (13B)"
+//    case .size30B: suffix = " (30B)"
+//    case .size65B: suffix = " (65B)"
+//    }
 
-    return "\(chatSource.type.readableName)\(suffix)"
+//    return "\(chatSource.type.readableName)\(suffix)"
+
+    return ""
   }
   @Published var title: String
 

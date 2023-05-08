@@ -17,6 +17,7 @@ let package = Package(
     .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.5"),
     .package(url: "https://github.com/weichsel/ZIPFoundation.git", .upToNextMajor(from: "0.9.0")),
     .package(url: "https://github.com/binarybirds/git-kit", from: "1.0.0"),
+    .package(path: "../DataModel"),
     .package(path: "../Downloads"),
     .package(path: "../FileManager")
   ],
@@ -28,6 +29,7 @@ let package = Package(
         "Alamofire",
         "Yams",
         "ZIPFoundation",
+        "DataModel",
         "Downloads",
         "FileManager"
       ]

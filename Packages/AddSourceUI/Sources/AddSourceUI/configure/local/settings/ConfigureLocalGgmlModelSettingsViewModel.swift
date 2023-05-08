@@ -143,7 +143,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
         case .none, .invalidModel, .invalidPath:
           self?.sourceSettings.send(nil)
         case .valid(modelURL: let modelURL):
-          self?.sourceSettings.send(.ggmlModel(modelURL: modelURL, modelSize: modelSize))
+          self?.sourceSettings.send(.ggmlModel(modelURL: modelURL))
         }
       }.store(in: &subscriptions)
   }

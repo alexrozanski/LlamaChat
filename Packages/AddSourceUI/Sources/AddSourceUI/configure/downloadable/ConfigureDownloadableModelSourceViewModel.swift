@@ -48,7 +48,6 @@ class ConfigureDownloadableModelSourceViewModel: ObservableObject {
 
   let model: Model
   let modelVariant: ModelVariant
-  let modelSize: ModelSize
   let downloadURL: URL
 
   let detailsViewModel: ConfigureSourceDetailsViewModel
@@ -62,13 +61,11 @@ class ConfigureDownloadableModelSourceViewModel: ObservableObject {
     defaultName: String? = nil,
     model: Model,
     modelVariant: ModelVariant,
-    modelSize: ModelSize,
     downloadURL: URL,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {
     self.model = model
     self.modelVariant = modelVariant
-    self.modelSize = modelSize
     self.downloadURL = downloadURL
     self.detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, model: model)
     self.nextHandler = nextHandler
@@ -105,7 +102,7 @@ class ConfigureDownloadableModelSourceViewModel: ObservableObject {
           let configuredSource = ConfiguredSource(
             name: self.detailsViewModel.name,
             avatarImageName: self.detailsViewModel.avatarImageName,
-            settings: .downloadedFile(fileURL: url, modelSize: self.modelSize)
+            settings: .downloadedFile(fileURL: url)
           )
           self.nextHandler(configuredSource)
         }

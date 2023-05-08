@@ -43,7 +43,6 @@ public class AddSourceViewModel: ObservableObject {
             defaultName: model.name,
             model: model,
             modelVariant: variant,
-            modelSize: .size7B,
             downloadURL: downloadURL,
             nextHandler: { _ in }
           )
@@ -68,9 +67,7 @@ public class AddSourceViewModel: ObservableObject {
   // MARK: - Private
 
   private func makeConvertSourceViewModel(
-    with sourceType: ChatSourceType,
     configuredSource: ConfiguredSource,
-    modelSize: ModelSize,
     validatedData: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>
   ) -> ConvertSourceViewModel {
     return ConvertSourceViewModel(
@@ -80,11 +77,11 @@ public class AddSourceViewModel: ObservableObject {
           source: ChatSource(
             name: configuredSource.name,
             avatarImageName: configuredSource.avatarImageName,
-            type: sourceType,
+            model: nil,
+            modelVariant: nil,
             modelURL: modelURL,
             modelDirectoryId: modelDirectory.id,
-            modelSize: modelSize,
-            modelParameters: defaultModelParameters(for: sourceType),
+            modelParameters: defaultModelParameters(),
             useMlock: false
           )
         )
@@ -95,31 +92,29 @@ public class AddSourceViewModel: ObservableObject {
 
   private func handleConfiguredSource(source: ConfiguredSource, sourceType: ChatSourceType) {
     switch source.settings {
-    case .ggmlModel(modelURL: let modelURL, modelSize: let modelSize):
+    case .ggmlModel(modelURL: let modelURL):
       self.add(
         source: ChatSource(
           name: source.name,
           avatarImageName: source.avatarImageName,
-          type: sourceType,
+          model: nil,
+          modelVariant: nil,
           modelURL: modelURL,
           modelDirectoryId: nil,
-          modelSize: modelSize,
-          modelParameters: defaultModelParameters(for: sourceType),
+          modelParameters: defaultModelParameters(),
           useMlock: false
         )
       )
-    case .pyTorchCheckpoints(data: let validatedData, let modelSize):
+    case .pyTorchCheckpoints(data: let validatedData):
       self.navigationPath.append(
         .convertPyTorchSource(
           self.makeConvertSourceViewModel(
-            with: sourceType,
             configuredSource: source,
-            modelSize: modelSize,
             validatedData: validatedData
           )
         )
       )
-    case .downloadedFile(fileURL: let fileURL, modelSize: let modelSize):
+    case .downloadedFile(fileURL: let fileURL):
       do {
         let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
         let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
@@ -127,11 +122,11 @@ public class AddSourceViewModel: ObservableObject {
           source: ChatSource(
             name: source.name,
             avatarImageName: source.avatarImageName,
-            type: sourceType,
+            model: nil,
+            modelVariant: nil,
             modelURL: modelFileURL,
             modelDirectoryId: modelDirectory.id,
-            modelSize: modelSize,
-            modelParameters: defaultModelParameters(for: sourceType),
+            modelParameters: defaultModelParameters(),
             useMlock: false
           )
         )

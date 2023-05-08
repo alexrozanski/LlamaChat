@@ -50,7 +50,7 @@ class SourceSettingsParametersViewModel: ObservableObject {
   }
 
   func resetDefaults() {
-    source.modelParameters = defaultModelParameters(for: source.type)
+    source.modelParameters = defaultModelParameters()
   }
 
   // The values in source.modelParameters remain the source of truth here, but we want to assign their
@@ -64,118 +64,118 @@ class SourceSettingsParametersViewModel: ObservableObject {
   //
   // If there is a better way of doing this, please open a PR!
   private func setUpDataBindings() {
-    source.$modelParameters
-      .map { $0.$seedValue }
-      .switchToLatest()
-      .map { $0 == nil }
-      .assign(to: &$isSeedRandom)
-    $isSeedRandom
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] newIsSeedRandom in
-        if newIsSeedRandom {
-          source?.modelParameters.seedValue = nil
-        }
-      }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$seedValue }
-      .switchToLatest()
-      .assign(to: &$seedValue)
-    $seedValue
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.seedValue = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$contextSize }
-      .switchToLatest()
-      .map { Int($0) }
-      .assign(to: &$contextSize)
-    $contextSize.map { UInt($0) }
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.contextSize = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$numberOfTokens }
-      .switchToLatest()
-      .map { Int($0) }
-      .assign(to: &$numberOfTokens)
-    $numberOfTokens
-      .map { UInt($0) }
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.numberOfTokens = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$topP }
-      .switchToLatest()
-      .assign(to: &$topP)
-    $topP
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.topP = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$topK }
-      .switchToLatest()
-      .map { Int($0) }
-      .assign(to: &$topK)
-    $topK
-      .map { UInt($0) }
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.topK = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$temperature }
-      .switchToLatest()
-      .assign(to: &$temperature)
-    $temperature
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.temperature = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$batchSize }
-      .switchToLatest()
-      .map { Int($0) }
-      .assign(to: &$batchSize)
-    $batchSize
-      .map { UInt($0) }
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.batchSize = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$lastNTokensToPenalize }
-      .switchToLatest()
-      .map { Int($0) }
-      .assign(to: &$lastNTokensToPenalize)
-    $lastNTokensToPenalize
-      .map { UInt($0) }
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.lastNTokensToPenalize = $0 }
-      .store(in: &subscriptions)
-
-    source.$modelParameters
-      .map { $0.$repeatPenalty }
-      .switchToLatest()
-      .assign(to: &$repeatPenalty)
-    $repeatPenalty
-      .removeDuplicates()
-      .dropFirst()
-      .sink { [weak source] in source?.modelParameters.repeatPenalty = $0 }
-      .store(in: &subscriptions)
+//    source.$modelParameters
+//      .map { $0.$seedValue }
+//      .switchToLatest()
+//      .map { $0 == nil }
+//      .assign(to: &$isSeedRandom)
+//    $isSeedRandom
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] newIsSeedRandom in
+//        if newIsSeedRandom {
+//          source?.modelParameters.seedValue = nil
+//        }
+//      }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$seedValue }
+//      .switchToLatest()
+//      .assign(to: &$seedValue)
+//    $seedValue
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.seedValue = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$contextSize }
+//      .switchToLatest()
+//      .map { Int($0) }
+//      .assign(to: &$contextSize)
+//    $contextSize.map { UInt($0) }
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.contextSize = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$numberOfTokens }
+//      .switchToLatest()
+//      .map { Int($0) }
+//      .assign(to: &$numberOfTokens)
+//    $numberOfTokens
+//      .map { UInt($0) }
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.numberOfTokens = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$topP }
+//      .switchToLatest()
+//      .assign(to: &$topP)
+//    $topP
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.topP = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$topK }
+//      .switchToLatest()
+//      .map { Int($0) }
+//      .assign(to: &$topK)
+//    $topK
+//      .map { UInt($0) }
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.topK = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$temperature }
+//      .switchToLatest()
+//      .assign(to: &$temperature)
+//    $temperature
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.temperature = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$batchSize }
+//      .switchToLatest()
+//      .map { Int($0) }
+//      .assign(to: &$batchSize)
+//    $batchSize
+//      .map { UInt($0) }
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.batchSize = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$lastNTokensToPenalize }
+//      .switchToLatest()
+//      .map { Int($0) }
+//      .assign(to: &$lastNTokensToPenalize)
+//    $lastNTokensToPenalize
+//      .map { UInt($0) }
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.lastNTokensToPenalize = $0 }
+//      .store(in: &subscriptions)
+//
+//    source.$modelParameters
+//      .map { $0.$repeatPenalty }
+//      .switchToLatest()
+//      .assign(to: &$repeatPenalty)
+//    $repeatPenalty
+//      .removeDuplicates()
+//      .dropFirst()
+//      .sink { [weak source] in source?.modelParameters.repeatPenalty = $0 }
+//      .store(in: &subscriptions)
   }
 }

@@ -136,7 +136,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
           self?.sourceSettings.send(nil)
         case .valid(data: let validatedData):
           self?.pathSelectorViewModel.errorMessage = nil
-          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData, modelSize: modelSize))
+          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData))
         }
       }.store(in: &subscriptions)
   }

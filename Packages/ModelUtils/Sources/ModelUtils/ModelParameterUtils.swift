@@ -9,41 +9,42 @@ import Foundation
 import CameLLM
 import CameLLMLlama
 import DataModel
+import ModelCompatibility
 
 private let minimumContextSize = UInt(512)
 
-public func defaultModelParameters(for chatSourceType: ChatSourceType) -> ModelParameters {
-  switch chatSourceType {
-  case .llama:
-    return ModelParameters.from(
+public func defaultModelParameters() -> LlamaFamilyModelParameters {
+//  switch chatSourceType {
+//  case .llama:
+    return LlamaFamilyModelParameters.from(
       sessionConfig: LlamaSessionConfig.configurableDefaults
         .withHyperparameters { hyperparameters in
           hyperparameters.withContextSize(hyperparameters.contextSize.map { max($0, minimumContextSize) })
         }
         .build()
     )
-  case .alpaca:
-    return ModelParameters.from(
-      sessionConfig: AlpacaSessionConfig.configurableDefaults
-        .withHyperparameters { hyperparameters in
-          hyperparameters.withContextSize(hyperparameters.contextSize.map { max($0, minimumContextSize) })
-        }
-        .build()
-    )
-  case .gpt4All:
-    return ModelParameters.from(
-      sessionConfig: GPT4AllSessionConfig.configurableDefaults
-        .withHyperparameters { hyperparameters in
-          hyperparameters.withContextSize(hyperparameters.contextSize.map { max($0, minimumContextSize) })
-        }
-        .build()
-    )
-  }
+//  case .alpaca:
+//    return LlamaFamilyModelParameters.from(
+//      sessionConfig: AlpacaSessionConfig.configurableDefaults
+//        .withHyperparameters { hyperparameters in
+//          hyperparameters.withContextSize(hyperparameters.contextSize.map { max($0, minimumContextSize) })
+//        }
+//        .build()
+//    )
+//  case .gpt4All:
+//    return LlamaFamilyModelParameters.from(
+//      sessionConfig: GPT4AllSessionConfig.configurableDefaults
+//        .withHyperparameters { hyperparameters in
+//          hyperparameters.withContextSize(hyperparameters.contextSize.map { max($0, minimumContextSize) })
+//        }
+//        .build()
+//    )
+//  }
 }
 
-fileprivate extension ModelParameters {
-  static func from(sessionConfig: SessionConfig) -> ModelParameters {
-    return ModelParameters(
+fileprivate extension LlamaFamilyModelParameters {
+  static func from(sessionConfig: SessionConfig) -> LlamaFamilyModelParameters {
+    return LlamaFamilyModelParameters(
       seedValue: sessionConfig.seed,
       contextSize: sessionConfig.hyperparameters.contextSize,
       numberOfTokens: sessionConfig.numTokens,

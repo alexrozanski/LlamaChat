@@ -15,7 +15,8 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/CameLLM/CameLLM.git", branch: "main"),
     .package(url: "https://github.com/CameLLM/CameLLM-Llama.git", branch: "main"),
-    .package(path: "../DataModel")
+    .package(path: "../DataModel"),
+    .package(path: "../ModelCompatibility")
   ],
   targets: [
     .target(
@@ -23,7 +24,8 @@ let package = Package(
       dependencies: [
         .product(name: "CameLLM", package: "CameLLM"),
         .product(name: "CameLLMLlama", package: "CameLLM-Llama"),
-        "DataModel"
+        "DataModel",
+        "ModelCompatibility"
       ]
     )
   ]

@@ -18,7 +18,7 @@ struct ConfiguredSource {
 }
 
 enum ConfiguredSourceSettings {
-  case ggmlModel(modelURL: URL, modelSize: ModelSize)
-  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>, modelSize: ModelSize)
-  case downloadedFile(fileURL: URL, modelSize: ModelSize)
+  case ggmlModel(modelURL: URL)
+  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>)
+  case downloadedFile(fileURL: URL)
 }

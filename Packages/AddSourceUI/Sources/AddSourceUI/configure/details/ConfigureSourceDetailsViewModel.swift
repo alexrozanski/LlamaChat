@@ -7,7 +7,7 @@
 
 import Foundation
 import AppModel
-import ModelMetadata
+import DataModel
 
 class ConfigureSourceDetailsViewModel: ObservableObject {
   @Published var name: String

@@ -72,6 +72,7 @@
 		82F077592A05B2AD00772633 /* AddSourceUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077582A05B2AD00772633 /* AddSourceUI */; };
 		82F0775F2A05B70B00772633 /* SharedUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F0775E2A05B70B00772633 /* SharedUI */; };
 		82F077642A09011800772633 /* ModelMetadata in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077632A09011800772633 /* ModelMetadata */; };
+		82F077692A09081700772633 /* ModelCompatibility in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077682A09081700772633 /* ModelCompatibility */; };
 		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
@@ -141,6 +142,7 @@
 		82F0775A2A05B4EE00772633 /* Downloads */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Downloads; sourceTree = "<group>"; };
 		82F0775B2A05B63300772633 /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SharedUI; sourceTree = "<group>"; };
 		82F077602A09007E00772633 /* ModelMetadata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ModelMetadata; sourceTree = "<group>"; };
+		82F077652A0905A200772633 /* ModelCompatibility */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ModelCompatibility; sourceTree = "<group>"; };
 		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,6 +160,7 @@
 				82615BDC2A025DD800B0D4FB /* ModelDirectory in Frameworks */,
 				82615BDE2A025DD800B0D4FB /* ModelUtils in Frameworks */,
 				82615BD22A02552600B0D4FB /* AppModel in Frameworks */,
+				82F077692A09081700772633 /* ModelCompatibility in Frameworks */,
 				82615BD42A02552600B0D4FB /* FileManager in Frameworks */,
 				8227DA9329D8F841000E554D /* SQLite in Frameworks */,
 				82F077592A05B2AD00772633 /* AddSourceUI in Frameworks */,
@@ -265,6 +268,7 @@
 				82615BC52A02541F00B0D4FB /* DataModel */,
 				82F0775A2A05B4EE00772633 /* Downloads */,
 				82615BC62A0254EF00B0D4FB /* FileManager */,
+				82F077652A0905A200772633 /* ModelCompatibility */,
 				82615BD52A02556F00B0D4FB /* ModelDirectory */,
 				82F077602A09007E00772633 /* ModelMetadata */,
 				82615BD62A0256F200B0D4FB /* ModelUtils */,
@@ -498,6 +502,7 @@
 				82615BCC2A02551F00B0D4FB /* PBXTargetDependency */,
 				82615BCE2A02551F00B0D4FB /* PBXTargetDependency */,
 				82615BD02A02551F00B0D4FB /* PBXTargetDependency */,
+				82F077672A09080B00772633 /* PBXTargetDependency */,
 				82615BD82A025DC800B0D4FB /* PBXTargetDependency */,
 				82F077622A09010900772633 /* PBXTargetDependency */,
 				82615BDA2A025DCB00B0D4FB /* PBXTargetDependency */,
@@ -518,6 +523,7 @@
 				82F077582A05B2AD00772633 /* AddSourceUI */,
 				82F0775E2A05B70B00772633 /* SharedUI */,
 				82F077632A09011800772633 /* ModelMetadata */,
+				82F077682A09081700772633 /* ModelCompatibility */,
 			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* LlamaChat.app */;
@@ -668,6 +674,10 @@
 		82F077622A09010900772633 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 82F077612A09010900772633 /* ModelMetadata */;
+		};
+		82F077672A09080B00772633 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 82F077662A09080B00772633 /* ModelCompatibility */;
 		};
 /* End PBXTargetDependency section */
 
@@ -992,6 +1002,14 @@
 		82F077632A09011800772633 /* ModelMetadata */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ModelMetadata;
+		};
+		82F077662A09080B00772633 /* ModelCompatibility */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModelCompatibility;
+		};
+		82F077682A09081700772633 /* ModelCompatibility */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModelCompatibility;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

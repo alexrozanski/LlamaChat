@@ -10,7 +10,9 @@ import Combine
 import SwiftUI
 import DataModel
 import FileManager
+import ModelCompatibility
 import ModelDirectory
+import ModelMetadata
 import ModelUtils
 
 fileprivate class SerializedChatSourcesPayload: SerializedPayload<[ChatSource]> {
@@ -25,7 +27,7 @@ public class ChatSourcesModel: ObservableObject {
     }
   }
 
-  private lazy var persistedURL: URL? = {
+  private lazy var persistedSourcesURL: URL? = {
     return applicationSupportDirectoryURL()?.appending(path: "sources.json")
   }()
 
@@ -69,9 +71,11 @@ public class ChatSourcesModel: ObservableObject {
     return sources.first(where: { $0.id == id })
   }
 
+  // MARK: - Persistence
+
   private func loadSources() {
     guard
-      let persistedURL,
+      let persistedURL = persistedSourcesURL,
       FileManager.default.fileExists(atPath: persistedURL.path)
     else { return }
 
@@ -79,7 +83,8 @@ public class ChatSourcesModel: ObservableObject {
       let jsonData = try Data(contentsOf: persistedURL)
       let decoder = JSONDecoder()
       decoder.userInfo = [
-        .defaultModelParametersProvider: { defaultModelParameters(for: $0) }
+        .modelParametersCoder: LlamaFamilyModelParametersCoder(),
+        .chatSourceUpgrader: self
       ]
       let payload = try decoder.decode(SerializedChatSourcesPayload.self, from: jsonData)
       sources = payload.value
@@ -89,14 +94,48 @@ public class ChatSourcesModel: ObservableObject {
   }
 
   private func persistSources() {
-    guard let persistedURL else { return }
+    guard let persistedURL = persistedSourcesURL else { return }
 
-    let jsonEncoder = JSONEncoder()
+    let encoder = JSONEncoder()
+    encoder.userInfo = [
+      .modelParametersCoder: LlamaFamilyModelParametersCoder()
+    ]
     do {
-      let json = try jsonEncoder.encode(SerializedChatSourcesPayload(value: sources))
-      try json.write(to: persistedURL)
+      let json = try encoder.encode(SerializedChatSourcesPayload(value: sources))
+      print(try String(data: json, encoding: .utf8))
+//      try json.write(to: persistedURL)
     } catch {
       print("Error persisting sources:", error)
+    }
+  }
+}
+
+private let legacyLlamaChatSourceType = "llama"
+private let legacyAlpacaChatSourceType = "alpaca"
+private let legacyGpt4AllChatSourceType = "gpt4all"
+
+extension ChatSourcesModel: ChatSourceUpgrader {
+  public func upgradeChatSourceToModel(chatSourceType: String, modelSize: String) throws -> (modelId: String, modelVariantId: String?) {
+    switch chatSourceType {
+    case legacyLlamaChatSourceType:
+      switch modelSize {
+      case "size7B":
+        return (BuiltinMetadataModels.llama.id, BuiltinMetadataModels.llama.variant7BId)
+      case "size13B":
+        return (BuiltinMetadataModels.llama.id, BuiltinMetadataModels.llama.variant13BId)
+      case "size30B":
+        return (BuiltinMetadataModels.llama.id, BuiltinMetadataModels.llama.variant30BId)
+      case "size65B":
+        return (BuiltinMetadataModels.llama.id, BuiltinMetadataModels.llama.variant65BId)
+      default:
+        return (BuiltinMetadataModels.llama.id, nil)
+      }
+    case legacyAlpacaChatSourceType:
+      return (BuiltinMetadataModels.alpaca.id, BuiltinMetadataModels.alpaca.variantId)
+    case legacyGpt4AllChatSourceType:
+      return (BuiltinMetadataModels.gpt4all.id, BuiltinMetadataModels.gpt4all.variantId)
+    default:
+      throw ChatSourceUpgradeError.invalidChatSourceType
     }
   }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SharedUI
-import ModelMetadata
+import DataModel
 
 fileprivate struct Colors {
   static let border = Color(light: Color(hex: "#DEDEDE"), dark: Color(hex: "#FFFFFF", opacity: 0.2))

@@ -10,6 +10,7 @@ import Combine
 import CameLLM
 import CameLLMLlama
 import DataModel
+import ModelCompatibility
 import SQLite
 
 public class ChatModel: ObservableObject {
@@ -148,41 +149,41 @@ public class ChatModel: ObservableObject {
   private func makeAndStoreNewSession() -> any Session<LlamaSessionState, LlamaPredictionState> {
     var newSession: any Session<LlamaSessionState, LlamaPredictionState>
     let numThreads = UInt(AppSettingsModel.shared.numThreads)
-    switch source.type {
-    case .llama:
+//    switch source.type {
+//    case .llama:
       newSession = SessionManager.llamaFamily.makeLlamaSession(
         with: source.modelURL,
         config: LlamaSessionConfig.configurableDefaults
-          .withModelParameters(
-            source.modelParameters,
-            numThreads: numThreads,
-            keepModelInMemory: source.useMlock
-          )
+//          .withModelParameters(
+//            source.modelParameters,
+//            numThreads: numThreads,
+//            keepModelInMemory: source.useMlock
+//          )
           .build()
       )
-    case .alpaca:
-      newSession = SessionManager.llamaFamily.makeAlpacaSession(
-        with: source.modelURL,
-        config: AlpacaSessionConfig.configurableDefaults
-          .withModelParameters(
-            source.modelParameters,
-            numThreads: numThreads,
-            keepModelInMemory: source.useMlock
-          )
-          .build()
-      )
-    case .gpt4All:
-      newSession = SessionManager.llamaFamily.makeGPT4AllSession(
-        with: source.modelURL,
-        config: GPT4AllSessionConfig.configurableDefaults
-          .withModelParameters(
-            source.modelParameters,
-            numThreads: numThreads,
-            keepModelInMemory: source.useMlock
-          )
-          .build()
-      )
-    }
+//    case .alpaca:
+//      newSession = SessionManager.llamaFamily.makeAlpacaSession(
+//        with: source.modelURL,
+//        config: AlpacaSessionConfig.configurableDefaults
+////          .withModelParameters(
+////            source.modelParameters,
+////            numThreads: numThreads,
+////            keepModelInMemory: source.useMlock
+////          )
+//          .build()
+//      )
+//    case .gpt4All:
+//      newSession = SessionManager.llamaFamily.makeGPT4AllSession(
+//        with: source.modelURL,
+//        config: GPT4AllSessionConfig.configurableDefaults
+////          .withModelParameters(
+////            source.modelParameters,
+////            numThreads: numThreads,
+////            keepModelInMemory: source.useMlock
+////          )
+//          .build()
+//      )
+//    }
 
     
     newSession.sessionContextProviding.provider?.updatedContextHandler = { [weak self] newSessionContext in
@@ -288,7 +289,7 @@ private func errorText(from error: Error) -> String {
 
 fileprivate extension SessionConfigBuilder {
   func withModelParameters(
-    _ modelParameters: ModelParameters,
+    _ modelParameters: LlamaFamilyModelParameters,
     numThreads: UInt,
     keepModelInMemory: Bool
   ) -> SessionConfigBuilder {

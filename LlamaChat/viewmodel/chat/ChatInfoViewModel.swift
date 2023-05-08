@@ -47,22 +47,24 @@ class ChatInfoViewModel: ObservableObject {
   }
   
   var modelSize: String {
-    switch chatModel.source.modelSize {
-    case .unknown:
-      return "Unknown"
-    case .size7B:
-      return "7B"
-    case .size13B:
-      return "13B"
-    case .size30B:
-      return "30B"
-    case .size65B:
-      return "65B"
-    }
+    return ""
+//    switch chatModel.source.modelSize {
+//    case .unknown:
+//      return "Unknown"
+//    case .size7B:
+//      return "7B"
+//    case .size13B:
+//      return "13B"
+//    case .size30B:
+//      return "30B"
+//    case .size65B:
+//      return "65B"
+//    }
   }
 
   var modelType: String {
-    return "\(chatModel.source.type.readableName) model"
+    return ""
+//    return "\(chatModel.source.type.readableName) model"
   }
 
   @Published private(set) var context: ModelStat<String> = .none
@@ -92,42 +94,42 @@ class ChatInfoViewModel: ObservableObject {
       .map { !$0.isEmpty }
       .assign(to: &$canClearMessages)
 
-    chatModel.source.$modelParameters
-      .map { $0.$seedValue }
-      .switchToLatest()
-      .assign(to: &$seedValue)
-    chatModel.source.$modelParameters
-      .map { $0.$contextSize }
-      .switchToLatest()
-      .assign(to: &$contextSize)
-    chatModel.source.$modelParameters
-      .map { $0.$numberOfTokens }
-      .switchToLatest()
-      .assign(to: &$numberOfTokens)
-    chatModel.source.$modelParameters
-      .map { $0.$topP }
-      .switchToLatest()
-      .assign(to: &$topP)
-    chatModel.source.$modelParameters
-      .map { $0.$topK }
-      .switchToLatest()
-      .assign(to: &$topK)
-    chatModel.source.$modelParameters
-      .map { $0.$temperature }
-      .switchToLatest()
-      .assign(to: &$temperature)
-    chatModel.source.$modelParameters
-      .map { $0.$batchSize }
-      .switchToLatest()
-      .assign(to: &$batchSize)
-    chatModel.source.$modelParameters
-      .map { $0.$lastNTokensToPenalize }
-      .switchToLatest()
-      .assign(to: &$lastNTokensToPenalize)
-    chatModel.source.$modelParameters
-      .map { $0.$repeatPenalty }
-      .switchToLatest()
-      .assign(to: &$repeatPenalty)
+//    chatModel.source.$modelParameters
+//      .map { $0.$seedValue }
+//      .switchToLatest()
+//      .assign(to: &$seedValue)
+//    chatModel.source.$modelParameters
+//      .map { $0.$contextSize }
+//      .switchToLatest()
+//      .assign(to: &$contextSize)
+//    chatModel.source.$modelParameters
+//      .map { $0.$numberOfTokens }
+//      .switchToLatest()
+//      .assign(to: &$numberOfTokens)
+//    chatModel.source.$modelParameters
+//      .map { $0.$topP }
+//      .switchToLatest()
+//      .assign(to: &$topP)
+//    chatModel.source.$modelParameters
+//      .map { $0.$topK }
+//      .switchToLatest()
+//      .assign(to: &$topK)
+//    chatModel.source.$modelParameters
+//      .map { $0.$temperature }
+//      .switchToLatest()
+//      .assign(to: &$temperature)
+//    chatModel.source.$modelParameters
+//      .map { $0.$batchSize }
+//      .switchToLatest()
+//      .assign(to: &$batchSize)
+//    chatModel.source.$modelParameters
+//      .map { $0.$lastNTokensToPenalize }
+//      .switchToLatest()
+//      .assign(to: &$lastNTokensToPenalize)
+//    chatModel.source.$modelParameters
+//      .map { $0.$repeatPenalty }
+//      .switchToLatest()
+//      .assign(to: &$repeatPenalty)
   }
 
   func clearMessages() {

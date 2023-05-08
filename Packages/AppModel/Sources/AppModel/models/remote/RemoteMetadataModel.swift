@@ -27,7 +27,7 @@ public class RemoteMetadataModel: ObservableObject {
   public init(apiBaseURL: URL) {
     self.apiBaseURL = apiBaseURL
 
-    allModels = remoteFallbackModels()
+    allModels = BuiltinMetadataModels.all
 
     store.$allModels
       .assign(to: &$allModels)

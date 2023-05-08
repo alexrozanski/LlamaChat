@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataModel
 import Downloads
 import ZIPFoundation
 

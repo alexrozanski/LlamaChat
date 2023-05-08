@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import ModelMetadata
+import DataModel
 
 class SourceViewModel {
   enum SelectionType {
