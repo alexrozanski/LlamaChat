@@ -96,7 +96,7 @@ class ConfigureRemoteModelSourceViewModel: ObservableObject {
       case .none, .checkingReachability, .cannotDownload:
         return nil
       case .readyToDownload:
-        return PrimaryActionsButton(title: "Start") { self?.startDownload() }
+        return PrimaryActionsButton(title: "Download") { self?.startDownload() }
       case .downloadingModel, .failedToDownload:
         return PrimaryActionsButton(title: "Continue", disabled: true, action: {})
       case .downloadedModel(url: let url):
