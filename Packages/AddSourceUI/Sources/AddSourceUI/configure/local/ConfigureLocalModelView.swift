@@ -7,15 +7,13 @@
 
 import SwiftUI
 
-struct ConfigureLocalModelSourceView: View {
-  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
-
-  @State var selectedModelType: String = ""
+struct ConfigureLocalModelView: View {
+  @ObservedObject var viewModel: ConfigureLocalModelViewModel
 
   var body: some View {
     Form {
       ConfigureSourceDetailsView(viewModel: viewModel.detailsViewModel)
-      SelectFormatView(viewModel: viewModel)
+      SelectModelFormatView(viewModel: viewModel)
 
       if let settingsViewModel = viewModel.settingsViewModel {
         Section {

@@ -1,5 +1,5 @@
 //
-//  ConfigureDownloadableModelSourceView.swift
+//  ConfigureDownloadableModelView.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 14/04/2023.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ConfigureDownloadableModelSourceView: View {
-  @ObservedObject var viewModel: ConfigureDownloadableModelSourceViewModel
+struct ConfigureDownloadableModelView: View {
+  @ObservedObject var viewModel: ConfigureDownloadableModelViewModel
 
   @ViewBuilder var reachabilityProgress: some View {
     if viewModel.state.isCheckingReachability {

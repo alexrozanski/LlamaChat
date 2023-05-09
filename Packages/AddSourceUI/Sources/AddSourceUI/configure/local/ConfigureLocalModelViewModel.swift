@@ -1,5 +1,5 @@
 //
-//  ConfigureLocalModelSourceViewModel.swift
+//  ConfigureLocalModelViewModel.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 01/04/2023.
@@ -11,7 +11,7 @@ import SwiftUI
 import DataModel
 import ModelMetadata
 
-class ConfigureLocalModelSourceViewModel: ObservableObject {
+class ConfigureLocalModelViewModel: ObservableObject {
   typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
 
   // MARK: - Info
@@ -26,39 +26,12 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
 
   // MARK: - Model Settings
 
-  var settingsViewModels = [ConfigureLocalModelSourceType: ConfigureLocalModelSettingsViewModel]()
 
-  @Published private(set) var modelSourceType: ConfigureLocalModelSourceType? = nil {
-    didSet {
-      guard let modelSourceType else {
-        settingsViewModel = nil
-        return
-      }
-
-      if let existingModel = settingsViewModels[modelSourceType] {
-        settingsViewModel = existingModel
-      } else {
-        switch modelSourceType {
-        case .pyTorch:
-          let viewModel = ConfigureLocalPyTorchModelSettingsViewModel()
-          viewModel.determineConversionStateIfNeeded()
-          settingsViewModels[.pyTorch] = viewModel
-          settingsViewModel = viewModel
-        case .ggml:
-          let viewModel = ConfigureLocalGgmlModelSettingsViewModel(
-            model: model,
-            exampleModelPath: exampleGgmlModelPath
-          )
-          settingsViewModels[.ggml] = viewModel
-          settingsViewModel = viewModel
-        }
-      }
-    }
-  }
-
+  @Published var modelSourceType: ConfigureLocalModelSourceType?
   @Published private(set) var settingsViewModel: ConfigureLocalModelSettingsViewModel?
 
   let detailsViewModel: ConfigureSourceDetailsViewModel
+  private var settingsViewModels = [ConfigureLocalModelSourceType: ConfigureLocalModelSettingsViewModel]()
 
   // MARK: - Validation
 
@@ -86,6 +59,12 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
       .map { $0.sourceSettings }
       .switchToLatest()
 
+    $modelSourceType
+      .map { [weak self] sourceType in
+        return sourceType.flatMap { self?.makeOrGetSettingsViewModel(for: $0) }
+      }
+      .assign(to: &$settingsViewModel)
+
     let canContinue = detailsViewModel.$name
       .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
       .combineLatest(configuredSource)
@@ -108,10 +87,6 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
           }
         }
       }.assign(to: &primaryActionsViewModel.$continueButton)
-  }  
-
-  func select(modelSourceType: ConfigureLocalModelSourceType?) {
-    self.modelSourceType = modelSourceType
   }
 
   func next() {
@@ -126,13 +101,25 @@ class ConfigureLocalModelSourceViewModel: ObservableObject {
       )
     )
   }
-}
 
-extension ConfigureLocalModelSourceType {
-  var label: String {
-    switch self {
-    case .pyTorch: return "PyTorch Checkpoint (.pth)"
-    case .ggml: return "GGML (.ggml)"
+  private func makeOrGetSettingsViewModel(for modelSourceType: ConfigureLocalModelSourceType) -> ConfigureLocalModelSettingsViewModel {
+    if let existingModel = settingsViewModels[modelSourceType] {
+      return existingModel
+    }
+
+    switch modelSourceType {
+    case .pyTorch:
+      let viewModel = ConfigureLocalPyTorchModelSettingsViewModel()
+      viewModel.determineConversionStateIfNeeded()
+      settingsViewModels[.pyTorch] = viewModel
+      return viewModel
+    case .ggml:
+      let viewModel = ConfigureLocalGgmlModelSettingsViewModel(
+        model: model,
+        exampleModelPath: exampleGgmlModelPath
+      )
+      settingsViewModels[.ggml] = viewModel
+      return viewModel
     }
   }
 }

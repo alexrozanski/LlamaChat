@@ -47,14 +47,14 @@ public struct AddSourceContentView: View {
         switch step {
         case .configureLocal(let configureSourceViewModel):
           StepView(viewModel: viewModel, content: {
-            ConfigureLocalModelSourceView(viewModel: configureSourceViewModel)
+            ConfigureLocalModelView(viewModel: configureSourceViewModel)
               .navigationTitle("Set up \(configureSourceViewModel.modelName) model")
           }, primaryActions: {
             ConfigureSourcePrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
           })
         case .configureRemote(let configureSourceViewModel):
           StepView(viewModel: viewModel, content: {
-            ConfigureDownloadableModelSourceView(viewModel: configureSourceViewModel)
+            ConfigureDownloadableModelView(viewModel: configureSourceViewModel)
               .navigationTitle("Set up \(configureSourceViewModel.modelName) model")
           }, primaryActions: {
             ConfigureSourcePrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)

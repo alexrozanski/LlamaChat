@@ -1,5 +1,5 @@
 //
-//  ConfigureDownloadableModelSourceViewModel.swift
+//  ConfigureDownloadableModelViewModel.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 14/04/2023.
@@ -12,7 +12,7 @@ import DataModel
 import Downloads
 import ModelMetadata
 
-class ConfigureDownloadableModelSourceViewModel: ObservableObject {
+class ConfigureDownloadableModelViewModel: ObservableObject {
   typealias ConfigureSourceNextHandler = (ConfiguredSource) -> Void
 
   enum State {
@@ -166,7 +166,7 @@ class ConfigureDownloadableModelSourceViewModel: ObservableObject {
   }
 }
 
-extension ConfigureDownloadableModelSourceViewModel.State {
+extension ConfigureDownloadableModelViewModel.State {
   var canStart: Bool {
     switch self {
     case .none:

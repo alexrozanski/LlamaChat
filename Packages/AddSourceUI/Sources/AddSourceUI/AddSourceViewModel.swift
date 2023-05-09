@@ -28,7 +28,7 @@ public class AddSourceViewModel: ObservableObject {
       switch model.source {
       case .local:
         step = .configureLocal(
-          ConfigureLocalModelSourceViewModel(
+          ConfigureLocalModelViewModel(
             defaultName: model.name,
             model: model,
             exampleGgmlModelPath: "ggml-model-q4_0.bin",
@@ -39,7 +39,7 @@ public class AddSourceViewModel: ObservableObject {
         guard let variant, let downloadURL = variant.downloadUrl else { return }
 
         step = .configureRemote(
-          ConfigureDownloadableModelSourceViewModel(
+          ConfigureDownloadableModelViewModel(
             defaultName: model.name,
             model: model,
             modelVariant: variant,

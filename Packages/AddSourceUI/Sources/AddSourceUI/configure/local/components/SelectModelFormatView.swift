@@ -1,5 +1,5 @@
 //
-//  SelectFormatView.swift
+//  SelectModelFormatView.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 06/04/2023.
@@ -7,16 +7,12 @@
 
 import SwiftUI
 
-struct SelectFormatView: View {
-  @ObservedObject var viewModel: ConfigureLocalModelSourceViewModel
+struct SelectModelFormatView: View {
+  @ObservedObject var viewModel: ConfigureLocalModelViewModel
 
   var body: some View {
-    let sourceTypeBinding = Binding<ConfigureLocalModelSourceType?>(
-      get: { viewModel.modelSourceType },
-      set: { viewModel.select(modelSourceType: $0) }
-    )
     Section {
-      Picker("Format", selection: sourceTypeBinding) {
+      Picker("Format", selection: $viewModel.modelSourceType) {
         Text("Select Format")
           .foregroundColor(Color(nsColor: NSColor.disabledControlTextColor))
           .tag(ConfigureLocalModelSourceType?(nil))
@@ -35,6 +31,15 @@ struct SelectFormatView: View {
         }
       }
       .padding(.bottom, 12)
+    }
+  }
+}
+
+fileprivate extension ConfigureLocalModelSourceType {
+  var label: String {
+    switch self {
+    case .pyTorch: return "PyTorch Checkpoint (.pth)"
+    case .ggml: return "GGML (.ggml)"
     }
   }
 }
