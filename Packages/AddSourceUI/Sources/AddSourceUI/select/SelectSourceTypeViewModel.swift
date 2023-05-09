@@ -21,7 +21,7 @@ class SelectSourceTypeViewModel: ObservableObject {
     case sources
   }
 
-  @Published private(set) var sources: [SourceViewModel] = []
+  @Published private(set) var cards: [CardViewModel<SourceViewModel>] = []
   @Published private(set) var matches: [SourceFilterMatch] = []
 
   @Published private(set) var content: Content = .none
@@ -53,20 +53,29 @@ class SelectSourceTypeViewModel: ObservableObject {
 
     dependencies.remoteMetadataModel.$allModels
       .combineLatest(filterViewModel.$location, filterViewModel.$language, filterViewModel.$searchFieldText)
-      .map { [weak self] models, location, language, searchFieldText in
+      .compactMap { [weak self] models, location, language, searchFieldText -> (sources: [SourceViewModel], matches: [SourceFilterMatch])? in
+        guard let self else { return nil }
+
         return filterSources(
           models: models,
           location: location,
           language: language,
           searchFieldText: searchFieldText,
-          selectionHandler: { model, variant in
-            self?.selectModel(model, variant: variant)
-          }
+          viewModel: self
         )
       }
       .receive(on: DispatchQueue.main)
       .sink { [weak self] (sources, matches) in
-        self?.sources = sources
+        self?.cards = sources.map { source in
+          CardViewModel(
+            contentViewModel: source,
+            isSelectable: source.isModelSelectable,
+            hasBody: source.hasSelectableVariants,
+            selectionHandler: { [weak self] in
+              self?.selectModel(source.model, variant: nil)
+            }
+          )
+        }
         self?.matches = matches
       }.store(in: &subscriptions)
 
@@ -79,13 +88,13 @@ class SelectSourceTypeViewModel: ObservableObject {
           return true
         }
       }
-      .combineLatest($sources, filterViewModel.$hasFilters, filterViewModel.$searchFieldText)
-      .map { isLoading, sources, hasFilters, searchFieldText in
-        if isLoading && sources.isEmpty {
+      .combineLatest($cards, filterViewModel.$hasFilters, filterViewModel.$searchFieldText)
+      .map { isLoading, cards, hasFilters, searchFieldText in
+        if isLoading && cards.isEmpty {
           return .loading
         }
         
-        if (hasFilters || !searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && sources.isEmpty {
+        if (hasFilters || !searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && cards.isEmpty {
           return .emptyFilter
         }
 
@@ -104,7 +113,7 @@ private func filterSources(
   location: SelectSourceTypeFilterViewModel.Location?,
   language: Language?,
   searchFieldText: String,
-  selectionHandler: @escaping (Model, ModelVariant?) -> Void
+  viewModel: SelectSourceTypeViewModel
 ) -> (sources: [SourceViewModel], matches: [SourceFilterMatch]) {
   let availableModels = models.filter { !$0.legacy }
   let trimmedSearchText = searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -113,11 +122,9 @@ private func filterSources(
     return (
       availableModels.map { model in
         SourceViewModel(model: model, matches: nil, selectionHandler: { variant in
-          selectionHandler(model, variant)
+          viewModel.selectModel(model, variant: variant)
         })
-      },
-      []
-    )
+      }, [])
   }
 
   return availableModels
@@ -153,7 +160,7 @@ private func filterSources(
             model: model,
             matches: matches,
             selectionHandler: { variant in
-              selectionHandler(model, variant)
+              viewModel.selectModel(model, variant: variant)
             }
           )
         ],

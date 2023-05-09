@@ -47,19 +47,26 @@ public struct AddSourceContentView: View {
       .navigationTitle("Add Chat Source")
       .navigationDestination(for: AddSourceStep.self) { step in
         switch step {
+        case .configureModel(let configureModelViewModel):
+          StepView(viewModel: viewModel, content: {
+            ConfigureModelView(viewModel: configureModelViewModel)
+              .navigationTitle("Set up \(configureModelViewModel.modelName) model")
+          }, primaryActions: {
+            PrimaryActionsView(viewModel: configureModelViewModel.primaryActionsViewModel)
+          })
         case .configureLocal(let configureSourceViewModel):
           StepView(viewModel: viewModel, content: {
             ConfigureLocalModelView(viewModel: configureSourceViewModel)
               .navigationTitle("Set up \(configureSourceViewModel.modelName) model")
           }, primaryActions: {
-            ConfigureSourcePrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
+            PrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
           })
         case .configureRemote(let configureSourceViewModel):
           StepView(viewModel: viewModel, content: {
             ConfigureDownloadableModelView(viewModel: configureSourceViewModel)
               .navigationTitle("Set up \(configureSourceViewModel.modelName) model")
           }, primaryActions: {
-            ConfigureSourcePrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
+            PrimaryActionsView(viewModel: configureSourceViewModel.primaryActionsViewModel)
           })
         case .convertPyTorchSource(let convertSourceViewModel):
           StepView(viewModel: viewModel, content: {

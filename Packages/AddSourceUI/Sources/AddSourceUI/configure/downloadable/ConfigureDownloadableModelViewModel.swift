@@ -51,7 +51,7 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
   let downloadURL: URL
 
   let detailsViewModel: ConfigureSourceDetailsViewModel
-  let primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
+  let primaryActionsViewModel = PrimaryActionsViewModel()
 
   private let nextHandler: ConfigureSourceNextHandler
 

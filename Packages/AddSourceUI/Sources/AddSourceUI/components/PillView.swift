@@ -1,5 +1,5 @@
 //
-//  SelectTypePill.swift
+//  PillView.swift
 //  
 //
 //  Created by Alex Rozanski on 07/05/2023.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SharedUI
 
-struct SelectTypePillView: View {
+struct PillView: View {
   enum Style {
     case outlined(borderColor: Color? = nil, textColor: Color? = nil, iconColor: Color? = nil)
     case filled(backgroundColor: Color? = nil, textColor: Color? = nil, iconColor: Color? = nil)

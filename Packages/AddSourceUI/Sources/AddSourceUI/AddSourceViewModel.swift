@@ -66,36 +66,40 @@ public class AddSourceViewModel: ObservableObject {
   }
 
   private func handleSelectedSource(model: Model, variant: ModelVariant?) {
-    let step: AddSourceStep
-    switch model.source {
-    case .local:
-      step = .configureLocal(
-        ConfigureLocalModelViewModel(
-          defaultName: model.name,
-          model: model,
-          exampleGgmlModelPath: "ggml-model-q4_0.bin",
-          nextHandler: { [weak self] configuredSource in
-            self?.handleConfiguredSource(source: configuredSource)
-          }
-        )
-      )
-    case .remote:
-      guard let variant, let downloadURL = variant.downloadUrl else { return }
+//    let step: AddSourceStep
+//    switch model.source {
+//    case .local:
+//      step = .configureLocal(
+//        ConfigureLocalModelViewModel(
+//          defaultName: model.name,
+//          model: model,
+//          exampleGgmlModelPath: "ggml-model-q4_0.bin",
+//          nextHandler: { [weak self] configuredSource in
+//            self?.handleConfiguredSource(source: configuredSource)
+//          }
+//        )
+//      )
+//    case .remote:
+//      guard let variant, let downloadURL = variant.downloadUrl else { return }
+//
+//      step = .configureRemote(
+//        ConfigureDownloadableModelViewModel(
+//          defaultName: model.name,
+//          model: model,
+//          modelVariant: variant,
+//          downloadURL: downloadURL,
+//          nextHandler: { [weak self] configuredSource in
+//            self?.handleConfiguredSource(source: configuredSource)
+//          }
+//        )
+//      )
+//    }
 
-      step = .configureRemote(
-        ConfigureDownloadableModelViewModel(
-          defaultName: model.name,
-          model: model,
-          modelVariant: variant,
-          downloadURL: downloadURL,
-          nextHandler: { [weak self] configuredSource in
-            self?.handleConfiguredSource(source: configuredSource)
-          }
-        )
+    navigationPath.append(
+      .configureModel(
+        ConfigureModelViewModel(model: model)
       )
-    }
-
-    navigationPath.append(step)
+    )
   }
 
   private func handleConfiguredSource(source: ConfiguredSource) {

@@ -26,28 +26,30 @@ class SourceViewModel {
   }
 
   var publisher: String { return model.publisher.name }
-  let variants: [VariantViewModel]
 
-  private let model: Model
+  let model: Model
   private let selectionHandler: (ModelVariant?) -> Void
 
-  init(
-    model: Model,
-    matches: [SourceFilterMatch]?,
-    selectionHandler: @escaping (ModelVariant?) -> Void
-  ) {
+  @Published var variants: [VariantViewModel]
+
+  init(model: Model, matches: [SourceFilterMatch]?, selectionHandler: @escaping (ModelVariant?) -> Void) {
     self.model = model
-    self.selectionHandler = selectionHandler
 
     // Default to true because nil matches means we're not filtering by anything.
     let matchesModel = matches?.matchesModel(id: model.id) ?? true
-    self.variants = model
+
+    self.selectionHandler = selectionHandler
+    self.variants = []
+
+    variants = model
       .variants
       .filter { variant in
         matchesModel ? true : (matches?.matchesVariant(variantId: variant.id, modelId: model.id) ?? false)
       }
       .map { variant in
-        VariantViewModel(model: variant, selectionHandler: { selectionHandler(variant) })
+        VariantViewModel(model: variant, selectionHandler: { [weak self] in
+          self?.select(variant: variant)
+        })
       }
   }
 
@@ -82,9 +84,14 @@ class SourceViewModel {
     }
   }
 
+
   func select() {
     guard isModelSelectable else { return }
-    selectionHandler(nil)
+    select(variant: nil)
+  }
+
+  func select(variant: ModelVariant?) {
+    selectionHandler(variant)
   }
 }
 
@@ -93,7 +100,7 @@ class VariantViewModel {
   var name: String { return model.name }
   var description: String? { return model.description }
 
-  private let model: ModelVariant
+  let model: ModelVariant
   private let selectionHandler: () -> Void
 
   init(model: ModelVariant, selectionHandler: @escaping () -> Void) {

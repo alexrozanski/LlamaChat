@@ -8,31 +8,39 @@
 import Foundation
 
 enum AddSourceStep: Hashable, Equatable {
+  case configureModel(ConfigureModelViewModel)
   case configureLocal(ConfigureLocalModelViewModel)
   case configureRemote(ConfigureDownloadableModelViewModel)
   case convertPyTorchSource(ConvertSourceViewModel)
 
   static func == (lhs: AddSourceStep, rhs: AddSourceStep) -> Bool {
     switch lhs {
+    case .configureModel(let lhsViewModel):
+      switch rhs {
+      case .configureModel(let rhsViewModel):
+        return lhsViewModel === rhsViewModel
+      case .configureLocal, .configureRemote, .convertPyTorchSource:
+        return false
+      }
     case .configureLocal(let lhsViewModel):
       switch rhs {
       case .configureLocal(let rhsViewModel):
         return lhsViewModel === rhsViewModel
-      case .configureRemote, .convertPyTorchSource:
+      case .configureModel, .configureRemote, .convertPyTorchSource:
         return false
       }
     case .configureRemote(let lhsViewModel):
       switch rhs {
       case .configureRemote(let rhsViewModel):
         return lhsViewModel === rhsViewModel
-      case .configureLocal, .convertPyTorchSource:
+      case .configureModel, .configureLocal, .convertPyTorchSource:
         return false
       }
     case .convertPyTorchSource(let lhsViewModel):
       switch rhs {
       case .convertPyTorchSource(let rhsViewModel):
         return lhsViewModel === rhsViewModel
-      case .configureLocal, .configureRemote:
+      case .configureModel, .configureLocal, .configureRemote:
         return false
       }
     }
@@ -42,15 +50,18 @@ enum AddSourceStep: Hashable, Equatable {
   // we can use this as a basis for the 'base' type of the enum.
   private var rawValue: Int {
     switch self {
-    case .configureLocal: return 0
-    case .configureRemote: return 1
-    case .convertPyTorchSource: return 2
+    case .configureModel: return 0
+    case .configureLocal: return 1
+    case .configureRemote: return 2
+    case .convertPyTorchSource: return 3
     }
   }
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(rawValue)
     switch self {
+    case .configureModel(let viewModel):
+      hasher.combine(ObjectIdentifier(viewModel))
     case .configureLocal(let viewModel):
       hasher.combine(ObjectIdentifier(viewModel))
     case .configureRemote(let viewModel):
@@ -67,7 +78,7 @@ extension Array where Element == AddSourceStep {
       switch element {
       case .convertPyTorchSource(let viewModel):
         return viewModel
-      case .configureLocal, .configureRemote:
+      case .configureModel, .configureLocal, .configureRemote:
         return nil
       }
     }

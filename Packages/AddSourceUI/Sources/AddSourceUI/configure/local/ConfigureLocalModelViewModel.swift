@@ -35,7 +35,7 @@ class ConfigureLocalModelViewModel: ObservableObject {
 
   // MARK: - Validation
 
-  let primaryActionsViewModel = ConfigureSourcePrimaryActionsViewModel()
+  let primaryActionsViewModel = PrimaryActionsViewModel()
 
   let model: Model
   let exampleGgmlModelPath: String
