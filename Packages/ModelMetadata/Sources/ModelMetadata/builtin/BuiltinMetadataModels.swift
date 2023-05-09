@@ -54,10 +54,10 @@ fileprivate func llamaModel() -> Model {
     legacy: false,
     publisher: ModelPublisher(name: "Meta, Inc."),
     variants: [
-      ModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil),
-      ModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil),
-      ModelVariant(id: "30B", name: "30B", description: nil, parameters: "30B", engine: "camellm-llama", downloadUrl: nil),
-      ModelVariant(id: "65B", name: "65B", description: nil, parameters: "65B", engine: "camellm-llama", downloadUrl: nil)
+      ModelVariant(id: "7B", name: "7B", description: nil, parameters: .billions(Decimal(7)), engine: "camellm-llama", downloadUrl: nil),
+      ModelVariant(id: "13B", name: "13B", description: nil, parameters: .billions(Decimal(13)), engine: "camellm-llama", downloadUrl: nil),
+      ModelVariant(id: "30B", name: "30B", description: nil, parameters: .billions(Decimal(30)), engine: "camellm-llama", downloadUrl: nil),
+      ModelVariant(id: "65B", name: "65B", description: nil, parameters: .billions(Decimal(65)), engine: "camellm-llama", downloadUrl: nil)
     ]
   )
 }
@@ -75,7 +75,7 @@ fileprivate func alpacaModel() -> Model {
     legacy: false,
     publisher: ModelPublisher(name: "Stanford"),
     variants: [
-      ModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil)
+      ModelVariant(id: "7B", name: "7B", description: nil, parameters: .billions(Decimal(7)), engine: "camellm-llama", downloadUrl: nil)
     ]
   )
 }
@@ -93,7 +93,7 @@ fileprivate func legacyGPT4AllModel() -> Model {
     legacy: true,
     publisher: ModelPublisher(name: "Nomic AI"),
     variants: [
-      ModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil)
+      ModelVariant(id: "7B", name: "7B", description: nil, parameters: .billions(Decimal(7)), engine: "camellm-llama", downloadUrl: nil)
     ]
   )
 }

@@ -74,7 +74,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
   @Published private(set) var modelState: ModelState = .none
 
   var modelPath: String? { return pathSelectorViewModel.modelPaths.first }
-  var modelSize: ModelSize? { return nil } // return variantPickerViewModel.selectedModelSize }
+  var modelSize: ModelParameterSize? { return nil } // return variantPickerViewModel.selectedModelSize }
 
   let model: Model
   let exampleModelPath: String
@@ -117,7 +117,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
             let modelCard = try ModelUtils.llamaFamily.getModelCard(forFileAt: modelURL)
             let parameters = modelCard?.parameters
             return model.variants.first { variant in
-              return variant.parameters.map { ParameterSize.from(string: $0) == parameters } ?? false
+              return variant.parameters.map { modelParams in parameters.map { modelParams.equal(to: $0) } ?? false } ?? false
             }
           } catch {
             print(error)
@@ -160,7 +160,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
 }
 
 fileprivate extension ModelType {
-  func toModelSize() -> ModelSize? {
+  func toModelSize() -> ModelParameterSize? {
     switch self {
     case .unknown: return nil
     case .size7B: return .billions(Decimal(7))

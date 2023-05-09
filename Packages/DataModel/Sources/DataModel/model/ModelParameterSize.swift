@@ -1,5 +1,5 @@
 //
-//  ModelSize.swift
+//  ModelParameterSize.swift
 //  
 //
 //  Created by Alex Rozanski on 08/05/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ModelSize: Codable {
+public enum ModelParameterSize: Codable {
   case millions(Decimal)
   case billions(Decimal)
 

@@ -20,7 +20,7 @@ enum ConfigureLocalModelSourceType: String, Identifiable, CaseIterable {
 
 protocol ConfigureLocalModelSettingsViewModel {
   var sourceType: ConfigureLocalModelSourceType { get }
-  var modelSize: ModelSize? { get }
+  var modelSize: ModelParameterSize? { get }
 
   var sourceSettings: CurrentValueSubject<ConfiguredSourceSettings?, Never> { get }
 }

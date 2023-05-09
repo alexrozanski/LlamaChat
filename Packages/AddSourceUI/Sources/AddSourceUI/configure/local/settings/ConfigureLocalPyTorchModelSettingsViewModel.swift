@@ -17,7 +17,7 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   }
 
   var modelPath: String? { return nil }
-  var modelSize: ModelSize? {
+  var modelSize: ModelParameterSize? {
     return nil
 //    return variantPickerViewModel.selectedModelSize
   }
@@ -163,38 +163,9 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
 }
 
 fileprivate func modelType(from variant: ModelVariant) -> ModelType? {
-  guard
-    let parametersString = variant.parameters,
-    let parameters = ParameterSize.from(string: parametersString)
-  else { return nil }
-
-  return ModelType.from(parameters: parameters)
+  return variant.parameters.flatMap { ModelType.from(parameters: $0.toCameLLMParameters()) }
 }
 
 fileprivate func requiredNumberOfModelFiles(for variant: ModelVariant) -> Int? {
   return modelType(from: variant)?.numPyTorchModelParts
-}
-
-fileprivate extension ModelSize {
-  var requiredNumberOfModelFiles: Int {
-    return 0
-//    switch self {
-//    case .unknown: return 0
-//    case .size7B: return 1
-//    case .size13B: return 2
-//    case .size30B: return 4
-//    case .size65B: return 8
-//    }
-  }
-
-  func toModelType() -> ModelType {
-    return .unknown
-//    switch self {
-//    case .unknown: return .unknown
-//    case .size7B: return .size7B
-//    case .size13B: return .size13B
-//    case .size30B: return .size30B
-//    case .size65B: return .size65B
-//    }
-  }
 }

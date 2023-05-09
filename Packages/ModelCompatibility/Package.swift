@@ -13,12 +13,14 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(url: "https://github.com/CameLLM/CameLLM.git", branch: "main"),
     .package(path: "../DataModel")
   ],
   targets: [
     .target(
       name: "ModelCompatibility",
       dependencies: [
+        .product(name: "CameLLM", package: "CameLLM"),
         "DataModel"
       ]
     )
