@@ -41,11 +41,23 @@ class SelectSourceTypeViewModel: ObservableObject {
     self.filterViewModel = filterViewModel
 
     dependencies.remoteMetadataModel.$allModels
-      .combineLatest(filterViewModel.$location, filterViewModel.$searchFieldText)
-      .map { [weak self] models, location, searchFieldText in
+      .map { models in
+        return Array(
+          Set<Language>(
+            models.flatMap { $0.languages.compactMap { code in Language(code: code) } }
+          )
+        )
+        .sorted { $0.label < $1.label }
+      }
+      .assign(to: &filterViewModel.$availableLanguages)
+
+    dependencies.remoteMetadataModel.$allModels
+      .combineLatest(filterViewModel.$location, filterViewModel.$language, filterViewModel.$searchFieldText)
+      .map { [weak self] models, location, language, searchFieldText in
         return filterSources(
           models: models,
           location: location,
+          language: language,
           searchFieldText: searchFieldText,
           selectionHandler: { model, variant in
             self?.selectModel(model, variant: variant)
@@ -90,13 +102,14 @@ class SelectSourceTypeViewModel: ObservableObject {
 private func filterSources(
   models: [Model],
   location: SelectSourceTypeFilterViewModel.Location?,
+  language: Language?,
   searchFieldText: String,
   selectionHandler: @escaping (Model, ModelVariant?) -> Void
 ) -> (sources: [SourceViewModel], matches: [SourceFilterMatch]) {
   let availableModels = models.filter { !$0.legacy }
   let trimmedSearchText = searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines)
 
-  guard location != nil || !trimmedSearchText.isEmpty else {
+  guard location != nil || language != nil || !trimmedSearchText.isEmpty else {
     return (
       availableModels.map { model in
         SourceViewModel(model: model, matches: nil, selectionHandler: { variant in
@@ -108,40 +121,43 @@ private func filterSources(
   }
 
   return availableModels
-    .map { model -> (Model, [SourceFilterMatch]) in
+    .compactMap { model -> (Model, [SourceFilterMatch])? in
       var sourceMatches = [SourceFilterMatch]()
 
       if !trimmedSearchText.isEmpty {
-        sourceMatches.append(contentsOf: sourceFilterMatches(in: model, trimmedSearchText: trimmedSearchText))
+        let textMatches = sourceFilterMatches(in: model, trimmedSearchText: trimmedSearchText)
+        guard !textMatches.isEmpty else { return nil }
+        sourceMatches.append(contentsOf: textMatches)
       }
 
-      if let location, location.matches(source: model.source) {
-        sourceMatches.append(.modelLocation)
+      if let location {
+        guard location.matches(source: model.source) else { return nil }
+        sourceMatches.append(.location)
+      }
+
+      if let language {
+        guard model.languages.contains(language.code) else { return nil }
+        sourceMatches.append(.language)
       }
 
       return (model, sourceMatches)
     }
-    .filter { (model, matches) in !matches.isEmpty }
     .reduce((sources: [SourceViewModel](), matches: [SourceFilterMatch]())) { acc, result in
       let (lastSources, lastMatches) = acc
       let (model, matches) = result
 
-      if matches.isEmpty {
-        return acc
-      } else {
-        // It's okay to only pass the current matches to Source() as they relate to the current source.
-        return (
-          lastSources + [
-            SourceViewModel(
-              model: model,
-              matches: matches,
-              selectionHandler: { variant in
-                selectionHandler(model, variant)
-              }
-            )
-          ],
-          lastMatches + matches)
-      }
+      // It's okay to only pass the current matches to Source() as they relate to the current source.
+      return (
+        lastSources + [
+          SourceViewModel(
+            model: model,
+            matches: matches,
+            selectionHandler: { variant in
+              selectionHandler(model, variant)
+            }
+          )
+        ],
+        lastMatches + matches)
     }
 }
 

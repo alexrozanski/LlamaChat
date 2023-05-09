@@ -93,7 +93,9 @@ struct SourceTypeView: View {
             SelectTypePillView(label: variant.name, style: .filled())
           }
         }
-        SelectTypePillView(label: "English", iconName: "globe.desk")
+        ForEach(source.languages, id: \.code) { language in
+          SelectTypePillView(label: language.label, iconName: "globe.desk")
+        }
       }
       VStack(alignment: .leading, spacing: 4) {
         HStack {

@@ -14,26 +14,27 @@ class SelectSourceTypeFilterViewModel: ObservableObject {
   }
 
   @Published var location: Location?
-  @Published var languages: String?
+  @Published var availableLanguages: [Language] = []
+  @Published var language: Language?
   @Published var searchFieldText = ""
 
   @Published private(set) var hasFilters: Bool
 
   init() {
     location = nil
-    languages = nil
+    language = nil
     hasFilters = false
 
     $location
-      .combineLatest($languages)
-      .map { location, languages in
-        return location != nil || languages != nil
+      .combineLatest($language)
+      .map { location, language in
+        return location != nil || language != nil
       }
       .assign(to: &$hasFilters)
   }
 
   func resetFilters() {
     location = nil
-    languages = nil
+    language = nil
   }
 }

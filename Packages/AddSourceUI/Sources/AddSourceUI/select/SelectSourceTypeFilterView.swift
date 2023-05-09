@@ -49,9 +49,9 @@ struct SelectSourceTypeFilterView: View {
         BubblePickerView.Item(value: SelectSourceTypeFilterViewModel.Location.local, label: "Bring Your Own"),
         BubblePickerView.Item(value: SelectSourceTypeFilterViewModel.Location.remote, label: "Downloadable")
       ], clearItemLabel: "All Sources", selection: $viewModel.location)
-      BubblePickerView(label: "Languages", items: [
-        BubblePickerView.Item(value: "en", label: "English")
-      ], clearItemLabel: "All Languages", selection: $viewModel.languages)
+      BubblePickerView(label: "Languages", items: viewModel.availableLanguages.map { language in
+        return BubblePickerView.Item(value: language, label: language.label)
+      }, clearItemLabel: "All Languages", selection: $viewModel.language)
       if viewModel.hasFilters {
         Button {
           viewModel.resetFilters()

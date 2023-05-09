@@ -61,6 +61,7 @@ class GitBasedMetadataFetcher: MetadataFetcher {
     try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "reset", "--hard", "HEAD"])).run()
     try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "fetch"])).run()
     try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "checkout", version])).run()
+    try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "pull"])).run()
   }
 
   private var repositoryDirectory: URL? {

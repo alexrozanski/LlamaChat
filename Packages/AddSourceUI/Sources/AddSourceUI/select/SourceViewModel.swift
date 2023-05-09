@@ -17,6 +17,14 @@ class SourceViewModel {
   var id: String { return model.id }
   var name: String { return model.name }
   var description: String { return model.description }
+
+  var languages: [Language] {
+    return model.languages.compactMap { code in
+      guard let languageString = Locale.current.localizedString(forLanguageCode: code) else { return nil }
+      return Language(code: code, label: languageString)
+    }
+  }
+
   var publisher: String { return model.publisher.name }
   let variants: [VariantViewModel]
 
