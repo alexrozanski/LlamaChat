@@ -24,32 +24,7 @@ public class AddSourceViewModel: ObservableObject {
 
   private(set) lazy var selectSourceTypeViewModel: SelectSourceTypeViewModel = {
     return SelectSourceTypeViewModel(dependencies: dependencies) { [weak self] model, variant in
-      let step: AddSourceStep
-      switch model.source {
-      case .local:
-        step = .configureLocal(
-          ConfigureLocalModelViewModel(
-            defaultName: model.name,
-            model: model,
-            exampleGgmlModelPath: "ggml-model-q4_0.bin",
-            nextHandler: { _ in }
-          )
-        )
-      case .remote:
-        guard let variant, let downloadURL = variant.downloadUrl else { return }
-
-        step = .configureRemote(
-          ConfigureDownloadableModelViewModel(
-            defaultName: model.name,
-            model: model,
-            modelVariant: variant,
-            downloadURL: downloadURL,
-            nextHandler: { _ in }
-          )
-        )
-      }
-
-      self?.navigationPath.append(step)
+      self?.handleSelectedSource(model: model, variant: variant)
     }
   }()
 
@@ -90,10 +65,43 @@ public class AddSourceViewModel: ObservableObject {
     )
   }
 
-  private func handleConfiguredSource(source: ConfiguredSource, sourceType: ChatSourceType) {
+  private func handleSelectedSource(model: Model, variant: ModelVariant?) {
+    let step: AddSourceStep
+    switch model.source {
+    case .local:
+      step = .configureLocal(
+        ConfigureLocalModelViewModel(
+          defaultName: model.name,
+          model: model,
+          exampleGgmlModelPath: "ggml-model-q4_0.bin",
+          nextHandler: { [weak self] configuredSource in
+            self?.handleConfiguredSource(source: configuredSource)
+          }
+        )
+      )
+    case .remote:
+      guard let variant, let downloadURL = variant.downloadUrl else { return }
+
+      step = .configureRemote(
+        ConfigureDownloadableModelViewModel(
+          defaultName: model.name,
+          model: model,
+          modelVariant: variant,
+          downloadURL: downloadURL,
+          nextHandler: { [weak self] configuredSource in
+            self?.handleConfiguredSource(source: configuredSource)
+          }
+        )
+      )
+    }
+
+    navigationPath.append(step)
+  }
+
+  private func handleConfiguredSource(source: ConfiguredSource) {
     switch source.settings {
     case .ggmlModel(modelURL: let modelURL):
-      self.add(
+      add(
         source: ChatSource(
           name: source.name,
           avatarImageName: source.avatarImageName,
@@ -106,9 +114,9 @@ public class AddSourceViewModel: ObservableObject {
         )
       )
     case .pyTorchCheckpoints(data: let validatedData):
-      self.navigationPath.append(
+      navigationPath.append(
         .convertPyTorchSource(
-          self.makeConvertSourceViewModel(
+          makeConvertSourceViewModel(
             configuredSource: source,
             validatedData: validatedData
           )
@@ -118,7 +126,7 @@ public class AddSourceViewModel: ObservableObject {
       do {
         let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
         let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
-        self.add(
+        add(
           source: ChatSource(
             name: source.name,
             avatarImageName: source.avatarImageName,
