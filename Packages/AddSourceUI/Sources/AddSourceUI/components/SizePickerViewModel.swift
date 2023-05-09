@@ -11,7 +11,7 @@ import DataModel
 class SizePickerViewModel: ObservableObject {
   typealias LabelProvider = (_ modelSize: ModelSize, _ defaultProvider: (ModelSize) -> String) -> String
 
-  @Published var modelSize: ModelSize = .unknown
+  @Published var modelSize: ModelSize? = nil
 
   private let labelProvider: LabelProvider
 
@@ -27,11 +27,12 @@ class SizePickerViewModel: ObservableObject {
 }
 
 private func defaultLabelProvider(_ modelSize: ModelSize) -> String {
-  switch modelSize {
-  case .unknown: return "Unknown"
-  case .size7B: return "7B"
-  case .size13B: return "13B"
-  case .size30B: return "30B"
-  case .size65B: return "65B"
-  }
+  return ""
+//  switch modelSize {
+//  case .unknown: return "Unknown"
+//  case .size7B: return "7B"
+//  case .size13B: return "13B"
+//  case .size30B: return "30B"
+//  case .size65B: return "65B"
+//  }
 }

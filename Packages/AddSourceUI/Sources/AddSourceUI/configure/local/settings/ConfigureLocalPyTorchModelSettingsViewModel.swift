@@ -60,13 +60,14 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   @Published var files: [ModelConversionFile]? = nil
 
   private(set) lazy var modelSizePickerViewModel = SizePickerViewModel(labelProvider: { modelSize, defaultProvider in
-    switch modelSize {
-    case .unknown:
-      return "Select Model Size"
-    case .size7B, .size13B, .size30B, .size65B:
-      let numFiles = modelSize.requiredNumberOfModelFiles
-      return "\(defaultProvider(modelSize)) (\(numFiles) \(numFiles == 1 ? "file" : "files"))"
-    }
+    return ""
+//    switch modelSize {
+//    case .unknown:
+//      return "Select Model Size"
+//    case .size7B, .size13B, .size30B, .size65B:
+//      let numFiles = modelSize.requiredNumberOfModelFiles
+//      return "\(defaultProvider(modelSize)) (\(numFiles) \(numFiles == 1 ? "file" : "files"))"
+//    }
   })
   private(set) lazy var pathSelectorViewModel = PathSelectorViewModel(
     customLabel: "Model Directory",
@@ -80,64 +81,64 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   init() {
     modelSizePickerViewModel
       .$modelSize
-      .map { $0.requiredNumberOfModelFiles }
+      .map { $0?.requiredNumberOfModelFiles ?? 0 }
       .assign(to: &$requiredNumberOfModelFiles)
 
-    modelSizePickerViewModel.$modelSize
-      .combineLatest($conversionState)
-      .map { modelSize, conversionState in
-        return !modelSize.isUnknown && conversionState.canConvert
-      }
-      .assign(to: &$showPathSelector)
+//    modelSizePickerViewModel.$modelSize
+//      .combineLatest($conversionState)
+//      .map { modelSize, conversionState in
+//        return !modelSize.isUnknown && conversionState.canConvert
+//      }
+//      .assign(to: &$showPathSelector)
 
     pathSelectorViewModel.$modelPaths
       .combineLatest(modelSizePickerViewModel.$modelSize)
       .sink { [weak self] modelPaths, modelSize in
-        guard let self else { return }
-
-        guard let modelPath = modelPaths.first else {
-          self.modelState = .none
-          return
-        }
-
-        let directoryURL = URL(fileURLWithPath: modelPath)
-        let data = ConvertPyTorchToGgmlConversionData(
-          modelType: modelSize.toModelType(),
-          directoryURL: directoryURL
-        )
-        switch ModelConverter.llamaFamily.validateConversionData(data, returning: &self.files) {
-        case .success(let validatedData):
-          self.modelState = .valid(data: validatedData)
-        case .failure(let error):
-          switch error {
-          case .missingFiles(let filenames):
-            self.modelState = .invalidModelDirectory(reason: .missingFiles(filenames.count))
-          }
-        }
+//        guard let self else { return }
+//
+//        guard let modelPath = modelPaths.first else {
+//          self.modelState = .none
+//          return
+//        }
+//
+//        let directoryURL = URL(fileURLWithPath: modelPath)
+//        let data = ConvertPyTorchToGgmlConversionData(
+//          modelType: modelSize.toModelType(),
+//          directoryURL: directoryURL
+//        )
+//        switch ModelConverter.llamaFamily.validateConversionData(data, returning: &self.files) {
+//        case .success(let validatedData):
+//          self.modelState = .valid(data: validatedData)
+//        case .failure(let error):
+//          switch error {
+//          case .missingFiles(let filenames):
+//            self.modelState = .invalidModelDirectory(reason: .missingFiles(filenames.count))
+//          }
+//        }
       }.store(in: &subscriptions)
 
     $modelState
       .combineLatest(modelSizePickerViewModel.$modelSize)
       .sink { [weak self] modelState, modelSize in
-        guard !modelSize.isUnknown else {
-          self?.sourceSettings.send(nil)
-          return
-        }
-
-        switch modelState {
-        case .none:
-          self?.pathSelectorViewModel.errorMessage = nil
-          self?.sourceSettings.send(nil)
-        case .invalidModelDirectory(reason: let reason):
-          switch reason {
-          case .missingFiles(let count):
-            self?.pathSelectorViewModel.errorMessage = "Directory is missing \(count) \(count == 1 ? "file" : "files")"
-          }
-          self?.sourceSettings.send(nil)
-        case .valid(data: let validatedData):
-          self?.pathSelectorViewModel.errorMessage = nil
-          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData))
-        }
+//        guard !modelSize.isUnknown else {
+//          self?.sourceSettings.send(nil)
+//          return
+//        }
+//
+//        switch modelState {
+//        case .none:
+//          self?.pathSelectorViewModel.errorMessage = nil
+//          self?.sourceSettings.send(nil)
+//        case .invalidModelDirectory(reason: let reason):
+//          switch reason {
+//          case .missingFiles(let count):
+//            self?.pathSelectorViewModel.errorMessage = "Directory is missing \(count) \(count == 1 ? "file" : "files")"
+//          }
+//          self?.sourceSettings.send(nil)
+//        case .valid(data: let validatedData):
+//          self?.pathSelectorViewModel.errorMessage = nil
+//          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData))
+//        }
       }.store(in: &subscriptions)
   }
 
@@ -160,22 +161,24 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
 
 fileprivate extension ModelSize {
   var requiredNumberOfModelFiles: Int {
-    switch self {
-    case .unknown: return 0
-    case .size7B: return 1
-    case .size13B: return 2
-    case .size30B: return 4
-    case .size65B: return 8
-    }
+    return 0
+//    switch self {
+//    case .unknown: return 0
+//    case .size7B: return 1
+//    case .size13B: return 2
+//    case .size30B: return 4
+//    case .size65B: return 8
+//    }
   }
 
   func toModelType() -> ModelType {
-    switch self {
-    case .unknown: return .unknown
-    case .size7B: return .size7B
-    case .size13B: return .size13B
-    case .size30B: return .size30B
-    case .size65B: return .size65B
-    }
+    return .unknown
+//    switch self {
+//    case .unknown: return .unknown
+//    case .size7B: return .size7B
+//    case .size13B: return .size13B
+//    case .size30B: return .size30B
+//    case .size65B: return .size65B
+//    }
   }
 }

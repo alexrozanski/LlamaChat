@@ -41,17 +41,17 @@ struct SizePickerView: View {
       get: { viewModel.modelSize },
       set: { viewModel.modelSize = $0 }
     )
-    Picker("Model Size", selection: modelTypeBinding) {
-      Text(viewModel.label(for: .unknown))
-        .foregroundColor(unknownModelSizeAppearance.isDisabled ? Color(nsColor: NSColor.disabledControlTextColor) : nil)
-        .tag(ModelSize.unknown)
-      if !unknownModelSizeAppearance.isDisabled {
-        Divider()
-      }
-      ForEach([ModelSize.size7B, ModelSize.size13B, ModelSize.size30B, ModelSize.size65B]) { size in
-        Text(viewModel.label(for: size)).tag(size)
-      }
-    }
-    .disabled(!enabled)
+//    Picker("Model Size", selection: modelTypeBinding) {
+//      Text(viewModel.label(for: .unknown))
+//        .foregroundColor(unknownModelSizeAppearance.isDisabled ? Color(nsColor: NSColor.disabledControlTextColor) : nil)
+//        .tag(ModelSize.unknown)
+//      if !unknownModelSizeAppearance.isDisabled {
+//        Divider()
+//      }
+//      ForEach([ModelSize.size7B, ModelSize.size13B, ModelSize.size30B, ModelSize.size65B]) { size in
+//        Text(viewModel.label(for: size)).tag(size)
+//      }
+//    }
+//    .disabled(!enabled)
   }
 }

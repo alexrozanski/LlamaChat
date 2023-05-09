@@ -64,12 +64,13 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
 
   private(set) lazy var pathSelectorViewModel = PathSelectorViewModel()
   private(set) lazy var modelSizePickerViewModel = SizePickerViewModel(labelProvider: { modelSize, defaultProvider in
-    switch modelSize {
-    case .unknown:
-      return "Not Specified"
-    case .size7B, .size13B, .size30B, .size65B:
-      return defaultProvider(modelSize)
-    }
+    return ""
+//    switch modelSize {
+//    case .unknown:
+//      return "Not Specified"
+//    case .size7B, .size13B, .size30B, .size65B:
+//      return defaultProvider(modelSize)
+//    }
   })
 
   @Published private(set) var modelState: ModelState = .none
@@ -87,32 +88,32 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     self.exampleModelPath = exampleModelPath
 
     pathSelectorViewModel.$modelPaths.sink { [weak self] newPaths in
-      guard let self, let modelPath = newPaths.first else {
-        self?.modelState = .none
-        return
-      }
-
-      guard FileManager().fileExists(atPath: modelPath) else {
-        self.modelState = .invalidPath
-        return
-      }
-
-      let modelURL = URL(fileURLWithPath: modelPath)
-      do {
-        try ModelUtils.llamaFamily.validateModel(at: modelURL)
-      } catch {
-        print(error)
-        self.modelState = .invalidModel(getInvalidModelTypeReason(from: error))
-        return
-      }
-
-      self.modelState = .valid(modelURL: modelURL)
-
-      do {
-        self.modelSizePickerViewModel.modelSize = (try ModelUtils.llamaFamily.getModelCard(forFileAt: URL(fileURLWithPath: modelPath)))?.modelType.toModelSize() ?? .unknown
-      } catch {
-        print(error)
-      }
+//      guard let self, let modelPath = newPaths.first else {
+//        self?.modelState = .none
+//        return
+//      }
+//
+//      guard FileManager().fileExists(atPath: modelPath) else {
+//        self.modelState = .invalidPath
+//        return
+//      }
+//
+//      let modelURL = URL(fileURLWithPath: modelPath)
+//      do {
+//        try ModelUtils.llamaFamily.validateModel(at: modelURL)
+//      } catch {
+//        print(error)
+//        self.modelState = .invalidModel(getInvalidModelTypeReason(from: error))
+//        return
+//      }
+//
+//      self.modelState = .valid(modelURL: modelURL)
+//
+//      do {
+//        self.modelSizePickerViewModel.modelSize = (try ModelUtils.llamaFamily.getModelCard(forFileAt: URL(fileURLWithPath: modelPath)))?.modelType.toModelSize() ?? .unknown
+//      } catch {
+//        print(error)
+//      }
     }.store(in: &subscriptions)
 
     $modelState.sink { [weak self] newModelState in
@@ -134,29 +135,29 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     $modelState
       .combineLatest(modelSizePickerViewModel.$modelSize)
       .sink { [weak self] modelState, modelSize in
-        guard !modelSize.isUnknown else {
-          self?.sourceSettings.send(nil)
-          return
-        }
-
-        switch modelState {
-        case .none, .invalidModel, .invalidPath:
-          self?.sourceSettings.send(nil)
-        case .valid(modelURL: let modelURL):
-          self?.sourceSettings.send(.ggmlModel(modelURL: modelURL))
-        }
+//        guard !modelSize.isUnknown else {
+//          self?.sourceSettings.send(nil)
+//          return
+//        }
+//
+//        switch modelState {
+//        case .none, .invalidModel, .invalidPath:
+//          self?.sourceSettings.send(nil)
+//        case .valid(modelURL: let modelURL):
+//          self?.sourceSettings.send(.ggmlModel(modelURL: modelURL))
+//        }
       }.store(in: &subscriptions)
   }
 }
 
 fileprivate extension ModelType {
-  func toModelSize() -> ModelSize {
+  func toModelSize() -> ModelSize? {
     switch self {
-    case .unknown: return .unknown
-    case .size7B: return .size7B
-    case .size13B: return .size13B
-    case .size30B: return .size30B
-    case .size65B: return .size65B
+    case .unknown: return nil
+    case .size7B: return .billions(Decimal(7))
+    case .size13B: return .billions(Decimal(13))
+    case .size30B: return .billions(Decimal(30))
+    case .size65B: return .billions(Decimal(65))
     }
   }
 }

@@ -64,8 +64,7 @@ class ChatInfoViewModel: ObservableObject {
   }
 
   var modelType: String {
-    return ""
-//    return "\(chatModel.source.type.readableName) model"
+    return "\(chatModel.source.model.name) model"
   }
 
   @Published private(set) var context: ModelStat<String> = .none
