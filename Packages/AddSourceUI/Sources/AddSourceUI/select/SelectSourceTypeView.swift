@@ -244,9 +244,6 @@ struct SelectSourceTypeView: View {
         .frame(height: 1)
       content
         .zIndex(0)
-      Rectangle()
-        .fill(.separator)
-        .frame(height: 1)
     }
   }
 

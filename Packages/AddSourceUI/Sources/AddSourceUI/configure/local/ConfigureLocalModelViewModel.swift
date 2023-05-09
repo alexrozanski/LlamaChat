@@ -109,7 +109,7 @@ class ConfigureLocalModelViewModel: ObservableObject {
 
     switch modelSourceType {
     case .pyTorch:
-      let viewModel = ConfigureLocalPyTorchModelSettingsViewModel()
+      let viewModel = ConfigureLocalPyTorchModelSettingsViewModel(model: model)
       viewModel.determineConversionStateIfNeeded()
       settingsViewModels[.pyTorch] = viewModel
       return viewModel

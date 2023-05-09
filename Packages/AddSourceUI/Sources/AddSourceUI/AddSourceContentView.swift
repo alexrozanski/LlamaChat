@@ -19,7 +19,9 @@ fileprivate struct StepView<Content, PrimaryActions>: View where Content: View, 
   var body: some View {
     VStack(spacing: 0) {
       content()
-      Spacer()
+      Rectangle()
+        .fill(.separator)
+        .frame(height: 1)
       HStack {
         Button("Cancel", action: { viewModel.cancel() })
         Spacer()

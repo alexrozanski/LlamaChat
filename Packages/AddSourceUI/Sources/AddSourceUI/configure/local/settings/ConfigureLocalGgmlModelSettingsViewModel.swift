@@ -63,20 +63,18 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
   }
 
   private(set) lazy var pathSelectorViewModel = PathSelectorViewModel()
-  private(set) lazy var modelSizePickerViewModel = SizePickerViewModel(labelProvider: { modelSize, defaultProvider in
-    return ""
-//    switch modelSize {
-//    case .unknown:
-//      return "Not Specified"
-//    case .size7B, .size13B, .size30B, .size65B:
-//      return defaultProvider(modelSize)
-//    }
-  })
+  private(set) lazy var variantPickerViewModel = VariantPickerViewModel(
+    label: "Model Size",
+    labelProvider: { variant in
+      return variant?.name ?? "Unknown"
+    },
+    variants: model.variants
+  )
 
   @Published private(set) var modelState: ModelState = .none
 
   var modelPath: String? { return pathSelectorViewModel.modelPaths.first }
-  var modelSize: ModelSize? { return modelSizePickerViewModel.modelSize }
+  var modelSize: ModelSize? { return nil } // return variantPickerViewModel.selectedModelSize }
 
   let model: Model
   let exampleModelPath: String
@@ -87,66 +85,77 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     self.model = model
     self.exampleModelPath = exampleModelPath
 
-    pathSelectorViewModel.$modelPaths.sink { [weak self] newPaths in
-//      guard let self, let modelPath = newPaths.first else {
-//        self?.modelState = .none
-//        return
-//      }
-//
-//      guard FileManager().fileExists(atPath: modelPath) else {
-//        self.modelState = .invalidPath
-//        return
-//      }
-//
-//      let modelURL = URL(fileURLWithPath: modelPath)
-//      do {
-//        try ModelUtils.llamaFamily.validateModel(at: modelURL)
-//      } catch {
-//        print(error)
-//        self.modelState = .invalidModel(getInvalidModelTypeReason(from: error))
-//        return
-//      }
-//
-//      self.modelState = .valid(modelURL: modelURL)
-//
-//      do {
-//        self.modelSizePickerViewModel.modelSize = (try ModelUtils.llamaFamily.getModelCard(forFileAt: URL(fileURLWithPath: modelPath)))?.modelType.toModelSize() ?? .unknown
-//      } catch {
-//        print(error)
-//      }
-    }.store(in: &subscriptions)
-
-    $modelState.sink { [weak self] newModelState in
-      switch newModelState {
-      case .none, .valid:
-        self?.pathSelectorViewModel.errorMessage = nil
-      case .invalidPath:
-        self?.pathSelectorViewModel.errorMessage = "Selected file is invalid"
-      case .invalidModel(let reason):
-        switch reason {
-        case .unknown, .invalidFileType:
-          self?.pathSelectorViewModel.errorMessage = "Selected file is not a valid model"
-        case .unsupportedModelVersion:
-          self?.pathSelectorViewModel.errorMessage = "Selected model is of an unsupported version"
+    pathSelectorViewModel.$modelPaths
+      .map { modelPaths in
+        guard let modelPath = modelPaths.first else {
+          return .none
         }
+
+        guard FileManager().fileExists(atPath: modelPath) else {
+          return .invalidPath
+        }
+
+        let modelURL = URL(fileURLWithPath: modelPath)
+        do {
+          try ModelUtils.llamaFamily.validateModel(at: modelURL)
+        } catch {
+          print(error)
+          return .invalidModel(getInvalidModelTypeReason(from: error))
+        }
+
+        return .valid(modelURL: modelURL)
       }
-    }.store(in: &subscriptions)
+      .assign(to: &$modelState)
 
     $modelState
-      .combineLatest(modelSizePickerViewModel.$modelSize)
-      .sink { [weak self] modelState, modelSize in
-//        guard !modelSize.isUnknown else {
-//          self?.sourceSettings.send(nil)
-//          return
-//        }
-//
-//        switch modelState {
-//        case .none, .invalidModel, .invalidPath:
-//          self?.sourceSettings.send(nil)
-//        case .valid(modelURL: let modelURL):
-//          self?.sourceSettings.send(.ggmlModel(modelURL: modelURL))
-//        }
-      }.store(in: &subscriptions)
+      .map { modelState -> ModelVariant? in
+        switch modelState {
+        case .none, .invalidModel, .invalidPath:
+          return nil
+        case .valid(modelURL: let modelURL):
+          do {
+            let modelCard = try ModelUtils.llamaFamily.getModelCard(forFileAt: modelURL)
+            let parameters = modelCard?.parameters
+            return model.variants.first { variant in
+              return variant.parameters.map { ParameterSize.from(string: $0) == parameters } ?? false
+            }
+          } catch {
+            print(error)
+            return nil
+          }
+        }
+      }
+      .assign(to: &variantPickerViewModel.$selectedVariant)
+
+    $modelState
+      .map { modelState in
+        switch modelState {
+        case .none, .valid:
+          return nil
+        case .invalidPath:
+          return "Selected file is invalid"
+        case .invalidModel(let reason):
+          switch reason {
+          case .unknown, .invalidFileType:
+            return "Selected file is not a valid model"
+          case .unsupportedModelVersion:
+            return "Selected model is of an unsupported version"
+          }
+        }
+      }
+      .assign(to: &pathSelectorViewModel.$errorMessage)
+
+    $modelState
+      .map { modelState in
+        switch modelState {
+        case .none, .invalidModel, .invalidPath:
+          return nil
+        case .valid(modelURL: let modelURL):
+          return .ggmlModel(modelURL: modelURL)
+        }
+      }
+      .assign(to: \.value, on: sourceSettings)
+      .store(in: &subscriptions)
   }
 }
 

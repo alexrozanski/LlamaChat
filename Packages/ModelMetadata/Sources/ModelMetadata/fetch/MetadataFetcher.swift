@@ -9,5 +9,9 @@ import Foundation
 import DataModel
 
 protocol MetadataFetcher {
-  func updateMetadata() async throws -> [Model]
+  // If metadata is cached between runs in a deterministic location, returns this location.
+  var cachedMetadataURL: URL? { get }
+
+  // Updates metadata and returns the root directory the metadata files are stored in.
+  func fetchUpdatedMetadata() async throws -> URL
 }

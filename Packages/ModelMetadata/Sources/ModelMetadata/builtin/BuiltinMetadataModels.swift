@@ -75,7 +75,7 @@ fileprivate func alpacaModel() -> Model {
     legacy: false,
     publisher: ModelPublisher(name: "Stanford"),
     variants: [
-      ModelVariant(id: "13B", name: "13B", description: nil, parameters: "13B", engine: "camellm-llama", downloadUrl: nil)
+      ModelVariant(id: "7B", name: "7B", description: nil, parameters: "7B", engine: "camellm-llama", downloadUrl: nil)
     ]
   )
 }

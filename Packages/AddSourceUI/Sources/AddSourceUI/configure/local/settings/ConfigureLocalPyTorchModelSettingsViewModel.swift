@@ -18,10 +18,10 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
 
   var modelPath: String? { return nil }
   var modelSize: ModelSize? {
-    return modelSizePickerViewModel.modelSize
+    return nil
+//    return variantPickerViewModel.selectedModelSize
   }
 
-  @Published private(set) var requiredNumberOfModelFiles = 1
   @Published private(set) var showPathSelector = false
 
   enum ConversionState {
@@ -59,87 +59,90 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   @Published var conversionState: ConversionState = .unknown
   @Published var files: [ModelConversionFile]? = nil
 
-  private(set) lazy var modelSizePickerViewModel = SizePickerViewModel(labelProvider: { modelSize, defaultProvider in
-    return ""
-//    switch modelSize {
-//    case .unknown:
-//      return "Select Model Size"
-//    case .size7B, .size13B, .size30B, .size65B:
-//      let numFiles = modelSize.requiredNumberOfModelFiles
-//      return "\(defaultProvider(modelSize)) (\(numFiles) \(numFiles == 1 ? "file" : "files"))"
-//    }
-  })
+  let sourceSettings = CurrentValueSubject<ConfiguredSourceSettings?, Never>(nil)
+
+  private(set) lazy var variantPickerViewModel = VariantPickerViewModel(
+    label: "Model Size",
+    labelProvider: { variant in
+      guard let variant else {
+        return "Select Model Size"
+      }
+
+      guard let numFiles = requiredNumberOfModelFiles(for: variant) else {
+        return variant.name
+      }
+
+      return "\(variant.name) (\(numFiles) \(numFiles == 1 ? "file" : "files"))"
+    },
+    variants: model.variants
+  )
   private(set) lazy var pathSelectorViewModel = PathSelectorViewModel(
     customLabel: "Model Directory",
     selectionMode: .directories
   )
 
-  let sourceSettings = CurrentValueSubject<ConfiguredSourceSettings?, Never>(nil)
-
   private var subscriptions = Set<AnyCancellable>()
 
-  init() {
-    modelSizePickerViewModel
-      .$modelSize
-      .map { $0?.requiredNumberOfModelFiles ?? 0 }
-      .assign(to: &$requiredNumberOfModelFiles)
+  private let model: Model
 
-//    modelSizePickerViewModel.$modelSize
-//      .combineLatest($conversionState)
-//      .map { modelSize, conversionState in
-//        return !modelSize.isUnknown && conversionState.canConvert
-//      }
-//      .assign(to: &$showPathSelector)
+  init(model: Model) {
+    self.model = model
+
+    variantPickerViewModel.$selectedVariant
+      .combineLatest($conversionState)
+      .map { variant, conversionState in
+        return variant != nil && conversionState.canConvert
+      }
+      .assign(to: &$showPathSelector)
 
     pathSelectorViewModel.$modelPaths
-      .combineLatest(modelSizePickerViewModel.$modelSize)
-      .sink { [weak self] modelPaths, modelSize in
-//        guard let self else { return }
-//
-//        guard let modelPath = modelPaths.first else {
-//          self.modelState = .none
-//          return
-//        }
-//
-//        let directoryURL = URL(fileURLWithPath: modelPath)
-//        let data = ConvertPyTorchToGgmlConversionData(
-//          modelType: modelSize.toModelType(),
-//          directoryURL: directoryURL
-//        )
-//        switch ModelConverter.llamaFamily.validateConversionData(data, returning: &self.files) {
-//        case .success(let validatedData):
-//          self.modelState = .valid(data: validatedData)
-//        case .failure(let error):
-//          switch error {
-//          case .missingFiles(let filenames):
-//            self.modelState = .invalidModelDirectory(reason: .missingFiles(filenames.count))
-//          }
-//        }
-      }.store(in: &subscriptions)
+      .combineLatest(variantPickerViewModel.$selectedVariant)
+      .map { [weak self] modelPaths, variant in
+        guard let self, let modelPath = modelPaths.first, let variant, let modelType = modelType(from: variant) else {
+          return .none
+        }
+
+        let directoryURL = URL(fileURLWithPath: modelPath)
+        let data = ConvertPyTorchToGgmlConversionData(
+          modelType: modelType,
+          directoryURL: directoryURL
+        )
+        switch ModelConverter.llamaFamily.validateConversionData(data, returning: &self.files) {
+        case .success(let validatedData):
+          return .valid(data: validatedData)
+        case .failure(let error):
+          switch error {
+          case .missingFiles(let filenames):
+            return .invalidModelDirectory(reason: .missingFiles(filenames.count))
+          }
+        }
+      }.assign(to: &$modelState)
 
     $modelState
-      .combineLatest(modelSizePickerViewModel.$modelSize)
-      .sink { [weak self] modelState, modelSize in
-//        guard !modelSize.isUnknown else {
-//          self?.sourceSettings.send(nil)
-//          return
-//        }
-//
-//        switch modelState {
-//        case .none:
-//          self?.pathSelectorViewModel.errorMessage = nil
-//          self?.sourceSettings.send(nil)
-//        case .invalidModelDirectory(reason: let reason):
-//          switch reason {
-//          case .missingFiles(let count):
-//            self?.pathSelectorViewModel.errorMessage = "Directory is missing \(count) \(count == 1 ? "file" : "files")"
-//          }
-//          self?.sourceSettings.send(nil)
-//        case .valid(data: let validatedData):
-//          self?.pathSelectorViewModel.errorMessage = nil
-//          self?.sourceSettings.send(.pyTorchCheckpoints(data: validatedData))
-//        }
-      }.store(in: &subscriptions)
+      .map { modelState in
+        switch modelState {
+        case .none, .valid:
+            return nil
+        case .invalidModelDirectory(reason: let reason):
+          switch reason {
+          case .missingFiles(let count):
+            return "Directory is missing \(count) \(count == 1 ? "file" : "files")"
+          }
+        }
+      }
+      .assign(to: &pathSelectorViewModel.$errorMessage)
+
+    $modelState
+      .map { modelState in
+        switch modelState {
+        case .none, .invalidModelDirectory:
+          return nil
+        case .valid(data: let validatedData):
+          return .pyTorchCheckpoints(data: validatedData)
+        }
+      }
+      .assign(to: \.value, on: sourceSettings)
+      .store(in: &subscriptions)
   }
 
   func determineConversionStateIfNeeded() {
@@ -157,6 +160,19 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
       }
     }
   }
+}
+
+fileprivate func modelType(from variant: ModelVariant) -> ModelType? {
+  guard
+    let parametersString = variant.parameters,
+    let parameters = ParameterSize.from(string: parametersString)
+  else { return nil }
+
+  return ModelType.from(parameters: parameters)
+}
+
+fileprivate func requiredNumberOfModelFiles(for variant: ModelVariant) -> Int? {
+  return modelType(from: variant)?.numPyTorchModelParts
 }
 
 fileprivate extension ModelSize {

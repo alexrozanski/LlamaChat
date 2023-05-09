@@ -23,7 +23,12 @@ class FileBasedMetadataFetcher: MetadataFetcher {
     self.url = url
   }
 
-  func updateMetadata() async throws -> [Model] {
+  var cachedMetadataURL: URL? {
+    // The download directory is temporary between runs
+    return nil
+  }
+
+  func fetchUpdatedMetadata() async throws -> URL {
     return try await withCheckedThrowingContinuation { continuation in
       downloadHandle = DownloadsManager.shared.downloadFile(
         from: URL(string: "https://camellm.org/llamachat-models-main.zip")!,
@@ -46,14 +51,12 @@ class FileBasedMetadataFetcher: MetadataFetcher {
                 return
               }
 
-              let parser = MetadataParser()
-              let models = try parser.parseMetadata(at: directory)
-              continuation.resume(returning: models)
+              continuation.resume(returning: directory)
             } catch {
               continuation.resume(throwing: error)
             }
           case .failure(let error):
-            print(error)
+            continuation.resume(throwing: error)
           }
         },
         resultsHandlerQueue: .main

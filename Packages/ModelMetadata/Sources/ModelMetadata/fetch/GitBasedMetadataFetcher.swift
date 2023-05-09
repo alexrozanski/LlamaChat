@@ -13,6 +13,7 @@ import FileManager
 class GitBasedMetadataFetcher: MetadataFetcher {
   enum Error: Swift.Error {
     case gitMissing
+    case noWorkingDirectory
   }
 
   let repositoryURL: URL
@@ -20,9 +21,13 @@ class GitBasedMetadataFetcher: MetadataFetcher {
     self.repositoryURL = repositoryURL
   }
 
-  func updateMetadata() async throws -> [Model] {
+  var cachedMetadataURL: URL? {
+    return repositoryDirectory
+  }
+
+  func fetchUpdatedMetadata() async throws -> URL {
     guard let repositoryDirectory else {
-      return []
+      throw Error.noWorkingDirectory
     }
 
     guard try await Process.init(command: Process.Command("which", arguments: ["git"])).run().isSuccess else {
@@ -32,8 +37,7 @@ class GitBasedMetadataFetcher: MetadataFetcher {
     try await cloneIfNeeded()
     try await update(in: repositoryDirectory)
 
-    let metadataParser = MetadataParser()
-    return try metadataParser.parseMetadata(at: repositoryDirectory)
+    return repositoryDirectory
   }
 
   private func cloneIfNeeded() async throws {

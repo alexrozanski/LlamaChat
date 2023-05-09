@@ -8,10 +8,13 @@
 import Foundation
 
 public enum ModelSize: Codable {
+  case millions(Decimal)
   case billions(Decimal)
 
   public var stringValue: String {
     switch self {
+    case .millions(let decimal):
+      return "\(NSDecimalNumber(decimal: decimal))M"
     case .billions(let decimal):
       return "\(NSDecimalNumber(decimal: decimal))B"
     }
@@ -21,10 +24,17 @@ public enum ModelSize: Codable {
     let container = try decoder.singleValueContainer()
     let string = try container.decode(String.self)
     let scanner = Scanner(string: string)
-    guard let decimal = scanner.scanDecimal(), scanner.scanString("B") != nil else {
+    guard let decimal = scanner.scanDecimal() else {
       throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "value '\(string)' isn't valid"))
     }
-    self = .billions(decimal)
+
+    if scanner.scanString("B") != nil {
+      self = .billions(decimal)
+    } else if scanner.scanString("M") != nil {
+      self = .millions(decimal)
+    } else {
+      throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "value '\(string)' isn't valid"))
+    }
   }
 
   public func encode(to encoder: Encoder) throws {

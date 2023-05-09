@@ -11,6 +11,10 @@ import DataModel
 import FileManager
 
 class MetadataStore {
+  enum Error: Swift.Error {
+    case unableToFetchMetadata
+  }
+
   private(set) lazy var gitFetcher: MetadataFetcher = GitBasedMetadataFetcher(repositoryURL: URL(string: "git@github.com:alexrozanski/llamachat-models.git")!)
   private(set) lazy var fallbackFetcher = FileBasedMetadataFetcher(url: URL(string: "https://github.com/alexrozanski/llamachat-models/archive/refs/heads/main.zip")!)
 
@@ -18,7 +22,7 @@ class MetadataStore {
 
   init() {
     do {
-      if let repositoryDirectory {
+      if let repositoryDirectory = gitFetcher.cachedMetadataURL {
         let parser = MetadataParser()
         models.send(try parser.parseMetadata(at: repositoryDirectory))
       }
@@ -28,14 +32,22 @@ class MetadataStore {
   }
 
   func updateMetadata() async throws {
+    var metadataDirectory: URL?
     do {
-      models.send(try await gitFetcher.updateMetadata())
+      metadataDirectory = try await gitFetcher.fetchUpdatedMetadata()
     } catch {
-      models.send(try await fallbackFetcher.updateMetadata())
+      do {
+        metadataDirectory = try await fallbackFetcher.fetchUpdatedMetadata()
+      } catch {
+        throw Error.unableToFetchMetadata
+      }
     }
-  }
 
-  private var repositoryDirectory: URL? {
-    return cachesDirectoryURL()?.appending(component: "llamachat-models")
+    guard let metadataDirectory else {
+      throw Error.unableToFetchMetadata
+    }
+
+    let parser = MetadataParser()
+    models.send(try parser.parseMetadata(at: metadataDirectory))
   }
 }

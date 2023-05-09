@@ -26,9 +26,9 @@ struct ConfigureLocalPyTorchModelSettingsView: View {
       )
     case .canConvert(let canConvert):
       if canConvert {
-        SizePickerView(
-          viewModel: viewModel.modelSizePickerViewModel,
-          unknownModelSizeAppearance: .disabled
+        VariantPickerView(
+          viewModel: viewModel.variantPickerViewModel,
+          unknownModelVariantAppearance: .disabled
         )
       } else {
         LabeledContent { Text("") } label: {

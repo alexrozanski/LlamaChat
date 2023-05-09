@@ -17,10 +17,10 @@ struct ConfigureLocalGgmlModelSettingsView: View {
         .font(.footnote)
         .padding(.top, 8)
     }
-    SizePickerView(
-      viewModel: viewModel.modelSizePickerViewModel,
+    VariantPickerView(
+      viewModel: viewModel.variantPickerViewModel,
       enabled: viewModel.modelState.isValid,
-      unknownModelSizeAppearance: .regular
+      unknownModelVariantAppearance: .regular
     )
   }
 }

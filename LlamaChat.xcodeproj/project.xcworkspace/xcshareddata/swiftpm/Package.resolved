@@ -15,7 +15,7 @@
       "location" : "https://github.com/CameLLM/CameLLM.git",
       "state" : {
         "branch" : "main",
-        "revision" : "2bad0b848825cb251ed30012d3d7d55aa54317dc"
+        "revision" : "7cd0e42834f58a46f15eb2d162562f7ebc40ac61"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/CameLLM/CameLLM-Llama.git",
       "state" : {
         "branch" : "main",
-        "revision" : "9a74857e1760cb252402514667050f141eb39370"
+        "revision" : "2a06da7f72176451832498d81c65e9e1d0680423"
       }
     },
     {
