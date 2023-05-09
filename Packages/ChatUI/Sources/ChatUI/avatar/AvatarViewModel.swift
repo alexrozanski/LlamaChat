@@ -36,7 +36,10 @@ private func makeAvatar(for avatarImageName: String?, name: String) -> AvatarVie
   if let avatarImageName {
     return .image(named: avatarImageName)
   } else {
-    let initials = String(name.components(separatedBy: .whitespacesAndNewlines).map({$0.prefix(1)}).joined(separator: ""))
+    let initials = String(name.components(separatedBy: .whitespacesAndNewlines)
+      .map { $0.prefix(1) }
+      .filter { CharacterSet.alphanumerics.isSuperset(of: CharacterSet(charactersIn: String($0))) }
+      .joined(separator: ""))
     return .initials(initials)
   }
 }
