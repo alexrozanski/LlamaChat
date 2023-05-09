@@ -15,12 +15,11 @@ struct ResponsePayload: Decodable {
 }
 
 class FileBasedMetadataFetcher: MetadataFetcher {
-  private let url: URL
-
   private var downloadHandle: DownloadHandle?
 
-  init(url: URL) {
-    self.url = url
+  private let version: String
+  init(version: String) {
+    self.version = version
   }
 
   var cachedMetadataURL: URL? {
@@ -31,7 +30,7 @@ class FileBasedMetadataFetcher: MetadataFetcher {
   func fetchUpdatedMetadata() async throws -> URL {
     return try await withCheckedThrowingContinuation { continuation in
       downloadHandle = DownloadsManager.shared.downloadFile(
-        from: URL(string: "https://camellm.org/llamachat-models-main.zip")!,
+        from: URL(string: "https://github.com/alexrozanski/llamachat-models/archive/refs/heads/\(version).zip")!,
         progressHandler: nil,
         resultsHandler: { result in
           switch result {

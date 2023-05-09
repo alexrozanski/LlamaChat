@@ -17,8 +17,10 @@ class GitBasedMetadataFetcher: MetadataFetcher {
   }
 
   let repositoryURL: URL
-  init(repositoryURL: URL) {
+  let version: String
+  init(repositoryURL: URL, version: String) {
     self.repositoryURL = repositoryURL
+    self.version = version
   }
 
   var cachedMetadataURL: URL? {
@@ -57,7 +59,8 @@ class GitBasedMetadataFetcher: MetadataFetcher {
   private func update(in repositoryDirectory: URL) async throws {
     try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "clean", "-f", "."])).run()
     try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "reset", "--hard", "HEAD"])).run()
-    try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "pull", "-f"])).run()
+    try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "fetch"])).run()
+    try await Process.init(command: Process.Command("git", arguments: ["-C", repositoryDirectory.path, "checkout", version])).run()
   }
 
   private var repositoryDirectory: URL? {

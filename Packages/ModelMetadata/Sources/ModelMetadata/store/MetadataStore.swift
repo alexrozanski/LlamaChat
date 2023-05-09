@@ -10,13 +10,18 @@ import Combine
 import DataModel
 import FileManager
 
+private let supportedMetadataVersion = "v1"
+
 class MetadataStore {
   enum Error: Swift.Error {
     case unableToFetchMetadata
   }
 
-  private(set) lazy var gitFetcher: MetadataFetcher = GitBasedMetadataFetcher(repositoryURL: URL(string: "git@github.com:alexrozanski/llamachat-models.git")!)
-  private(set) lazy var fallbackFetcher = FileBasedMetadataFetcher(url: URL(string: "https://github.com/alexrozanski/llamachat-models/archive/refs/heads/main.zip")!)
+  private(set) lazy var gitFetcher: MetadataFetcher = GitBasedMetadataFetcher(
+    repositoryURL: URL(string: "git@github.com:alexrozanski/llamachat-models.git")!,
+    version: supportedMetadataVersion
+  )
+  private(set) lazy var fallbackFetcher = FileBasedMetadataFetcher(version: supportedMetadataVersion)
 
   let models = CurrentValueSubject<[Model], Never>([])
 
