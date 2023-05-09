@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import Coquille
 import CameLLM
 import CameLLMLlama
 import ModelDirectory

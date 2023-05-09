@@ -15,7 +15,7 @@
       "location" : "https://github.com/CameLLM/CameLLM.git",
       "state" : {
         "branch" : "main",
-        "revision" : "7e84d9cd3fe470acecac134683c955e47d198221"
+        "revision" : "2bad0b848825cb251ed30012d3d7d55aa54317dc"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/CameLLM/CameLLM-Llama.git",
       "state" : {
         "branch" : "main",
-        "revision" : "8abceb9391eb701f0cd65f39826ba8fd2744e294"
+        "revision" : "9a74857e1760cb252402514667050f141eb39370"
       }
     },
     {
@@ -42,7 +42,7 @@
       "location" : "https://github.com/CameLLM/CameLLM-Plugin-Harness",
       "state" : {
         "branch" : "main",
-        "revision" : "63d8f7241b9921c8103bc832d1edd8fdd1c2c59f"
+        "revision" : "92bd1acb24faeda4deaf0beefdfa3b24f759dd79"
       }
     },
     {
@@ -50,26 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alexrozanski/Coquille.git",
       "state" : {
-        "branch" : "v0.3",
-        "revision" : "4250068ef7d259e0023c099be58459e5d7dbcedd"
-      }
-    },
-    {
-      "identity" : "git-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/binarybirds/git-kit",
-      "state" : {
-        "revision" : "39a9357dd22ee189022c5db4cd82c6f438b02e1f",
-        "version" : "1.0.1"
-      }
-    },
-    {
-      "identity" : "shell-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/binarybirds/shell-kit",
-      "state" : {
-        "revision" : "8507fc5a1d4c9b4aca71fa69bf6030fb94229d37",
-        "version" : "1.0.1"
+        "revision" : "cb28716215a56760c66a4f635a1f71d6a2e2a42a",
+        "version" : "0.3.0"
       }
     },
     {

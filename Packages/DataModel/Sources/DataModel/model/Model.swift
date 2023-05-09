@@ -8,9 +8,14 @@
 import Foundation
 
 public struct Model: Codable {
-  public enum Source: String, Codable {
+  public enum Source: String {
     case local
     case remote
+  }
+
+  public enum Family: String {
+    case llama
+    case gptj
   }
 
   public let id: String
@@ -18,6 +23,7 @@ public struct Model: Codable {
   public let description: String
   public let source: Source
   public let sourcingDescription: String?
+  public let family: Family
   public let format: [String]
   public let languages: [String]
   public let legacy: Bool
@@ -30,6 +36,7 @@ public struct Model: Codable {
     case description
     case source
     case sourcingDescription
+    case family
     case format
     case legacy
     case languages
@@ -43,6 +50,7 @@ public struct Model: Codable {
     description: String,
     source: Source,
     sourcingDescription: String?,
+    family: Family,
     format: [String],
     languages: [String],
     legacy: Bool,
@@ -54,6 +62,7 @@ public struct Model: Codable {
     self.description = description
     self.source = source
     self.sourcingDescription = sourcingDescription
+    self.family = family
     self.format = format
     self.languages = languages
     self.legacy = legacy
@@ -66,18 +75,9 @@ public struct Model: Codable {
     id = try values.decode(String.self, forKey: .id)
     name = try values.decode(String.self, forKey: .name)
     description = try values.decode(String.self, forKey: .description)
-
-    let source = try values.decode(String.self, forKey: .source)
-    switch source {
-    case "local":
-      self.source = .local
-    case "remote":
-      self.source = .remote
-    default:
-      throw DecodingError.typeMismatch(Source.self, DecodingError.Context(codingPath: [CodingKeys.source], debugDescription: "unsupported source '\(source)'"))
-    }
+    source = try decodeSource(from: values)
     sourcingDescription = try values.decodeIfPresent(String.self, forKey: .sourcingDescription)
-
+    family = try decodeFamily(from: values)
     format = try values.decode([String].self, forKey: .format)
     legacy = try values.decodeIfPresent(Bool.self, forKey: .legacy) ?? false
     languages = try values.decode([String].self, forKey: .languages)
@@ -92,10 +92,35 @@ public struct Model: Codable {
     try container.encode(description, forKey: .description)
     try container.encode(source.rawValue, forKey: .source)
     try container.encode(sourcingDescription, forKey: .sourcingDescription)
+    try container.encode(family.rawValue, forKey: .family)
     try container.encode(format, forKey: .format)
     try container.encode(legacy, forKey: .legacy)
     try container.encode(languages, forKey: .languages)
     try container.encode(publisher, forKey: .publisher)
     try container.encode(variants, forKey: .variants)
+  }
+}
+
+private func decodeSource(from container: KeyedDecodingContainer<Model.CodingKeys>) throws -> Model.Source {
+  let source = try container.decode(String.self, forKey: .source)
+  switch source {
+  case "local":
+    return .local
+  case "remote":
+    return .remote
+  default:
+    throw DecodingError.typeMismatch(Model.Source.self, DecodingError.Context(codingPath: [Model.CodingKeys.source], debugDescription: "unsupported source '\(source)'"))
+  }
+}
+
+private func decodeFamily(from container: KeyedDecodingContainer<Model.CodingKeys>) throws -> Model.Family {
+  let family = try container.decode(String.self, forKey: .family)
+  switch family {
+  case "llama":
+    return .llama
+  case "gptj":
+    return .gptj
+  default:
+    throw DecodingError.typeMismatch(Model.Family.self, DecodingError.Context(codingPath: [Model.CodingKeys.family], debugDescription: "unsupported family '\(family)'"))
   }
 }
