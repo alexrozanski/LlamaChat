@@ -67,6 +67,7 @@ public class AddSourceViewModel: ObservableObject {
 
   private func makeConfigureDetailsViewModel(
     configuredSource: ConfiguredSource,
+    modelDirectoryId: ModelDirectory.ID?,
     modelURL: URL
   ) -> ConfigureDetailsViewModel {
     return ConfigureDetailsViewModel(
@@ -79,7 +80,7 @@ public class AddSourceViewModel: ObservableObject {
             model: configuredSource.model,
             modelVariant: configuredSource.modelVariant,
             modelURL: modelURL,
-            modelDirectoryId: nil,
+            modelDirectoryId: modelDirectoryId,
             modelParameters: defaultModelParameters(),
             useMlock: false
           )
@@ -111,6 +112,7 @@ public class AddSourceViewModel: ObservableObject {
         .configureDetails(
           makeConfigureDetailsViewModel(
             configuredSource: configuredSource,
+            modelDirectoryId: nil,
             modelURL: modelURL
           )
         )
@@ -128,16 +130,13 @@ public class AddSourceViewModel: ObservableObject {
       do {
         let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
         let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
-        add(
-          source: ChatSource(
-            name: "",
-            avatarImageName: "",
-            model: configuredSource.model,
-            modelVariant: configuredSource.modelVariant,
-            modelURL: modelFileURL,
-            modelDirectoryId: modelDirectory.id,
-            modelParameters: defaultModelParameters(),
-            useMlock: false
+        navigationPath.append(
+          .configureDetails(
+            makeConfigureDetailsViewModel(
+              configuredSource: configuredSource,
+              modelDirectoryId: modelDirectory.id,
+              modelURL: modelFileURL
+            )
           )
         )
       } catch {
