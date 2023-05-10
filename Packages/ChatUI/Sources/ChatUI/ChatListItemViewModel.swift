@@ -14,7 +14,16 @@ public class ChatListItemViewModel: ObservableObject {
 
   var id: String { chatSource.id }
   var modelDescription: String {
-    return "\(chatSource.model.name)\(chatSource.modelVariant.map({ $0.name }) ?? "")"
+    guard let modelVariant = chatSource.modelVariant else {
+      return chatSource.model.name
+    }
+
+    let parentheses = CharacterSet(charactersIn: "()")
+    if modelVariant.name.rangeOfCharacter(from: parentheses) != nil {
+      return "\(chatSource.model.name) — \(modelVariant.name)"
+    }
+
+    return "\(chatSource.model.name) (\(modelVariant.name))"
   }
   @Published var title: String
 

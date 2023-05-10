@@ -99,8 +99,7 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
           guard let self else { return }
           let configuredSource = ConfiguredSource(
             model: self.model,
-            modelVariant: self.modelVariant,
-            settings: .downloadedFile(fileURL: url)
+            settings: .downloadedFile(fileURL: url, variant: self.modelVariant)
           )
           self.nextHandler(configuredSource)
         }
@@ -146,7 +145,7 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
     case .none, .checkingReachability, .downloadingModel, .downloadedModel, .cannotDownload, .failedToDownload:
       break
     case .readyToDownload:
-      let downloadHandle = DownloadsManager.shared.downloadFile(from: URL(string: "https://camellm.org/llamachat-models-main.zip")!, progressHandler: { [weak self] progress in
+      let downloadHandle = DownloadsManager.shared.downloadFile(from: downloadURL, progressHandler: { [weak self] progress in
         self?.updateDownloadProgress(
           downloadedBytes: Int64(progress.completedUnitCount),
           totalBytes: Int64(progress.totalUnitCount)

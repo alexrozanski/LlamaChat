@@ -47,24 +47,12 @@ class ChatInfoViewModel: ObservableObject {
     return chatModel.source.name
   }
   
-  var modelSize: String {
-    return ""
-//    switch chatModel.source.modelSize {
-//    case .unknown:
-//      return "Unknown"
-//    case .size7B:
-//      return "7B"
-//    case .size13B:
-//      return "13B"
-//    case .size30B:
-//      return "30B"
-//    case .size65B:
-//      return "65B"
-//    }
+  var modelVariant: String? {
+    return chatModel.source.modelVariant?.name
   }
 
-  var modelType: String {
-    return "\(chatModel.source.model.name) model"
+  var modelName: String {
+    return chatModel.source.model.name
   }
 
   @Published private(set) var context: ModelStat<String> = .none

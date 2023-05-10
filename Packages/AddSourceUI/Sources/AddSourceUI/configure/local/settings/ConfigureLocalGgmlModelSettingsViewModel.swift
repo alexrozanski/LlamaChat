@@ -144,12 +144,13 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
       .assign(to: &pathSelectorViewModel.$errorMessage)
 
     $modelState
-      .map { modelState in
+      .combineLatest(variantPickerViewModel.$selectedVariant)
+      .map { modelState, selectedVariant in
         switch modelState {
         case .none, .invalidModel, .invalidPath:
           return nil
         case .valid(modelURL: let modelURL):
-          return .ggmlModel(modelURL: modelURL)
+          return .ggmlModel(modelURL: modelURL, variant: selectedVariant)
         }
       }
       .assign(to: \.value, on: sourceSettings)

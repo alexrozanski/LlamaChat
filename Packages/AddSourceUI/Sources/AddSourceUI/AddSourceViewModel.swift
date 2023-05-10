@@ -43,7 +43,8 @@ public class AddSourceViewModel: ObservableObject {
 
   private func makeConvertSourceViewModel(
     configuredSource: ConfiguredSource,
-    validatedData: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>
+    validatedData: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>,
+    variant: ModelVariant?
   ) -> ConvertSourceViewModel {
     return ConvertSourceViewModel(
       data: validatedData,
@@ -53,7 +54,7 @@ public class AddSourceViewModel: ObservableObject {
             name: "",
             avatarImageName: "",
             model: configuredSource.model,
-            modelVariant: configuredSource.modelVariant,
+            modelVariant: variant,
             modelURL: modelURL,
             modelDirectoryId: modelDirectory.id,
             modelParameters: defaultModelParameters(),
@@ -68,7 +69,8 @@ public class AddSourceViewModel: ObservableObject {
   private func makeConfigureDetailsViewModel(
     configuredSource: ConfiguredSource,
     modelDirectoryId: ModelDirectory.ID?,
-    modelURL: URL
+    modelURL: URL,
+    variant: ModelVariant?
   ) -> ConfigureDetailsViewModel {
     return ConfigureDetailsViewModel(
       configuredSource: configuredSource,
@@ -78,7 +80,7 @@ public class AddSourceViewModel: ObservableObject {
             name: details.name,
             avatarImageName: details.avatarImageName,
             model: configuredSource.model,
-            modelVariant: configuredSource.modelVariant,
+            modelVariant: variant,
             modelURL: modelURL,
             modelDirectoryId: modelDirectoryId,
             modelParameters: defaultModelParameters(),
@@ -107,26 +109,28 @@ public class AddSourceViewModel: ObservableObject {
 
   private func handleConfiguredSource(_ configuredSource: ConfiguredSource) {
     switch configuredSource.settings {
-    case .ggmlModel(modelURL: let modelURL):
+    case .ggmlModel(modelURL: let modelURL, variant: let modelVariant):
       navigationPath.append(
         .configureDetails(
           makeConfigureDetailsViewModel(
             configuredSource: configuredSource,
             modelDirectoryId: nil,
-            modelURL: modelURL
+            modelURL: modelURL,
+            variant: modelVariant
           )
         )
       )
-    case .pyTorchCheckpoints(data: let validatedData):
+    case .pyTorchCheckpoints(data: let validatedData, variant: let modelVariant):
       navigationPath.append(
         .convertPyTorchSource(
           makeConvertSourceViewModel(
             configuredSource: configuredSource,
-            validatedData: validatedData
+            validatedData: validatedData,
+            variant: modelVariant
           )
         )
       )
-    case .downloadedFile(fileURL: let fileURL):
+    case .downloadedFile(fileURL: let fileURL, variant: let modelVarient):
       do {
         let modelDirectory = try ModelFileManager.shared.makeNewModelDirectory()
         let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
@@ -135,7 +139,8 @@ public class AddSourceViewModel: ObservableObject {
             makeConfigureDetailsViewModel(
               configuredSource: configuredSource,
               modelDirectoryId: modelDirectory.id,
-              modelURL: modelFileURL
+              modelURL: modelFileURL,
+              variant: modelVarient
             )
           )
         )

@@ -57,8 +57,6 @@ struct ChatInfoView: View {
         VStack(spacing: 4) {
           Text(viewModel.name)
             .font(.headline)
-          Text(viewModel.modelType)
-            .font(.system(size: 12))
         }
       }
       .frame(maxWidth: .infinity)
@@ -83,10 +81,17 @@ struct ChatInfoView: View {
   @ViewBuilder var properties: some View {
     Section {
       LabeledContent(content: {
-        Text(viewModel.modelSize)
+        Text(viewModel.modelName)
       }, label: {
-        Text("Model Size")
+        Text("Model")
       })
+      if let modelVariant = viewModel.modelVariant {
+        LabeledContent(content: {
+          Text(modelVariant)
+        }, label: {
+          Text("Model Variant")
+        })
+      }
     }
   }
 

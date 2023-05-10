@@ -184,6 +184,24 @@ extension ChatSourcesModel: ChatSourceUpgrader {
 
 extension ChatSourcesModel: ModelProvider {
   public func provideModels(modelId: String, variantId: String?) -> (model: Model?, variant: ModelVariant?) {
-    return (initialModels.first { $0.id == modelId }, nil)
+    return (
+      initialModels.find(modelId: modelId),
+      variantId.flatMap { initialModels.findVariant(variantId: $0) }
+    )
+  }
+}
+
+fileprivate extension Array where Element == Model {
+  func find(modelId: String) -> Model? {
+    first { $0.id == modelId }
+  }
+
+  func findVariant(variantId: String) -> ModelVariant? {
+    for model in self {
+      if let variant = model.variants.first(where: { $0.id == variantId }) {
+        return variant
+      }
+    }
+    return nil
   }
 }

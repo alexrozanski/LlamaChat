@@ -87,7 +87,6 @@ class ConfigureLocalModelViewModel: ObservableObject {
     nextHandler(
       ConfiguredSource(
         model: model,
-        modelVariant: nil,
         settings: sourceSettings
       )
     )

@@ -15,24 +15,10 @@ class SourceSettingsPropertiesViewModel: ObservableObject {
   var modelPath: String
 
   var type: String {
-    return ""
-//    return source.type.readableName
+    return source.model.name
   }
-  var modelSize: String {
-    return ""
-
-//    switch source.modelSize {
-//    case .unknown:
-//      return "Unknown"
-//    case .size7B:
-//      return "7B"
-//    case .size13B:
-//      return "13B"
-//    case .size30B:
-//      return "30B"
-//    case .size65B:
-//      return "65B"
-//    }
+  var variant: String? {
+    return source.modelVariant?.name
   }
 
   @Published private(set) var name: String

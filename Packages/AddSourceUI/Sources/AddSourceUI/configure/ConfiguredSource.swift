@@ -13,12 +13,11 @@ import DataModel
 
 struct ConfiguredSource {
   let model: Model
-  let modelVariant: ModelVariant?
   let settings: ConfiguredSourceSettings
 }
 
 enum ConfiguredSourceSettings {
-  case ggmlModel(modelURL: URL)
-  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>)
-  case downloadedFile(fileURL: URL)
+  case ggmlModel(modelURL: URL, variant: ModelVariant?)
+  case pyTorchCheckpoints(data: ValidatedModelConversionData<ConvertPyTorchToGgmlConversionData>, variant: ModelVariant?)
+  case downloadedFile(fileURL: URL, variant: ModelVariant?)
 }

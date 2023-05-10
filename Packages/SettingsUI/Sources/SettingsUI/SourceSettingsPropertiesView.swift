@@ -63,6 +63,9 @@ struct SourceSettingsPropertiesView: View {
       }
       Section("Model") {
         LabeledContent("Model Type", value: viewModel.type)
+        if let variant = viewModel.variant {
+          LabeledContent("Model Variant", value: variant)
+        }
         LabeledContent("Model Path") {
           HStack {
             Text(viewModel.modelPath)
@@ -81,9 +84,6 @@ struct SourceSettingsPropertiesView: View {
             .buttonStyle(.borderless)
             .menuIndicator(.hidden)
           }
-        }
-        LabeledContent("Model Size") {
-          Text(viewModel.modelSize)
         }
       }
       Section("Prediction") {

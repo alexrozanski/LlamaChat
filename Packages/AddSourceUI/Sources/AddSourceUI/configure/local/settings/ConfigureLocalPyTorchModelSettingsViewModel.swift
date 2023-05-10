@@ -133,12 +133,13 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
       .assign(to: &pathSelectorViewModel.$errorMessage)
 
     $modelState
-      .map { modelState in
+      .combineLatest(variantPickerViewModel.$selectedVariant)
+      .map { modelState, selectedVariant in
         switch modelState {
         case .none, .invalidModelDirectory:
           return nil
         case .valid(data: let validatedData):
-          return .pyTorchCheckpoints(data: validatedData)
+          return .pyTorchCheckpoints(data: validatedData, variant: selectedVariant)
         }
       }
       .assign(to: \.value, on: sourceSettings)
