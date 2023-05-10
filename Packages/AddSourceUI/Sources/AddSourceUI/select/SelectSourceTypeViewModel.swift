@@ -65,7 +65,6 @@ class SelectSourceTypeViewModel: ObservableObject {
           viewModel: self
         )
       }
-      .receive(on: DispatchQueue.main)
       .sink { [weak self] (sources, matches) in
         self?.cards = sources.map { source in
           CardViewModel(

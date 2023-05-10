@@ -53,6 +53,8 @@ class MetadataStore {
     }
 
     let parser = MetadataParser()
-    models.send(try parser.parseMetadata(at: metadataDirectory))
+    try await MainActor.run {
+      models.send(try parser.parseMetadata(at: metadataDirectory))
+    }
   }
 }
