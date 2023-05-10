@@ -44,7 +44,7 @@ struct PathSelectorView: View {
 
   @ViewBuilder var singlePathSelectorContent: some View {
     CardContentRowView(label: viewModel.label, hasBottomBorder: true) {
-      HStack {
+      HStack(alignment: .firstTextBaseline) {
         VStack(alignment: .trailing, spacing: 4) {
           Text(viewModel.modelPaths.first ?? "No path selected")
             .lineLimit(1)

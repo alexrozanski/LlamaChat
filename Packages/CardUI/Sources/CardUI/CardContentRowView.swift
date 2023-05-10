@@ -86,7 +86,7 @@ public struct CardContentRowView<Content>: View where Content: View {
   public var body: some View {
     VStack(spacing: 0) {
       HStack(alignment: .firstTextBaseline) {
-        HStack {
+        HStack(alignment: .firstTextBaseline) {
           if let label {
             Text(label)
               .fontWeight(.medium)

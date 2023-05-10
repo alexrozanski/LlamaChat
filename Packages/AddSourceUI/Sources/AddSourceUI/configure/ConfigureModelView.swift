@@ -74,19 +74,21 @@ struct ConfigureModelView: View {
   @ObservedObject var viewModel: ConfigureModelViewModel
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
-      if viewModel.isSourceSelectable {
-        Text("How do you want to add the model files needed for this source?")
-          .padding(.horizontal, 12)
+    ScrollView {
+      VStack(alignment: .leading, spacing: 12) {
+        if viewModel.isSourceSelectable {
+          Text("How do you want to add the model files needed for this source?")
+            .padding(.horizontal, 12)
+        }
+        ForEach(viewModel.sourceViewModels, id: \.id) { sourceViewModel in
+          ModelSourceView(
+            viewModel: sourceViewModel,
+            configureModelViewModel: viewModel
+          )
+        }
+        Spacer()
       }
-      ForEach(viewModel.sourceViewModels, id: \.id) { sourceViewModel in
-        ModelSourceView(
-          viewModel: sourceViewModel,
-          configureModelViewModel: viewModel
-        )
-      }
-      Spacer()
+      .padding(20)
     }
-    .padding()
   }
 }
