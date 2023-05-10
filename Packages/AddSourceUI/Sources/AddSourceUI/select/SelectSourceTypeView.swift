@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CardUI
 import SharedUI
 import DataModel
 
@@ -30,8 +31,8 @@ struct CardContentView: View {
           )
         }
         if !source.isRemote {
-          ForEach(source.variants, id: \.id) { variant in
-            PillView(label: variant.name, style: .filled())
+          ForEach(source.variantRows, id: \.id) { variant in
+            PillView(label: variant.label, style: .filled())
           }
         }
         ForEach(source.languages, id: \.code) { language in
@@ -49,57 +50,6 @@ struct CardContentView: View {
         Text(source.publisher)
           .foregroundColor(.gray)
           .font(.footnote)
-      }
-    }
-  }
-}
-
-struct SourceTypeVariantView: View {
-  let variant: VariantViewModel
-  let hasBottomBorder: Bool
-
-  @State var hovered = false
-  @State var infoPopoverPresented = false
-
-  var body: some View {
-    VStack(spacing: 0) {
-      HStack(alignment: .firstTextBaseline) {
-        Image(systemName: "point.3.connected.trianglepath.dotted")
-        Text(variant.name)
-          .fontWeight(.medium)
-        if let description = variant.description {
-          Button {
-            infoPopoverPresented = true
-          } label: {
-            Image(systemName: "info.circle.fill")
-              .foregroundColor(.gray)
-          }
-          .buttonStyle(.plain)
-          .popover(isPresented: $infoPopoverPresented) {
-            Text(description)
-              .fixedSize(horizontal: false, vertical: true)
-              .frame(width: 200)
-              .padding()
-          }
-        }
-        Spacer()
-        Image(systemName: "chevron.right")
-      }
-      .padding(.horizontal, 10)
-      .padding(.vertical, 8)
-      .background(
-        hovered ? CardViewColors.hoverBackground : .clear
-      )
-      .onHover { hovered in
-        self.hovered = hovered
-      }
-      .onTapGesture {
-        variant.select()
-      }
-      if hasBottomBorder {
-        Rectangle()
-          .fill(CardViewColors.border)
-          .frame(height: 0.5)
       }
     }
   }
@@ -154,8 +104,8 @@ struct SelectSourceTypeView: View {
               CardContentView(source: source)
             } body: { source in
               VStack(spacing: 0) {
-                ForEach(source.variants, id: \.id) { variantViewModel in
-                  SourceTypeVariantView(variant: variantViewModel, hasBottomBorder: variantViewModel !== source.variants.last)
+                ForEach(source.variantRows, id: \.id) { rowViewModel in
+                  SelectableCardContentRowView(viewModel: rowViewModel, hasBottomBorder: rowViewModel !== source.variantRows.last)
                 }
               }
             }

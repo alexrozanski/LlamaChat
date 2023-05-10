@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CardUI
 import SharedUI
 
 struct ConfigureLocalPyTorchModelSettingsView: View {
@@ -40,18 +41,20 @@ struct ConfigureLocalPyTorchModelSettingsView: View {
       }
     }
     if viewModel.showPathSelector {
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 0) {
         PathSelectorView(viewModel: viewModel.pathSelectorViewModel)
         if let files = viewModel.files {
-          VStack(alignment: .leading, spacing: 4) {
-            ForEach(files, id: \.url) { file in
-              HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Image(systemName: file.found ? "checkmark.circle.fill" : "xmark.circle.fill")
-                  .foregroundColor(file.found ? .green : .red)
-                Text(file.url.path)
-                  .foregroundColor(.gray)
-                  .lineLimit(1)
-                  .truncationMode(.head)
+          CardContentRowView(hasBottomBorder: true) {
+            VStack(alignment: .leading, spacing: 4) {
+              ForEach(files, id: \.url) { file in
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                  Image(systemName: file.found ? "checkmark.circle.fill" : "xmark.circle.fill")
+                    .foregroundColor(file.found ? .green : .red)
+                  Text(file.url.path)
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
+                    .truncationMode(.head)
+                }
               }
             }
           }

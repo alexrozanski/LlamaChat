@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import CardUI
 
 struct SelectModelFormatView: View {
   @ObservedObject var viewModel: ConfigureLocalModelViewModel
 
   var body: some View {
-    Section {
-      Picker("Format", selection: $viewModel.modelSourceType) {
+    CardContentRowView(label: "Format", hasBottomBorder: true) {
+      Picker("", selection: $viewModel.modelSourceType) {
         Text("Select Format")
           .foregroundColor(Color(nsColor: NSColor.disabledControlTextColor))
           .tag(ConfigureLocalModelSourceType?(nil))
@@ -22,15 +23,7 @@ struct SelectModelFormatView: View {
             .multilineTextAlignment(.trailing)
         }
       }
-    } header: {
-      VStack(alignment: .leading, spacing: 6) {
-        Text("Model Settings")
-        if let sourcingDescription = viewModel.modelSourcingDescription {
-          Text(sourcingDescription)
-            .font(.system(size: 12, weight: .regular))
-        }
-      }
-      .padding(.bottom, 12)
+      .fixedSize(horizontal: true, vertical: false)
     }
   }
 }

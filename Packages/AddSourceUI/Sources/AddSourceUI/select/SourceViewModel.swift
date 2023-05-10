@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CardUI
 import DataModel
 
 class SourceViewModel {
@@ -30,7 +31,7 @@ class SourceViewModel {
   let model: Model
   private let selectionHandler: (ModelVariant?) -> Void
 
-  @Published var variants: [VariantViewModel]
+  @Published var variantRows: [SelectableCardContentRowViewModel]
 
   init(model: Model, matches: [SourceFilterMatch]?, selectionHandler: @escaping (ModelVariant?) -> Void) {
     self.model = model
@@ -39,17 +40,23 @@ class SourceViewModel {
     let matchesModel = matches?.matchesModel(id: model.id) ?? true
 
     self.selectionHandler = selectionHandler
-    self.variants = []
+    self.variantRows = []
 
-    variants = model
+    variantRows = model
       .variants
       .filter { variant in
         matchesModel ? true : (matches?.matchesVariant(variantId: variant.id, modelId: model.id) ?? false)
       }
       .map { variant in
-        VariantViewModel(model: variant, selectionHandler: { [weak self] in
-          self?.select(variant: variant)
-        })
+        SelectableCardContentRowViewModel(
+          id: variant.id,
+          label: variant.name,
+          icon: "point.3.connected.trianglepath.dotted",
+          description: variant.description,
+          selectionHandler: { [weak self] in
+            self?.select(variant: variant)
+          }
+        )
       }
   }
 
@@ -92,23 +99,5 @@ class SourceViewModel {
 
   func select(variant: ModelVariant?) {
     selectionHandler(variant)
-  }
-}
-
-class VariantViewModel {
-  var id: String { return model.id }
-  var name: String { return model.name }
-  var description: String? { return model.description }
-
-  let model: ModelVariant
-  private let selectionHandler: () -> Void
-
-  init(model: ModelVariant, selectionHandler: @escaping () -> Void) {
-    self.model = model
-    self.selectionHandler = selectionHandler
-  }
-
-  func select() {
-    selectionHandler()
   }
 }

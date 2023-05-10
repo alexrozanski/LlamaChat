@@ -32,13 +32,14 @@ class ConfigureModelViewModel: ObservableObject {
 
   enum State {
     case selectingSource
-    case configuring
+    case configuringLocalModel(ConfigureLocalModelViewModel)
+    case configuringRemoteModel(ConfigureDownloadableModelViewModel)
 
     var isSelectingSource: Bool {
       switch self {
       case .selectingSource:
         return true
-      case .configuring:
+      case .configuringLocalModel, .configuringRemoteModel:
         return false
       }
     }
@@ -47,10 +48,12 @@ class ConfigureModelViewModel: ObservableObject {
   var modelName: String { return model.name }
 
   @Published var selectedSource: ModelSource?
+
+  @Published var isSourceSelectable: Bool
   @Published var isSelectingSource = false
   @Published var isConfiguringSource = false
 
-  @Published private var state = State.selectingSource
+  @Published private(set) var state = State.selectingSource
 
   private let availableSourceViewModels: [ModelSourceViewModel]
   @Published var sourceViewModels = [ModelSourceViewModel]()
@@ -58,9 +61,14 @@ class ConfigureModelViewModel: ObservableObject {
   private(set) lazy var primaryActionsViewModel = PrimaryActionsViewModel()
 
   private let model: Model
+  private let variant: ModelVariant?
 
-  init(model: Model) {
+  init(
+    model: Model,
+    variant: ModelVariant?
+  ) {
     self.model = model
+    self.variant = variant
 
     availableSourceViewModels = [
       ModelSourceViewModel(
@@ -84,6 +92,8 @@ class ConfigureModelViewModel: ObservableObject {
       }
     }
 
+    isSourceSelectable = availableSourceViewModels.count > 1
+
     $selectedSource
       .combineLatest($state)
       .map { selectedSource, state in
@@ -96,7 +106,7 @@ class ConfigureModelViewModel: ObservableObject {
           return PrimaryActionsButton(title: "Continue", action: { [weak self] in
             self?.confirmModelSource()
           })
-        case .configuring:
+        case .configuringLocalModel, .configuringRemoteModel:
           return PrimaryActionsButton(title: "Continue", disabled: true, action: {})
         }
       }
@@ -111,7 +121,7 @@ class ConfigureModelViewModel: ObservableObject {
         switch state {
         case .selectingSource:
           return false
-        case .configuring:
+        case .configuringLocalModel, .configuringRemoteModel:
           return true
         }
       }
@@ -125,16 +135,46 @@ class ConfigureModelViewModel: ObservableObject {
         switch state {
         case .selectingSource:
           return self.availableSourceViewModels
-        case .configuring:
-          return self.availableSourceViewModels.filter { $0.source == selectedSource }
+        case .configuringLocalModel:
+          return self.availableSourceViewModels.filter { $0.source == .local }
+        case .configuringRemoteModel:
+          return self.availableSourceViewModels.filter { $0.source == .remote }
         }
       }
       .assign(to: &$sourceViewModels)
+
+    if availableSourceViewModels.count == 1, let sourceModel = availableSourceViewModels.first {
+      select(source: sourceModel.source)
+    }
   }
 
   func confirmModelSource() {
-    guard state.isSelectingSource else { return }
+    guard state.isSelectingSource, let selectedSource else { return }
+    select(source: selectedSource)
+  }
 
-    state = .configuring
+  private func select(source: ModelSource) {
+    switch source {
+    case .local:
+      state = .configuringLocalModel(
+        ConfigureLocalModelViewModel(
+          model: model,
+          nextHandler: { _ in }
+        )
+      )
+    case .remote:
+      guard let variant, let downloadURL = variant.downloadUrl else {
+        break
+      }
+
+      state = .configuringRemoteModel(
+        ConfigureDownloadableModelViewModel(
+          model: model,
+          modelVariant: variant,
+          downloadURL: downloadURL,
+          nextHandler: { _ in }
+        )
+      )
+    }
   }
 }

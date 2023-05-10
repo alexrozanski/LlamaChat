@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CardUI
 import DataModel
 
 struct VariantPickerView: View {
@@ -42,17 +43,20 @@ struct VariantPickerView: View {
       set: { viewModel.select(variantId: $0) }
     )
 
-    Picker(viewModel.label, selection: selectionBinding) {
-      Text(viewModel.emptySelectionLabel)
-        .foregroundColor(unknownModelVariantAppearance.isDisabled ? Color(nsColor: NSColor.disabledControlTextColor) : nil)
-        .tag("")
-      if !unknownModelVariantAppearance.isDisabled {
-        Divider()
+    CardContentRowView(label: viewModel.label, hasBottomBorder: true) {
+      Picker("", selection: selectionBinding) {
+        Text(viewModel.emptySelectionLabel)
+          .foregroundColor(unknownModelVariantAppearance.isDisabled ? Color(nsColor: NSColor.disabledControlTextColor) : nil)
+          .tag("")
+        if !unknownModelVariantAppearance.isDisabled {
+          Divider()
+        }
+        ForEach(viewModel.variants, id: \.id) { variant in
+          Text(viewModel.label(for: variant)).tag(variant.id)
+        }
       }
-      ForEach(viewModel.variants, id: \.id) { variant in
-        Text(viewModel.label(for: variant)).tag(variant.id)
-      }
+      .disabled(!enabled)
+      .fixedSize(horizontal: true, vertical: false)
     }
-    .disabled(!enabled)
   }
 }

@@ -11,12 +11,7 @@ struct ConfigureLocalGgmlModelSettingsView: View {
   @ObservedObject var viewModel: ConfigureLocalGgmlModelSettingsViewModel
 
   var body: some View {
-    VStack(alignment: .leading) {
-      PathSelectorView(viewModel: viewModel.pathSelectorViewModel)
-      Text("Select the quantized \(viewModel.modelName) model path. This should be called something like '\(viewModel.exampleModelPath)'")
-        .font(.footnote)
-        .padding(.top, 8)
-    }
+    PathSelectorView(viewModel: viewModel.pathSelectorViewModel)
     VariantPickerView(
       viewModel: viewModel.variantPickerViewModel,
       enabled: viewModel.modelState.isValid,

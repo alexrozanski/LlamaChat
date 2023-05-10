@@ -50,7 +50,6 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
   let modelVariant: ModelVariant
   let downloadURL: URL
 
-  let detailsViewModel: ConfigureSourceDetailsViewModel
   let primaryActionsViewModel = PrimaryActionsViewModel()
 
   private let nextHandler: ConfigureSourceNextHandler
@@ -67,7 +66,6 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
     self.model = model
     self.modelVariant = modelVariant
     self.downloadURL = downloadURL
-    self.detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, model: model)
     self.nextHandler = nextHandler
   }
 
@@ -100,8 +98,6 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
         return PrimaryActionsButton(title: "Continue") {
           guard let self else { return }
           let configuredSource = ConfiguredSource(
-            name: self.detailsViewModel.name,
-            avatarImageName: self.detailsViewModel.avatarImageName,
             model: self.model,
             modelVariant: self.modelVariant,
             settings: .downloadedFile(fileURL: url)
@@ -110,7 +106,6 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
         }
       }
     }
-    .receive(on: DispatchQueue.main)
     .assign(to: &primaryActionsViewModel.$continueButton)
 
     $state.map { state in

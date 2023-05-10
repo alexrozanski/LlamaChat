@@ -50,8 +50,8 @@ public class AddSourceViewModel: ObservableObject {
       completionHandler: { [weak self] modelURL, modelDirectory in
         self?.add(
           source: ChatSource(
-            name: configuredSource.name,
-            avatarImageName: configuredSource.avatarImageName,
+            name: "",
+            avatarImageName: "",
             model: configuredSource.model,
             modelVariant: configuredSource.modelVariant,
             modelURL: modelURL,
@@ -66,38 +66,9 @@ public class AddSourceViewModel: ObservableObject {
   }
 
   private func handleSelectedSource(model: Model, variant: ModelVariant?) {
-//    let step: AddSourceStep
-//    switch model.source {
-//    case .local:
-//      step = .configureLocal(
-//        ConfigureLocalModelViewModel(
-//          defaultName: model.name,
-//          model: model,
-//          exampleGgmlModelPath: "ggml-model-q4_0.bin",
-//          nextHandler: { [weak self] configuredSource in
-//            self?.handleConfiguredSource(source: configuredSource)
-//          }
-//        )
-//      )
-//    case .remote:
-//      guard let variant, let downloadURL = variant.downloadUrl else { return }
-//
-//      step = .configureRemote(
-//        ConfigureDownloadableModelViewModel(
-//          defaultName: model.name,
-//          model: model,
-//          modelVariant: variant,
-//          downloadURL: downloadURL,
-//          nextHandler: { [weak self] configuredSource in
-//            self?.handleConfiguredSource(source: configuredSource)
-//          }
-//        )
-//      )
-//    }
-
     navigationPath.append(
       .configureModel(
-        ConfigureModelViewModel(model: model)
+        ConfigureModelViewModel(model: model, variant: variant)
       )
     )
   }
@@ -107,8 +78,8 @@ public class AddSourceViewModel: ObservableObject {
     case .ggmlModel(modelURL: let modelURL):
       add(
         source: ChatSource(
-          name: source.name,
-          avatarImageName: source.avatarImageName,
+          name: "",
+          avatarImageName: "",
           model: source.model,
           modelVariant: source.modelVariant,
           modelURL: modelURL,
@@ -132,8 +103,8 @@ public class AddSourceViewModel: ObservableObject {
         let modelFileURL = try modelDirectory.moveFileIntoDirectory(from: fileURL)
         add(
           source: ChatSource(
-            name: source.name,
-            avatarImageName: source.avatarImageName,
+            name: "",
+            avatarImageName: "",
             model: source.model,
             modelVariant: source.modelVariant,
             modelURL: modelFileURL,

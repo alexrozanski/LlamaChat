@@ -77,13 +77,11 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
   var modelSize: ModelParameterSize? { return nil } // return variantPickerViewModel.selectedModelSize }
 
   let model: Model
-  let exampleModelPath: String
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(model: Model, exampleModelPath: String) {
+  init(model: Model) {
     self.model = model
-    self.exampleModelPath = exampleModelPath
 
     pathSelectorViewModel.$modelPaths
       .map { modelPaths in

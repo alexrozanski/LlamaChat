@@ -6,10 +6,30 @@
 //
 
 import SwiftUI
+import CardUI
 
 fileprivate struct ModelSourceView: View {
   let viewModel: ModelSourceViewModel
   @ObservedObject var configureModelViewModel: ConfigureModelViewModel
+
+  @ViewBuilder var configureView: some View {
+    switch viewModel.source {
+    case .local:
+      switch configureModelViewModel.state {
+      case .configuringLocalModel(let localModelViewModel):
+        ConfigureLocalModelView(viewModel: localModelViewModel)
+      case .selectingSource, .configuringRemoteModel:
+        EmptyView()
+      }
+    case .remote:
+      switch configureModelViewModel.state {
+      case .configuringRemoteModel(let downloadableModelViewModel):
+        ConfigureDownloadableModelView(viewModel: downloadableModelViewModel)
+      case .selectingSource, .configuringLocalModel:
+        EmptyView()
+      }
+    }
+  }
 
   var body: some View {
     CardView(viewModel: CardViewModel(
@@ -45,7 +65,7 @@ fileprivate struct ModelSourceView: View {
         }
       }
     } body: {
-      EmptyView()
+      configureView
     }
   }
 }
@@ -55,8 +75,10 @@ struct ConfigureModelView: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
-      Text("How do you want to add the model files needed for this source?")
-        .padding(.horizontal, 12)
+      if viewModel.isSourceSelectable {
+        Text("How do you want to add the model files needed for this source?")
+          .padding(.horizontal, 12)
+      }
       ForEach(viewModel.sourceViewModels, id: \.id) { sourceViewModel in
         ModelSourceView(
           viewModel: sourceViewModel,

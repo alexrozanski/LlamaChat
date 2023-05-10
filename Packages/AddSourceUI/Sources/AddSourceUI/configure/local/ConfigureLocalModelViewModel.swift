@@ -30,7 +30,6 @@ class ConfigureLocalModelViewModel: ObservableObject {
   @Published var modelSourceType: ConfigureLocalModelSourceType?
   @Published private(set) var settingsViewModel: ConfigureLocalModelSettingsViewModel?
 
-  let detailsViewModel: ConfigureSourceDetailsViewModel
   private var settingsViewModels = [ConfigureLocalModelSourceType: ConfigureLocalModelSettingsViewModel]()
 
   // MARK: - Validation
@@ -38,7 +37,6 @@ class ConfigureLocalModelViewModel: ObservableObject {
   let primaryActionsViewModel = PrimaryActionsViewModel()
 
   let model: Model
-  let exampleGgmlModelPath: String
   private let nextHandler: ConfigureSourceNextHandler
 
   private var subscriptions = Set<AnyCancellable>()
@@ -46,12 +44,9 @@ class ConfigureLocalModelViewModel: ObservableObject {
   init(
     defaultName: String? = nil,
     model: Model,
-    exampleGgmlModelPath: String,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {
-    detailsViewModel = ConfigureSourceDetailsViewModel(defaultName: defaultName, model: model)
     self.model = model
-    self.exampleGgmlModelPath = exampleGgmlModelPath
     self.nextHandler = nextHandler
 
     let configuredSource = $settingsViewModel
@@ -65,11 +60,9 @@ class ConfigureLocalModelViewModel: ObservableObject {
       }
       .assign(to: &$settingsViewModel)
 
-    let canContinue = detailsViewModel.$name
-      .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-      .combineLatest(configuredSource)
-      .map { nameValid, configuredSource in
-        return nameValid && configuredSource != nil
+    let canContinue = configuredSource
+      .map { configuredSource in
+        return configuredSource != nil
       }
 
     $modelSourceType
@@ -93,8 +86,6 @@ class ConfigureLocalModelViewModel: ObservableObject {
     guard let sourceSettings = settingsViewModel?.sourceSettings.value else { return }
     nextHandler(
       ConfiguredSource(
-        name: detailsViewModel.name,
-        avatarImageName: detailsViewModel.avatarImageName,
         model: model,
         modelVariant: nil,
         settings: sourceSettings
@@ -114,10 +105,7 @@ class ConfigureLocalModelViewModel: ObservableObject {
       settingsViewModels[.pyTorch] = viewModel
       return viewModel
     case .ggml:
-      let viewModel = ConfigureLocalGgmlModelSettingsViewModel(
-        model: model,
-        exampleModelPath: exampleGgmlModelPath
-      )
+      let viewModel = ConfigureLocalGgmlModelSettingsViewModel(model: model)
       settingsViewModels[.ggml] = viewModel
       return viewModel
     }

@@ -6,20 +6,17 @@
 //
 
 import SwiftUI
+import CardUI
 
 struct ConfigureDownloadableModelView: View {
   @ObservedObject var viewModel: ConfigureDownloadableModelViewModel
 
   @ViewBuilder var reachabilityProgress: some View {
     if viewModel.state.isCheckingReachability {
-      Section {
-        LabeledContent { Text("") } label: { Text("") }
-          .overlay(
-            ProgressView()
-              .progressViewStyle(.circular)
-              .controlSize(.small)
-          )
-      }
+        ProgressView()
+          .progressViewStyle(.circular)
+          .controlSize(.small)
+          .padding()
     }
   }
 
@@ -30,82 +27,63 @@ struct ConfigureDownloadableModelView: View {
     case .none, .checkingReachability, .failedToDownload, .cannotDownload:
       EmptyView()
     case .readyToDownload(let contentLength):
-      Section {
-        Group {
-          Text("This model can be downloaded automatically.")
-        }
-      }
-      Section {
-        LabeledContent {
+      VStack(alignment: .leading, spacing: 0) {
+        CardContentRowView(label: "Model Variant", hasBottomBorder: true) {
           Text(viewModel.variantName)
-        } label: {
-          Text("Model Variant")
         }
-        LabeledContent {
+        CardContentRowView(label: "Download URL", hasBottomBorder: true) {
           Text(viewModel.downloadURL.absoluteString)
-        } label: {
-          Text("Download URL")
         }
         if let contentLength {
-          LabeledContent {
+          CardContentRowView(label: "Download Size", hasBottomBorder: true) {
             Text(ByteCountFormatter().string(fromByteCount: contentLength))
-          } label: {
-            Text("Download Size")
           }
         }
         if let availableSpace = viewModel.availableSpace {
-          LabeledContent {
+          CardContentRowView(label: "Available Space", hasBottomBorder: false) {
             Text(ByteCountFormatter().string(fromByteCount: availableSpace))
-          } label: {
-            Text("Available Space")
           }
         }
       }
     case .downloadingModel:
-      Section {
-        VStack(alignment: .leading) {
-          let title = Text((try? AttributedString(markdown: "Downloading model from `\(viewModel.downloadURL.absoluteString)`")) ?? AttributedString())
-          if let downloadProgress = viewModel.downloadProgress {
-            switch downloadProgress {
-            case .nonDeterministic:
-              HStack {
-                title
-                Spacer()
-                ProgressView()
-                  .progressViewStyle(.circular)
-                  .controlSize(.small)
-              }
-            case .deterministic(downloadedBytes: let downloadedBytes, totalBytes: let totalBytes, progress: let progress):
+      VStack(alignment: .leading) {
+        let title = Text((try? AttributedString(markdown: "Downloading model from `\(viewModel.downloadURL.absoluteString)`")) ?? AttributedString())
+        if let downloadProgress = viewModel.downloadProgress {
+          switch downloadProgress {
+          case .nonDeterministic:
+            HStack {
               title
-              ProgressView("", value: progress)
-                .progressViewStyle(.linear)
-              Text("Downloading \(ByteCountFormatter().string(fromByteCount: downloadedBytes)) of \(ByteCountFormatter().string(fromByteCount: totalBytes))")
-                .font(.footnote)
+              Spacer()
+              ProgressView()
+                .progressViewStyle(.circular)
+                .controlSize(.small)
             }
+          case .deterministic(downloadedBytes: let downloadedBytes, totalBytes: let totalBytes, progress: let progress):
+            title
+            ProgressView("", value: progress)
+              .progressViewStyle(.linear)
+            Text("Downloading \(ByteCountFormatter().string(fromByteCount: downloadedBytes)) of \(ByteCountFormatter().string(fromByteCount: totalBytes))")
+              .font(.footnote)
           }
         }
       }
     case .downloadedModel:
-      Section {
-        HStack {
-          HStack(alignment: .firstTextBaseline, spacing: 4) {
-            Image(systemName: "checkmark.circle.fill")
-              .foregroundColor(.green)
-            Text("Successfully downloaded file")
-            Spacer()
-          }
+      HStack {
+        HStack(alignment: .firstTextBaseline, spacing: 4) {
+          Image(systemName: "checkmark.circle.fill")
+            .foregroundColor(.green)
+          Text("Successfully downloaded file")
+          Spacer()
         }
       }
     }
   }
 
   var body: some View {
-    Form {
-      ConfigureSourceDetailsView(viewModel: viewModel.detailsViewModel)
+    VStack {
       reachabilityProgress
       readyToDownload
     }
-    .formStyle(.grouped)
     .onAppear {
       viewModel.start()
     }

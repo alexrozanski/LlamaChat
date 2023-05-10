@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import AppModel
+import CardUI
 import DataModel
 import ModelMetadata
 

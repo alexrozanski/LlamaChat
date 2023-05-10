@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CardUI
 
 fileprivate extension VerticalAlignment {
   private enum LabelAlignment: AlignmentID {
@@ -23,13 +24,6 @@ fileprivate extension Alignment {
 
 struct PathSelectorView: View {
   @ObservedObject var viewModel: PathSelectorViewModel
-
-  @ViewBuilder var label: some View {
-    Text(viewModel.label)
-      .alignmentGuide(.label) { d in
-        d[VerticalAlignment.firstTextBaseline]
-      }
-  }
 
   @ViewBuilder var selectButton: some View {
     Button(action: {
@@ -49,31 +43,29 @@ struct PathSelectorView: View {
   }
 
   @ViewBuilder var singlePathSelectorContent: some View {
-    HStack(alignment: .label) {
-      LabeledContent {
+    CardContentRowView(label: viewModel.label, hasBottomBorder: true) {
+      HStack {
         VStack(alignment: .trailing, spacing: 4) {
           Text(viewModel.modelPaths.first ?? "No path selected")
-          .lineLimit(1)
-          .truncationMode(.head)
-          .frame(maxWidth: 200, alignment: .trailing)
-          .help(viewModel.modelPaths.first ?? "")
+            .lineLimit(1)
+            .truncationMode(.head)
+            .frame(maxWidth: 200, alignment: .trailing)
+            .help(viewModel.modelPaths.first ?? "")
           if let errorMessage = viewModel.errorMessage {
             Text(errorMessage)
               .foregroundColor(.red)
               .font(.footnote)
           }
         }
-      } label: {
-        label
+        selectButton
       }
-      selectButton
     }
   }
 
   @ViewBuilder var multiplePathSelectorContent: some View {
-    VStack(alignment: .leading) {
-      HStack(alignment: .label) {
-        LabeledContent {
+    CardContentRowView(label: viewModel.label, hasBottomBorder: true) {
+      VStack(alignment: .leading) {
+        HStack(alignment: .label) {
           VStack(alignment: .trailing, spacing: 4) {
             Text(
               viewModel.modelPaths.isEmpty ? "No paths selected" : "\(viewModel.modelPaths.count) paths selected"
@@ -85,18 +77,16 @@ struct PathSelectorView: View {
                 .font(.footnote)
             }
           }
-        } label: {
-          label
+          selectButton
         }
-        selectButton
-      }
-      if !viewModel.modelPaths.isEmpty {
-        VStack(alignment: .leading, spacing: 2) {
-          ForEach(viewModel.modelPaths, id: \.self) { modelPath in
-            Text(modelPath).foregroundColor(.gray)
+        if !viewModel.modelPaths.isEmpty {
+          VStack(alignment: .leading, spacing: 2) {
+            ForEach(viewModel.modelPaths, id: \.self) { modelPath in
+              Text(modelPath).foregroundColor(.gray)
+            }
           }
+          .padding(.top, 12)
         }
-        .padding(.top, 12)
       }
     }
   }
