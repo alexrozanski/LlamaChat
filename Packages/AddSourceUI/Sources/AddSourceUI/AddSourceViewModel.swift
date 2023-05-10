@@ -66,10 +66,25 @@ public class AddSourceViewModel: ObservableObject {
   }
 
   private func makeConfigureDetailsViewModel(
-    configuredSource: ConfiguredSource
+    configuredSource: ConfiguredSource,
+    modelURL: URL
   ) -> ConfigureDetailsViewModel {
     return ConfigureDetailsViewModel(
-      configuredSource: configuredSource
+      configuredSource: configuredSource,
+      nextHandler: { [weak self] details in
+        self?.add(
+          source: ChatSource(
+            name: details.name,
+            avatarImageName: details.avatarImageName,
+            model: configuredSource.model,
+            modelVariant: configuredSource.modelVariant,
+            modelURL: modelURL,
+            modelDirectoryId: nil,
+            modelParameters: defaultModelParameters(),
+            useMlock: false
+          )
+        )
+      }
     )
   }
 
@@ -94,21 +109,12 @@ public class AddSourceViewModel: ObservableObject {
     case .ggmlModel(modelURL: let modelURL):
       navigationPath.append(
         .configureDetails(
-          makeConfigureDetailsViewModel(configuredSource: configuredSource)
+          makeConfigureDetailsViewModel(
+            configuredSource: configuredSource,
+            modelURL: modelURL
+          )
         )
       )
-//      add(
-//        source: ChatSource(
-//          name: "",
-//          avatarImageName: "",
-//          model: source.model,
-//          modelVariant: source.modelVariant,
-//          modelURL: modelURL,
-//          modelDirectoryId: nil,
-//          modelParameters: defaultModelParameters(),
-//          useMlock: false
-//        )
-//      )
     case .pyTorchCheckpoints(data: let validatedData):
       navigationPath.append(
         .convertPyTorchSource(

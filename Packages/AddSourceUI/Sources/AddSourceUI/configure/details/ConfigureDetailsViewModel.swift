@@ -10,20 +10,32 @@ import AppModel
 import DataModel
 
 class ConfigureDetailsViewModel: ObservableObject {
+  typealias NextHandler = (Details) -> Void
+
+  struct Details {
+    let name: String
+    let avatarImageName: String?
+  }
+
   @Published var name: String
   @Published var avatarImageName: String?
 
-  let configuredSource: ConfiguredSource
   let primaryActionsViewModel = PrimaryActionsViewModel()
 
-  init(configuredSource: ConfiguredSource) {
+  let configuredSource: ConfiguredSource
+  let nextHandler: NextHandler
+
+  init(configuredSource: ConfiguredSource, nextHandler: @escaping NextHandler) {
     self.name = configuredSource.model.name
     self.configuredSource = configuredSource
+    self.nextHandler = nextHandler
 
     $name
       .map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
       .map { isValid in
-        return PrimaryActionsButton(title: "Add", disabled: !isValid, action: {})
+        return PrimaryActionsButton(title: "Add", disabled: !isValid) { [weak self] in
+          self?.next()
+        }
       }
       .assign(to: &primaryActionsViewModel.$continueButton)
   }
@@ -32,5 +44,9 @@ class ConfigureDetailsViewModel: ObservableObject {
     if let generatedName = SourceNameGenerator.default.generateName(for: configuredSource.model) {
       name = generatedName
     }
+  }
+
+  func next() {
+    nextHandler(Details(name: name, avatarImageName: avatarImageName))
   }
 }
