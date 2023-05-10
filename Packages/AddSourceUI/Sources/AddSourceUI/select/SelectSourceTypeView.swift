@@ -98,12 +98,18 @@ struct SelectSourceTypeView: View {
       }
     case .sources:
       ScrollView {
-        VStack {
-          ForEach(viewModel.cards, id: \.contentViewModel.id) { card in
-            CardView(viewModel: card) { source in
+        CardStack {
+          ForEach(viewModel.sources, id: \.id) { source in
+            CardView(
+              isSelectable: source.isModelSelectable,
+              hasBody: source.hasSelectableVariants,
+              selectionHandler: {
+                viewModel.selectModel(source.model, variant: nil)
+              }
+            ) {
               CardContentView(source: source)
-            } body: { source in
-              VStack(spacing: 0) {
+            } body: {
+              CardRowStack {
                 ForEach(source.variantRows, id: \.id) { rowViewModel in
                   SelectableCardContentRowView(viewModel: rowViewModel, hasBottomBorder: rowViewModel !== source.variantRows.last)
                 }
@@ -142,7 +148,7 @@ struct SelectSourceTypeView: View {
   }
 
   var body: some View {
-    VStack(spacing: 0) {
+    CardRowStack {
       SelectSourceTypeFilterView(viewModel: viewModel.filterViewModel)
         .padding(20)
         .zIndex(10)

@@ -22,7 +22,7 @@ class SelectSourceTypeViewModel: ObservableObject {
     case sources
   }
 
-  @Published private(set) var cards: [CardViewModel<SourceViewModel>] = []
+  @Published private(set) var sources: [SourceViewModel] = []
   @Published private(set) var matches: [SourceFilterMatch] = []
 
   @Published private(set) var content: Content = .none
@@ -66,16 +66,7 @@ class SelectSourceTypeViewModel: ObservableObject {
         )
       }
       .sink { [weak self] (sources, matches) in
-        self?.cards = sources.map { source in
-          CardViewModel(
-            contentViewModel: source,
-            isSelectable: source.isModelSelectable,
-            hasBody: source.hasSelectableVariants,
-            selectionHandler: { [weak self] in
-              self?.selectModel(source.model, variant: nil)
-            }
-          )
-        }
+        self?.sources = sources
         self?.matches = matches
       }.store(in: &subscriptions)
 
@@ -88,13 +79,13 @@ class SelectSourceTypeViewModel: ObservableObject {
           return true
         }
       }
-      .combineLatest($cards, filterViewModel.$hasFilters, filterViewModel.$searchFieldText)
-      .map { isLoading, cards, hasFilters, searchFieldText in
-        if isLoading && cards.isEmpty {
+      .combineLatest($sources, filterViewModel.$hasFilters, filterViewModel.$searchFieldText)
+      .map { isLoading, sources, hasFilters, searchFieldText in
+        if isLoading && sources.isEmpty {
           return .loading
         }
         
-        if (hasFilters || !searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && cards.isEmpty {
+        if (hasFilters || !searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && sources.isEmpty {
           return .emptyFilter
         }
 

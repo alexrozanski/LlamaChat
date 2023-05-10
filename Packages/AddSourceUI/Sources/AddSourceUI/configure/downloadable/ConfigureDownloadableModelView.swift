@@ -47,28 +47,39 @@ struct ConfigureDownloadableModelView: View {
       }
     case .downloadingModel:
       VStack(alignment: .leading) {
-        let title = Text((try? AttributedString(markdown: "Downloading model from `\(viewModel.downloadURL.absoluteString)`")) ?? AttributedString())
+        let title = Text("Downloading model from \(viewModel.downloadURL.absoluteString)")
+          .font(.system(size: 12))
         if let downloadProgress = viewModel.downloadProgress {
           switch downloadProgress {
           case .nonDeterministic:
-            HStack {
-              title
-              Spacer()
-              ProgressView()
-                .progressViewStyle(.circular)
-                .controlSize(.small)
+            CardRowStack {
+              CardContentRowView(hasBottomBorder: true) {
+                HStack {
+                  title
+                  Spacer()
+                  ProgressView()
+                    .progressViewStyle(.circular)
+                    .controlSize(.small)
+                }
+              }
             }
           case .deterministic(downloadedBytes: let downloadedBytes, totalBytes: let totalBytes, progress: let progress):
-            title
-            ProgressView("", value: progress)
-              .progressViewStyle(.linear)
-            Text("Downloading \(ByteCountFormatter().string(fromByteCount: downloadedBytes)) of \(ByteCountFormatter().string(fromByteCount: totalBytes))")
-              .font(.footnote)
+            CardRowStack {
+              CardContentRowView(hasBottomBorder: true) {
+                VStack(alignment: .leading) {
+                  title
+                  ProgressView("", value: progress)
+                    .progressViewStyle(.linear)
+                  Text("Downloading \(ByteCountFormatter().string(fromByteCount: downloadedBytes)) of \(ByteCountFormatter().string(fromByteCount: totalBytes))")
+                    .font(.footnote)
+                }
+              }
+            }
           }
         }
       }
     case .downloadedModel:
-      HStack {
+      CardContentRowView(hasBottomBorder: true) {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
           Image(systemName: "checkmark.circle.fill")
             .foregroundColor(.green)

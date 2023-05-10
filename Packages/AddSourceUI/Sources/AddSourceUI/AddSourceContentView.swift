@@ -52,7 +52,7 @@ public struct AddSourceContentView: View {
             ConfigureModelView(viewModel: configureModelViewModel)
               .navigationTitle("Set up \(configureModelViewModel.modelName) model")
           }, primaryActions: {
-            PrimaryActionsView(viewModel: configureModelViewModel.primaryActionsViewModel)
+            ConfigureModelPrimaryActionsView(viewModel: configureModelViewModel)
           })
         case .configureLocal(let configureSourceViewModel):
           StepView(viewModel: viewModel, content: {
@@ -74,6 +74,13 @@ public struct AddSourceContentView: View {
               .navigationTitle("Convert PyTorch model files")
           }, primaryActions: {
             ConvertSourcePrimaryActionsView(viewModel: convertSourceViewModel)
+          })
+        case .configureDetails(let configureDetailsViewModel):
+          StepView(viewModel: viewModel, content: {
+            ConfigureDetailsView(viewModel: configureDetailsViewModel)
+              .navigationTitle("Finishing touches")
+          }, primaryActions: {
+            PrimaryActionsView(viewModel: configureDetailsViewModel.primaryActionsViewModel)
           })
         }
       }

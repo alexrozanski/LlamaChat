@@ -32,14 +32,13 @@ fileprivate struct ModelSourceView: View {
   }
 
   var body: some View {
-    CardView(viewModel: CardViewModel(
-      contentViewModel: (),
+    CardView(
       isSelectable: configureModelViewModel.isSelectingSource,
       hasBody: configureModelViewModel.isConfiguringSource,
       selectionHandler: {
         configureModelViewModel.selectedSource = viewModel.source
-      })
-    ) { _ in
+      }
+    ) {
       HStack(alignment: .firstTextBaseline) {
         Image(systemName: viewModel.icon)
         VStack(alignment: .leading, spacing: 4) {
@@ -52,7 +51,7 @@ fileprivate struct ModelSourceView: View {
           }
           if let description = viewModel.description {
             Text(description)
-              .font(.system(size: 11))
+              .font(.system(size: 12))
           }
         }
         Spacer()
@@ -75,10 +74,9 @@ struct ConfigureModelView: View {
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 12) {
+      CardStack {
         if viewModel.isSourceSelectable {
-          Text("How do you want to add the model files needed for this source?")
-            .padding(.horizontal, 12)
+          CardStackText("How do you want to add the model files needed for this source?")
         }
         ForEach(viewModel.sourceViewModels, id: \.id) { sourceViewModel in
           ModelSourceView(
@@ -86,9 +84,23 @@ struct ConfigureModelView: View {
             configureModelViewModel: viewModel
           )
         }
-        Spacer()
       }
       .padding(20)
+    }
+  }
+}
+
+struct ConfigureModelPrimaryActionsView: View {
+  @ObservedObject var viewModel: ConfigureModelViewModel
+
+  var body: some View {
+    switch viewModel.state {
+    case .selectingSource:
+      PrimaryActionsView(viewModel: viewModel.primaryActionsViewModel)
+    case .configuringLocalModel(let localViewModel):
+      PrimaryActionsView(viewModel: localViewModel.primaryActionsViewModel)
+    case .configuringRemoteModel(let remoteViewModel):
+      PrimaryActionsView(viewModel: remoteViewModel.primaryActionsViewModel)
     }
   }
 }

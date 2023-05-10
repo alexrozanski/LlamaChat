@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import CardUI
 
 struct ConfigureLocalModelView: View {
   @ObservedObject var viewModel: ConfigureLocalModelViewModel
 
   var body: some View {
-    VStack(spacing: 0) {
+    CardRowStack {
       SelectModelFormatView(viewModel: viewModel)
 
       if let settingsViewModel = viewModel.settingsViewModel {

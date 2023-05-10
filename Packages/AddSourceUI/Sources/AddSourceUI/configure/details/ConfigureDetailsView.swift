@@ -1,15 +1,16 @@
 //
-//  ConfigureSourceDetailsView.swift
+//  ConfigureDetailsView.swift
 //  LlamaChat
 //
 //  Created by Alex Rozanski on 14/04/2023.
 //
 
 import SwiftUI
+import CardUI
 import SharedUI
 
 fileprivate struct DisplayNameRowView: View {
-  @ObservedObject var viewModel: ConfigureSourceDetailsViewModel
+  @ObservedObject var viewModel: ConfigureDetailsViewModel
 
   @FocusState var isNameFocused: Bool
 
@@ -18,13 +19,16 @@ fileprivate struct DisplayNameRowView: View {
       get: { viewModel.name },
       set: { viewModel.name = $0 }
     )
-    HStack {
-      TextField("Display Name", text: nameBinding)
-        .textFieldStyle(.squareBorder)
-        .focused($isNameFocused)
-      Button(action: {
-        viewModel.generateName()
-      }, label: { Image(systemName: "hands.sparkles.fill") })
+    LabeledCardView("Display Name") {
+      HStack {
+        TextField("", text: nameBinding)
+          .textFieldStyle(.squareBorder)
+          .focused($isNameFocused)
+          .frame(maxWidth: 300)
+        Button(action: {
+          viewModel.generateName()
+        }, label: { Image(systemName: "hands.sparkles.fill") })
+      }
     }
     .onAppear {
       isNameFocused = true
@@ -33,7 +37,7 @@ fileprivate struct DisplayNameRowView: View {
 }
 
 fileprivate struct AvatarRowView: View {
-  @ObservedObject var viewModel: ConfigureSourceDetailsViewModel
+  @ObservedObject var viewModel: ConfigureDetailsViewModel
 
   @State var pickerPresented = false
 
@@ -56,26 +60,26 @@ fileprivate struct AvatarRowView: View {
   }
 
   var body: some View {
-    LabeledContent {
-      let selectedAvatarBinding = Binding(
-        get: { viewModel.avatarImageName },
-        set: { viewModel.avatarImageName = $0 }
-      )
+    let selectedAvatarBinding = Binding(
+      get: { viewModel.avatarImageName },
+      set: { viewModel.avatarImageName = $0 }
+    )
+    LabeledCardView("Avatar") {
       AvatarPickerView(selectedAvatar: selectedAvatarBinding)
-    } label: {
-      Text("Avatar")
     }
   }
 }
 
 
-struct ConfigureSourceDetailsView: View {
-  var viewModel: ConfigureSourceDetailsViewModel
+struct ConfigureDetailsView: View {
+  var viewModel: ConfigureDetailsViewModel
 
   var body: some View {
-    Section {
+    CardStack {
+      CardStackText("Finish setting up your chat source by giving it some flair")
       DisplayNameRowView(viewModel: viewModel)
       AvatarRowView(viewModel: viewModel)
     }
+    .padding()
   }
 }

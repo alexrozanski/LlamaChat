@@ -39,7 +39,7 @@ public class AddSourceViewModel: ObservableObject {
     closeHandler(nil)
   }
 
-  // MARK: - Private
+  // MARK: - View Models
 
   private func makeConvertSourceViewModel(
     configuredSource: ConfiguredSource,
@@ -65,34 +65,55 @@ public class AddSourceViewModel: ObservableObject {
     )
   }
 
+  private func makeConfigureDetailsViewModel(
+    configuredSource: ConfiguredSource
+  ) -> ConfigureDetailsViewModel {
+    return ConfigureDetailsViewModel(
+      configuredSource: configuredSource
+    )
+  }
+
+  // MARK: - Handlers
+
   private func handleSelectedSource(model: Model, variant: ModelVariant?) {
     navigationPath.append(
       .configureModel(
-        ConfigureModelViewModel(model: model, variant: variant)
+        ConfigureModelViewModel(
+          model: model,
+          variant: variant,
+          nextHandler: { [weak self] configuredSource in
+            self?.handleConfiguredSource(configuredSource)
+          }
+        )
       )
     )
   }
 
-  private func handleConfiguredSource(source: ConfiguredSource) {
-    switch source.settings {
+  private func handleConfiguredSource(_ configuredSource: ConfiguredSource) {
+    switch configuredSource.settings {
     case .ggmlModel(modelURL: let modelURL):
-      add(
-        source: ChatSource(
-          name: "",
-          avatarImageName: "",
-          model: source.model,
-          modelVariant: source.modelVariant,
-          modelURL: modelURL,
-          modelDirectoryId: nil,
-          modelParameters: defaultModelParameters(),
-          useMlock: false
+      navigationPath.append(
+        .configureDetails(
+          makeConfigureDetailsViewModel(configuredSource: configuredSource)
         )
       )
+//      add(
+//        source: ChatSource(
+//          name: "",
+//          avatarImageName: "",
+//          model: source.model,
+//          modelVariant: source.modelVariant,
+//          modelURL: modelURL,
+//          modelDirectoryId: nil,
+//          modelParameters: defaultModelParameters(),
+//          useMlock: false
+//        )
+//      )
     case .pyTorchCheckpoints(data: let validatedData):
       navigationPath.append(
         .convertPyTorchSource(
           makeConvertSourceViewModel(
-            configuredSource: source,
+            configuredSource: configuredSource,
             validatedData: validatedData
           )
         )
@@ -105,8 +126,8 @@ public class AddSourceViewModel: ObservableObject {
           source: ChatSource(
             name: "",
             avatarImageName: "",
-            model: source.model,
-            modelVariant: source.modelVariant,
+            model: configuredSource.model,
+            modelVariant: configuredSource.modelVariant,
             modelURL: modelFileURL,
             modelDirectoryId: modelDirectory.id,
             modelParameters: defaultModelParameters(),
@@ -118,6 +139,8 @@ public class AddSourceViewModel: ObservableObject {
       }
     }
   }
+
+  // MARK: - Actions
 
   private func add(source: ChatSource) {
     guard !addedModel else { return }

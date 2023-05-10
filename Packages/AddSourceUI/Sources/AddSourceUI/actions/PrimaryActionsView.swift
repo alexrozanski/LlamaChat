@@ -13,6 +13,11 @@ struct PrimaryActionsView: View {
   var body: some View {
     HStack {
       Spacer()
+      ForEach(viewModel.otherButtons, id: \.title) { button in
+        Button(button.title) {
+          button.action()
+        }
+      }
       if let continueButton = viewModel.continueButton {
         Button(continueButton.title) {
           continueButton.action()

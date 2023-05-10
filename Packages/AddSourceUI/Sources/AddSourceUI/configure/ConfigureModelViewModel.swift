@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Combine
+import CardUI
 import DataModel
 
 class ModelSourceViewModel {
@@ -25,6 +27,8 @@ class ModelSourceViewModel {
 
 
 class ConfigureModelViewModel: ObservableObject {
+  typealias NextHandler = (ConfiguredSource) -> Void
+
   enum ModelSource {
     case remote
     case local
@@ -43,6 +47,24 @@ class ConfigureModelViewModel: ObservableObject {
         return false
       }
     }
+
+    var configureLocalModelViewModel: ConfigureLocalModelViewModel? {
+      switch self {
+      case .selectingSource, .configuringRemoteModel:
+        return nil
+      case .configuringLocalModel(let viewModel):
+        return viewModel
+      }
+    }
+
+    var configureDownloadableModelViewModel: ConfigureDownloadableModelViewModel? {
+      switch self {
+      case .selectingSource, .configuringLocalModel:
+        return nil
+      case .configuringRemoteModel(let viewModel):
+        return viewModel
+      }
+    }
   }
 
   var modelName: String { return model.name }
@@ -58,17 +80,22 @@ class ConfigureModelViewModel: ObservableObject {
   private let availableSourceViewModels: [ModelSourceViewModel]
   @Published var sourceViewModels = [ModelSourceViewModel]()
 
-  private(set) lazy var primaryActionsViewModel = PrimaryActionsViewModel()
+  @Published private(set) var primaryActionsViewModel = PrimaryActionsViewModel()
+
+  private var subscriptions = Set<AnyCancellable>()
 
   private let model: Model
   private let variant: ModelVariant?
+  private let nextHandler: NextHandler
 
   init(
     model: Model,
-    variant: ModelVariant?
+    variant: ModelVariant?,
+    nextHandler: @escaping NextHandler
   ) {
     self.model = model
     self.variant = variant
+    self.nextHandler = nextHandler
 
     availableSourceViewModels = [
       ModelSourceViewModel(
@@ -95,20 +122,14 @@ class ConfigureModelViewModel: ObservableObject {
     isSourceSelectable = availableSourceViewModels.count > 1
 
     $selectedSource
-      .combineLatest($state)
-      .map { selectedSource, state in
-        switch state {
-        case .selectingSource:
-          guard selectedSource != nil else {
-            return PrimaryActionsButton(title: "Continue", disabled: true, action: {})
-          }
-
-          return PrimaryActionsButton(title: "Continue", action: { [weak self] in
-            self?.confirmModelSource()
-          })
-        case .configuringLocalModel, .configuringRemoteModel:
+      .map { selectedSource in
+        guard selectedSource != nil else {
           return PrimaryActionsButton(title: "Continue", disabled: true, action: {})
         }
+
+        return PrimaryActionsButton(title: "Continue", action: { [weak self] in
+          self?.confirmModelSource()
+        })
       }
       .assign(to: &primaryActionsViewModel.$continueButton)
 
@@ -159,7 +180,7 @@ class ConfigureModelViewModel: ObservableObject {
       state = .configuringLocalModel(
         ConfigureLocalModelViewModel(
           model: model,
-          nextHandler: { _ in }
+          nextHandler: nextHandler
         )
       )
     case .remote:
@@ -172,7 +193,7 @@ class ConfigureModelViewModel: ObservableObject {
           model: model,
           modelVariant: variant,
           downloadURL: downloadURL,
-          nextHandler: { _ in }
+          nextHandler: nextHandler
         )
       )
     }

@@ -89,7 +89,7 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
     $state.map { [weak self] newState in
       switch newState {
       case .none, .checkingReachability, .cannotDownload:
-        return nil
+        return PrimaryActionsButton(title: "Download", disabled: true, action: {})
       case .readyToDownload:
         return PrimaryActionsButton(title: "Download") { self?.startDownload() }
       case .downloadingModel, .failedToDownload:
@@ -107,6 +107,21 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
       }
     }
     .assign(to: &primaryActionsViewModel.$continueButton)
+
+    $state
+      .map { [weak self] state in
+        switch state {
+        case .none, .checkingReachability, .readyToDownload, .failedToDownload, .cannotDownload, .downloadedModel:
+          return []
+        case .downloadingModel:
+          return [
+            PrimaryActionsButton(title: "Cancel", action: {
+              self?.cancelDownload()
+            })
+          ]
+        }
+      }
+      .assign(to: &primaryActionsViewModel.$otherButtons)
 
     $state.map { state in
       switch state {
@@ -149,6 +164,12 @@ class ConfigureDownloadableModelViewModel: ObservableObject {
     }
   }
 
+  func cancelDownload() {
+    guard state.isDownloading else { return }
+    state = .none
+    start()
+  }
+
   private func updateDownloadProgress(downloadedBytes: Int64, totalBytes: Int64) {
     // State hasn't been updated (or we have finished) so ignore this progress update.
     guard let downloadHandle = state.downloadHandle else { return }
@@ -176,6 +197,15 @@ extension ConfigureDownloadableModelViewModel.State {
     case .none, .readyToDownload, .cannotDownload, .downloadedModel, .failedToDownload, .downloadingModel:
       return false
     case .checkingReachability:
+      return true
+    }
+  }
+
+  var isDownloading: Bool {
+    switch self {
+    case .none, .readyToDownload, .cannotDownload, .checkingReachability, .failedToDownload, .downloadedModel:
+      return false
+    case .downloadingModel:
       return true
     }
   }

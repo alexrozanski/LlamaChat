@@ -7,31 +7,42 @@
 
 import SwiftUI
 
-public struct CardView<ContentViewModel, Header, Body>: View where Header: View, Body: View {
-  public typealias HeaderBuilder = (ContentViewModel) -> Header
-  public typealias BodyBuilder = (ContentViewModel) -> Body
+public struct CardView<Header, Body>: View where Header: View, Body: View {
+  public typealias SelectionHandler = () -> Void
+  public typealias HeaderBuilder = () -> Header
+  public typealias BodyBuilder = () -> Body
 
   @State private var hovered = false
 
-  @ObservedObject public var viewModel: CardViewModel<ContentViewModel>
+  let isSelectable: Bool
+  let hasBody: Bool
+  let selectionHandler: SelectionHandler?
   let headerBuilder: HeaderBuilder
   let bodyBuilder: BodyBuilder
 
-  public init(viewModel: CardViewModel<ContentViewModel>, header: @escaping HeaderBuilder, body: @escaping BodyBuilder) {
-    self.viewModel = viewModel
+  public init(
+    isSelectable: Bool,
+    hasBody: Bool,
+    selectionHandler: SelectionHandler?,
+    @ViewBuilder header: @escaping HeaderBuilder,
+    @ViewBuilder body: @escaping BodyBuilder
+  ) {
+    self.isSelectable = isSelectable
+    self.hasBody = hasBody
+    self.selectionHandler = selectionHandler
     self.headerBuilder = header
     self.bodyBuilder = body
   }
 
   public var body: some View {
     return VStack(spacing: 0) {
-      headerBuilder(viewModel.contentViewModel)
+      headerBuilder()
         .padding(12)
-      if viewModel.hasBody {
+      if hasBody {
         Rectangle()
           .fill(CardColors.border)
           .frame(height: 0.5)
-        bodyBuilder(viewModel.contentViewModel)
+        bodyBuilder()
       }
     }
     .background(
@@ -48,12 +59,38 @@ public struct CardView<ContentViewModel, Header, Body>: View where Header: View,
     )
     .cornerRadius(4)
     .onHover { hovered in
-      if viewModel.isSelectable {
+      if isSelectable {
         self.hovered = hovered
       }
     }
     .onTapGesture {
-      viewModel.select()
+      selectionHandler?()
     }
+  }
+}
+
+public extension CardView where Body == EmptyView, Header: View {
+  init(@ViewBuilder header: @escaping HeaderBuilder) {
+    self.init(
+      isSelectable: false,
+      hasBody: false,
+      selectionHandler: nil,
+      header: header,
+      body: { EmptyView() }
+    )
+  }
+
+  init(
+    isSelectable: Bool,
+    selectionHandler: SelectionHandler?,
+    @ViewBuilder header: @escaping HeaderBuilder
+  ) {
+    self.init(
+      isSelectable: isSelectable,
+      hasBody: false,
+      selectionHandler: selectionHandler,
+      header: header,
+      body: { EmptyView() }
+    )
   }
 }
