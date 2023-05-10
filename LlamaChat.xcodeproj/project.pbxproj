@@ -32,6 +32,7 @@
 		82F077692A09081700772633 /* ModelCompatibility in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077682A09081700772633 /* ModelCompatibility */; };
 		82F077732A09673200772633 /* ChatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077722A09673200772633 /* ChatUI */; };
 		82F077792A0B050B00772633 /* CardUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077782A0B050B00772633 /* CardUI */; };
+		82F077842A0BF78300772633 /* ChatInfoUI in Frameworks */ = {isa = PBXBuildFile; productRef = 82F077832A0BF78300772633 /* ChatInfoUI */; };
 		82F14EA829E4D2DD001E9C1E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 82F14EA729E4D2DD001E9C1E /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,8 @@
 		82F0776F2A0966CA00772633 /* ChatUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChatUI; sourceTree = "<group>"; };
 		82F077742A09699200772633 /* SettingsUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SettingsUI; sourceTree = "<group>"; };
 		82F077752A0B043100772633 /* CardUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CardUI; sourceTree = "<group>"; };
+		82F077802A0BF6C500772633 /* ChatInfoUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChatInfoUI; sourceTree = "<group>"; };
+		82F077852A0BFBA100772633 /* ModelCompatibilityUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ModelCompatibilityUI; sourceTree = "<group>"; };
 		82F14EA729E4D2DD001E9C1E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +75,7 @@
 			files = (
 				8241612529F58C3F007149B9 /* CameLLM in Frameworks */,
 				82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */,
+				82F077842A0BF78300772633 /* ChatInfoUI in Frameworks */,
 				82615BBB2A02524600B0D4FB /* DataModel in Frameworks */,
 				8241612829F58C5A007149B9 /* CameLLMLlama in Frameworks */,
 				82F077642A09011800772633 /* ModelMetadata in Frameworks */,
@@ -121,11 +125,13 @@
 				82F077552A05B14200772633 /* AddSourceUI */,
 				82615BC42A02541C00B0D4FB /* AppModel */,
 				82F077752A0B043100772633 /* CardUI */,
+				82F077802A0BF6C500772633 /* ChatInfoUI */,
 				82F0776F2A0966CA00772633 /* ChatUI */,
 				82615BC52A02541F00B0D4FB /* DataModel */,
 				82F0775A2A05B4EE00772633 /* Downloads */,
 				82615BC62A0254EF00B0D4FB /* FileManager */,
 				82F077652A0905A200772633 /* ModelCompatibility */,
+				82F077852A0BFBA100772633 /* ModelCompatibilityUI */,
 				82615BD52A02556F00B0D4FB /* ModelDirectory */,
 				82F077602A09007E00772633 /* ModelMetadata */,
 				82615BD62A0256F200B0D4FB /* ModelUtils */,
@@ -214,6 +220,7 @@
 				82F077572A05B2A500772633 /* PBXTargetDependency */,
 				82615BCC2A02551F00B0D4FB /* PBXTargetDependency */,
 				82F077772A0B050600772633 /* PBXTargetDependency */,
+				82F077822A0BF77A00772633 /* PBXTargetDependency */,
 				82F077712A09672500772633 /* PBXTargetDependency */,
 				82615BCE2A02551F00B0D4FB /* PBXTargetDependency */,
 				82615BD02A02551F00B0D4FB /* PBXTargetDependency */,
@@ -241,6 +248,7 @@
 				82F077682A09081700772633 /* ModelCompatibility */,
 				82F077722A09673200772633 /* ChatUI */,
 				82F077782A0B050B00772633 /* CardUI */,
+				82F077832A0BF78300772633 /* ChatInfoUI */,
 			);
 			productName = Camel;
 			productReference = 82718CDA29D3686200545C32 /* LlamaChat.app */;
@@ -360,6 +368,10 @@
 		82F077772A0B050600772633 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 82F077762A0B050600772633 /* CardUI */;
+		};
+		82F077822A0BF77A00772633 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 82F077812A0BF77A00772633 /* ChatInfoUI */;
 		};
 /* End PBXTargetDependency section */
 
@@ -708,6 +720,14 @@
 		82F077782A0B050B00772633 /* CardUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CardUI;
+		};
+		82F077812A0BF77A00772633 /* ChatInfoUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChatInfoUI;
+		};
+		82F077832A0BF78300772633 /* ChatInfoUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChatInfoUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct AvatarView: View {
-  enum Size {
+public struct AvatarView: View {
+  public enum Size {
     case medium
     case large
 
@@ -34,8 +34,13 @@ struct AvatarView: View {
     }
   }
 
-  @ObservedObject var viewModel: AvatarViewModel
-  var size: Size
+  @ObservedObject public var viewModel: AvatarViewModel
+  public var size: Size
+
+  public init(viewModel: AvatarViewModel, size: Size) {
+    self.viewModel = viewModel
+    self.size = size
+  }
 
   @ViewBuilder var avatarView: some View {
     switch viewModel.avatar {
@@ -58,7 +63,7 @@ struct AvatarView: View {
     }
   }
 
-  var body: some View {
+  public var body: some View {
     avatarView
   }
 }

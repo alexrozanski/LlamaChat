@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import DataModel
+import SharedUI
 
 public class ChatListItemViewModel: ObservableObject {
   private let chatSource: ChatSource

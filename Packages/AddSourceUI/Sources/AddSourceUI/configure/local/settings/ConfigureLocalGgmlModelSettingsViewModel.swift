@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CameLLM
 import CameLLMLlama
+import CameLLMGPTJ
 import DataModel
 import ModelMetadata
 
@@ -95,7 +96,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
 
         let modelURL = URL(fileURLWithPath: modelPath)
         do {
-          try ModelUtils.llamaFamily.validateModel(at: modelURL)
+          try ModelUtils.gptJ.validateModel(at: modelURL)
         } catch {
           print(error)
           return .invalidModel(getInvalidModelTypeReason(from: error))

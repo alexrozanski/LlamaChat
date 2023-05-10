@@ -5,9 +5,13 @@
 //  Created by Alex Rozanski on 26/03/2023.
 //
 
-import Foundation
+import Combine
+import SwiftUI
 import AppModel
+import ChatInfoUI
 import DataModel
+import ModelCompatibility
+import ModelCompatibilityUI
 
 class ChatViewModel: ObservableObject {
   private let chatSource: ChatSource
@@ -26,10 +30,22 @@ class ChatViewModel: ObservableObject {
   private(set) lazy var infoViewModel = ChatInfoViewModel(chatModel: chatModel)
   private(set) lazy var messagesViewModel = MessagesViewModel(chatModel: chatModel)
 
+  private(set) var parametersViewModel = CurrentValueSubject<ModelParametersViewModel?, Never>(nil)
+
+  private var subscriptions = Set<AnyCancellable>()
 
   init(chatSource: ChatSource, chatModels: ChatModels, messagesModel: MessagesModel) {
     self.chatSource = chatSource
     self.chatModels = chatModels
-    self.chatModel = chatModels.chatModel(for: chatSource)
+    let chatModel = chatModels.chatModel(for: chatSource)
+    self.chatModel = chatModel
+
+    chatSource.$modelParameters
+      .map { makeParametersViewModel(from: $0, chatModel: chatModel) }
+      .sink { [weak self] viewModel in
+        self?.parametersViewModel.send(viewModel)
+        self?.objectWillChange.send()
+      }
+      .store(in: &subscriptions)
   }
 }

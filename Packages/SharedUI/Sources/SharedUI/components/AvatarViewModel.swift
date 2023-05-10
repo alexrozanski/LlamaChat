@@ -9,17 +9,17 @@ import Foundation
 import Combine
 import DataModel
 
-class AvatarViewModel: ObservableObject {
-  enum Avatar {
+public class AvatarViewModel: ObservableObject {
+  public enum Avatar {
     case initials(String)
     case image(named: String)
   }
 
-  @Published var avatar: Avatar
+  @Published public var avatar: Avatar
 
   private let chatSource: ChatSource
 
-  init(chatSource: ChatSource) {
+  public init(chatSource: ChatSource) {
     self.chatSource = chatSource
     avatar = makeAvatar(for: chatSource.avatarImageName, name: chatSource.name)
 

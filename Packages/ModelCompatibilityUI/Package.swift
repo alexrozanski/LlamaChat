@@ -2,31 +2,31 @@
 import PackageDescription
 
 let package = Package(
-  name: "ChatUI",
+  name: "ModelCompatibilityUI",
   platforms: [
     .macOS(.v13)
   ],
   products: [
     .library(
-      name: "ChatUI",
-      targets: ["ChatUI"]
+      name: "ModelCompatibilityUI",
+      targets: ["ModelCompatibilityUI"]
     )
   ],
   dependencies: [
-    .package(path: "../AddSourceUI"),
+    .package(path: "../ModelCompatibility"),
     .package(path: "../AppModel"),
     .package(path: "../ChatInfoUI"),
-    .package(path: "../ModelCompatibilityUI"),
+    .package(path: "../DataModel"),
     .package(path: "../SettingsUI")
   ],
   targets: [
     .target(
-      name: "ChatUI",
+      name: "ModelCompatibilityUI",
       dependencies: [
-        "AddSourceUI",
-        "AppModel",
         "ChatInfoUI",
-        "ModelCompatibilityUI",
+        "AppModel",
+        "DataModel",
+        "ModelCompatibility",
         "SettingsUI"
       ]
     )

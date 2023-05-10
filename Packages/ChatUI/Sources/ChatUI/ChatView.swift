@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import ChatInfoUI
+import ModelCompatibilityUI
 
 struct ChatView: View {
   var viewModel: ChatViewModel
@@ -22,7 +24,9 @@ struct ChatView: View {
         presentingInfo = true
       } label: { Image(systemName: "info.circle")}
         .popover(isPresented: $presentingInfo, arrowEdge: .bottom) {
-          ChatInfoView(viewModel: viewModel.infoViewModel)
+          ChatInfoView(viewModel: viewModel.infoViewModel) {
+            ChatInfoParametersView(viewModel: viewModel.parametersViewModel.value)
+          }
         }
     }
     .navigationTitle("\(viewModel.sourceName)")
