@@ -7,9 +7,6 @@
 
 import Foundation
 import Combine
-import CameLLM
-import CameLLMLlama
-import CameLLMGPTJ
 import DataModel
 import ModelCompatibility
 import ModelMetadata
@@ -94,16 +91,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
         case .none, .invalidModel, .invalidPath:
           return nil
         case .valid(modelURL: let modelURL):
-          do {
-            let modelCard = try ModelUtils.llamaFamily.getModelCard(forFileAt: modelURL)
-            let parameters = modelCard?.parameters
-            return model.variants.first { variant in
-              return variant.parameters.map { modelParams in parameters.map { modelParams.equal(to: $0) } ?? false } ?? false
-            }
-          } catch {
-            print(error)
-            return nil
-          }
+          return inferVariantForModelFile(at: modelURL, model: model)
         }
       }
       .assign(to: &variantPickerViewModel.$selectedVariant)
@@ -133,17 +121,5 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
       }
       .assign(to: \.value, on: sourceSettings)
       .store(in: &subscriptions)
-  }
-}
-
-fileprivate extension ModelType {
-  func toModelSize() -> ModelParameterSize? {
-    switch self {
-    case .unknown: return nil
-    case .size7B: return .billions(Decimal(7))
-    case .size13B: return .billions(Decimal(13))
-    case .size30B: return .billions(Decimal(30))
-    case .size65B: return .billions(Decimal(65))
-    }
   }
 }
