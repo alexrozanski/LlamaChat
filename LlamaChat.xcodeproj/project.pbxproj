@@ -17,7 +17,6 @@
 		82615BD22A02552600B0D4FB /* AppModel in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BD12A02552600B0D4FB /* AppModel */; };
 		82615BD42A02552600B0D4FB /* FileManager in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BD32A02552600B0D4FB /* FileManager */; };
 		82615BDC2A025DD800B0D4FB /* ModelDirectory in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BDB2A025DD800B0D4FB /* ModelDirectory */; };
-		82615BDE2A025DD800B0D4FB /* ModelUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BDD2A025DD800B0D4FB /* ModelUtils */; };
 		82718CE229D3686300545C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE129D3686300545C32 /* Assets.xcassets */; };
 		82718CE529D3686300545C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82718CE429D3686300545C32 /* Preview Assets.xcassets */; };
 		82C686A529DAEC6C00B76BA6 /* ModelContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C686A429DAEC6C00B76BA6 /* ModelContextView.swift */; };
@@ -45,7 +44,6 @@
 		82615BC52A02541F00B0D4FB /* DataModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DataModel; sourceTree = "<group>"; };
 		82615BC62A0254EF00B0D4FB /* FileManager */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FileManager; sourceTree = "<group>"; };
 		82615BD52A02556F00B0D4FB /* ModelDirectory */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ModelDirectory; sourceTree = "<group>"; };
-		82615BD62A0256F200B0D4FB /* ModelUtils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ModelUtils; sourceTree = "<group>"; };
 		82718CDA29D3686200545C32 /* LlamaChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LlamaChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82718CE129D3686300545C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82718CE429D3686300545C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -81,7 +79,6 @@
 				82F077642A09011800772633 /* ModelMetadata in Frameworks */,
 				82E43CB229E8D6F3003E69D1 /* Alamofire in Frameworks */,
 				82615BDC2A025DD800B0D4FB /* ModelDirectory in Frameworks */,
-				82615BDE2A025DD800B0D4FB /* ModelUtils in Frameworks */,
 				82615BD22A02552600B0D4FB /* AppModel in Frameworks */,
 				82F077692A09081700772633 /* ModelCompatibility in Frameworks */,
 				82F077732A09673200772633 /* ChatUI in Frameworks */,
@@ -134,7 +131,6 @@
 				82F077852A0BFBA100772633 /* ModelCompatibilityUI */,
 				82615BD52A02556F00B0D4FB /* ModelDirectory */,
 				82F077602A09007E00772633 /* ModelMetadata */,
-				82615BD62A0256F200B0D4FB /* ModelUtils */,
 				82F077742A09699200772633 /* SettingsUI */,
 				82F0775B2A05B63300772633 /* SharedUI */,
 			);
@@ -241,7 +237,6 @@
 				82615BD12A02552600B0D4FB /* AppModel */,
 				82615BD32A02552600B0D4FB /* FileManager */,
 				82615BDB2A025DD800B0D4FB /* ModelDirectory */,
-				82615BDD2A025DD800B0D4FB /* ModelUtils */,
 				82F077582A05B2AD00772633 /* AddSourceUI */,
 				82F0775E2A05B70B00772633 /* SharedUI */,
 				82F077632A09011800772633 /* ModelMetadata */,
@@ -658,10 +653,6 @@
 		82615BDB2A025DD800B0D4FB /* ModelDirectory */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ModelDirectory;
-		};
-		82615BDD2A025DD800B0D4FB /* ModelUtils */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ModelUtils;
 		};
 		82C68BEA29E77CC900A7A4AE /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;

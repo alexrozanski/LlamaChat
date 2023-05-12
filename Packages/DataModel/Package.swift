@@ -13,12 +13,16 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(url: "https://github.com/Flight-School/AnyCodable", from: "0.6.0"),
     .package(path: "../FileManager")
   ],
   targets: [
     .target(
       name: "DataModel",
-      dependencies: ["FileManager"]
+      dependencies: [
+        "AnyCodable",
+        "FileManager"
+      ]
     )
   ]
 )

@@ -15,6 +15,7 @@ let package = Package(
   dependencies: [
     .package(path: "../AddSourceUI"),
     .package(path: "../AppModel"),
+    .package(path: "../ModelCompatibility"),
     .package(path: "../SharedUI")
   ],
   targets: [
@@ -23,6 +24,7 @@ let package = Package(
       dependencies: [
         "AddSourceUI",
         "AppModel",
+        "ModelCompatibility",
         "SharedUI"
       ]
     )

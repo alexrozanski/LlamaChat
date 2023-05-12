@@ -13,20 +13,13 @@ import FileManager
 import ModelCompatibility
 import ModelDirectory
 import ModelMetadata
-import ModelUtils
 
 fileprivate class SerializedChatSourcesPayload: SerializedPayload<[ChatSource]> {
   override class var valueKey: String? { return "sources" }
   override class var currentPayloadVersion: Int { return 2 }
 }
 
-fileprivate class SerializedChatModelsPayload: SerializedPayload<[Model]> {
-  override class var valueKey: String? { return "models" }
-  override class var currentPayloadVersion: Int { return 1 }
-}
-
 public class ChatSourcesModel: ObservableObject {
-  @Published private var initialModels = BuiltinMetadataModels.all
   @Published public private(set) var sources: [ChatSource] = [] {
     didSet {
       persistSources()
@@ -37,13 +30,12 @@ public class ChatSourcesModel: ObservableObject {
     return applicationSupportDirectoryURL()?.appending(path: "sources.json")
   }()
 
-  private lazy var persistedModelsURL: URL? = {
-    return applicationSupportDirectoryURL()?.appending(path: "models.json")
-  }()
-
   private var subscriptions = Set<AnyCancellable>()
 
-  public init() {
+  private let metadataModel: MetadataModel
+  public init(metadataModel: MetadataModel) {
+    self.metadataModel = metadataModel
+
     loadSources()
 
     $sources
@@ -54,6 +46,21 @@ public class ChatSourcesModel: ObservableObject {
       .sink { [weak self] _ in
         self?.persistSources()
       }.store(in: &subscriptions)
+
+    // Upgrade model metadata when new is available
+    metadataModel.$allModels
+      .sink { [weak self] allModels in
+        self?.sources.forEach { source in
+          if let model = allModels.find(modelId: source.modelId) {
+            source.model = model
+          }
+
+          if let variantId = source.modelVariantId, let variant = allModels.findVariant(variantId: variantId) {
+            source.modelVariant = variant
+          }
+        }
+      }
+      .store(in: &subscriptions)
   }
 
   public func add(source: ChatSource) {
@@ -83,41 +90,11 @@ public class ChatSourcesModel: ObservableObject {
 
   // MARK: - Persistence
 
-  private func loadInitialModels() {
-    guard
-      let persistedURL = persistedModelsURL,
-      FileManager.default.fileExists(atPath: persistedURL.path)
-    else { return }
-
-    do {
-      let jsonData = try Data(contentsOf: persistedURL)
-      let decoder = JSONDecoder()
-      let payload = try decoder.decode(SerializedChatModelsPayload.self, from: jsonData)
-      initialModels = payload.value
-    } catch {
-      print("Error loading sources:", error)
-    }
-  }
-
-  private func persistModels() {
-    guard let persistedURL = persistedModelsURL else { return }
-
-    let encoder = JSONEncoder()
-    do {
-      let json = try encoder.encode(SerializedChatModelsPayload(value: sources.compactMap { $0.model }))
-      try json.write(to: persistedURL)
-    } catch {
-      print("Error persisting sources:", error)
-    }
-  }
-
   private func loadSources() {
     guard
       let persistedURL = persistedSourcesURL,
       FileManager.default.fileExists(atPath: persistedURL.path)
     else { return }
-
-    loadInitialModels()
 
     do {
       let jsonData = try Data(contentsOf: persistedURL)
@@ -136,8 +113,6 @@ public class ChatSourcesModel: ObservableObject {
 
   private func persistSources() {
     guard let persistedURL = persistedSourcesURL else { return }
-
-    persistModels()
 
     let encoder = JSONEncoder()
     encoder.userInfo = [
@@ -184,9 +159,10 @@ extension ChatSourcesModel: ChatSourceUpgrader {
 
 extension ChatSourcesModel: ModelProvider {
   public func provideModels(modelId: String, variantId: String?) -> (model: Model?, variant: ModelVariant?) {
+    let models = metadataModel.allModels
     return (
-      initialModels.find(modelId: modelId),
-      variantId.flatMap { initialModels.findVariant(variantId: $0) }
+      models.find(modelId: modelId),
+      variantId.flatMap { models.findVariant(variantId: $0) }
     )
   }
 }

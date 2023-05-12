@@ -35,7 +35,7 @@ public class ChatSource: Codable, ObservableObject {
 
   public let modelURL: URL
   public let modelDirectoryId: ModelDirectoryId?
-  @Published public var modelParameters: ModelParameters?
+  @Published public var modelParameters: AnyModelParameters?
   @Published public var useMlock: Bool
 
   public let modelParametersDidChange = PassthroughSubject<Void, Never>()
@@ -48,7 +48,7 @@ public class ChatSource: Codable, ObservableObject {
     modelVariant: ModelVariant?,
     modelURL: URL,
     modelDirectoryId: ModelDirectoryId?,
-    modelParameters: ModelParameters,
+    modelParameters: AnyModelParameters,
     useMlock: Bool
   ) {
     self.id = UUID().uuidString
@@ -176,11 +176,17 @@ public class ChatSource: Codable, ObservableObject {
         modelParametersDidChange?.send()
       }.store(in: &subscriptions)
 
-//    $modelParameters
-//      .map { $0.objectWillChange }
-//      .switchToLatest()
-//      .sink { [weak modelParametersDidChange] p in
-//        modelParametersDidChange?.send()
-//      }.store(in: &subscriptions)
+    $modelParameters
+      .compactMap { $0?.objectWillChange }
+      .switchToLatest()
+      .sink { [weak modelParametersDidChange] p in
+        modelParametersDidChange?.send()
+      }.store(in: &subscriptions)
+
+    modelParametersDidChange
+      .sink { [weak self] _ in
+        self?.objectWillChange.send()
+      }
+      .store(in: &subscriptions)
   }
 }

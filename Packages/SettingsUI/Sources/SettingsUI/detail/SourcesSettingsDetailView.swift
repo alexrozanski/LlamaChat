@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import ModelCompatibility
 
-struct SourcesSettingsDetailView: View {
+struct SourcesSettingsDetailView<ParametersContent>: View where ParametersContent: View {
   @ObservedObject var viewModel: SourcesSettingsDetailViewModel
+  let parametersContent: (ModelParametersViewModel?) -> ParametersContent
 
   @ViewBuilder var tabContent: some View {
     switch viewModel.selectedTab {
     case .properties:
       SourceSettingsPropertiesView(viewModel: viewModel.propertiesViewModel)
     case .parameters:
-      SourceSettingsParametersView(viewModel: viewModel.parametersViewModel)
+      SourceSettingsParametersView(viewModel: viewModel.parametersViewModel, parametersContent: parametersContent)
     }
   }
 

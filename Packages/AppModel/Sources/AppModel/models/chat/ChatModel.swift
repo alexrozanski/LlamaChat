@@ -14,6 +14,8 @@ import ModelCompatibility
 import SQLite
 
 public class ChatModel: ObservableObject {
+  public typealias ModelParametersViewModelBuilder = (AnyModelParameters?, ChatModel) -> ModelParametersViewModel?
+
   public class ChatContext {
     public struct Token {
       public let value: Int32
@@ -60,10 +62,16 @@ public class ChatModel: ObservableObject {
   }
   @Published public private(set) var canClearContext: Bool = false
 
+  public private(set) var parametersViewModel = CurrentValueSubject<ModelParametersViewModel?, Never>(nil)
+
   private var currentPredictionCancellable: PredictionCancellable?
   private var subscriptions = Set<AnyCancellable>()
 
-  init(source: ChatSource, messagesModel: MessagesModel) {
+  init(
+    source: ChatSource,
+    messagesModel: MessagesModel,
+    modelParametersViewModelBuilder: @escaping ModelParametersViewModelBuilder
+  ) {
     self.source = source
     self.messagesModel = messagesModel
     messages = messagesModel.loadMessages(from: source)
@@ -79,6 +87,17 @@ public class ChatModel: ObservableObject {
           await self.clearContext(insertClearedContextMessage: true)
         }
       }.store(in: &subscriptions)
+
+    source.$modelParameters
+      .map { [weak self] parameters -> ModelParametersViewModel? in
+        guard let self else { return nil }
+        return modelParametersViewModelBuilder(parameters, self)
+      }
+      .sink { [weak self] viewModel in
+        self?.parametersViewModel.send(viewModel)
+        self?.objectWillChange.send()
+      }
+      .store(in: &subscriptions)
   }
 
   public func send(message: StaticMessage) {

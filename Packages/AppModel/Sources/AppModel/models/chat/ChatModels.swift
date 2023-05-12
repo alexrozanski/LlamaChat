@@ -10,11 +10,16 @@ import DataModel
 
 public class ChatModels: ObservableObject {
   let messagesModel: MessagesModel
+  let modelParametersViewModelBuilder: ChatModel.ModelParametersViewModelBuilder
 
   private var models: [ChatModel] = []
 
-  public init(messagesModel: MessagesModel) {
+  public init(
+    messagesModel: MessagesModel,
+    modelParametersViewModelBuilder: @escaping ChatModel.ModelParametersViewModelBuilder
+  ) {
     self.messagesModel = messagesModel
+    self.modelParametersViewModelBuilder = modelParametersViewModelBuilder
   }
 
   public func chatModel(for source: ChatSource) -> ChatModel {
@@ -22,7 +27,11 @@ public class ChatModels: ObservableObject {
       return existingModel
     }
 
-    let newModel = ChatModel(source: source, messagesModel: messagesModel)
+    let newModel = ChatModel(
+      source: source,
+      messagesModel: messagesModel,
+      modelParametersViewModelBuilder: modelParametersViewModelBuilder
+    )
     models.append(newModel)
     return newModel
   }

@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "camellm-gptj",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM-GPTJ.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a55fc1bf35da627ae97cd5b2d0f1c68920ddd18b"
+      }
+    },
+    {
       "identity" : "camellm-llama",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CameLLM/CameLLM-Llama.git",
@@ -52,24 +61,6 @@
       "state" : {
         "branch" : "v0.3",
         "revision" : "4250068ef7d259e0023c099be58459e5d7dbcedd"
-      }
-    },
-    {
-      "identity" : "git-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/binarybirds/git-kit",
-      "state" : {
-        "revision" : "39a9357dd22ee189022c5db4cd82c6f438b02e1f",
-        "version" : "1.0.1"
-      }
-    },
-    {
-      "identity" : "shell-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/binarybirds/shell-kit",
-      "state" : {
-        "revision" : "8507fc5a1d4c9b4aca71fa69bf6030fb94229d37",
-        "version" : "1.0.1"
       }
     },
     {

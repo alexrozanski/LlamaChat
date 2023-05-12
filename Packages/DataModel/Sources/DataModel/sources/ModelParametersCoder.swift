@@ -15,10 +15,10 @@ public protocol ModelParametersCoder {
   func decodeParameters<Key>(
     in container: KeyedDecodingContainer<Key>,
     forKey key: Key
-  ) throws -> ModelParameters where Key: CodingKey
+  ) throws -> AnyModelParameters where Key: CodingKey
   
   func encode<Key>(
-    parameters: ModelParameters,
+    parameters: AnyModelParameters,
     to container: inout KeyedEncodingContainer<Key>,
     forKey key: Key
   ) throws where Key: CodingKey

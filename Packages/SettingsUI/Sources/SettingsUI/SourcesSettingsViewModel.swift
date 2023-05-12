@@ -44,7 +44,7 @@ class SourcesSettingsViewModel: ObservableObject {
       detailViewModel = SourcesSettingsDetailViewModel(
         source: source,
         selectedTab: oldDetailViewModel?.selectedTab ?? .properties,
-        stateRestoration: dependencies.stateRestoration
+        dependencies: dependencies
       )
     }
   }

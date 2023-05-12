@@ -53,6 +53,9 @@ fileprivate func llamaModel() -> Model {
     languages: ["en"],
     legacy: false,
     publisher: ModelPublisher(name: "Meta, Inc."),
+    defaultParameters: [
+      "numTokens": 128
+    ],
     variants: [
       ModelVariant(id: "7B", name: "7B", description: nil, parameters: .billions(Decimal(7)), engine: "camellm-llama", downloadUrl: nil),
       ModelVariant(id: "13B", name: "13B", description: nil, parameters: .billions(Decimal(13)), engine: "camellm-llama", downloadUrl: nil),
@@ -74,6 +77,14 @@ fileprivate func alpacaModel() -> Model {
     languages: ["en"],
     legacy: false,
     publisher: ModelPublisher(name: "Stanford"),
+    defaultParameters: [
+      "numTokens": 512,
+      "contextSize": 2048,
+      "batchSize": 256,
+      "topK": 10000,
+      "temperature": 0.2,
+      "repeatPenalty": 1
+    ],
     variants: [
       ModelVariant(id: "7B", name: "7B", description: nil, parameters: .billions(Decimal(7)), engine: "camellm-llama", downloadUrl: nil)
     ]
@@ -92,6 +103,16 @@ fileprivate func legacyGPT4AllModel() -> Model {
     languages: ["en"],
     legacy: true,
     publisher: ModelPublisher(name: "Nomic AI"),
+    defaultParameters: [
+      "numTokens": 128,
+      "contextSize": 2048,
+      "batchSize": 8,
+      "lastNTokensToPenalize": 64,
+      "topK": 40,
+      "topP": 0.95,
+      "temperature": 0.1,
+      "repeatPenalty": 1.3
+    ],
     variants: [
       ModelVariant(id: "7B", name: "7B", description: nil, parameters: .billions(Decimal(7)), engine: "camellm-llama", downloadUrl: nil)
     ]

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AnyCodable
 
 public struct Model: Codable {
   public enum Source: String {
@@ -28,6 +29,7 @@ public struct Model: Codable {
   public let languages: [String]
   public let legacy: Bool
   public let publisher: ModelPublisher
+  public let defaultParameters: [String: AnyCodable]?
   public let variants: [ModelVariant]
 
   public enum CodingKeys: CodingKey {
@@ -41,6 +43,7 @@ public struct Model: Codable {
     case legacy
     case languages
     case publisher
+    case defaultParameters
     case variants
   }
 
@@ -55,6 +58,7 @@ public struct Model: Codable {
     languages: [String],
     legacy: Bool,
     publisher: ModelPublisher,
+    defaultParameters: [String: AnyCodable]?,
     variants: [ModelVariant]
   ) {
     self.id = id
@@ -67,6 +71,7 @@ public struct Model: Codable {
     self.languages = languages
     self.legacy = legacy
     self.publisher = publisher
+    self.defaultParameters = defaultParameters
     self.variants = variants
   }
 
@@ -82,6 +87,7 @@ public struct Model: Codable {
     legacy = try values.decodeIfPresent(Bool.self, forKey: .legacy) ?? false
     languages = try values.decode([String].self, forKey: .languages)
     publisher = try values.decode(ModelPublisher.self, forKey: .publisher)
+    defaultParameters = try values.decodeIfPresent([String: AnyCodable].self, forKey: .defaultParameters)
     variants = try values.decode([ModelVariant].self, forKey: .variants)
   }
 
@@ -97,6 +103,7 @@ public struct Model: Codable {
     try container.encode(legacy, forKey: .legacy)
     try container.encode(languages, forKey: .languages)
     try container.encode(publisher, forKey: .publisher)
+    try container.encodeIfPresent(defaultParameters, forKey: .defaultParameters)
     try container.encode(variants, forKey: .variants)
   }
 }

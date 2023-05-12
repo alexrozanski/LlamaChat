@@ -8,4 +8,6 @@
 import Foundation
 import DataModel
 
-public protocol ModelParametersViewModel {}
+public protocol ModelParametersViewModel {
+  var id: String { get }
+}

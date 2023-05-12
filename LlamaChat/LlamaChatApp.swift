@@ -10,6 +10,7 @@ import AppModel
 import ChatUI
 import DataModel
 import Downloads
+import ModelCompatibilityUI
 import ModelDirectory
 import SettingsUI
 import SharedUI
@@ -21,7 +22,7 @@ class LlamaChatAppDelegate: NSObject, NSApplicationDelegate {
     ModelFileManager.shared.cleanUpUnquantizedModelFiles()
     DownloadsManager.shared.cleanUp()
 
-    dependencies?.remoteMetadataModel.fetchMetadata()
+    dependencies?.metadataModel.fetchMetadata()
   }
 }
 
@@ -36,7 +37,11 @@ struct LlamaChatApp: App {
   @StateObject var checkForUpdatesViewModel = CheckForUpdatesViewModel()
 
   init() {
-    let dependencies = Dependencies()
+    let dependencies = Dependencies(
+      modelParametersViewModelBuilder: { modelParameters, chatModel in
+        return makeParametersViewModel(from: modelParameters, chatModel: chatModel)
+      }
+    )
     let settingsViewModel = SettingsViewModel(dependencies: dependencies)
 
     _dependencies = StateObject(wrappedValue: dependencies)
@@ -51,7 +56,9 @@ struct LlamaChatApp: App {
 
   var body: some Scene {
     Settings {
-      SettingsView(viewModel: settingsViewModel)
+      SettingsView(viewModel: settingsViewModel) { parametersViewModel in
+        ParametersSettingsView(viewModel: parametersViewModel)
+      }
     }
     .windowToolbarStyle(.expanded)
 

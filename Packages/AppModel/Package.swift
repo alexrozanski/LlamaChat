@@ -18,9 +18,9 @@ let package = Package(
     .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: Version(stringLiteral: "0.9.2")),
     .package(path: "../DataModel"),
     .package(path: "../FileManager"),
+    .package(path: "../ModelCompatibility"),
     .package(path: "../ModelDirectory"),
     .package(path: "../ModelMetadata"),
-    .package(path: "../ModelUtils")
   ],
   targets: [
     .target(
@@ -31,8 +31,8 @@ let package = Package(
         .product(name: "SQLite", package: "SQLite.swift"),
         "DataModel",
         "FileManager",
+        "ModelCompatibility",
         "ModelDirectory",
-        "ModelUtils",
         "ModelMetadata"
       ]
     )

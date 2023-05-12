@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import AppModel
 import DataModel
-import ModelUtils
+import ModelCompatibility
 
 class SourceSettingsParametersViewModel: ObservableObject {
   enum RestorableKey: String {
@@ -35,10 +35,12 @@ class SourceSettingsParametersViewModel: ObservableObject {
   private let restorableData: any RestorableData<RestorableKey>
   private var subscriptions = Set<AnyCancellable>()
 
+  public private(set) var parametersViewModel = CurrentValueSubject<ModelParametersViewModel?, Never>(nil)
+
   let source: ChatSource
-  init(source: ChatSource, stateRestoration: StateRestoration) {
+  init(source: ChatSource, dependencies: Dependencies) {
     self.source = source
-    self.restorableData = stateRestoration.restorableData(for: "SourceSettingsParametersViewModel")
+    self.restorableData = dependencies.stateRestoration.restorableData(for: "SourceSettingsParametersViewModel")
 
     _showDetails = Published(initialValue: restorableData.getValue(for: .showDetails) ?? false)
 
@@ -46,11 +48,21 @@ class SourceSettingsParametersViewModel: ObservableObject {
       self?.restorableData.set(value: $0, for: .showDetails)
     }.store(in: &subscriptions)
 
+    let chatModel = dependencies.chatModels.chatModel(for: source)
+    chatModel.parametersViewModel
+      .sink { [weak self] parametersViewModel in
+        self?.parametersViewModel.send(parametersViewModel)
+        self?.objectWillChange.send()
+      }
+      .store(in: &subscriptions)
+
     setUpDataBindings()
   }
 
   func resetDefaults() {
-    source.modelParameters = defaultModelParameters()
+    source.modelParameters = AnyModelParameters(
+      LlamaFamilyModelParameters.defaultParameters(for: source.model)
+    )
   }
 
   // The values in source.modelParameters remain the source of truth here, but we want to assign their

@@ -8,6 +8,42 @@
         "branch" : "main",
         "revision" : "7cd0e42834f58a46f15eb2d162562f7ebc40ac61"
       }
+    },
+    {
+      "identity" : "camellm-common",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM-Common",
+      "state" : {
+        "branch" : "main",
+        "revision" : "d64bf265c74c92e9984cb191063ffa03cbe40eb9"
+      }
+    },
+    {
+      "identity" : "camellm-llama",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM-Llama.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "6bef6b357c2461671df13d6e25edffeae0c0920c"
+      }
+    },
+    {
+      "identity" : "camellm-plugin-harness",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CameLLM/CameLLM-Plugin-Harness",
+      "state" : {
+        "branch" : "main",
+        "revision" : "efc44ce0550450ec41d25099768a3acbfa693544"
+      }
+    },
+    {
+      "identity" : "coquille",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alexrozanski/Coquille.git",
+      "state" : {
+        "revision" : "cb28716215a56760c66a4f635a1f71d6a2e2a42a",
+        "version" : "0.3.0"
+      }
     }
   ],
   "version" : 2

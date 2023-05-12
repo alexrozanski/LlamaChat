@@ -10,8 +10,8 @@ import AppModel
 import DataModel
 import ModelCompatibility
 
-public func makeParametersViewModel(from parameters: ModelParameters?, chatModel: ChatModel) -> ModelParametersViewModel? {
-  if let parameters = parameters as? LlamaFamilyModelParameters {
+public func makeParametersViewModel(from parameters: AnyModelParameters?, chatModel: ChatModel) -> ModelParametersViewModel? {
+  if let parameters = parameters?.wrapped as? LlamaFamilyModelParameters {
     return LlamaFamilyModelParametersViewModel(chatModel: chatModel, parameters: parameters)
   }
 

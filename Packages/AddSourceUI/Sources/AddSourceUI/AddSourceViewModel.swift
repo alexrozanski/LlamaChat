@@ -11,7 +11,7 @@ import CameLLM
 import CameLLMLlama
 import AppModel
 import DataModel
-import ModelUtils
+import ModelCompatibility
 import ModelDirectory
 
 public class AddSourceViewModel: ObservableObject {
@@ -57,7 +57,9 @@ public class AddSourceViewModel: ObservableObject {
             modelVariant: variant,
             modelURL: modelURL,
             modelDirectoryId: modelDirectory.id,
-            modelParameters: defaultModelParameters(),
+            modelParameters: AnyModelParameters(
+              LlamaFamilyModelParameters.defaultParameters(for: configuredSource.model)
+            ),
             useMlock: false
           )
         )
@@ -83,7 +85,9 @@ public class AddSourceViewModel: ObservableObject {
             modelVariant: variant,
             modelURL: modelURL,
             modelDirectoryId: modelDirectoryId,
-            modelParameters: defaultModelParameters(),
+            modelParameters: AnyModelParameters(
+              LlamaFamilyModelParameters.defaultParameters(for: configuredSource.model)
+            ),
             useMlock: false
           )
         )

@@ -41,7 +41,7 @@ class SelectSourceTypeViewModel: ObservableObject {
     self.selectModelHandler = selectModelHandler
     self.filterViewModel = filterViewModel
 
-    dependencies.remoteMetadataModel.$allModels
+    dependencies.metadataModel.$allModels
       .map { models in
         return Array(
           Set<Language>(
@@ -52,7 +52,7 @@ class SelectSourceTypeViewModel: ObservableObject {
       }
       .assign(to: &filterViewModel.$availableLanguages)
 
-    dependencies.remoteMetadataModel.$allModels
+    dependencies.metadataModel.$allModels
       .combineLatest(filterViewModel.$location, filterViewModel.$language, filterViewModel.$searchFieldText)
       .compactMap { [weak self] models, location, language, searchFieldText -> (sources: [SourceViewModel], matches: [SourceFilterMatch])? in
         guard let self else { return nil }
@@ -70,7 +70,7 @@ class SelectSourceTypeViewModel: ObservableObject {
         self?.matches = matches
       }.store(in: &subscriptions)
 
-    dependencies.remoteMetadataModel.$loadState
+    dependencies.metadataModel.$loadState
       .map { loadState in
         switch loadState {
         case .none, .failed, .loaded:

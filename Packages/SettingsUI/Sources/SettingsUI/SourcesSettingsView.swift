@@ -7,14 +7,16 @@
 
 import SwiftUI
 import AddSourceUI
+import ModelCompatibility
 import SharedUI
 
-struct SourcesSettingsView: View {
+struct SourcesSettingsView<ParametersContent>: View where ParametersContent: View {
   @ObservedObject var viewModel: SourcesSettingsViewModel
+  let parametersContent: (ModelParametersViewModel?) -> ParametersContent
 
   @ViewBuilder var detailView: some View {
     if let detailViewModel = viewModel.detailViewModel {
-      SourcesSettingsDetailView(viewModel: detailViewModel)
+      SourcesSettingsDetailView(viewModel: detailViewModel, parametersContent: parametersContent)
         .id(detailViewModel.id)
     } else {
       Text("Select a source to configure its settings")

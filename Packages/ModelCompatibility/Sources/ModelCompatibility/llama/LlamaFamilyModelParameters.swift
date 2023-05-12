@@ -27,7 +27,7 @@ public class LlamaFamilyModelParametersCoder: ModelParametersCoder {
 
   public init() {}
 
-  public func decodeParameters<Key>(in container: KeyedDecodingContainer<Key>, forKey key: Key) throws -> ModelParameters where Key: CodingKey {
+  public func decodeParameters<Key>(in container: KeyedDecodingContainer<Key>, forKey key: Key) throws -> AnyModelParameters where Key: CodingKey {
     let values = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: key)
 
     let seedValue = try values.decode(Int32?.self, forKey: .seedValue)
@@ -40,21 +40,23 @@ public class LlamaFamilyModelParametersCoder: ModelParametersCoder {
     let lastNTokensToPenalize = try values.decode(UInt.self, forKey: .lastNTokensToPenalize)
     let repeatPenalty = try values.decode(Double.self, forKey: .repeatPenalty)
 
-    return LlamaFamilyModelParameters(
-      seedValue: seedValue,
-      contextSize: contextSize,
-      numberOfTokens: numberOfTokens,
-      topP: topP,
-      topK: topK,
-      temperature: temperature,
-      batchSize: batchSize,
-      lastNTokensToPenalize: lastNTokensToPenalize,
-      repeatPenalty: repeatPenalty
+    return AnyModelParameters(
+      LlamaFamilyModelParameters(
+        seedValue: seedValue,
+        contextSize: contextSize,
+        numberOfTokens: numberOfTokens,
+        topP: topP,
+        topK: topK,
+        temperature: temperature,
+        batchSize: batchSize,
+        lastNTokensToPenalize: lastNTokensToPenalize,
+        repeatPenalty: repeatPenalty
+      )
     )
   }
 
-  public func encode<Key>(parameters: ModelParameters, to container: inout KeyedEncodingContainer<Key>, forKey key: Key) throws where Key: CodingKey {
-    guard let parameters = parameters as? LlamaFamilyModelParameters else {
+  public func encode<Key>(parameters: AnyModelParameters, to container: inout KeyedEncodingContainer<Key>, forKey key: Key) throws where Key: CodingKey {
+    guard let parameters = parameters.wrapped as? LlamaFamilyModelParameters else {
       throw ModelParametersCoderError.unsupportedParameters
     }
 

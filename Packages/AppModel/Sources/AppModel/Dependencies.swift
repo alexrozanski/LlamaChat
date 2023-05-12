@@ -12,14 +12,17 @@ public class Dependencies: ObservableObject {
   public let chatSourcesModel: ChatSourcesModel
   public let chatModels: ChatModels
   public let messagesModel: MessagesModel
-  public let remoteMetadataModel: RemoteMetadataModel
+  public let metadataModel: MetadataModel
   public let stateRestoration: StateRestoration
 
-  public init() {
-    chatSourcesModel = ChatSourcesModel()
+  public init(
+    modelParametersViewModelBuilder: @escaping ChatModel.ModelParametersViewModelBuilder
+  ) {
+    let metadataModel = MetadataModel()
+    self.metadataModel = metadataModel
+    chatSourcesModel = ChatSourcesModel(metadataModel: metadataModel)
     messagesModel = MessagesModel()
-    chatModels = ChatModels(messagesModel: messagesModel)
-    remoteMetadataModel = RemoteMetadataModel(apiBaseURL: URL(string: "http://localhost:3000/api/")!)
+    chatModels = ChatModels(messagesModel: messagesModel, modelParametersViewModelBuilder: modelParametersViewModelBuilder)
     stateRestoration = StateRestoration()
   }
 }

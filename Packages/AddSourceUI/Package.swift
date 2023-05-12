@@ -19,6 +19,7 @@ let package = Package(
     .package(path: "../AppModel"),
     .package(path: "../CardUI"),
     .package(path: "../Downloads"),
+    .package(path: "../ModelCompatibility"),
     .package(path: "../ModelDirectory"),
     .package(path: "../ModelMetadata"),
     .package(path: "../SharedUI")
@@ -33,6 +34,7 @@ let package = Package(
         "AppModel",
         "CardUI",
         "Downloads",
+        "ModelCompatibility",
         "ModelDirectory",
         "ModelMetadata",
         "SharedUI"

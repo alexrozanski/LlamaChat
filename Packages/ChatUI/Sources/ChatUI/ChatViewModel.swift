@@ -40,10 +40,9 @@ class ChatViewModel: ObservableObject {
     let chatModel = chatModels.chatModel(for: chatSource)
     self.chatModel = chatModel
 
-    chatSource.$modelParameters
-      .map { makeParametersViewModel(from: $0, chatModel: chatModel) }
-      .sink { [weak self] viewModel in
-        self?.parametersViewModel.send(viewModel)
+    chatModel.parametersViewModel
+      .sink { [weak self] parametersViewModel in
+        self?.parametersViewModel.send(parametersViewModel)
         self?.objectWillChange.send()
       }
       .store(in: &subscriptions)

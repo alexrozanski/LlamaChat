@@ -1,96 +1,16 @@
 //
-//  SourceSettingsParametersView.swift
-//  LlamaChat
+//  ParametersSettingsView.swift
+//  
 //
-//  Created by Alex Rozanski on 19/04/2023.
+//  Created by Alex Rozanski on 11/05/2023.
 //
 
 import SwiftUI
+import SettingsUI
 import SharedUI
 
-fileprivate struct DiscreteSliderRowView<Label>: View where Label: View {
-  typealias LabelBuilder = () -> Label
-
-  let value: Binding<Int>
-  let range: ClosedRange<Int>
-  var isExponential: Bool = false
-  var numberOfTickMarks: Int? = nil
-
-  @ViewBuilder var label: LabelBuilder
-
-  var body: some View {
-    let formatter: NumberFormatter = {
-      let numberFormatter = NumberFormatter()
-      numberFormatter.minimum = NSNumber(integerLiteral: range.lowerBound)
-      numberFormatter.maximum = NSNumber(integerLiteral: range.upperBound)
-      return numberFormatter
-    }()
-    LabeledContent(content: {
-      HStack(spacing: 8) {
-        DiscreteSliderView(value: value, range: range, isExponential: isExponential, numberOfTickMarks: numberOfTickMarks)
-          .frame(maxWidth: .infinity)
-        TextField("", value: value, formatter: formatter)
-          .frame(width: 55)
-          .controlSize(.small)
-          .multilineTextAlignment(.center)
-          .textFieldStyle(.roundedBorder)
-      }
-    }, label: label)
-  }
-}
-
-fileprivate struct ParameterLabelWithDescription: View {
-  let label: String
-  let description: String
-
-  @Environment(\.showParameterDetails) var showParameterDetails
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 4) {
-      Text(label)
-      if showParameterDetails {
-        Text(description)
-          .font(.footnote)
-          .foregroundColor(.gray)
-      }
-    }
-  }
-}
-
-fileprivate struct ContinuousSliderRowView<Label>: View where Label: View {
-  typealias LabelBuilder = () -> Label
-
-  let value: Binding<Double>
-  let range: ClosedRange<Double>
-  var fractionDigits: Int = 1
-  var numberOfTickMarks: Int? = nil
-  @ViewBuilder var label: LabelBuilder
-
-  var body: some View {
-    let formatter: NumberFormatter = {
-      let numberFormatter = NumberFormatter()
-      numberFormatter.minimum = NSNumber(floatLiteral: range.lowerBound)
-      numberFormatter.maximum = NSNumber(floatLiteral: range.upperBound)
-      numberFormatter.minimumFractionDigits = fractionDigits
-      numberFormatter.maximumFractionDigits = fractionDigits
-      return numberFormatter
-    }()
-    LabeledContent(content: {
-      HStack(spacing: 8) {
-        ContinuousSliderView(value: value, range: range, numberOfTickMarks: numberOfTickMarks)
-          .frame(maxWidth: .infinity)
-        TextField("", value: value, formatter: formatter)
-          .frame(width: 55)
-          .controlSize(.small)
-          .multilineTextAlignment(.center)
-          .textFieldStyle(.roundedBorder)
-      }
-    }, label: label)
-  }
-}
-
-struct SourceSettingsParametersView: View {
-  @ObservedObject var viewModel: SourceSettingsParametersViewModel
+public struct LlamaFamilyParametersSettingsView: View {
+  @ObservedObject var viewModel: LlamaFamilyModelParametersViewModel
 
   @ViewBuilder var basicParameters: some View {
     let seedBinding = Binding<NumericTextFieldWithRandomSelector.Value>(
@@ -133,9 +53,8 @@ struct SourceSettingsParametersView: View {
           description: "The random number to seed text generation with."
         )
       }
-
       DiscreteSliderRowView(
-        value: $viewModel.contextSize,
+        value: $viewModel.contextSize.toInt(),
         range: 128...2048,
         isExponential: true,
         numberOfTickMarks: 5,
@@ -147,7 +66,7 @@ struct SourceSettingsParametersView: View {
         }
       )
       DiscreteSliderRowView(
-        value: $viewModel.numberOfTokens,
+        value: $viewModel.numberOfTokens.toInt(),
         range: 128...2048,
         isExponential: true,
         numberOfTickMarks: 5,
@@ -176,7 +95,7 @@ struct SourceSettingsParametersView: View {
         }
       )
       DiscreteSliderRowView(
-        value: $viewModel.topK,
+        value: $viewModel.topK.toInt(),
         range: 1...10000,
         numberOfTickMarks: 11,
         label: {
@@ -199,7 +118,7 @@ struct SourceSettingsParametersView: View {
         }
       )
       DiscreteSliderRowView(
-        value: $viewModel.batchSize,
+        value: $viewModel.batchSize.toInt(),
         range: 1...256,
         isExponential: true,
         numberOfTickMarks: 9,
@@ -227,7 +146,7 @@ struct SourceSettingsParametersView: View {
         }
       )
       DiscreteSliderRowView(
-        value: $viewModel.lastNTokensToPenalize,
+        value: $viewModel.lastNTokensToPenalize.toInt(),
         range: 1...256,
         isExponential: true,
         numberOfTickMarks: 9,
@@ -241,48 +160,14 @@ struct SourceSettingsParametersView: View {
     }
   }
 
-  @State var showResetDefaultsAlert = false
-
-  var body: some View {
-    VStack {
-      HStack {
-        Toggle("Parameter Details", isOn: $viewModel.showDetails)
-          .toggleStyle(.switch)
-          .controlSize(.small)
-          .padding(.leading, 8)
-        Spacer()
-        Button("Reset Defaults") {
-          showResetDefaultsAlert = true
-        }
-        .alert(isPresented: $showResetDefaultsAlert) {
-          Alert(
-            title: Text("Reset parameters to defaults?"),
-            message: Text("This cannot be undone"),
-            primaryButton: .destructive(Text("Reset"), action: { viewModel.resetDefaults() }),
-            secondaryButton: .cancel()
-          )
-        }
-        .controlSize(.small)
-      }
-      .padding(.horizontal, 20)
-      Form {
-        basicParameters
-        samplingParameters
-        penalizationParameters
-      }
-      .formStyle(.grouped)
-      .environment(\.showParameterDetails, viewModel.showDetails)
+  public var body: some View {
+    Form {
+      basicParameters
+      samplingParameters
+      penalizationParameters
     }
+    .formStyle(.grouped)
   }
 }
 
-fileprivate struct ShowParameterDetailsKey: EnvironmentKey {
-  static let defaultValue: Bool = false
-}
 
-fileprivate extension EnvironmentValues {
-    var showParameterDetails: Bool {
-        get { self[ShowParameterDetailsKey.self] }
-        set { self[ShowParameterDetailsKey.self] = newValue }
-    }
-}
