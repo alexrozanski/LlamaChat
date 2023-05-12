@@ -14,24 +14,29 @@ private let minimumContextSize = UInt(512)
 public extension LlamaFamilyModelParameters {
   static func defaultParameters(for model: Model) -> LlamaFamilyModelParameters {
     guard let defaultParameters = model.defaultParameters else {
-      return LlamaFamilyModelParameters.from(sessionConfig: LlamaSessionConfig.defaults)
+      return LlamaFamilyModelParameters.from(sessionConfig: SessionConfig.defaults)
     }
 
-    let contextSize = (defaultParameters["contextSize"]?.value as? Int).map { UInt($0) }
+    let modelDefaults = LlamaFamilyDefaultModelParameters.from(dictionary: defaultParameters)
     let newParameters = LlamaFamilyModelParameters.from(
-      sessionConfig: LlamaSessionConfig.configurableDefaults
-        .withSeed(defaultParameters["seed"]?.value as? Int32)
-        .withNumTokens((defaultParameters["numTokens"]?.value as? Int).map { UInt($0) })
+      sessionConfig: SessionConfig.configurableDefaults()
+        .withMode(modelDefaults.mode?.toSessionConfig())
+        .withSeed(modelDefaults.seedValue)
+        .withNumTokens(modelDefaults.numberOfTokens)
         .withHyperparameters { hyperparameters in
           hyperparameters
-            .withContextSize(max(contextSize ?? 0, minimumContextSize))
-            .withBatchSize((defaultParameters["batchSize"]?.value as? Int).map { UInt($0) })
-            .withLastNTokensToPenalize((defaultParameters["lastNTokensToPenalize"]?.value as? Int).map { UInt($0) })
-            .withTopK((defaultParameters["topK"]?.value as? Int).map { UInt($0) })
-            .withTopP(defaultParameters["topP"]?.value as? Double)
-            .withTemperature(defaultParameters["temperature"]?.value as? Double)
-          .withRepeatPenalty(defaultParameters["repeatPenalty"]?.value as? Double)
+            .withContextSize(max(modelDefaults.contextSize ?? 0, minimumContextSize))
+            .withBatchSize(modelDefaults.batchSize)
+            .withLastNTokensToPenalize(modelDefaults.lastNTokensToPenalize)
+            .withTopK(modelDefaults.topK)
+            .withTopP(modelDefaults.topP)
+            .withTemperature(modelDefaults.temperature)
+            .withRepeatPenalty(modelDefaults.repeatPenalty)
         }
+        .withInitialPrompt(modelDefaults.initialPrompt)
+        .withPromptPrefix(modelDefaults.promptPrefix)
+        .withPromptSuffix(modelDefaults.promptSuffix)
+        .withAntiprompt(modelDefaults.antiprompt)
         .build()
     )
     return newParameters
@@ -41,6 +46,7 @@ public extension LlamaFamilyModelParameters {
 fileprivate extension LlamaFamilyModelParameters {
   static func from(sessionConfig: SessionConfig) -> LlamaFamilyModelParameters {
     return LlamaFamilyModelParameters(
+      mode: LlamaFamilyModelParameters.Mode.fromSessionConfig(sessionConfig.mode),
       seedValue: sessionConfig.seed,
       contextSize: sessionConfig.hyperparameters.contextSize,
       numberOfTokens: sessionConfig.numTokens,
@@ -49,7 +55,37 @@ fileprivate extension LlamaFamilyModelParameters {
       temperature: sessionConfig.hyperparameters.temperature,
       batchSize: sessionConfig.hyperparameters.batchSize,
       lastNTokensToPenalize: sessionConfig.hyperparameters.lastNTokensToPenalize,
-      repeatPenalty: sessionConfig.hyperparameters.repeatPenalty
+      repeatPenalty: sessionConfig.hyperparameters.repeatPenalty,
+      initialPrompt: sessionConfig.initialPrompt,
+      promptPrefix: sessionConfig.promptPrefix,
+      promptSuffix: sessionConfig.promptSuffix,
+      antiprompt: sessionConfig.antiprompt
     )
+  }
+}
+
+fileprivate extension SessionConfig.Mode {
+  static func fromString(_ string: String) -> SessionConfig.Mode? {
+    switch string {
+    case "regular": return .regular
+    case "instructional": return .instructional
+    default: return nil
+    }
+  }
+}
+
+fileprivate extension LlamaFamilyModelParameters.Mode {
+  func toSessionConfig() -> SessionConfig.Mode {
+    switch self {
+    case .regular: return .regular
+    case .instructional: return .instructional
+    }
+  }
+
+  static func fromSessionConfig(_ mode: SessionConfig.Mode) -> LlamaFamilyModelParameters.Mode {
+    switch mode {
+    case .regular: return .regular
+    case .instructional: return .instructional
+    }
   }
 }

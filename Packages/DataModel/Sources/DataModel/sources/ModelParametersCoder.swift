@@ -9,12 +9,15 @@ import Foundation
 
 public enum ModelParametersCoderError: Error {
   case unsupportedParameters
+  case missingDefaultParameter
 }
 
 public protocol ModelParametersCoder {
   func decodeParameters<Key>(
     in container: KeyedDecodingContainer<Key>,
-    forKey key: Key
+    forKey key: Key,
+    modelId: String,
+    variantId: String?
   ) throws -> AnyModelParameters where Key: CodingKey
   
   func encode<Key>(

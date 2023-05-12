@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import DataModel
+import ModelCompatibility
 import ModelMetadata
 import FileManager
 

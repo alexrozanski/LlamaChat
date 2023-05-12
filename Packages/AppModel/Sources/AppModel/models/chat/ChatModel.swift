@@ -166,45 +166,9 @@ public class ChatModel: ObservableObject {
 
   @MainActor
   private func makeAndStoreNewSession() -> any Session<LlamaSessionState, LlamaPredictionState> {
-    var newSession: any Session<LlamaSessionState, LlamaPredictionState>
     let numThreads = UInt(AppSettingsModel.shared.numThreads)
-//    switch source.type {
-//    case .llama:
-      newSession = SessionManager.llamaFamily.makeLlamaSession(
-        with: source.modelURL,
-        config: LlamaSessionConfig.configurableDefaults
-//          .withModelParameters(
-//            source.modelParameters,
-//            numThreads: numThreads,
-//            keepModelInMemory: source.useMlock
-//          )
-          .build()
-      )
-//    case .alpaca:
-//      newSession = SessionManager.llamaFamily.makeAlpacaSession(
-//        with: source.modelURL,
-//        config: AlpacaSessionConfig.configurableDefaults
-////          .withModelParameters(
-////            source.modelParameters,
-////            numThreads: numThreads,
-////            keepModelInMemory: source.useMlock
-////          )
-//          .build()
-//      )
-//    case .gpt4All:
-//      newSession = SessionManager.llamaFamily.makeGPT4AllSession(
-//        with: source.modelURL,
-//        config: GPT4AllSessionConfig.configurableDefaults
-////          .withModelParameters(
-////            source.modelParameters,
-////            numThreads: numThreads,
-////            keepModelInMemory: source.useMlock
-////          )
-//          .build()
-//      )
-//    }
+    let newSession = makeSession(for: source, numThreads: numThreads)
 
-    
     newSession.sessionContextProviding.provider?.updatedContextHandler = { [weak self] newSessionContext in
       self?.lastChatContext = ChatModel.ChatContext(sessionContext: newSessionContext)
     }
@@ -304,27 +268,4 @@ private func errorText(from error: Error) -> String {
     }
   }
   return "Failed to generate response"
-}
-
-fileprivate extension SessionConfigBuilder {
-  func withModelParameters(
-    _ modelParameters: LlamaFamilyModelParameters,
-    numThreads: UInt,
-    keepModelInMemory: Bool
-  ) -> SessionConfigBuilder {
-    return withSeed(modelParameters.seedValue)
-      .withNumThreads(numThreads)
-      .withNumTokens(modelParameters.numberOfTokens)
-      .withKeepModelInMemory(keepModelInMemory)
-      .withHyperparameters { hyperparameters in
-        hyperparameters
-          .withContextSize(modelParameters.contextSize)
-          .withBatchSize(modelParameters.batchSize)
-          .withLastNTokensToPenalize(modelParameters.lastNTokensToPenalize)
-          .withTopK(modelParameters.topK)
-          .withTopP(modelParameters.topP)
-          .withTemperature(modelParameters.temperature)
-          .withRepeatPenalty(modelParameters.repeatPenalty)
-      }
-  }
 }

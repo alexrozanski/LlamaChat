@@ -8,6 +8,7 @@
 import Foundation
 import DataModel
 import ModelMetadata
+import ModelCompatibility
 
 fileprivate struct Names: Decodable {
   let llamaNames: [String]

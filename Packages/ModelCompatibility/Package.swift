@@ -13,9 +13,10 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(url: "https://github.com/Flight-School/AnyCodable", from: "0.6.0"),
     .package(url: "https://github.com/CameLLM/CameLLM.git", branch: "main"),
     .package(url: "https://github.com/CameLLM/CameLLM-Llama.git", branch: "main"),
-    .package(path: "../DataModel")
+    .package(path: "../DataModel"),
   ],
   targets: [
     .target(

@@ -54,7 +54,9 @@ public class ModelMetadataStore {
   public func fetchMetadata() async throws -> [Model] {
     guard !fetchState.isFetching else { return [] }
 
-    fetchState = .fetching
+    await MainActor.run {
+      fetchState = .fetching
+    }
 
     do {
       let models = try await _fetchMetadata()

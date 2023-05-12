@@ -95,8 +95,6 @@ public class ChatSource: Codable, ObservableObject {
       throw ChatSourceCodingError.missingModelParametersCoder
     }
 
-    modelParameters = try coder.decodeParameters(in: values, forKey: CodingKeys.modelParameters)
-
     guard let chatSourceUpgrader = decoder.userInfo[.chatSourceUpgrader] as? ChatSourceUpgrader else {
       throw ChatSourceCodingError.missingChatSourceUpgrader
     }
@@ -131,6 +129,13 @@ public class ChatSource: Codable, ObservableObject {
     guard let model else {
       throw ChatSourceCodingError.missingModel
     }
+
+    modelParameters = try coder.decodeParameters(
+      in: values,
+      forKey: CodingKeys.modelParameters,
+      modelId: model.id,
+      variantId: modelVariantId
+    )
 
     self.model = model
     self.modelVariant = modelVariant
