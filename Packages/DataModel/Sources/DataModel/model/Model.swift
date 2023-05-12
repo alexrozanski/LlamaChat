@@ -9,17 +9,12 @@ import Foundation
 import AnyCodable
 
 public struct Model: Codable {
-  public enum Source: String {
-    case local
-    case remote
-  }
-
   public let id: String
   public let name: String
   public let description: String
-  public let source: Source
   public let sourcingDescription: String?
   public let format: [String]
+  public let downloadable: Bool
   public let languages: [String]
   public let legacy: Bool
   public let publisher: ModelPublisher
@@ -30,10 +25,10 @@ public struct Model: Codable {
     case id
     case name
     case description
-    case source
     case sourcingDescription
     case family
     case format
+    case downloadable
     case legacy
     case languages
     case publisher
@@ -45,9 +40,9 @@ public struct Model: Codable {
     id: String,
     name: String,
     description: String,
-    source: Source,
     sourcingDescription: String?,
     format: [String],
+    downloadable: Bool = false,
     languages: [String],
     legacy: Bool,
     publisher: ModelPublisher,
@@ -57,9 +52,9 @@ public struct Model: Codable {
     self.id = id
     self.name = name
     self.description = description
-    self.source = source
     self.sourcingDescription = sourcingDescription
     self.format = format
+    self.downloadable = downloadable
     self.languages = languages
     self.legacy = legacy
     self.publisher = publisher
@@ -72,9 +67,9 @@ public struct Model: Codable {
     id = try values.decode(String.self, forKey: .id)
     name = try values.decode(String.self, forKey: .name)
     description = try values.decode(String.self, forKey: .description)
-    source = try decodeSource(from: values)
     sourcingDescription = try values.decodeIfPresent(String.self, forKey: .sourcingDescription)
     format = try values.decode([String].self, forKey: .format)
+    downloadable = try values.decodeIfPresent(Bool.self, forKey: .downloadable) ?? false
     legacy = try values.decodeIfPresent(Bool.self, forKey: .legacy) ?? false
     languages = try values.decode([String].self, forKey: .languages)
     publisher = try values.decode(ModelPublisher.self, forKey: .publisher)
@@ -87,25 +82,13 @@ public struct Model: Codable {
     try container.encode(id, forKey: .id)
     try container.encode(name, forKey: .name)
     try container.encode(description, forKey: .description)
-    try container.encode(source.rawValue, forKey: .source)
     try container.encode(sourcingDescription, forKey: .sourcingDescription)
     try container.encode(format, forKey: .format)
+    try container.encode(downloadable, forKey: .downloadable)
     try container.encode(legacy, forKey: .legacy)
     try container.encode(languages, forKey: .languages)
     try container.encode(publisher, forKey: .publisher)
     try container.encodeIfPresent(defaultParameters, forKey: .defaultParameters)
     try container.encode(variants, forKey: .variants)
-  }
-}
-
-private func decodeSource(from container: KeyedDecodingContainer<Model.CodingKeys>) throws -> Model.Source {
-  let source = try container.decode(String.self, forKey: .source)
-  switch source {
-  case "local":
-    return .local
-  case "remote":
-    return .remote
-  default:
-    throw DecodingError.typeMismatch(Model.Source.self, DecodingError.Context(codingPath: [Model.CodingKeys.source], debugDescription: "unsupported source '\(source)'"))
   }
 }

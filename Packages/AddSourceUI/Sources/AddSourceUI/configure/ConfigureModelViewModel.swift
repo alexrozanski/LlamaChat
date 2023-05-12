@@ -110,12 +110,12 @@ class ConfigureModelViewModel: ObservableObject {
         icon: "desktopcomputer",
         source: .local
       )
-    ].filter { source in
-      switch source.source {
+    ].filter { viewModel in
+      switch viewModel.source {
       case .local:
         return true
       case .remote:
-        return model.source == .remote
+        return model.downloadable
       }
     }
 

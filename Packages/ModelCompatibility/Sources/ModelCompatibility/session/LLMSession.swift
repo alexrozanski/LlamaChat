@@ -50,6 +50,7 @@ public class LLMSessionContext {
 
 public protocol LLMSessionDelegate: AnyObject {
   func llmSession(_ session: LLMSession, stateDidChange state: LLMSessionState)
+  // Only called if the underlying session supports it.
   func llmSession(_ session: LLMSession, didUpdateSessionContext sessionContext: LLMSessionContext)
 }
 

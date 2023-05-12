@@ -19,6 +19,11 @@ final class LlamaFamilyLLMSession: LLMSession {
   init(session: any Session<LlamaSessionState, LlamaPredictionState>, delegate: LLMSessionDelegate) {
     _session = session
     self.delegate = delegate
+
+    _session.sessionContextProviding.provider?.updatedContextHandler = { [weak self, weak delegate] sessionContext in
+      guard let self, let delegate else { return }
+      delegate.llmSession(self, didUpdateSessionContext: LLMSessionContext(sessionContext: sessionContext))
+    }
   }
 
   func predict(with prompt: String, tokenHandler: @escaping (String) -> Void, stateChangeHandler: @escaping (LLMPredictionState) -> Void) -> LLMSessionPredictionCancellable {
@@ -35,7 +40,7 @@ final class LlamaFamilyLLMSession: LLMSession {
   }
 
   func currentContext() async throws -> LLMSessionContext? {
-    return nil
+    return try await _session.sessionContextProviding.provider?.currentContext().map { LLMSessionContext(sessionContext: $0) }
   }
 }
 

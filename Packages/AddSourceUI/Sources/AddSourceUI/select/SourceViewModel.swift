@@ -61,12 +61,7 @@ class SourceViewModel {
   }
 
   var isRemote: Bool {
-    switch model.source {
-    case .local:
-      return false
-    case .remote:
-      return true
-    }
+    return model.downloadable
   }
 
   var selectionType: SelectionType {

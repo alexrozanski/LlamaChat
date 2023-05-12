@@ -129,7 +129,7 @@ private func filterSources(
       }
 
       if let location {
-        guard location.matches(source: model.source) else { return nil }
+        guard location.matches(model: model) else { return nil }
         sourceMatches.append(.location)
       }
 
@@ -160,12 +160,12 @@ private func filterSources(
 }
 
 fileprivate extension SelectSourceTypeFilterViewModel.Location {
-  func matches(source: Model.Source) -> Bool {
-    switch source {
-    case .remote:
-      return self == .remote
+  func matches(model: Model) -> Bool {
+    switch self {
     case .local:
-      return self == .local
+      return true
+    case .remote:
+      return model.downloadable
     }
   }
 }

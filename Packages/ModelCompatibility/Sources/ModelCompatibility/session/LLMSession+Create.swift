@@ -25,6 +25,12 @@ public func makeSession(
       numThreads: numThreads,
       delegate: delegate
     )
+  case "camellm-gptj":
+    return makeGPT4AllLLMSession(
+      for: chatSource,
+      numThreads: numThreads,
+      delegate: delegate
+    )
   default:
     return nil
   }
