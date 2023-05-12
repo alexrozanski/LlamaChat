@@ -14,17 +14,11 @@ public struct Model: Codable {
     case remote
   }
 
-  public enum Family: String {
-    case llama
-    case gptj
-  }
-
   public let id: String
   public let name: String
   public let description: String
   public let source: Source
   public let sourcingDescription: String?
-  public let family: Family
   public let format: [String]
   public let languages: [String]
   public let legacy: Bool
@@ -53,7 +47,6 @@ public struct Model: Codable {
     description: String,
     source: Source,
     sourcingDescription: String?,
-    family: Family,
     format: [String],
     languages: [String],
     legacy: Bool,
@@ -66,7 +59,6 @@ public struct Model: Codable {
     self.description = description
     self.source = source
     self.sourcingDescription = sourcingDescription
-    self.family = family
     self.format = format
     self.languages = languages
     self.legacy = legacy
@@ -82,7 +74,6 @@ public struct Model: Codable {
     description = try values.decode(String.self, forKey: .description)
     source = try decodeSource(from: values)
     sourcingDescription = try values.decodeIfPresent(String.self, forKey: .sourcingDescription)
-    family = try decodeFamily(from: values)
     format = try values.decode([String].self, forKey: .format)
     legacy = try values.decodeIfPresent(Bool.self, forKey: .legacy) ?? false
     languages = try values.decode([String].self, forKey: .languages)
@@ -98,7 +89,6 @@ public struct Model: Codable {
     try container.encode(description, forKey: .description)
     try container.encode(source.rawValue, forKey: .source)
     try container.encode(sourcingDescription, forKey: .sourcingDescription)
-    try container.encode(family.rawValue, forKey: .family)
     try container.encode(format, forKey: .format)
     try container.encode(legacy, forKey: .legacy)
     try container.encode(languages, forKey: .languages)
@@ -117,17 +107,5 @@ private func decodeSource(from container: KeyedDecodingContainer<Model.CodingKey
     return .remote
   default:
     throw DecodingError.typeMismatch(Model.Source.self, DecodingError.Context(codingPath: [Model.CodingKeys.source], debugDescription: "unsupported source '\(source)'"))
-  }
-}
-
-private func decodeFamily(from container: KeyedDecodingContainer<Model.CodingKeys>) throws -> Model.Family {
-  let family = try container.decode(String.self, forKey: .family)
-  switch family {
-  case "llama":
-    return .llama
-  case "gptj":
-    return .gptj
-  default:
-    throw DecodingError.typeMismatch(Model.Family.self, DecodingError.Context(codingPath: [Model.CodingKeys.family], debugDescription: "unsupported family '\(family)'"))
   }
 }

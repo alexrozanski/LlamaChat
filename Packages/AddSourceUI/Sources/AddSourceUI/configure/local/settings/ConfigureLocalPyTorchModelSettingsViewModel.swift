@@ -84,9 +84,11 @@ class ConfigureLocalPyTorchModelSettingsViewModel: ObservableObject, ConfigureLo
   private var subscriptions = Set<AnyCancellable>()
 
   private let model: Model
+  private let modelVariant: ModelVariant?
 
-  init(model: Model) {
+  init(model: Model, modelVariant: ModelVariant?) {
     self.model = model
+    self.modelVariant = modelVariant
 
     variantPickerViewModel.$selectedVariant
       .combineLatest($conversionState)

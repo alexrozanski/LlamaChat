@@ -180,6 +180,7 @@ class ConfigureModelViewModel: ObservableObject {
       state = .configuringLocalModel(
         ConfigureLocalModelViewModel(
           model: model,
+          modelVariant: variant,
           nextHandler: nextHandler
         )
       )

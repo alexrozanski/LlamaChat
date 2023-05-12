@@ -16,6 +16,7 @@ let package = Package(
     .package(url: "https://github.com/Flight-School/AnyCodable", from: "0.6.0"),
     .package(url: "https://github.com/CameLLM/CameLLM.git", branch: "main"),
     .package(url: "https://github.com/CameLLM/CameLLM-Llama.git", branch: "main"),
+    .package(url: "https://github.com/CameLLM/CameLLM-GPTJ.git", branch: "main"),
     .package(path: "../DataModel"),
   ],
   targets: [
@@ -24,6 +25,7 @@ let package = Package(
       dependencies: [
         .product(name: "CameLLM", package: "CameLLM"),
         .product(name: "CameLLMLlama", package: "CameLLM-Llama"),
+        .product(name: "CameLLMGPTJ", package: "CameLLM-GPTJ"),
         "DataModel"
       ]
     )

@@ -12,10 +12,12 @@ struct ConfigureLocalGgmlModelSettingsView: View {
 
   var body: some View {
     PathSelectorView(viewModel: viewModel.pathSelectorViewModel)
-    VariantPickerView(
-      viewModel: viewModel.variantPickerViewModel,
-      enabled: viewModel.modelState.isValid,
-      unknownModelVariantAppearance: .regular
-    )
+    if viewModel.showVariantPicker {
+      VariantPickerView(
+        viewModel: viewModel.variantPickerViewModel,
+        enabled: viewModel.modelState.isValid,
+        unknownModelVariantAppearance: .regular
+      )
+    }
   }
 }

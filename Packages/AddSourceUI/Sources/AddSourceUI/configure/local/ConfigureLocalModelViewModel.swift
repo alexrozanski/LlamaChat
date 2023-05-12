@@ -37,6 +37,7 @@ class ConfigureLocalModelViewModel: ObservableObject {
   let primaryActionsViewModel = PrimaryActionsViewModel()
 
   let model: Model
+  let modelVariant: ModelVariant?
   private let nextHandler: ConfigureSourceNextHandler
 
   private var subscriptions = Set<AnyCancellable>()
@@ -44,9 +45,11 @@ class ConfigureLocalModelViewModel: ObservableObject {
   init(
     defaultName: String? = nil,
     model: Model,
+    modelVariant: ModelVariant?,
     nextHandler: @escaping ConfigureSourceNextHandler
   ) {
     self.model = model
+    self.modelVariant = modelVariant
     self.nextHandler = nextHandler
 
     let configuredSource = $settingsViewModel
@@ -99,12 +102,12 @@ class ConfigureLocalModelViewModel: ObservableObject {
 
     switch modelSourceType {
     case .pyTorch:
-      let viewModel = ConfigureLocalPyTorchModelSettingsViewModel(model: model)
+      let viewModel = ConfigureLocalPyTorchModelSettingsViewModel(model: model, modelVariant: modelVariant)
       viewModel.determineConversionStateIfNeeded()
       settingsViewModels[.pyTorch] = viewModel
       return viewModel
     case .ggml:
-      let viewModel = ConfigureLocalGgmlModelSettingsViewModel(model: model)
+      let viewModel = ConfigureLocalGgmlModelSettingsViewModel(model: model, modelVariant: modelVariant)
       settingsViewModels[.ggml] = viewModel
       return viewModel
     }

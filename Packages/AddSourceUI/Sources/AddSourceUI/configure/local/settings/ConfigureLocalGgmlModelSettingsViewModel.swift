@@ -11,36 +11,14 @@ import CameLLM
 import CameLLMLlama
 import CameLLMGPTJ
 import DataModel
+import ModelCompatibility
 import ModelMetadata
 
-private func getInvalidModelTypeReason(from error: Error) -> ConfigureLocalGgmlModelSettingsViewModel.InvalidModelTypeReason {
-  // Reason is always stored in the underlying error
-  guard let underlyingError = ((error as NSError).underlyingErrors as [NSError]).first(where: { $0.domain == CameLLMError.Domain }) else {
-    return .unknown
-  }
-
-  if underlyingError.code == CameLLMError.Code.invalidModelBadMagic.rawValue {
-    return .invalidFileType
-  }
-
-  if underlyingError.code == CameLLMError.Code.invalidModelUnversioned.rawValue || underlyingError.code == CameLLMError.Code.invalidModelUnsupportedFileVersion.rawValue {
-    return .unsupportedModelVersion
-  }
-
-  return .unknown
-}
-
 class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocalModelSettingsViewModel {
-  enum InvalidModelTypeReason {
-    case unknown
-    case invalidFileType
-    case unsupportedModelVersion
-  }
-
   enum ModelState {
     case none
     case invalidPath
-    case invalidModel(_ reason: InvalidModelTypeReason)
+    case invalidModel
     case valid(modelURL: URL)
 
     var isValid: Bool {
@@ -63,6 +41,10 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
     return .ggml
   }
 
+  var showVariantPicker: Bool {
+    return modelVariant == nil
+  }
+
   private(set) lazy var pathSelectorViewModel = PathSelectorViewModel()
   private(set) lazy var variantPickerViewModel = VariantPickerViewModel(
     label: "Model Size",
@@ -78,11 +60,13 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
   var modelSize: ModelParameterSize? { return nil } // return variantPickerViewModel.selectedModelSize }
 
   let model: Model
+  let modelVariant: ModelVariant?
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(model: Model) {
+  init(model: Model, modelVariant: ModelVariant?) {
     self.model = model
+    self.modelVariant = modelVariant
 
     pathSelectorViewModel.$modelPaths
       .map { modelPaths in
@@ -95,19 +79,17 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
         }
 
         let modelURL = URL(fileURLWithPath: modelPath)
-        do {
-          try ModelUtils.gptJ.validateModel(at: modelURL)
-        } catch {
-          print(error)
-          return .invalidModel(getInvalidModelTypeReason(from: error))
+        if !validateModelFile(at: modelURL, model: model) {
+          return .invalidModel
         }
-
         return .valid(modelURL: modelURL)
       }
       .assign(to: &$modelState)
 
     $modelState
-      .map { modelState -> ModelVariant? in
+      .map { [weak self] modelState -> ModelVariant? in
+        guard let self, self.modelVariant == nil else { return nil }
+
         switch modelState {
         case .none, .invalidModel, .invalidPath:
           return nil
@@ -133,13 +115,8 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
           return nil
         case .invalidPath:
           return "Selected file is invalid"
-        case .invalidModel(let reason):
-          switch reason {
-          case .unknown, .invalidFileType:
-            return "Selected file is not a valid model"
-          case .unsupportedModelVersion:
-            return "Selected model is of an unsupported version"
-          }
+        case .invalidModel:
+          return "Selected model is not valid or unsupported"
         }
       }
       .assign(to: &pathSelectorViewModel.$errorMessage)
@@ -151,7 +128,7 @@ class ConfigureLocalGgmlModelSettingsViewModel: ObservableObject, ConfigureLocal
         case .none, .invalidModel, .invalidPath:
           return nil
         case .valid(modelURL: let modelURL):
-          return .ggmlModel(modelURL: modelURL, variant: selectedVariant)
+          return .ggmlModel(modelURL: modelURL, variant: modelVariant ?? selectedVariant)
         }
       }
       .assign(to: \.value, on: sourceSettings)
