@@ -8,6 +8,7 @@
 import SwiftUI
 import AppModel
 import DataModel
+import ModelCompatibility
 import SharedUI
 
 private let tokenTextAttributes: [NSAttributedString.Key: Any] = [
@@ -15,7 +16,7 @@ private let tokenTextAttributes: [NSAttributedString.Key: Any] = [
   .foregroundColor: NSColor.white
 ]
 
-fileprivate extension ChatModel.ChatContext.Token {
+fileprivate extension LLMSessionContext.Token {
   var displayableString: String {
     if string == "" {
       return "\"\""
@@ -80,7 +81,7 @@ class TokenAttachmentCell: NSTextAttachmentCell {
 }
 
 struct ModelContextTokenView: NSViewRepresentable {
-  var tokens: [ChatModel.ChatContext.Token]
+  var tokens: [LLMSessionContext.Token]
 
   enum Style {
     case tokensOnly
@@ -120,7 +121,7 @@ struct ModelContextTokenView: NSViewRepresentable {
   }
 }
 
-private func updateTextView(_ textView: NSTextView, with tokens: [ChatModel.ChatContext.Token], style: ModelContextTokenView.Style) {
+private func updateTextView(_ textView: NSTextView, with tokens: [LLMSessionContext.Token], style: ModelContextTokenView.Style) {
   let newString = NSMutableAttributedString()
   tokens.forEach { token in
     if style.includesTokenText {

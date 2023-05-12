@@ -9,11 +9,12 @@ import Foundation
 import Combine
 import AppModel
 import DataModel
+import ModelCompatibility
 
 class ModelContextContentViewModel: ObservableObject {
   enum Context {
     case empty
-    case context(string: String, tokens: [ChatModel.ChatContext.Token])
+    case context(string: String, tokens: [LLMSessionContext.Token])
 
     var isEmpty: Bool {
       switch self {
@@ -53,25 +54,23 @@ class ModelContextContentViewModel: ObservableObject {
     }
   }
 
-  private var chatContext: ChatModel.ChatContext? {
-    didSet {
-      guard let chatContext, let contextString = chatContext.contextString, let tokens = chatContext.tokens else {
-        context = .empty
-        return
-      }
-      context = .context(string: contextString, tokens: tokens)
-    }
-  }
-
+  @Published private var sessionContext: LLMSessionContext?
   @Published private(set) var contextPresentation: ContextPresentation = .text
 
   @Published private(set) var hasSource = false
   @Published private(set) var context: Context = .empty
 
-  private var contextCancellable: AnyCancellable?
-
   init(chatSourceId: ChatSource.ID?) {
     self.chatSourceId = chatSourceId
+
+    $sessionContext
+      .map { sessionContext in
+        guard let sessionContext, let contextString = sessionContext.contextString, let tokens = sessionContext.tokens else {
+          return .empty
+        }
+        return .context(string: contextString, tokens: tokens)
+      }
+      .assign(to: &$context)
   }
 
   func updateContextPresentation(_ contextPresentation: ContextPresentation) {
@@ -80,23 +79,21 @@ class ModelContextContentViewModel: ObservableObject {
 
   private func updateState() {
     guard let chatSourcesModel, let chatModels else {
-      contextCancellable = nil
-      chatContext = nil
+      sessionContext = nil
       return
     }
 
     guard let chatSource = chatSourceId.flatMap({ chatSourcesModel.source(for: $0) }) else {
-      contextCancellable = nil
-      chatContext = nil
+      sessionContext = nil
       return
     }
 
     let chatModel = chatModels.chatModel(for: chatSource)
-    chatContext = chatModel.lastChatContext
+    sessionContext = chatModel.lastSessionContext
 
-    contextCancellable = chatModel.$lastChatContext.receive(on: DispatchQueue.main).sink(receiveValue: { newContext in
-      self.chatContext = newContext
-    })
+    chatModel.$lastSessionContext
+      .receive(on: DispatchQueue.main)
+      .assign(to: &$sessionContext)
 
     self.chatSource = chatSource
     self.chatModel = chatModel

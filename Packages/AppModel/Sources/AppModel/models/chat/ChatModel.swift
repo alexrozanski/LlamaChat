@@ -7,35 +7,16 @@
 
 import Foundation
 import Combine
-import CameLLM
-import CameLLMLlama
 import DataModel
 import ModelCompatibility
 import SQLite
 
 public class ChatModel: ObservableObject {
-  public typealias ModelParametersViewModelBuilder = (AnyModelParameters?, ChatModel) -> ModelParametersViewModel?
-
-  public class ChatContext {
-    public struct Token {
-      public let value: Int32
-      public let string: String
-    }
-
-    public var contextString: String? {
-      return sessionContext.contextString
-    }
-
-    public private(set) lazy var tokens: [Token]? = {
-      return sessionContext.tokens?.map { Token(value: $0.value, string: $0.string) }
-    }()
-
-    private let sessionContext: SessionContext
-
-    init(sessionContext: SessionContext) {
-      self.sessionContext = sessionContext
-    }
+  enum Error: Swift.Error {
+    case cannotCreateSession
   }
+
+  public typealias ModelParametersViewModelBuilder = (AnyModelParameters?, ChatModel) -> ModelParametersViewModel?
 
   public let source: ChatSource
   public let messagesModel: MessagesModel
@@ -46,25 +27,24 @@ public class ChatModel: ObservableObject {
     case responding
   }
 
-  private var session: (any Session<LlamaSessionState, LlamaPredictionState>)?
+  private var session: LLMSession?
 
   @Published public private(set) var messages: [Message]
   @Published public private(set) var replyState: ReplyState = .none
 
-  @Published public private(set) var lastChatContext: ChatContext? = nil {
+  @Published public private(set) var lastSessionContext: LLMSessionContext? = nil {
     didSet {
-      guard let lastChatContext else {
+      guard let lastSessionContext else {
         canClearContext = false
         return
       }
-      canClearContext = lastChatContext.contextString != nil && lastChatContext.tokens != nil
+      canClearContext = lastSessionContext.contextString != nil && lastSessionContext.tokens != nil
     }
   }
   @Published public private(set) var canClearContext: Bool = false
 
   public private(set) var parametersViewModel = CurrentValueSubject<ModelParametersViewModel?, Never>(nil)
 
-  private var currentPredictionCancellable: PredictionCancellable?
   private var subscriptions = Set<AnyCancellable>()
 
   init(
@@ -106,7 +86,11 @@ public class ChatModel: ObservableObject {
 
     if (message.sender.isMe) {
       Task.init {
-        await predictResponse(to: message.content)
+        do {
+          try await predictResponse(to: message.content)
+        } catch {
+          print("Can't predict response:", error)
+        }
       }
     }
   }
@@ -135,11 +119,15 @@ public class ChatModel: ObservableObject {
 
   @MainActor
   private func clearContext(insertClearedContextMessage: Bool) async {
-    if session != nil {
-      _ = makeAndStoreNewSession()
+    do {
+      if session != nil {
+        _ = try makeAndStoreNewSession()
+      }
+    } catch {
+      print("Error clearing context: can't create new session")
     }
 
-    lastChatContext = nil
+    lastSessionContext = nil
     if insertClearedContextMessage {
       insertClearedContextMessageIfNeeded()
     }
@@ -153,45 +141,42 @@ public class ChatModel: ObservableObject {
     }
   }
 
-  public func loadContext() async throws -> ChatContext? {
-    let sessionContext = try await getReadySession().sessionContextProviding.provider?.currentContext()
-    let context = sessionContext.map { ChatModel.ChatContext(sessionContext: $0) }
+  public func loadContext() async throws -> LLMSessionContext? {
+    let sessionContext = try await getReadySession().currentContext()
     await MainActor.run {
-      self.lastChatContext = context
+      self.lastSessionContext = sessionContext
     }
-    return context
+    return sessionContext
   }
 
   // MARK: - Private
 
   @MainActor
-  private func makeAndStoreNewSession() -> any Session<LlamaSessionState, LlamaPredictionState> {
+  private func makeAndStoreNewSession() throws -> LLMSession {
     let numThreads = UInt(AppSettingsModel.shared.numThreads)
-    let newSession = makeSession(for: source, numThreads: numThreads)
-
-    newSession.sessionContextProviding.provider?.updatedContextHandler = { [weak self] newSessionContext in
-      self?.lastChatContext = ChatModel.ChatContext(sessionContext: newSessionContext)
+    guard let newSession = makeSession(for: source, numThreads: numThreads, delegate: self) else {
+      throw Error.cannotCreateSession
     }
 
     self.session = newSession
-    self.lastChatContext = nil
+    self.lastSessionContext = nil
 
     return newSession
   }
 
-  private func getReadySession() async -> any Session<LlamaSessionState, LlamaPredictionState> {
+  private func getReadySession() async throws -> LLMSession {
     guard let session = session else {
-      return await makeAndStoreNewSession()
+      return try await makeAndStoreNewSession()
     }
 
     if session.state.isError {
-      return await makeAndStoreNewSession()
+      return try await makeAndStoreNewSession()
     }
 
     return session
   }
 
-  private func predictResponse(to content: String) async {
+  private func predictResponse(to content: String) async throws {
     let message = GeneratedMessage(sender: .other, sendDate: Date())
 
     await MainActor.run {
@@ -200,7 +185,7 @@ public class ChatModel: ObservableObject {
     }
 
     var hasReceivedTokens = false
-    let session = await getReadySession()
+    let session = try await getReadySession()
     let cancellable = session.predict(
       with: content,
       tokenHandler: { token in
@@ -209,11 +194,10 @@ public class ChatModel: ObservableObject {
           self.replyState = .responding
           hasReceivedTokens = true
         }
-
         message.append(contents: token)
       },
-      stateChangeHandler: { newState in
-        switch newState {
+      stateChangeHandler: { predictionState in
+        switch predictionState {
         case .notStarted:
           message.updateState(.waiting)
         case .predicting:
@@ -230,42 +214,19 @@ public class ChatModel: ObservableObject {
           self.replyState = .none
         case .error(let error):
           message.updateState(.error(error))
-          message.update(contents: errorText(from: error))
+          message.update(contents: predictionErrorMessage(from: error))
           self.messagesModel.append(message: message, in: self.source)
           self.replyState = .none
         }
-      },
-      handlerQueue: .main
-    )
-
+      })
     message.cancellationHandler = { cancellable.cancel() }
   }
 }
 
-fileprivate extension LlamaSessionState {
-  var isError: Bool {
-    switch self {
-    case .notStarted, .loadingModel, .predicting, .readyToPredict:
-      return false
-    case .error:
-      return true
-    }
-  }
-}
+extension ChatModel: LLMSessionDelegate {
+  public func llmSession(_ session: LLMSession, stateDidChange state: LLMSessionState) {}
 
-private func errorText(from error: Error) -> String {
-  let nsError = error as NSError
-  if nsError.domain == CameLLMError.Domain {
-    if let code = CameLLMError.Code(rawValue: nsError.code) {
-      switch code {
-      case .failedToLoadModel:
-        return "Failed to load model"
-      case .failedToPredict:
-        return "Failed to generate response"
-      default:
-        break
-      }
-    }
+  public func llmSession(_ session: LLMSession, didUpdateSessionContext sessionContext: LLMSessionContext) {
+    lastSessionContext = sessionContext
   }
-  return "Failed to generate response"
 }
