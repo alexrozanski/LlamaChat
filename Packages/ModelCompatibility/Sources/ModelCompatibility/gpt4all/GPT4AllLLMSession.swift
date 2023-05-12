@@ -31,7 +31,7 @@ final class GPT4AllLLMSession: LLMSession {
       handlerQueue: .main
     )
 
-    return LlamaFamilyPredictionCancellable(cancellable: cancellable)
+    return ConcreteSessionPredictionCancellable(cancellable: cancellable)
   }
 
   func currentContext() async throws -> LLMSessionContext? {
@@ -48,17 +48,6 @@ func makeGPT4AllLLMSession(
     session: SessionManager.gpt4AllJ.makeSession(with: chatSource.modelURL),
     delegate: delegate
   )
-}
-
-final class GPT4AllPredictionCancellable: LLMSessionPredictionCancellable {
-  private let _cancellable: PredictionCancellable
-  init(cancellable: PredictionCancellable) {
-    _cancellable = cancellable
-  }
-
-  func cancel() {
-    _cancellable.cancel()
-  }
 }
 
 fileprivate extension GPTJPredictionState {

@@ -36,7 +36,7 @@ final class LlamaFamilyLLMSession: LLMSession {
       handlerQueue: .main
     )
 
-    return LlamaFamilyPredictionCancellable(cancellable: cancellable)
+    return ConcreteSessionPredictionCancellable(cancellable: cancellable)
   }
 
   func currentContext() async throws -> LLMSessionContext? {
@@ -65,17 +65,6 @@ func makeLlamaFamilyLLMSession(
     ),
     delegate: delegate
   )
-}
-
-final class LlamaFamilyPredictionCancellable: LLMSessionPredictionCancellable {
-  private let _cancellable: PredictionCancellable
-  init(cancellable: PredictionCancellable) {
-    _cancellable = cancellable
-  }
-
-  func cancel() {
-    _cancellable.cancel()
-  }
 }
 
 fileprivate extension LlamaPredictionState {

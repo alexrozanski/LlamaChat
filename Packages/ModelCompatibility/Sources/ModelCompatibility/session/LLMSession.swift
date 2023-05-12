@@ -58,6 +58,17 @@ public protocol LLMSessionPredictionCancellable {
   func cancel()
 }
 
+final class ConcreteSessionPredictionCancellable: LLMSessionPredictionCancellable {
+  private let _cancellable: PredictionCancellable
+  init(cancellable: PredictionCancellable) {
+    _cancellable = cancellable
+  }
+
+  func cancel() {
+    _cancellable.cancel()
+  }
+}
+
 public protocol LLMSession {
   var delegate: LLMSessionDelegate? { get }
   var state: LLMSessionState { get }
