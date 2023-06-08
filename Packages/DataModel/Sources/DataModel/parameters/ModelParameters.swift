@@ -27,3 +27,7 @@ public final class AnyModelParameters: ObservableObject {
     _wrapped = { return parameters }
   }
 }
+
+public final class EmptyModelParameters: ModelParameters {
+  public init() {}
+}

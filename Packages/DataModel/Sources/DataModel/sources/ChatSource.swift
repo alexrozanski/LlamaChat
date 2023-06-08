@@ -10,13 +10,14 @@ import Combine
 
 public extension CodingUserInfoKey {
   static let modelProvider = CodingUserInfoKey(rawValue: "modelProvider")!
-  static let modelParametersCoder = CodingUserInfoKey(rawValue: "modelParametersCoder")!
+  static let modelParametersCoderProvider = CodingUserInfoKey(rawValue: "modelParametersCoderProvider")!
   static let chatSourceUpgrader = CodingUserInfoKey(rawValue: "chatSourceUpgrader")!
 }
 
 enum ChatSourceCodingError: Error {
   case missingModelProvider
   case missingModel
+  case missingModelParametersCoderProvider
   case missingModelParametersCoder
   case missingChatSourceUpgrader
 }
@@ -91,10 +92,6 @@ public class ChatSource: Codable, ObservableObject {
     modelURL = try values.decode(URL.self, forKey: .modelURL)
     modelDirectoryId = try values.decode(ModelDirectoryId?.self, forKey: .modelDirectoryId)
 
-    guard let coder = decoder.userInfo[.modelParametersCoder] as? ModelParametersCoder else {
-      throw ChatSourceCodingError.missingModelParametersCoder
-    }
-
     guard let chatSourceUpgrader = decoder.userInfo[.chatSourceUpgrader] as? ChatSourceUpgrader else {
       throw ChatSourceCodingError.missingChatSourceUpgrader
     }
@@ -126,11 +123,18 @@ public class ChatSource: Codable, ObservableObject {
 
     let (model, modelVariant) = modelProvider.provideModels(modelId: self.modelId, variantId: self.modelVariantId)
 
+    guard let parametersCoderProvider = decoder.userInfo[.modelParametersCoderProvider] as? ModelParametersCoderProvider else {
+      throw ChatSourceCodingError.missingModelParametersCoderProvider
+    }
+
     guard let model else {
       throw ChatSourceCodingError.missingModel
     }
 
-    modelParameters = try coder.decodeParameters(
+    guard let parametersCoder = parametersCoderProvider.modelParametersCoder(for: model, variant: modelVariant) else {
+      throw ChatSourceCodingError.missingModelParametersCoder
+    }
+    modelParameters = try parametersCoder.decodeParameters(
       in: values,
       forKey: CodingKeys.modelParameters,
       modelId: model.id,
@@ -156,12 +160,15 @@ public class ChatSource: Codable, ObservableObject {
     try container.encode(modelURL, forKey: .modelURL)
     try container.encode(modelDirectoryId, forKey: .modelDirectoryId)
 
-    guard let coder = encoder.userInfo[.modelParametersCoder] as? ModelParametersCoder else {
-      throw ChatSourceCodingError.missingModelParametersCoder
+    guard let parametersCoderProvider = encoder.userInfo[.modelParametersCoderProvider] as? ModelParametersCoderProvider else {
+      throw ChatSourceCodingError.missingModelParametersCoderProvider
     }
 
     if let modelParameters {
-      try coder.encode(parameters: modelParameters, to: &container, forKey: .modelParameters)
+      guard let parametersCoder = parametersCoderProvider.modelParametersCoder(for: model, variant: modelVariant) else {
+        throw ChatSourceCodingError.missingModelParametersCoder
+      }
+      try parametersCoder.encode(parameters: modelParameters, to: &container, forKey: .modelParameters)
     }
 
     try container.encode(useMlock, forKey: .useMlock)

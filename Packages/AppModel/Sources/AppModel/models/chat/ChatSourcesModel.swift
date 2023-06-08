@@ -101,7 +101,7 @@ public class ChatSourcesModel: ObservableObject {
       let decoder = JSONDecoder()
       decoder.userInfo = [
         .modelProvider: self,
-        .modelParametersCoder: LlamaFamilyModelParametersCoder(),
+        .modelParametersCoderProvider: EngineBasedModelParametersCoderProvider(),
         .chatSourceUpgrader: self,
       ]
       let payload = try decoder.decode(SerializedChatSourcesPayload.self, from: jsonData)
@@ -116,7 +116,7 @@ public class ChatSourcesModel: ObservableObject {
 
     let encoder = JSONEncoder()
     encoder.userInfo = [
-      .modelParametersCoder: LlamaFamilyModelParametersCoder()
+      .modelParametersCoderProvider: EngineBasedModelParametersCoderProvider()
     ]
     do {
       let json = try encoder.encode(SerializedChatSourcesPayload(value: sources))

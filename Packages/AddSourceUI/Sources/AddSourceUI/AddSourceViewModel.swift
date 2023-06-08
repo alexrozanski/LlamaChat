@@ -57,9 +57,7 @@ public class AddSourceViewModel: ObservableObject {
             modelVariant: variant,
             modelURL: modelURL,
             modelDirectoryId: modelDirectory.id,
-            modelParameters: AnyModelParameters(
-              LlamaFamilyModelParameters.defaultParameters(for: configuredSource.model)
-            ),
+            modelParameters: DefaultModelParametersProvider.defaultParameters(for: configuredSource.model, variant: variant),
             useMlock: false
           )
         )
@@ -85,9 +83,7 @@ public class AddSourceViewModel: ObservableObject {
             modelVariant: variant,
             modelURL: modelURL,
             modelDirectoryId: modelDirectoryId,
-            modelParameters: AnyModelParameters(
-              LlamaFamilyModelParameters.defaultParameters(for: configuredSource.model)
-            ),
+            modelParameters: DefaultModelParametersProvider.defaultParameters(for: configuredSource.model, variant: variant),
             useMlock: false
           )
         )
