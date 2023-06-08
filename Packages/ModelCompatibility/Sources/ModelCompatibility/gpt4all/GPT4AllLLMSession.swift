@@ -44,8 +44,9 @@ func makeGPT4AllLLMSession(
   numThreads: UInt,
   delegate: LLMSessionDelegate
 ) -> LLMSession {
+  let config = SessionConfig.configurableDefaults().build()
   return GPT4AllLLMSession(
-    session: SessionManager.gpt4AllJ.makeSession(with: chatSource.modelURL),
+    session: SessionManager.gpt4AllJ.makeSession(with: chatSource.modelURL, config: SessionConfig.defaults),
     delegate: delegate
   )
 }

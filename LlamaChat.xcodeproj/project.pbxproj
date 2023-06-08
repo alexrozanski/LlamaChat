@@ -11,8 +11,6 @@
 		8227DA9329D8F841000E554D /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8227DA9229D8F841000E554D /* SQLite */; };
 		8227DA9729D911A4000E554D /* LlamaChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8227DA9629D911A4000E554D /* LlamaChatApp.swift */; };
 		8227DACA29DA5080000E554D /* names.json in Resources */ = {isa = PBXBuildFile; fileRef = 8227DAC929DA5080000E554D /* names.json */; };
-		8241612529F58C3F007149B9 /* CameLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 8241612429F58C3F007149B9 /* CameLLM */; };
-		8241612829F58C5A007149B9 /* CameLLMLlama in Frameworks */ = {isa = PBXBuildFile; productRef = 8241612729F58C5A007149B9 /* CameLLMLlama */; };
 		82615BBB2A02524600B0D4FB /* DataModel in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BBA2A02524600B0D4FB /* DataModel */; };
 		82615BD22A02552600B0D4FB /* AppModel in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BD12A02552600B0D4FB /* AppModel */; };
 		82615BD42A02552600B0D4FB /* FileManager in Frameworks */ = {isa = PBXBuildFile; productRef = 82615BD32A02552600B0D4FB /* FileManager */; };
@@ -71,11 +69,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8241612529F58C3F007149B9 /* CameLLM in Frameworks */,
 				82C68BEB29E77CC900A7A4AE /* Sparkle in Frameworks */,
 				82F077842A0BF78300772633 /* ChatInfoUI in Frameworks */,
 				82615BBB2A02524600B0D4FB /* DataModel in Frameworks */,
-				8241612829F58C5A007149B9 /* CameLLMLlama in Frameworks */,
 				82F077642A09011800772633 /* ModelMetadata in Frameworks */,
 				82E43CB229E8D6F3003E69D1 /* Alamofire in Frameworks */,
 				82615BDC2A025DD800B0D4FB /* ModelDirectory in Frameworks */,
@@ -230,8 +226,6 @@
 			packageProductDependencies = (
 				8227DA9229D8F841000E554D /* SQLite */,
 				82C68BEA29E77CC900A7A4AE /* Sparkle */,
-				8241612429F58C3F007149B9 /* CameLLM */,
-				8241612729F58C5A007149B9 /* CameLLMLlama */,
 				82E43CB129E8D6F3003E69D1 /* Alamofire */,
 				82615BBA2A02524600B0D4FB /* DataModel */,
 				82615BD12A02552600B0D4FB /* AppModel */,
@@ -276,8 +270,6 @@
 			packageReferences = (
 				8227DA9129D8F841000E554D /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 				82C68BE929E77CC900A7A4AE /* XCRemoteSwiftPackageReference "Sparkle" */,
-				8241612329F58C3F007149B9 /* XCRemoteSwiftPackageReference "CameLLM" */,
-				8241612629F58C5A007149B9 /* XCRemoteSwiftPackageReference "CameLLM-Llama" */,
 				82E43CB029E8D6F3003E69D1 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 82718CDB29D3686200545C32 /* Products */;
@@ -568,22 +560,6 @@
 				minimumVersion = 0.9.2;
 			};
 		};
-		8241612329F58C3F007149B9 /* XCRemoteSwiftPackageReference "CameLLM" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CameLLM/CameLLM.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		8241612629F58C5A007149B9 /* XCRemoteSwiftPackageReference "CameLLM-Llama" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CameLLM/CameLLM-Llama.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		82C68BE929E77CC900A7A4AE /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparkle-project/Sparkle";
@@ -607,16 +583,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8227DA9129D8F841000E554D /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
-		};
-		8241612429F58C3F007149B9 /* CameLLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8241612329F58C3F007149B9 /* XCRemoteSwiftPackageReference "CameLLM" */;
-			productName = CameLLM;
-		};
-		8241612729F58C5A007149B9 /* CameLLMLlama */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8241612629F58C5A007149B9 /* XCRemoteSwiftPackageReference "CameLLM-Llama" */;
-			productName = CameLLMLlama;
 		};
 		82615BBA2A02524600B0D4FB /* DataModel */ = {
 			isa = XCSwiftPackageProductDependency;
