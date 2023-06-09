@@ -13,6 +13,8 @@ import ModelCompatibility
 public func makeParametersViewModel(from parameters: AnyModelParameters?, chatModel: ChatModel) -> ModelParametersViewModel? {
   if let parameters = parameters?.wrapped as? LlamaFamilyModelParameters {
     return LlamaFamilyModelParametersViewModel(chatModel: chatModel, parameters: parameters)
+  } else if let parameters = parameters?.wrapped as? GPT4AllModelParameters {
+    return GPT4AllModelParametersViewModel(chatModel: chatModel, parameters: parameters)
   }
 
   return nil

@@ -16,10 +16,13 @@ public struct ChatInfoParametersView: View {
   }
 
   public var body: some View {
+    // Bit finnicky using .id() -- we want to recreate the view when the parameters view model changes so use
+    // `id` for this. Not ideal, hopefully we can improve this.
     if let viewModel = viewModel as? LlamaFamilyModelParametersViewModel {
-      // Bit finnicky -- we want to recreate the view when the parameters view model changes so use
-      // `id` for this. Not ideal, hopefully we can improve this.
       LlamaFamilyModelParametersChatInfoView(viewModel: viewModel)
+        .id(viewModel.id)
+    } else if let viewModel = viewModel as? GPT4AllModelParametersViewModel {
+      GPT4AllModelParametersChatInfoView(viewModel: viewModel)
         .id(viewModel.id)
     }
   }
