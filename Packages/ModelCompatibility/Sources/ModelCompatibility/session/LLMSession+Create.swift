@@ -26,8 +26,11 @@ public func makeSession(
       delegate: delegate
     )
   case "camellm-gptj":
+    guard let modelParameters = chatSource.modelParameters?.wrapped as? GPT4AllModelParameters else { return nil }
+
     return makeGPT4AllLLMSession(
       for: chatSource,
+      modelParameters: modelParameters,
       numThreads: numThreads,
       delegate: delegate
     )

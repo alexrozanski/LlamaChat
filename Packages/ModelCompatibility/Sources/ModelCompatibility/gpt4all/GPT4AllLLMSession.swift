@@ -41,12 +41,15 @@ final class GPT4AllLLMSession: LLMSession {
 
 func makeGPT4AllLLMSession(
   for chatSource: ChatSource,
+  modelParameters: GPT4AllModelParameters,
   numThreads: UInt,
   delegate: LLMSessionDelegate
 ) -> LLMSession {
-  let config = SessionConfig.configurableDefaults().build()
+  let config = SessionConfig.configurableDefaults()
+    .withModelParameters(modelParameters)
+    .build()
   return GPT4AllLLMSession(
-    session: SessionManager.gpt4AllJ.makeSession(with: chatSource.modelURL, config: SessionConfig.defaults),
+    session: SessionManager.gpt4AllJ.makeSession(with: chatSource.modelURL, config: config),
     delegate: delegate
   )
 }
@@ -65,5 +68,19 @@ fileprivate extension GPTJPredictionState {
     case .error(let error):
       return .error(error)
     }
+  }
+}
+
+fileprivate extension SessionConfigBuilder {
+  func withModelParameters(_ modelParameters: GPT4AllModelParameters) -> SessionConfigBuilder {
+    return withNumTokens(modelParameters.numberOfTokens)
+      .withHyperparameters { hyperparameters in
+        hyperparameters
+          .withBatchSize(modelParameters.batchSize)
+          .withTopK(modelParameters.topK)
+          .withTopP(modelParameters.topP)
+          .withTemperature(modelParameters.temperature)
+          .withRepeatPenalty(modelParameters.repeatPenalty)
+      }
   }
 }
